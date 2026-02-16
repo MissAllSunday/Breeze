@@ -30,7 +30,8 @@
       "friendsofphp/php-cs-fixer": "^3.50",
       "phpstan/phpstan": "^1.10.0",
       "phpunit/phpunit": "^12.2",
-      "rector/rector": "^1.2"
+      "rector/rector": "^1.2",
+      "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {
@@ -55,10 +56,15 @@
         "rector": "breezeVendor/bin/rector process Sources",
         "ui:test": "npm run test:run",
         "serve": "bin/server",
+        "db:setup": "php tests/setup-test-database.php",
         "test": [
             "@lint:check",
             "@phpunit",
             "@phpstan"
+        ],
+        "test:db": [
+            "@db:setup",
+            "@test"
         ],
         "ltest": [
           "@lint",

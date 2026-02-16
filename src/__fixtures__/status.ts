@@ -1,7 +1,8 @@
-import type { StatusType } from "breezeTypesStatus";
+import type { StatusType, IFetchStatus } from "breezeTypesStatus";
 
 import { comments } from "./comments";
 import likes from "./likes";
+import permissions from "./permissions";
 import { userData } from "./userData";
 
 const basic: StatusType = {
@@ -21,4 +22,18 @@ const custom = (replace: Partial<StatusType>) => {
 	return { ...basic, ...replace };
 };
 
-export const status = { basic, custom };
+const fetchStatus: IFetchStatus = {
+	data: [basic],
+	permissions: permissions.basic,
+	pagination: {
+		nextCursor: null,
+		hasMore: false,
+	},
+	total: 1,
+};
+
+const customFetchStatus = (replace: Partial<IFetchStatus>): IFetchStatus => {
+	return { ...fetchStatus, ...replace };
+};
+
+export const status = { basic, custom, fetchStatus, customFetchStatus };

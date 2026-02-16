@@ -26,6 +26,8 @@ export default function Wall(props: WallProps): React.JSX.Element {
 	const [permissions, setPermissions] =
 		useState<PermissionsContextType>(PermissionsDefault);
 	const [paginationTotal, setPaginationTotal] = useState<number>(0);
+	const [nextCursor, setNextCursor] = useState<string | null>(null);
+	const [hasMore, setHasMore] = useState<boolean>(false);
 	const ref = React.useRef<null | HTMLInputElement>(null);
 
 	useEffect(
@@ -38,7 +40,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 	);
 
 	useEffect(() => {
-		getStatus(props.wallType, 0)
+		getStatus(props.wallType, 0, null)
 			.then((statusListResponse: IFetchStatus | undefined) => {
 				if (!statusListResponse) {
 					return;
@@ -51,6 +53,8 @@ export default function Wall(props: WallProps): React.JSX.Element {
 				setStatusList(fetchedStatusList);
 				setPermissions(statusListResponse.permissions);
 				setPaginationTotal(statusListResponse.total);
+				setNextCursor(statusListResponse.pagination.nextCursor);
+				setHasMore(statusListResponse.pagination.hasMore);
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -58,14 +62,14 @@ export default function Wall(props: WallProps): React.JSX.Element {
 	}, [props.wallType]);
 
 	const fetchNextStatus = useCallback(() => {
-		if (statusList.length >= paginationTotal) {
+		if (!hasMore) {
 			showInfo(smfTextVars.general.end);
 			return;
 		}
 
 		setIsLoading(true);
 
-		getStatus(props.wallType, statusList.length)
+		getStatus(props.wallType, statusList.length, nextCursor)
 			.then((statusListResponse: IFetchStatus | undefined) => {
 				if (!statusListResponse) {
 					return;
@@ -74,11 +78,13 @@ export default function Wall(props: WallProps): React.JSX.Element {
 				setStatusList((prevStatusList) =>
 					prevStatusList.concat(Object.values(statusListResponse.data)),
 				);
+				setNextCursor(statusListResponse.pagination.nextCursor);
+				setHasMore(statusListResponse.pagination.hasMore);
 			})
 			.finally(() => {
 				setIsLoading(false);
 			});
-	}, [props.wallType, statusList.length, paginationTotal]);
+	}, [props.wallType, statusList.length, nextCursor, hasMore]);
 
 	const createStatus = useCallback(
 		(content: string) => {
@@ -145,7 +151,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 					)) : displayMessage(smfTextVars.general.emptyData)}
 				</ul>
 				<div id="post_confirm_buttons">
-					{statusList.length < paginationTotal ? (
+					{hasMore ? (
 						<input
 							type="submit"
 							value={smfTextVars.general.loadMore}

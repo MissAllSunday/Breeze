@@ -342,4 +342,183 @@ class StatusRepositoryTest extends TestCase
 
 		$this->statusRepository->getBy($columnName, $data, $start, $maxIndex);
 	}
+
+	// Cursor-based pagination tests
+
+	public function testEncodeCursor(): void
+	{
+		$id = 123;
+		$createdAt = 1234567890;
+
+		$cursor = $this->statusRepository->encodeCursor($id, $createdAt);
+
+		$this->assertIsString($cursor);
+		$this->assertNotEmpty($cursor);
+
+		// Verify it's valid base64
+		$decoded = base64_decode($cursor, true);
+		$this->assertNotFalse($decoded);
+
+		// Verify the content
+		$data = json_decode($decoded, true);
+		$this->assertEquals($id, $data['id']);
+		$this->assertEquals($createdAt, $data['created_at']);
+	}
+
+	public function testDecodeCursor(): void
+	{
+		$id = 456;
+		$createdAt = 9876543210;
+
+		$cursor = $this->statusRepository->encodeCursor($id, $createdAt);
+		$decoded = $this->statusRepository->decodeCursor($cursor);
+
+		$this->assertIsArray($decoded);
+		$this->assertEquals($id, $decoded['id']);
+		$this->assertEquals($createdAt, $decoded['created_at']);
+	}
+
+	public function testDecodeCursorWithInvalidBase64(): void
+	{
+		$result = $this->statusRepository->decodeCursor('invalid!!!base64');
+
+		$this->assertNull($result);
+	}
+
+	public function testDecodeCursorWithInvalidJson(): void
+	{
+		$invalidCursor = base64_encode('not json');
+		$result = $this->statusRepository->decodeCursor($invalidCursor);
+
+		$this->assertNull($result);
+	}
+
+	public function testDecodeCursorWithMissingFields(): void
+	{
+		$invalidData = base64_encode(json_encode(['id' => 123])); // missing created_at
+		$result = $this->statusRepository->decodeCursor($invalidData);
+
+		$this->assertNull($result);
+	}
+
+	/**
+	 * @throws DateMalformedStringException
+	 */
+	public function testGetNextCursor(): void
+	{
+		$statuses = [
+			StatusEntity::from([
+				StatusEntity::ID => 1,
+				StatusEntity::WALL_ID => 1,
+				StatusEntity::USER_ID => 1,
+				StatusEntity::BODY => 'First',
+				SharedEntity::CREATED_AT => 1000,
+			]),
+			StatusEntity::from([
+				StatusEntity::ID => 2,
+				StatusEntity::WALL_ID => 1,
+				StatusEntity::USER_ID => 1,
+				StatusEntity::BODY => 'Second',
+				SharedEntity::CREATED_AT => 2000,
+			]),
+			StatusEntity::from([
+				StatusEntity::ID => 3,
+				StatusEntity::WALL_ID => 1,
+				StatusEntity::USER_ID => 1,
+				StatusEntity::BODY => 'Third',
+				SharedEntity::CREATED_AT => 3000,
+			]),
+		];
+
+		$cursor = $this->statusRepository->getNextCursor($statuses);
+
+		$this->assertNotNull($cursor);
+
+		$decoded = $this->statusRepository->decodeCursor($cursor);
+		$this->assertEquals(3, $decoded['id']);
+		$this->assertEquals(3000, $decoded['created_at']);
+	}
+
+	public function testGetNextCursorWithEmptyArray(): void
+	{
+		$cursor = $this->statusRepository->getNextCursor([]);
+
+		$this->assertNull($cursor);
+	}
+
+	public function testGetByWithCursor(): void
+	{
+		$columnName = StatusEntity::WALL_ID;
+		$data = [1, 2, 3];
+		$maxIndex = 10;
+		$cursor = $this->statusRepository->encodeCursor(100, 1234567890);
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->with(
+				$this->stringContains('ORDER BY parent.created_at DESC, parent.id DESC'),
+				$this->callback(function ($params) use ($columnName, $data, $maxIndex) {
+					return $params['columnName'] === $columnName
+						&& $params['ids'] === $data
+						&& $params['limit'] === $maxIndex
+						&& isset($params['cursor_id'])
+						&& isset($params['cursor_created_at'])
+						&& $params['cursor_id'] === 100
+						&& $params['cursor_created_at'] === 1234567890;
+				})
+			)
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->statusRepository->method('prepareData')->willReturn([]);
+
+		$this->statusRepository->getBy($columnName, $data, 0, $maxIndex, $cursor);
+	}
+
+	public function testGetByWithOffsetStillWorks(): void
+	{
+		// Ensure backward compatibility - offset-based pagination still works
+		$columnName = StatusEntity::WALL_ID;
+		$data = [1, 2, 3];
+		$start = 5;
+		$maxIndex = 10;
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->with(
+				$this->stringContains('LIMIT {int:start}, {int:maxIndex}'),
+				$this->callback(function ($params) use ($start, $maxIndex) {
+					return $params['start'] === $start
+						&& $params['maxIndex'] === $maxIndex;
+				})
+			)
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->statusRepository->method('prepareData')->willReturn([]);
+
+		$this->statusRepository->getBy($columnName, $data, $start, $maxIndex, null);
+	}
+
+	public function testGetByProfileWithCursor(): void
+	{
+		$userProfiles = [1];
+		$maxIndex = 10;
+		$cursor = $this->statusRepository->encodeCursor(50, 9999999);
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->with(
+				$this->stringContains('ORDER BY parent.created_at DESC'),
+				$this->anything()
+			)
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->statusRepository->method('prepareData')->willReturn([]);
+
+		$result = $this->statusRepository->getByProfile($userProfiles, 0, $maxIndex, $cursor);
+
+		$this->assertIsArray($result);
+	}
 }

@@ -42,9 +42,11 @@ class StatusController extends ApiBaseController
 	public function profile(): void
 	{
 		try {
+			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$this->getRequest('start', 0)
+				$this->getRequest('start', 0),
+				$cursor
 			);
 
 			$this->response->success('', $statusByProfile);
@@ -56,7 +58,11 @@ class StatusController extends ApiBaseController
 	public function wall(): void
 	{
 		try {
-			$buddiesStatus = $this->statusService->getByBuddies($this->getRequest('start', 0));
+			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
+			$buddiesStatus = $this->statusService->getByBuddies(
+				$this->getRequest('start', 0),
+				$cursor
+			);
 
 			$this->response->success('', $buddiesStatus);
 		} catch (EmptyDataException $exception) {
@@ -94,9 +100,11 @@ class StatusController extends ApiBaseController
 	public function total(): void
 	{
 		try {
+			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$this->getRequest('start', 0)
+				$this->getRequest('start', 0),
+				$cursor
 			);
 
 			$this->response->success('', $statusByProfile);

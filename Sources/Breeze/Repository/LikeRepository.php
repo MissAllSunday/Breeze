@@ -21,10 +21,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 	public function __construct(
 		$dbClient,
-		$likeRepository,
 		protected ?EventServiceProvider $eventServiceProvider = null
 	) {
-		parent::__construct($dbClient, $likeRepository);
+		parent::__construct($dbClient);
 	}
 
 	public function getTableName(): string

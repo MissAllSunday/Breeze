@@ -339,4 +339,14 @@ $_SESSION['Breeze']['flood_4'] = [
 $_SESSION['Breeze']['flood_5'] = [];
 
 // Composer-Autoloader
-require_once $_SERVER['DOCUMENT_ROOT'] . "./breezeVendor/autoload.php";
+require_once __DIR__ . "/../breezeVendor/autoload.php";
+
+// Load database configuration for integration/performance tests
+if (file_exists(__DIR__ . '/database-config.php')) {
+	require_once __DIR__ . '/database-config.php';
+
+	// Initialize SMF database functions if database is available
+	if (isDatabaseAvailable()) {
+		initializeSmfDatabaseFunctions();
+	}
+}

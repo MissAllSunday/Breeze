@@ -11,12 +11,14 @@ use Breeze\Event\Status\StatusCreatedEvent;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
+use Breeze\Traits\CacheTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Validate\EmptyDataException;
 
 class StatusService extends BaseService implements StatusServiceInterface
 {
 	use SettingsTrait;
+	use CacheTrait;
 
 	public function __construct(
 		protected StatusRepositoryInterface   $statusRepository,
@@ -35,7 +37,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 	/**
 	 * @throws EmptyDataException
 	 */
-	public function getByProfile(int $wallId, int $start): array
+	public function getByProfile(int $wallId, int $start, ?string $cursor = null): array
 	{
 		$wallUserSettings = $this->userRepository->getById($wallId);
 		$wallUserPagination = $wallUserSettings->getPaginationNumber();
@@ -44,13 +46,26 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$statusByProfile = $this->statusRepository->getByProfile(
 			[$wallId],
 			$start,
-			$wallUserPagination
+			$wallUserPagination,
+			$cursor
 		);
+
+		// Generate next cursor
+		$nextCursor = null;
+		$hasMore = false;
+		if (!empty($statusByProfile)) {
+			$nextCursor = $this->statusRepository->getNextCursor($statusByProfile);
+			$hasMore = count($statusByProfile) === $wallUserPagination;
+		}
 
 		return [
 			'data' => $statusByProfile,
 			'permissions' => $this->permissionsService->permissions($wallId, $currentUserInfo['id']),
-			'total' => $this->getCount(StatusEntity::WALL_ID, [$wallId]),
+			'pagination' => [
+				'nextCursor' => $hasMore ? $nextCursor : null,
+				'hasMore' => $hasMore,
+			],
+			'total' => $this->getCachedCount(StatusEntity::WALL_ID, [$wallId]),
 		];
 	}
 
@@ -62,7 +77,27 @@ class StatusService extends BaseService implements StatusServiceInterface
 		]);
 	}
 
-	public function getByBuddies(int $start): array
+	/**
+	 * Get cached count with 5-minute TTL
+	 */
+	protected function getCachedCount(string $columnName, array $ids): int
+	{
+		$cacheKey = sprintf('count_%s_%s', $columnName, implode('_', $ids));
+
+		$cached = $this->getCache($cacheKey, 300);
+		if ($cached !== null && $cached !== []) {
+			return is_int($cached) ? $cached : 0;
+		}
+
+		$count = $this->getCount($columnName, $ids);
+
+		// Cache for 5 minutes (300 seconds)
+		$this->setCache($cacheKey, $count, 300);
+
+		return $count;
+	}
+
+	public function getByBuddies(int $start, ?string $cursor = null): array
 	{
 		$currentUserInfo = $this->currentUserInfo();
 		$currentUserSettings = $this->userRepository->getById($currentUserInfo['id']);
@@ -77,13 +112,26 @@ class StatusService extends BaseService implements StatusServiceInterface
 			StatusEntity::USER_ID,
 			$currentUserBuddies,
 			$start,
-			$currentUserPagination
+			$currentUserPagination,
+			$cursor
 		);
+
+		// Generate next cursor
+		$nextCursor = null;
+		$hasMore = false;
+		if (!empty($statusByBuddies)) {
+			$nextCursor = $this->statusRepository->getNextCursor($statusByBuddies);
+			$hasMore = count($statusByBuddies) === $currentUserPagination;
+		}
 
 		return [
 			'data' => $statusByBuddies,
 			'permissions' => $this->permissionsService->permissions(0, $currentUserInfo['id']),
-			'total' => $this->getCount(StatusEntity::USER_ID, $currentUserBuddies),
+			'pagination' => [
+				'nextCursor' => $hasMore ? $nextCursor : null,
+				'hasMore' => $hasMore,
+			],
+			'total' => $this->getCachedCount(StatusEntity::USER_ID, $currentUserBuddies),
 		];
 	}
 

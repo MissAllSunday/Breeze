@@ -83,3 +83,4 @@ phpunit.xml
 /vendor
 /breezeVendor
 brp.sh
+tests/database-config.local.php

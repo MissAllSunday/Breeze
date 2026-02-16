@@ -10,7 +10,8 @@ class DatabaseClient implements ClientInterface
 
 	public function __construct()
 	{
-		$this->db = $GLOBALS['smcFunc'];
+		global $smcFunc;
+		$this->db = $smcFunc;
 	}
 
 	public function query(string $query, array $bindParams)

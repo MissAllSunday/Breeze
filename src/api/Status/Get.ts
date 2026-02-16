@@ -8,10 +8,20 @@ import type { IFetchStatus } from "breezeTypesStatus";
 export const getStatus = async (
 	type: string,
 	start: number,
+	cursor?: string | null,
 ): Promise<IFetchStatus | undefined> => {
 	try {
+		const params: Record<string, string | number> = {
+			start: start,
+			wall_id: smfVars.wall_id,
+		};
+
+		if (cursor) {
+			params.cursor = cursor;
+		}
+
 		const response = await fetch(
-			baseUrl("breezeStatus", type, [{ start: start, wall_id: smfVars.wall_id }]),
+			baseUrl("breezeStatus", type, [params]),
 			{
 				method: "GET",
 				headers: {

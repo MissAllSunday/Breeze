@@ -8,6 +8,29 @@ jobs:
         operating-system: [ubuntu-latest, macos-latest]
         php-versions: ['8.3']
     runs-on: ${{ matrix.operating-system }}
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: breeze_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: breeze_test
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_PREFIX: smf_
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,5 +54,17 @@ jobs:
       - name: Install dependencies
         run: |
           composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: Wait for MySQL
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: |
+          until mysqladmin ping -h 127.0.0.1 -P 3306 -u root -proot --silent; do
+            echo 'Waiting for MySQL...'
+            sleep 2
+          done
+          echo 'MySQL is ready!'
+      - name: Setup test database
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: |
+          php tests/setup-test-database.php
       - name: Test with phpunit
         run: composer test

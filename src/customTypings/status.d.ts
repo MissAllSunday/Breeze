@@ -15,6 +15,10 @@ declare module "breezeTypesStatus" {
 	interface IFetchStatus {
 		data: StatusListType;
 		permissions: PermissionsContextType;
+		pagination: {
+			nextCursor: string | null;
+			hasMore: boolean;
+		};
 		total: number;
 	}
 

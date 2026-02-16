@@ -81,28 +81,39 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 * @param array $userProfiles [int]
 	 * @return array [StatusEntity]
 	 */
-	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0): array
+	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0, ?string $cursor = null): array
 	{
-		$cacheKey = sprintf(
-			'%s_%s_%d_%d',
-			self::CACHE_BY_PROFILE,
-			implode('_', $userProfiles),
-			$start,
-			$maxIndex
-		);
+		// Use cursor-based caching if cursor is provided
+		if ($cursor !== null) {
+			$cacheKey = sprintf(
+				'%s_%s_cursor_%s_%d',
+				self::CACHE_BY_PROFILE,
+				implode('_', $userProfiles),
+				$cursor,
+				$maxIndex
+			);
+		} else {
+			$cacheKey = sprintf(
+				'%s_%s_%d_%d',
+				self::CACHE_BY_PROFILE,
+				implode('_', $userProfiles),
+				$start,
+				$maxIndex
+			);
+		}
 
 		$cached = $this->getCache($cacheKey);
 		if ($cached !== []) {
 			return $cached;
 		}
 
-		$result = $this->getBy(StatusEntity::WALL_ID, $userProfiles, $start, $maxIndex);
+		$result = $this->getBy(StatusEntity::WALL_ID, $userProfiles, $start, $maxIndex, $cursor);
 		$this->setCache($cacheKey, $result);
 
 		return $result;
 	}
 
-	public function getBy(string $columnName, array $data = [], int $start = 0, int $maxIndex = 0): array
+	public function getBy(string $columnName, array $data = [], int $start = 0, int $maxIndex = 0, ?string $cursor = null): array
 	{
 		if (!in_array($columnName, $this->getColumns())) {
 			return [];
@@ -112,22 +123,52 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$this->getDefaultQueryParams(),
 			[
 				'columnName' => $columnName,
-			],
-			[
-				'start' => $start,
-				'maxIndex' => $maxIndex,
 				'ids' => $data,
 			]
 		);
 
-		$request = $this->dbClient->query(
-			'
-			SELECT {raw:columns}
-			FROM {db_prefix}{raw:from}
-			WHERE {raw:columnName} IN ({array_int:ids})
-			LIMIT {int:start}, {int:maxIndex}',
-			$queryParams
-		);
+		// Build query based on pagination type
+		if ($cursor !== null) {
+			// Cursor-based pagination
+			$decodedCursor = $this->decodeCursor($cursor);
+			if ($decodedCursor !== null) {
+				$cursorClause = '
+					AND (
+						parent.created_at < {int:cursor_created_at}
+						OR (parent.created_at = {int:cursor_created_at} AND parent.id < {int:cursor_id})
+					)';
+				$queryParams['cursor_created_at'] = $decodedCursor['created_at'];
+				$queryParams['cursor_id'] = $decodedCursor['id'];
+			} else {
+				$cursorClause = '';
+			}
+			$queryParams['limit'] = $maxIndex;
+
+			$request = $this->dbClient->query(
+				'
+				SELECT {raw:columns}
+				FROM {db_prefix}{raw:from}
+				WHERE {raw:columnName} IN ({array_int:ids})
+				' . $cursorClause . '
+				ORDER BY parent.created_at DESC, parent.id DESC
+				LIMIT {int:limit}',
+				$queryParams
+			);
+		} else {
+			// Offset-based pagination (backward compatibility)
+			$queryParams['start'] = $start;
+			$queryParams['maxIndex'] = $maxIndex;
+
+			$request = $this->dbClient->query(
+				'
+				SELECT {raw:columns}
+				FROM {db_prefix}{raw:from}
+				WHERE {raw:columnName} IN ({array_int:ids})
+				ORDER BY parent.created_at DESC, parent.id DESC
+				LIMIT {int:start}, {int:maxIndex}',
+				$queryParams
+			);
+		}
 
 		$comments = $this->commentRepository->getByProfile($data);
 
@@ -321,6 +362,73 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 				LikesEnum::Status
 			),
 			$comments
+		);
+	}
+
+	/**
+	 * Encode a cursor for pagination
+	 *
+	 * @param int $id The status ID
+	 * @param int $createdAt The created_at timestamp
+	 * @return string Base64 encoded cursor
+	 */
+	public function encodeCursor(int $id, int $createdAt): string
+	{
+		return base64_encode(json_encode([
+			'id' => $id,
+			'created_at' => $createdAt,
+		]));
+	}
+
+	/**
+	 * Decode a cursor for pagination
+	 *
+	 * @param string $cursor Base64 encoded cursor
+	 * @return array|null Decoded cursor data or null if invalid
+	 */
+	public function decodeCursor(string $cursor): ?array
+	{
+		$decoded = base64_decode($cursor, true);
+		if ($decoded === false) {
+			return null;
+		}
+
+		$data = json_decode($decoded, true);
+		if (!is_array($data) || !isset($data['id']) || !isset($data['created_at'])) {
+			return null;
+		}
+
+		return [
+			'id' => (int) $data['id'],
+			'created_at' => (int) $data['created_at'],
+		];
+	}
+
+	/**
+	 * Generate next cursor from status entities
+	 *
+	 * @param array $statuses Array of StatusEntity objects
+	 * @return string|null Encoded cursor or null if no statuses
+	 */
+	public function getNextCursor(array $statuses): ?string
+	{
+		if (empty($statuses)) {
+			return null;
+		}
+
+		$lastStatus = end($statuses);
+		if (!$lastStatus instanceof StatusEntity) {
+			return null;
+		}
+
+		$createdAt = $lastStatus->getCreatedAt();
+		if ($createdAt === null) {
+			return null;
+		}
+
+		return $this->encodeCursor(
+			$lastStatus->getId(),
+			$createdAt->getTimestamp()
 		);
 	}
 

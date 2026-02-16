@@ -19,7 +19,7 @@ trait CacheTrait
 		return $data ?? [];
 	}
 
-	public function setCache(string $key, array | EntityInterface| null $data, int $timeToLive = 360): void
+	public function setCache(string $key, array | EntityInterface | int | null $data, int $timeToLive = 360): void
 	{
 		cache_put_data($this->buildKey($key), $data, $timeToLive);
 	}

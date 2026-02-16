@@ -173,6 +173,16 @@ if (empty($context['uninstalling'])) {
 				'type' => 'index',
 				'columns' => ['wall_id'],
 			],
+			[
+				'name' => 'idx_wall_created_id',
+				'type' => 'index',
+				'columns' => ['wall_id', 'created_at', 'id'],
+			],
+			[
+				'name' => 'idx_user_created_id',
+				'type' => 'index',
+				'columns' => ['user_id', 'created_at', 'id'],
+			],
 		],
 		'if_exists' => 'ignore',
 		'error' => 'fatal',

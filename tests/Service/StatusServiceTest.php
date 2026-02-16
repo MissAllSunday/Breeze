@@ -59,6 +59,7 @@ class StatusServiceTest extends TestCase
 		$this->statusRepository->method('getByProfile')->willReturn([
 			self::getStatusEntity(),
 		]);
+		$this->statusRepository->method('getNextCursor')->willReturn('test_cursor');
 		$this->statusService->method('getCount')->willReturn(1);
 
 		$result = $this->statusService->getByProfile($wallId, $start);
@@ -73,13 +74,18 @@ class StatusServiceTest extends TestCase
 				'wallId' => 1,
 				'start' => 1,
 				'expected' => [
-					'data' => [self::getStatusEntity()], 'total' => 1,
+					'data' => [self::getStatusEntity()],
 					'permissions' => [
 						'delete' => true,
 						'edit' => false,
 						'post' => true,
 						'postComments' => true,
 					],
+					'pagination' => [
+						'nextCursor' => null,
+						'hasMore' => false,
+					],
+					'total' => 1,
 				],
 			],
 		];
