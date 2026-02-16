@@ -3,11 +3,10 @@ name: Breeze tests
 on: [push, pull_request]
 jobs:
   tests:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, macos-latest]
         php-versions: [ '8.3' ]
-    runs-on: ${{ matrix.operating-system }}
 
     services:
       mysql:
