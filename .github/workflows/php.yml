@@ -5,7 +5,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        operating-system: [ubuntu-latest]
+        operating-system: [ubuntu-latest, macos-latest]
         php-versions: [ '8.3' ]
     runs-on: ${{ matrix.operating-system }}
 
@@ -32,8 +32,6 @@ jobs:
       DB_PREFIX: smf_
 
     steps:
-      - name: Set up Docker
-        run: sudo apt-get update && sudo apt-get install -y docker.io
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup PHP
@@ -46,7 +44,7 @@ jobs:
           extensions: mbstring, curl
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache composer dependencies
         uses: actions/cache@v4
         with:
@@ -57,15 +55,21 @@ jobs:
         run: |
           composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Wait for MySQL
-        if: matrix.operating-system == 'ubuntu-latest'
         run: |
-          until mysqladmin ping -h 127.0.0.1 -P 3306 -u root -proot --silent; do
-            echo 'Waiting for MySQL...'
+          for i in {1..30}; do
+            if mysqladmin ping -h 127.0.0.1 -P 3306 -u root -proot --silent 2>/dev/null; then
+              echo 'MySQL is ready!'
+              exit 0
+            fi
+            echo "Waiting for MySQL... (attempt $i/30)"
             sleep 2
           done
-          echo 'MySQL is ready!'
+          echo 'MySQL failed to start'
+          exit 1
+      - name: Verify MySQL connection
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root -proot -e "SELECT VERSION();"
       - name: Setup test database
-        if: matrix.operating-system == 'ubuntu-latest'
         run: |
           php tests/setup-test-database.php
       - name: Test with phpunit
