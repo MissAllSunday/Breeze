@@ -135,33 +135,52 @@ function initializeSmfDatabaseFunctions(): void
 		// Replace SMF placeholders with PDO placeholders
 		$query = str_replace('{db_prefix}', $testDbConfig['prefix'], $query);
 
-		// Handle SMF's parameter format
+		// First, handle {raw:...} placeholders - these should be replaced with actual values
+		// Only replace if value is not an array
 		foreach ($params as $key => $value) {
-			if (is_array($value)) {
-				// Handle array parameters (e.g., {array_int:ids})
-				$placeholders = implode(',', array_fill(0, count($value), '?'));
-				$query = preg_replace('/\{array_\w+:' . preg_quote($key, '/') . '\}/', $placeholders, $query);
-			} else {
-				// Handle single parameters
-				$query = preg_replace('/\{\w+:' . preg_quote($key, '/') . '\}/', ':' . $key, $query);
+			if (! is_array($value)) {
+				$query = str_replace('{raw:' . $key . '}', (string) $value, $query);
 			}
 		}
 
-		// Remove {raw:...} placeholders
-		$query = preg_replace('/\{raw:(\w+)\}/', ':$1', $query);
+		// Collect all bind values in the order they appear in the query
+		$bindValues = [];
+
+		// Find all parameter placeholders in order they appear
+		preg_match_all('/\{(array_)?(\w+):(\w+)\}/', $query, $matches, \PREG_SET_ORDER);
+
+		// Replace placeholders and collect bind values in order
+		foreach ($matches as $match) {
+			$isArray = !empty($match[1]);
+			$key = $match[3];
+			$fullPattern = preg_quote($match[0], '/');
+
+			if (!isset($params[$key])) {
+				continue;
+			}
+
+			$value = $params[$key];
+
+			if ($isArray && is_array($value)) {
+				// Handle array parameters - replace first occurrence only
+				$placeholders = implode(',', array_fill(0, count($value), '?'));
+				$query = preg_replace('/' . $fullPattern . '/', $placeholders, $query, 1);
+				// Add array values to bind values
+				foreach ($value as $arrayValue) {
+					$bindValues[] = $arrayValue;
+				}
+			} else {
+				// Handle single parameters - replace first occurrence only
+				$query = preg_replace('/' . $fullPattern . '/', '?', $query, 1);
+				$bindValues[] = $value;
+			}
+		}
 
 		$stmt = $pdo->prepare($query);
 
-		// Bind parameters
-		$bindIndex = 1;
-		foreach ($params as $key => $value) {
-			if (is_array($value)) {
-				foreach ($value as $arrayValue) {
-					$stmt->bindValue($bindIndex++, $arrayValue);
-				}
-			} else {
-				$stmt->bindValue(':' . $key, $value);
-			}
+		// Bind all parameters positionally
+		foreach ($bindValues as $index => $value) {
+			$stmt->bindValue($index + 1, $value);
 		}
 
 		$stmt->execute();
@@ -170,19 +189,23 @@ function initializeSmfDatabaseFunctions(): void
 	};
 
 	$smcFunc['db_fetch_assoc'] = function ($result) {
-		if ($result instanceof PDOStatement) {
-			return $result->fetch(PDO::FETCH_ASSOC);
+		if ($result instanceof \PDOStatement) {
+			$row = $result->fetch(\PDO::FETCH_ASSOC);
+
+			return $row === false ? null : $row;
 		}
 
-		return false;
+		return null;
 	};
 
 	$smcFunc['db_fetch_row'] = function ($result) {
-		if ($result instanceof PDOStatement) {
-			return $result->fetch(PDO::FETCH_NUM);
+		if ($result instanceof \PDOStatement) {
+			$row = $result->fetch(\PDO::FETCH_NUM);
+
+			return $row === false ? null : $row;
 		}
 
-		return false;
+		return null;
 	};
 
 	$smcFunc['db_num_rows'] = function ($result) {
@@ -199,7 +222,42 @@ function initializeSmfDatabaseFunctions(): void
 		}
 	};
 
-	$smcFunc['db_insert_id'] = function (string $table) use ($pdo) {
+	$smcFunc['db_insert'] = function (string $method, string $table, array $columns, array $data, array $keys, int $returnMode = 0) use ($pdo, $testDbConfig) {
+		// Replace table prefix
+		$table = str_replace('{db_prefix}', $testDbConfig['prefix'], $table);
+
+		// Build column list
+		$columnNames = array_keys($columns);
+		$columnList = implode(', ', $columnNames);
+
+		// Build placeholders
+		$placeholders = implode(', ', array_fill(0, count($columnNames), '?'));
+
+		// Determine insert method
+		$insertMethod = strtoupper($method) === 'REPLACE' ? 'REPLACE' : 'INSERT';
+
+		// Build query
+		$query = "$insertMethod INTO $table ($columnList) VALUES ($placeholders)";
+
+		$stmt = $pdo->prepare($query);
+
+		// Bind values in the same order as columns
+		$bindIndex = 1;
+		foreach ($columnNames as $columnName) {
+			$stmt->bindValue($bindIndex++, $data[$columnName]);
+		}
+
+		$stmt->execute();
+
+		// Return last insert ID if requested
+		if ($returnMode === 1) {
+			return (int) $pdo->lastInsertId();
+		}
+
+		return null;
+	};
+
+	$smcFunc['db_insert_id'] = function (string $table, string $column = null) use ($pdo) {
 		return (int) $pdo->lastInsertId();
 	};
 }

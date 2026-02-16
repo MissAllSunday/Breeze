@@ -99,23 +99,22 @@ try {
 	die("✗ Failed to create breeze_comments table: " . $e->getMessage() . "\n");
 }
 
-// Create breeze_likes table
+// Create user_likes table (SMF table for likes)
 try {
 	$pdo->exec("
-        CREATE TABLE IF NOT EXISTS `{$prefix}breeze_likes` (
-            `id` INT(4) NOT NULL AUTO_INCREMENT,
+        CREATE TABLE IF NOT EXISTS `{$prefix}user_likes` (
+            `id_member` INT(4) NOT NULL,
+            `content_type` VARCHAR(6) NOT NULL DEFAULT '',
             `content_id` INT(4) NOT NULL,
-            `user_id` INT(4) NOT NULL,
-            `type` VARCHAR(255) DEFAULT '',
-            `created_at` INT(11) NOT NULL,
-            PRIMARY KEY (`id`),
+            `like_time` INT(11) NOT NULL,
+            PRIMARY KEY (`content_id`, `content_type`, `id_member`),
             KEY `content_id` (`content_id`),
-            KEY `user_id` (`user_id`)
+            KEY `id_member` (`id_member`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     ");
-	echo "✓ Created table: {$prefix}breeze_likes\n";
+	echo "✓ Created table: {$prefix}user_likes\n";
 } catch (PDOException $e) {
-	die("✗ Failed to create breeze_likes table: " . $e->getMessage() . "\n");
+	die("✗ Failed to create user_likes table: " . $e->getMessage() . "\n");
 }
 
 // Create members table (mock for testing)
