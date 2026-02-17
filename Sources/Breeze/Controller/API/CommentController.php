@@ -16,7 +16,6 @@ class CommentController extends ApiBaseController
 	public const string ACTION_POST_COMMENT = 'postComment';
 	public const string ACTION_DELETE = 'deleteComment';
 
-	/** @var string[] */
 	public const array SUB_ACTIONS = [
 		self::ACTION_POST_COMMENT,
 		self::ACTION_DELETE,

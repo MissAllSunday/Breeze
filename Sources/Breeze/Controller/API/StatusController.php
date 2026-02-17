@@ -9,7 +9,6 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
@@ -42,10 +41,9 @@ class StatusController extends ApiBaseController
 	public function profile(): void
 	{
 		try {
-			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$cursor
+				$this->getRequest('cursor', null)
 			);
 
 			$this->response->success('', $statusByProfile);
@@ -57,9 +55,8 @@ class StatusController extends ApiBaseController
 	public function wall(): void
 	{
 		try {
-			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$buddiesStatus = $this->statusService->getByBuddies(
-				$cursor
+				$this->getRequest('cursor', null)
 			);
 
 			$this->response->success('', $buddiesStatus);
@@ -71,11 +68,10 @@ class StatusController extends ApiBaseController
 	public function deleteStatus(): void
 	{
 		try {
-			$statusId = (int) $this->data[StatusEntity::ID];
-			$this->statusService->deleteById($statusId);
+			$this->statusService->deleteById($this->getRequest(StatusEntity::ID, 0));
 
 			$this->response->success('deleted_status', [], Response::NO_CONTENT);
-		} catch (InvalidStatusException|DataNotFoundException $exception) {
+		} catch (InvalidStatusException $exception) {
 			$this->response->error($exception->getMessage());
 		}
 	}
@@ -98,15 +94,14 @@ class StatusController extends ApiBaseController
 	public function total(): void
 	{
 		try {
-			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$cursor
+				$this->getRequest('cursor', null)
 			);
 
 			$this->response->success('', $statusByProfile);
-		} catch (InvalidStatusException $invalidStatusException) {
-			$this->response->error($invalidStatusException->getMessage());
+		} catch (EmptyDataException $emptyDataException) {
+			$this->response->error($emptyDataException->getMessage());
 		}
 	}
 

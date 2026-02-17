@@ -17,7 +17,6 @@ class LikesController extends ApiBaseController
 	public const string ACTION_LIKE = 'like';
 	public const string ACTION_INFO = 'info';
 
-	/** @var string[] */
 	public const array SUB_ACTIONS = [
 		self::ACTION_LIKE,
 		self::ACTION_INFO,
