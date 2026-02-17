@@ -17,7 +17,7 @@ interface StatusServiceInterface
 	 * @return array [StatusEntity]
 	 *
 	 */
-	public function getByProfile(int $wallId, int $start, ?string $cursor = null): array;
+	public function getByProfile(int $wallId, ?string $cursor = null): array;
 
 	public function getRepository(): StatusRepositoryInterface;
 
@@ -26,7 +26,7 @@ interface StatusServiceInterface
 	 * @return array [StatusEntity]
 	 *
 	 */
-	public function getByBuddies(int $start, ?string $cursor = null): array;
+	public function getByBuddies(?string $cursor = null): array;
 
 	/**
 	 * @throws InvalidStatusException

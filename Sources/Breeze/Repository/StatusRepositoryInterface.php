@@ -19,9 +19,9 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	/**
 	 * @throws EmptyDataException
 	 */
-	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0, ?string $cursor = null): array;
+	public function getByProfile(array $userProfiles = [], int $maxIndex = 0, ?string $cursor = null): array;
 
-	public function getBy(string $columnName, array $data = [], int $start = 0, int $maxIndex = 0, ?string $cursor = null): array;
+	public function getBy(string $columnName, array $data = [], int $maxIndex = 0, ?string $cursor = null): array;
 
 	/**
 	 * Encode a cursor for pagination

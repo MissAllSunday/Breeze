@@ -37,7 +37,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 	/**
 	 * @throws EmptyDataException
 	 */
-	public function getByProfile(int $wallId, int $start, ?string $cursor = null): array
+	public function getByProfile(int $wallId, ?string $cursor = null): array
 	{
 		$wallUserSettings = $this->userRepository->getById($wallId);
 		$wallUserPagination = $wallUserSettings->getPaginationNumber();
@@ -45,7 +45,6 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		$statusByProfile = $this->statusRepository->getByProfile(
 			[$wallId],
-			$start,
 			$wallUserPagination,
 			$cursor
 		);
@@ -97,7 +96,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		return $count;
 	}
 
-	public function getByBuddies(int $start, ?string $cursor = null): array
+	public function getByBuddies(?string $cursor = null): array
 	{
 		$currentUserInfo = $this->currentUserInfo();
 		$currentUserSettings = $this->userRepository->getById($currentUserInfo['id']);
@@ -111,7 +110,6 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$statusByBuddies = $this->statusRepository->getBy(
 			StatusEntity::USER_ID,
 			$currentUserBuddies,
-			$start,
 			$currentUserPagination,
 			$cursor
 		);

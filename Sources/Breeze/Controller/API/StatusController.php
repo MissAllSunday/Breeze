@@ -45,7 +45,6 @@ class StatusController extends ApiBaseController
 			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$this->getRequest('start', 0),
 				$cursor
 			);
 
@@ -60,7 +59,6 @@ class StatusController extends ApiBaseController
 		try {
 			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$buddiesStatus = $this->statusService->getByBuddies(
-				$this->getRequest('start', 0),
 				$cursor
 			);
 
@@ -103,7 +101,6 @@ class StatusController extends ApiBaseController
 			$cursor = $this->isRequestSet('cursor') ? $this->getRequest('cursor', '') : null;
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$this->getRequest('start', 0),
 				$cursor
 			);
 

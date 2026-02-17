@@ -50,7 +50,6 @@ class StatusControllerTest extends TestCase
 	public function testProfileSuccess(): void
 	{
 		$wallId = 123;
-		$start = 0;
 		$expectedData = [
 			'statuses' => [['id' => 1, 'body' => 'Test status']],
 			'pagination' => ['total' => 1],
@@ -64,7 +63,7 @@ class StatusControllerTest extends TestCase
 
 		$this->statusService->expects($this->once())
 			->method('getByProfile')
-			->with($wallId, $start)
+			->with($wallId, null)
 			->willReturn($expectedData);
 
 		$this->response->expects($this->once())
@@ -97,14 +96,13 @@ class StatusControllerTest extends TestCase
 
 	public function testWallSuccess(): void
 	{
-		$start = 0;
 		$expectedData = [
 			'statuses' => [['id' => 1, 'body' => 'Buddy status']],
 		];
 
 		$this->statusService->expects($this->once())
 			->method('getByBuddies')
-			->with($start)
+			->with(null)
 			->willReturn($expectedData);
 
 		$this->response->expects($this->once())
@@ -240,7 +238,7 @@ class StatusControllerTest extends TestCase
 
 		$this->statusService->expects($this->once())
 			->method('getByProfile')
-			->with($wallId, 0)
+			->with($wallId, null)
 			->willReturn($expectedData);
 
 		$this->response->expects($this->once())

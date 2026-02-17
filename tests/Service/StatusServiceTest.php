@@ -47,7 +47,7 @@ class StatusServiceTest extends TestCase
 	 * @throws EmptyDataException
 	 */
 	#[DataProvider('getByProfileProvider')]
-	public function testGetByProfile(int $wallId, int $start, array $expected): void
+	public function testGetByProfile(int $wallId, array $expected): void
 	{
 		$this->userRepository->method('getById')->willReturn(UserSettingsEntity::from(['paginationNumber' => 5]));
 		$this->permissionsService->method('permissions')->willReturn([
@@ -62,7 +62,7 @@ class StatusServiceTest extends TestCase
 		$this->statusRepository->method('getNextCursor')->willReturn('test_cursor');
 		$this->statusService->method('getCount')->willReturn(1);
 
-		$result = $this->statusService->getByProfile($wallId, $start);
+		$result = $this->statusService->getByProfile($wallId);
 
 		$this->assertEquals($expected, $result);
 	}
@@ -72,7 +72,6 @@ class StatusServiceTest extends TestCase
 		return [
 			'happy happy joy joy' => [
 				'wallId' => 1,
-				'start' => 1,
 				'expected' => [
 					'data' => [self::getStatusEntity()],
 					'permissions' => [

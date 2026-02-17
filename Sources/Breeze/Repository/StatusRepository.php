@@ -11,6 +11,7 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\LikesEnum;
+use Breeze\Util\Json;
 use Breeze\Util\Parser;
 use Breeze\Util\Validate\DataNotFoundException;
 
@@ -81,7 +82,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 * @param array $userProfiles [int]
 	 * @return array [StatusEntity]
 	 */
-	public function getByProfile(array $userProfiles = [], int $start = 0, int $maxIndex = 0, ?string $cursor = null): array
+	public function getByProfile(array $userProfiles = [], int $maxIndex = 0, ?string $cursor = null): array
 	{
 		// Use cursor-based caching if cursor is provided
 		if ($cursor !== null) {
@@ -97,7 +98,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 				'%s_%s_%d_%d',
 				self::CACHE_BY_PROFILE,
 				implode('_', $userProfiles),
-				$start,
+				0,
 				$maxIndex
 			);
 		}
@@ -107,13 +108,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			return $cached;
 		}
 
-		$result = $this->getBy(StatusEntity::WALL_ID, $userProfiles, $start, $maxIndex, $cursor);
+		$result = $this->getBy(StatusEntity::WALL_ID, $userProfiles, $maxIndex, $cursor);
 		$this->setCache($cacheKey, $result);
 
 		return $result;
 	}
 
-	public function getBy(string $columnName, array $data = [], int $start = 0, int $maxIndex = 0, ?string $cursor = null): array
+	public function getBy(string $columnName, array $data = [], int $maxIndex = 0, ?string $cursor = null): array
 	{
 		if (!in_array($columnName, $this->getColumns())) {
 			return [];
@@ -156,7 +157,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			);
 		} else {
 			// Offset-based pagination (backward compatibility)
-			$queryParams['start'] = $start;
+			$queryParams['start'] = 0;
 			$queryParams['maxIndex'] = $maxIndex;
 
 			$request = $this->dbClient->query(
@@ -393,8 +394,8 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			return null;
 		}
 
-		$data = json_decode($decoded, true);
-		if (!is_array($data) || !isset($data['id']) || !isset($data['created_at'])) {
+		$data = Json::decode($decoded);
+		if (!isset($data['id']) || !isset($data['created_at'])) {
 			return null;
 		}
 
