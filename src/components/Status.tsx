@@ -56,7 +56,7 @@ function Status(props: StatusProps): React.ReactElement {
 				body: content,
 			})
 				.then((newComments: CommentListType) => {
-					setCommentsList((prevCommentsList) => [...prevCommentsList, ...Object.values(newComments)]);
+					setCommentsList((prevCommentsList: CommentListType) => [...prevCommentsList, ...Object.values(newComments)]);
 				})
 				.finally(() => {
 					setIsLoading(false);
@@ -73,7 +73,7 @@ function Status(props: StatusProps): React.ReactElement {
 			deleteComment(comment.id)
 				.then((deleted) => {
 					if (deleted) {
-						setCommentsList((prevCommentsList) =>
+						setCommentsList((prevCommentsList: CommentListType) =>
 							prevCommentsList.filter(
 								(currentComment: CommentType) =>
 									currentComment.id !== comment.id,

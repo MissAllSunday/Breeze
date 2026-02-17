@@ -22,8 +22,6 @@ class StatusControllerTest extends TestCase
 
 	private StatusServiceInterface | MockObject $statusService;
 
-	private ValidateActionsInterface | MockObject $validateActions;
-
 	private Response | MockObject $response;
 
 	/**
@@ -32,12 +30,12 @@ class StatusControllerTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->statusService = $this->createMock(StatusServiceInterface::class);
-		$this->validateActions = $this->createMock(ValidateActionsInterface::class);
+		$validateActions = $this->createMock(ValidateActionsInterface::class);
 		$this->response = $this->createMock(Response::class);
 
 		$this->statusController = new StatusController(
 			$this->statusService,
-			$this->validateActions,
+			$validateActions,
 			$this->response
 		);
 	}

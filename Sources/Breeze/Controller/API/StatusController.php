@@ -41,9 +41,10 @@ class StatusController extends ApiBaseController
 	public function profile(): void
 	{
 		try {
+			$cursor = $this->getRequest('cursor', null);
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$this->getRequest('cursor', null)
+				$cursor === false ? null : $cursor
 			);
 
 			$this->response->success('', $statusByProfile);
@@ -55,8 +56,9 @@ class StatusController extends ApiBaseController
 	public function wall(): void
 	{
 		try {
+			$cursor = $this->getRequest('cursor', null);
 			$buddiesStatus = $this->statusService->getByBuddies(
-				$this->getRequest('cursor', null)
+				$cursor === false ? null : $cursor
 			);
 
 			$this->response->success('', $buddiesStatus);
@@ -94,9 +96,10 @@ class StatusController extends ApiBaseController
 	public function total(): void
 	{
 		try {
+			$cursor = $this->getRequest('cursor', null);
 			$statusByProfile = $this->statusService->getByProfile(
 				$this->data[StatusEntity::WALL_ID],
-				$this->getRequest('cursor', null)
+				$cursor === false ? null : $cursor
 			);
 
 			$this->response->success('', $statusByProfile);

@@ -25,7 +25,6 @@ export default function Wall(props: WallProps): React.JSX.Element {
   const [emptyData, setEmptyData] = useState(false);
 	const [permissions, setPermissions] =
 		useState<PermissionsContextType>(PermissionsDefault);
-	const [paginationTotal, setPaginationTotal] = useState<number>(0);
 	const [nextCursor, setNextCursor] = useState<string | null>(null);
 	const [hasMore, setHasMore] = useState<boolean>(false);
 	const ref = React.useRef<null | HTMLInputElement>(null);
@@ -52,7 +51,6 @@ export default function Wall(props: WallProps): React.JSX.Element {
         setEmptyData(statusListResponse.data.length === 0);
 				setStatusList(fetchedStatusList);
 				setPermissions(statusListResponse.permissions);
-				setPaginationTotal(statusListResponse.total);
 				setNextCursor(statusListResponse.pagination.nextCursor);
 				setHasMore(statusListResponse.pagination.hasMore);
 			})
@@ -75,7 +73,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 					return;
 				}
 
-				setStatusList((prevStatusList) =>
+				setStatusList((prevStatusList: StatusListType) =>
 					prevStatusList.concat(Object.values(statusListResponse.data)),
 				);
 				setNextCursor(statusListResponse.pagination.nextCursor);
@@ -92,7 +90,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 
 			postStatus(content)
 				.then((newStatus: StatusListType) => {
-					setStatusList((prevStatusList) => [...prevStatusList, ...Object.values(newStatus)]);
+					setStatusList((prevStatusList: StatusListType) => [...prevStatusList, ...Object.values(newStatus)]);
 				})
 				.finally(() => {
 					setIsLoading(false);
@@ -110,7 +108,7 @@ export default function Wall(props: WallProps): React.JSX.Element {
 			deleteStatus(currentStatus.id)
 				.then((deleted: boolean) => {
 					if (deleted) {
-						setStatusList((prevStatusList) =>
+						setStatusList((prevStatusList: StatusListType) =>
 							prevStatusList.filter(
 								(status: StatusType) => currentStatus.id !== status.id,
 							),

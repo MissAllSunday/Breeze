@@ -84,24 +84,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function getByProfile(array $userProfiles = [], int $maxIndex = 0, ?string $cursor = null): array
 	{
-		// Use cursor-based caching if cursor is provided
-		if ($cursor !== null) {
-			$cacheKey = sprintf(
-				'%s_%s_cursor_%s_%d',
-				self::CACHE_BY_PROFILE,
-				implode('_', $userProfiles),
-				$cursor,
-				$maxIndex
-			);
-		} else {
-			$cacheKey = sprintf(
-				'%s_%s_%d_%d',
-				self::CACHE_BY_PROFILE,
-				implode('_', $userProfiles),
-				0,
-				$maxIndex
-			);
-		}
+		$cacheKey = sprintf(
+			'%s_%s_cursor_%s_%d',
+			self::CACHE_BY_PROFILE,
+			implode('_', $userProfiles),
+			$cursor ?? 'initial',
+			$maxIndex
+		);
 
 		$cached = $this->getCache($cacheKey);
 		if ($cached !== []) {
@@ -128,9 +117,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			]
 		);
 
-		// Build query based on pagination type
+		// Build cursor clause if cursor is provided
+		$cursorClause = '';
 		if ($cursor !== null) {
-			// Cursor-based pagination
 			$decodedCursor = $this->decodeCursor($cursor);
 			if ($decodedCursor !== null) {
 				$cursorClause = '
@@ -140,36 +129,21 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 					)';
 				$queryParams['cursor_created_at'] = $decodedCursor['created_at'];
 				$queryParams['cursor_id'] = $decodedCursor['id'];
-			} else {
-				$cursorClause = '';
 			}
-			$queryParams['limit'] = $maxIndex;
-
-			$request = $this->dbClient->query(
-				'
-				SELECT {raw:columns}
-				FROM {db_prefix}{raw:from}
-				WHERE {raw:columnName} IN ({array_int:ids})
-				' . $cursorClause . '
-				ORDER BY parent.created_at DESC, parent.id DESC
-				LIMIT {int:limit}',
-				$queryParams
-			);
-		} else {
-			// Offset-based pagination (backward compatibility)
-			$queryParams['start'] = 0;
-			$queryParams['maxIndex'] = $maxIndex;
-
-			$request = $this->dbClient->query(
-				'
-				SELECT {raw:columns}
-				FROM {db_prefix}{raw:from}
-				WHERE {raw:columnName} IN ({array_int:ids})
-				ORDER BY parent.created_at DESC, parent.id DESC
-				LIMIT {int:start}, {int:maxIndex}',
-				$queryParams
-			);
 		}
+
+		$queryParams['limit'] = $maxIndex;
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:from}
+			WHERE {raw:columnName} IN ({array_int:ids})
+			' . $cursorClause . '
+			ORDER BY parent.created_at DESC, parent.id DESC
+			LIMIT {int:limit}',
+			$queryParams
+		);
 
 		$comments = $this->commentRepository->getByProfile($data);
 
@@ -438,18 +412,10 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	protected function invalidateProfileCache(int $wallId): void
 	{
-		// Invalidate all possible pagination combinations for this profile
-		// This is a simple approach - could be optimized with a cache tag system
-		$this->setCache(sprintf('%s_%d_0_0', self::CACHE_BY_PROFILE, $wallId), null);
+		// Invalidate initial page cache
+		$this->setCache(sprintf('%s_%d_cursor_initial_0', self::CACHE_BY_PROFILE, $wallId), null);
 
-		// Invalidate common pagination patterns
-		for ($start = 0; $start <= 100; $start += 10) {
-			for ($maxIndex = 10; $maxIndex <= 50; $maxIndex += 10) {
-				$this->setCache(
-					sprintf('%s_%d_%d_%d', self::CACHE_BY_PROFILE, $wallId, $start, $maxIndex),
-					null
-				);
-			}
-		}
+		// Note: Cursor-based pagination cache entries will naturally expire
+		// We only invalidate the initial page as it's the most commonly accessed
 	}
 }

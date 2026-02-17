@@ -14,7 +14,7 @@ const wallType = rootElement.getAttribute("wallType") ?? "profile";
 // @ts-expect-error settings are loaded server side
 const pagination: number = window.breezePagination ?? 5;
 
-// @ts-expect-error settings are loaded server side
+// @ts-ignore settings are loaded server side
 const enableBuddiesTab: boolean =
 	Boolean(window.breezeEnableBuddiesTab) ?? false;
 // @ts-expect-error settings are loaded server side

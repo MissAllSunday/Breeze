@@ -257,7 +257,7 @@ class StatusRepositoryTest extends TestCase
 	}
 
 	#[DataProvider('getByProvider')]
-	public function testGetBy(string $columnName, array $data, int $start, int $maxIndex, array $expected): void
+	public function testGetBy(string $columnName, array $data, int $maxIndex, array $expected): void
 	{
 		$this->dbClient->expects($this->once())
 			->method('query')
@@ -273,7 +273,7 @@ class StatusRepositoryTest extends TestCase
 			->with($this->queryObject, [])
 			->willReturn($expected);
 
-		$result = $this->statusRepository->getBy($columnName, $data, $start, $maxIndex);
+		$result = $this->statusRepository->getBy($columnName, $data, $maxIndex);
 
 		$this->assertEquals($expected, $result);
 	}
@@ -284,7 +284,6 @@ class StatusRepositoryTest extends TestCase
 			'valid column with data' => [
 				'columnName' => StatusEntity::WALL_ID,
 				'data' => [1, 2, 3],
-				'start' => 0,
 				'maxIndex' => 10,
 				'expected' => [
 					1 => StatusEntity::from([
@@ -298,7 +297,6 @@ class StatusRepositoryTest extends TestCase
 			'empty data array' => [
 				'columnName' => StatusEntity::USER_ID,
 				'data' => [],
-				'start' => 5,
 				'maxIndex' => 15,
 				'expected' => [],
 			],
@@ -307,7 +305,7 @@ class StatusRepositoryTest extends TestCase
 
 	public function testGetByWithInvalidColumn(): void
 	{
-		$result = $this->statusRepository->getBy('invalid_column', [1, 2], 0, 10);
+		$result = $this->statusRepository->getBy('invalid_column', [1, 2], 10);
 
 		$this->assertEquals([], $result);
 	}
@@ -316,15 +314,13 @@ class StatusRepositoryTest extends TestCase
 	{
 		$columnName = StatusEntity::WALL_ID;
 		$data = [1, 2, 3];
-		$start = 5;
 		$maxIndex = 20;
 
 		$expectedParams = [
 			'columns' => 'parent.id, parent.wall_id, parent.user_id, parent.created_at, parent.body, parent.likes',
 			'from' => 'breeze_status AS parent',
 			'columnName' => $columnName,
-			'start' => $start,
-			'maxIndex' => $maxIndex,
+			'limit' => $maxIndex,
 			'ids' => $data,
 			'tableName' => 'breeze_status',
 		];
@@ -340,7 +336,7 @@ class StatusRepositoryTest extends TestCase
 		$this->commentRepository->method('getByProfile')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
-		$this->statusRepository->getBy($columnName, $data, $start, $maxIndex);
+		$this->statusRepository->getBy($columnName, $data, $maxIndex);
 	}
 
 	// Cursor-based pagination tests
@@ -472,32 +468,7 @@ class StatusRepositoryTest extends TestCase
 		$this->commentRepository->method('getByProfile')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
-		$this->statusRepository->getBy($columnName, $data, 0, $maxIndex, $cursor);
-	}
-
-	public function testGetByWithOffsetStillWorks(): void
-	{
-		// Ensure backward compatibility - offset-based pagination still works
-		$columnName = StatusEntity::WALL_ID;
-		$data = [1, 2, 3];
-		$start = 5;
-		$maxIndex = 10;
-
-		$this->dbClient->expects($this->once())
-			->method('query')
-			->with(
-				$this->stringContains('LIMIT {int:start}, {int:maxIndex}'),
-				$this->callback(function ($params) use ($start, $maxIndex) {
-					return $params['start'] === $start
-						&& $params['maxIndex'] === $maxIndex;
-				})
-			)
-			->willReturn($this->queryObject);
-
-		$this->commentRepository->method('getByProfile')->willReturn([]);
-		$this->statusRepository->method('prepareData')->willReturn([]);
-
-		$this->statusRepository->getBy($columnName, $data, $start, $maxIndex, null);
+		$this->statusRepository->getBy($columnName, $data, $maxIndex, $cursor);
 	}
 
 	public function testGetByProfileWithCursor(): void
@@ -517,7 +488,7 @@ class StatusRepositoryTest extends TestCase
 		$this->commentRepository->method('getByProfile')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
-		$result = $this->statusRepository->getByProfile($userProfiles, 0, $maxIndex, $cursor);
+		$result = $this->statusRepository->getByProfile($userProfiles, $maxIndex, $cursor);
 
 		$this->assertIsArray($result);
 	}
