@@ -9,7 +9,9 @@ class Json
 {
 	public static function decode(string $jsonString): array
 	{
-		return smf_json_decode($jsonString, true);
+		$decoded = smf_json_decode($jsonString, true);
+
+		return is_array($decoded) ? $decoded : [];
 	}
 
 	public static function encode($data): string

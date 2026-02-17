@@ -70,7 +70,7 @@ class StatusController extends ApiBaseController
 	public function deleteStatus(): void
 	{
 		try {
-			$this->statusService->deleteById($this->getRequest(StatusEntity::ID, 0));
+			$this->statusService->deleteById($this->data[StatusEntity::ID]);
 
 			$this->response->success('deleted_status', [], Response::NO_CONTENT);
 		} catch (InvalidStatusException $exception) {
@@ -105,6 +105,8 @@ class StatusController extends ApiBaseController
 			$this->response->success('', $statusByProfile);
 		} catch (EmptyDataException $emptyDataException) {
 			$this->response->error($emptyDataException->getMessage());
+		} catch (InvalidStatusException $invalidStatusException) {
+			$this->response->error($invalidStatusException->getMessage());
 		}
 	}
 

@@ -133,7 +133,7 @@ class LikeInfoEntity extends Entity implements JsonSerializable
 				return is_array($like) ? LikeEntity::from($like) : $like;
 			}, $value),
 			LikeEntity::ID, LikeEntity::COUNT => (int) $value,
-			LikeEntity::CAN_LIKE, LikeEntity::ALREADY_LIKED => (bool) $value,
+			LikeEntity::CAN_LIKE, LikeEntity::ALREADY_LIKED, 'canLike', 'alreadyLiked' => (bool) $value,
 			LikeEntity::TYPE => LikesEnum::from($value),
 			default => (string) $value,
 		};
