@@ -17,10 +17,6 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 	public const string BODY = 'body';
 	public const string LIKES = 'likes';
 
-	protected int $wallId = 0;
-
-	protected int $userId = 0;
-
 	/** @var CommentEntity[] */
 	protected array $comments = [];
 

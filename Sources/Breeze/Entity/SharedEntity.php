@@ -15,13 +15,13 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 
 	public int $id = 0;
 
-	protected int $userId = 0;
+	protected int $user_id = 0;
 
-	protected int $wallId = 0;
+	protected int $wall_id = 0;
 
 	protected string $body = '';
 
-	protected ?DateTimeImmutable $createdAt = null;
+	protected ?DateTimeImmutable $created_at = null;
 
 	protected int $likes = 0;
 
@@ -46,12 +46,12 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 
 	public function getCreatedAt(): ?DateTimeImmutable
 	{
-		return $this->createdAt;
+		return $this->created_at;
 	}
 
-	public function setCreatedAt(?DateTimeImmutable $createdAt): void
+	public function setCreatedAt(?DateTimeImmutable $created_at): void
 	{
-		$this->createdAt = $createdAt;
+		$this->created_at = $created_at;
 	}
 
 	public function setBody(string $body): void
@@ -64,24 +64,24 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 		return $this->body;
 	}
 
-	public function setUserId(int $userId): void
+	public function setUserId(int $user_id): void
 	{
-		$this->userId = $userId;
+		$this->user_id = $user_id;
 	}
 
 	public function getUserId(): int
 	{
-		return $this->userId;
+		return $this->user_id;
 	}
 
-	public function setWallId(int $wallId): void
+	public function setWallId(int $wall_id): void
 	{
-		$this->wallId = $wallId;
+		$this->wall_id = $wall_id;
 	}
 
 	public function getWallId(): int
 	{
-		return $this->wallId;
+		return $this->wall_id;
 	}
 
 	public function setUsersInfo(array $usersInfo): void
@@ -126,15 +126,7 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 		$toInsert = $this->toArray();
 		$toInsert[self::CREATED_AT] = time();
 
-		// Map camelCase property names to snake_case column names
-		$mapped = [];
-		foreach ($toInsert as $key => $value) {
-			// Convert camelCase to snake_case
-			$snakeKey = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
-			$mapped[$snakeKey] = $value;
-		}
-
-		return array_intersect_key($mapped, array_flip(static::getColumns()));
+		return array_intersect_key($toInsert, array_flip(static::getColumns()));
 	}
 
 	public function toArray(): array

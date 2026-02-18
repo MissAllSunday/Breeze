@@ -21,7 +21,6 @@ class LikeEntity extends Entity implements EntityInterface
 	public const string CAN_LIKE = 'can_like';
 	public const string COUNT = 'count';
 	public const string ALREADY_LIKED = 'already_liked';
-	public const string ADDITIONAL_INFO = 'additional_info';
 
 	public int $id_member = 0;
 

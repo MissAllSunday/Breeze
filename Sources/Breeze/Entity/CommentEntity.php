@@ -17,13 +17,7 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 	public const string BODY = 'body';
 	public const string LIKES = 'likes';
 
-	protected int $statusId = 0;
-
-	protected int $userId = 0;
-
-	protected string $body = '';
-
-	protected int $likes = 0;
+	protected int $status_id = 0;
 
 	public static function from(array $data = []): self
 	{
@@ -34,12 +28,12 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 
 	public function getStatusId(): int
 	{
-		return $this->statusId;
+		return $this->status_id;
 	}
 
-	public function setStatusId(int $statusId): void
+	public function setStatusId(int $status_id): void
 	{
-		$this->statusId = $statusId;
+		$this->status_id = $status_id;
 	}
 
 	/**
@@ -48,26 +42,6 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 	public function getWallId(): int
 	{
 		return 0;
-	}
-
-	public function getUserId(): int
-	{
-		return $this->userId;
-	}
-
-	public function setUserId(int $userId): void
-	{
-		$this->userId = $userId;
-	}
-
-	public function getBody(): string
-	{
-		return $this->body;
-	}
-
-	public function setBody(string $body): void
-	{
-		$this->body = $body;
 	}
 
 	public static function getColumns(): array

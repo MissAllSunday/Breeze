@@ -12,7 +12,7 @@ class OptionsEntity extends Entity implements EntityInterface
 	public const string VARIABLE = 'variable';
 	public const string VALUE = 'value';
 
-	public const string PROPERTY_MEMBER_ID = 'memberId';
+	public const string PROPERTY_MEMBER_ID = 'member_id';
 	public const string PROPERTY_VARIABLE = 'variable';
 	public const string PROPERTY_VALUE = 'value';
 	public const string CACHE_NAME = 'user_settings_%d';
