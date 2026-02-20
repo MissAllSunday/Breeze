@@ -249,4 +249,127 @@ class StatusIntegrationTest extends TestCase
 		$this->assertCount(1, $result);
 		$this->assertEquals('', $result[0]->getBody());
 	}
+
+	/**
+	 * Test cursor-based pagination with encodeCursor, decodeCursor, and getNextCursor
+	 *
+	 * @throws InvalidStatusException
+	 */
+	public function testCursorPagination(): void
+	{
+		$wallId = 100;
+
+		// Insert 5 statuses with slight time delays to ensure different timestamps
+		$insertedIds = [];
+		for ($i = 0; $i < 5; $i++) {
+			$statusData = StatusFixtures::forInsertion();
+			$statusData[StatusEntity::USER_ID] = 100;
+			$statusData[StatusEntity::WALL_ID] = $wallId;
+			$statusData[StatusEntity::BODY] = "Status $i";
+			$statusEntity = StatusEntity::from($statusData);
+			$result = self::$statusRepository->insert($statusEntity);
+			$insertedIds[] = $result[0]->getId();
+			usleep(10000); // 10ms delay to ensure different timestamps
+		}
+
+		// Get first page (3 items)
+		$firstPage = self::$statusRepository->getByProfile([$wallId], 3);
+		$this->assertCount(3, $firstPage);
+
+		// Get next cursor from first page
+		$cursor = self::$statusRepository->getNextCursor($firstPage);
+		$this->assertNotNull($cursor);
+		$this->assertIsString($cursor);
+
+		// Decode cursor to verify it contains valid data
+		$decodedCursor = self::$statusRepository->decodeCursor($cursor);
+		$this->assertIsArray($decodedCursor);
+		$this->assertArrayHasKey('id', $decodedCursor);
+		$this->assertArrayHasKey('created_at', $decodedCursor);
+
+		// Get second page using cursor
+		$secondPage = self::$statusRepository->getByProfile([$wallId], 3, $cursor);
+		$this->assertCount(2, $secondPage); // Should have remaining 2 items
+
+		// Verify no overlap between pages
+		$firstPageIds = array_map(fn ($s) => $s->getId(), $firstPage);
+		$secondPageIds = array_map(fn ($s) => $s->getId(), $secondPage);
+		$this->assertEmpty(array_intersect($firstPageIds, $secondPageIds));
+
+		// Test encoding a cursor manually
+		$lastStatus = end($firstPage);
+		$manualCursor = self::$statusRepository->encodeCursor(
+			$lastStatus->getId(),
+			$lastStatus->getCreatedAt()->getTimestamp()
+		);
+		$this->assertIsString($manualCursor);
+
+		// Decode it back
+		$decoded = self::$statusRepository->decodeCursor($manualCursor);
+		$this->assertEquals($lastStatus->getId(), $decoded['id']);
+	}
+
+	/**
+	 * Test getBasicInfoById() retrieves status without full details
+	 * Note: This method only retrieves id, wall_id, and user_id (not body or other fields)
+	 *
+	 * @throws InvalidStatusException
+	 * @throws DataNotFoundException
+	 */
+	public function testGetBasicInfoById(): void
+	{
+		// Insert a status
+		$statusData = StatusFixtures::forInsertion();
+		$statusData[StatusEntity::USER_ID] = 100;
+		$statusData[StatusEntity::WALL_ID] = 100;
+		$statusData[StatusEntity::BODY] = 'Basic info test';
+		$statusEntity = StatusEntity::from($statusData);
+		$result = self::$statusRepository->insert($statusEntity);
+		$statusId = $result[0]->getId();
+
+		// Get basic info (only id, wall_id, user_id)
+		$basicInfo = self::$statusRepository->getBasicInfoById($statusId);
+
+		$this->assertInstanceOf(StatusEntity::class, $basicInfo);
+		$this->assertEquals($statusId, $basicInfo->getId());
+		$this->assertEquals(100, $basicInfo->getUserId());
+		$this->assertEquals(100, $basicInfo->getWallId());
+		// Note: body is NOT retrieved by getBasicInfoById()
+	}
+
+	/**
+	 * Test recountLikes() updates like counts correctly
+	 *
+	 * @throws InvalidStatusException
+	 */
+	public function testRecountLikes(): void
+	{
+		// Insert a status
+		$statusData = StatusFixtures::forInsertion();
+		$statusData[StatusEntity::USER_ID] = 100;
+		$statusData[StatusEntity::WALL_ID] = 100;
+		$statusData[StatusEntity::BODY] = 'Status for like counting';
+		$statusEntity = StatusEntity::from($statusData);
+		$result = self::$statusRepository->insert($statusEntity);
+		$statusId = $result[0]->getId();
+
+		// Manually set incorrect like count in database
+		global $testDbConfig;
+		$prefix = $testDbConfig['prefix'];
+		self::$pdo->exec("UPDATE `{$prefix}breeze_status` SET likes = 999 WHERE id = {$statusId}");
+
+		// Verify incorrect count
+		$stmt = self::$pdo->prepare("SELECT likes FROM `{$prefix}breeze_status` WHERE id = ?");
+		$stmt->execute([$statusId]);
+		$likes = $stmt->fetchColumn();
+		$this->assertEquals(999, $likes);
+
+		// Recount likes
+		self::$statusRepository->recountLikes();
+
+		// Verify count is corrected to 0 (no actual likes in user_likes table)
+		$stmt->execute([$statusId]);
+		$likes = $stmt->fetchColumn();
+		$this->assertEquals(0, $likes);
+	}
 }
