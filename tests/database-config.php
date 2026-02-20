@@ -185,6 +185,14 @@ function initializeSmfDatabaseFunctions(): void
 
 		$stmt->execute();
 
+		// For DELETE, UPDATE queries, return true on success (like SMF does)
+		// For SELECT queries, return the statement
+		$trimmedQuery = trim($query);
+		$queryType = strtoupper(preg_split('/\s+/', $trimmedQuery)[0]);
+		if (in_array($queryType, ['DELETE', 'UPDATE'])) {
+			return true;
+		}
+
 		return $stmt;
 	};
 

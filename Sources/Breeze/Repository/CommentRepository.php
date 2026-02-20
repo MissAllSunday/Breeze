@@ -173,6 +173,11 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$comments = $this->prepareData($request);
 
 		$result = array_shift($comments);
+
+		if ($result === null) {
+			throw new DataNotFoundException('error_no_comment');
+		}
+
 		$this->setCache($cacheKey, $result);
 
 		return $result;

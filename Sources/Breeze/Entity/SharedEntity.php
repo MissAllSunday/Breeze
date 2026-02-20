@@ -128,9 +128,4 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 
 		return array_intersect_key($toInsert, array_flip(static::getColumns()));
 	}
-
-	public function toArray(): array
-	{
-		return get_object_vars($this);
-	}
 }

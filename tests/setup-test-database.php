@@ -156,7 +156,7 @@ try {
 	// Clear existing data
 	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_status`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_comments`");
-	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_likes`");
+	$pdo->exec("TRUNCATE TABLE `{$prefix}user_likes`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}members`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_options`");
 
