@@ -32,7 +32,7 @@ class CommentEventListener
 		$wallOwnerId = $event->getWallId();
 		$isSameUser = $userId === $statusOwnerId && $userId === $wallOwnerId;
 		$shouldSendAlertToStatusOwner = $statusOwnerId !== $userId;
-		$shouldSendAlertToWallOwner = $wallOwnerId !== $userId;
+		$shouldSendAlertToWallOwner = $wallOwnerId !== $userId && $wallOwnerId !== $statusOwnerId;
 
 		if ($isSameUser) {
 			return;

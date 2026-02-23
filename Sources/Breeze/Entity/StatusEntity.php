@@ -80,16 +80,18 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 
 	public function jsonSerialize(): array
 	{
+		$userId = $this->getUserId();
+
 		return [
 			'id' => $this->getId(),
 			'wall_id' => $this->getWallId(),
-			'user_id' => $this->getUserId(),
+			'user_id' => $userId,
 			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'body' => $this->getBody(),
 			'created_at' => Time::from($this->getCreatedAt()),
 			'likesInfo' => $this->getLikesInfo(),
 			'comments' => $this->getComments(),
-			'userData' => $this->getUsersInfo()[$this->getUserId()] ?? [],
+			'userData' => $this->getUsersInfo()[$userId] ?? [],
 			'isNew' => $this->isNew(),
 		];
 	}

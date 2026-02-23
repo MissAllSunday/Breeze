@@ -185,4 +185,34 @@ class CommentEventListenerTest extends TestCase
 
 		$this->listener->onCommentCreated($event);
 	}
+
+	/**
+	 * Test that only one alert is sent when status owner and wall owner are the same person
+	 * This prevents duplicate alerts when someone comments on a status posted on their own wall
+	 *
+	 * @throws Exception
+	 */
+	public function testOnCommentCreatedSendsOnlyOneAlertWhenStatusOwnerAndWallOwnerAreSame(): void
+	{
+		$commentEntity = $this->createMock(CommentEntity::class);
+		$commentEntity->method('getStatusId')->willReturn(1);
+		$commentEntity->method('getId')->willReturn(10);
+		$commentEntity->method('getUserId')->willReturn(2); // Commenter
+
+		$statusEntity = $this->createStub(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(3); // Status owner
+		$statusEntity->method('getWallId')->willReturn(3); // Wall owner (same as status owner)
+
+		$event = new CommentCreatedEvent($commentEntity, $statusEntity);
+
+		// Should only send ONE alert to user 3 (who is both status and wall owner)
+		$this->alertService->expects($this->once())
+			->method('send')
+			->with($this->callback(function ($alert) {
+				return $alert instanceof AlertEntity &&
+					$alert->getIdMember() === 3;
+			}));
+
+		$this->listener->onCommentCreated($event);
+	}
 }
