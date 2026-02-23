@@ -36,14 +36,6 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 		$this->status_id = $status_id;
 	}
 
-	/**
-	 * @return int 0 as wallId is not used in comments
-	 */
-	public function getWallId(): int
-	{
-		return 0;
-	}
-
 	public static function getColumns(): array
 	{
 		return [
