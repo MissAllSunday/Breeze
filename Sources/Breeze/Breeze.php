@@ -46,6 +46,7 @@ class Breeze
 	public const string ACTION_COMMENT = 'breezeComment';
 	public const string ACTION_LIKE = 'breezeLike';
 	public const string ACTION_WALL = 'wall';
+	public const string ACTION_PROFILE = 'profile';
 	public const array ACTIONS = [
 		self::ACTION_STATUS => StatusController::class,
 		self::ACTION_COMMENT => CommentController::class,

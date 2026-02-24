@@ -93,6 +93,7 @@ class Components
 				'end' => $this->getText('info_loading_end'),
 				'loadMore' => $this->getText('load_more'),
 				'goUp' => $this->getSmfText('go_up'),
+				'goBack' => $this->getText('general_goBack'),
 				'emptyData' => $this->getText('info_empty_data'),
 			],
 			'tabs' => [

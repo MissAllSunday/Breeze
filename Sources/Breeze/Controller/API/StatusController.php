@@ -19,7 +19,6 @@ class StatusController extends ApiBaseController
 	public const string ACTION_DELETE = 'deleteStatus';
 	public const string ACTION_POST = 'postStatus';
 	public const string ACTION_TOTAL = 'total';
-
 	public const string ACTION_SINGLE = 'single';
 
 	public const array SUB_ACTIONS = [
@@ -28,6 +27,7 @@ class StatusController extends ApiBaseController
 		self::ACTION_DELETE,
 		self::ACTION_WALL,
 		self::ACTION_TOTAL,
+		self::ACTION_SINGLE,
 	];
 
 	public function __construct(
@@ -107,6 +107,25 @@ class StatusController extends ApiBaseController
 			$this->response->error($emptyDataException->getMessage());
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->response->error($invalidStatusException->getMessage());
+		}
+	}
+
+	public function single(): void
+	{
+		try {
+			$statusId = $this->getRequest('id', 0);
+
+			if (empty($statusId)) {
+				$this->response->error('error_no_status', Response::BAD_REQUEST);
+
+				return;
+			}
+
+			$singleStatus = $this->statusService->getById($statusId);
+
+			$this->response->success('', $singleStatus);
+		} catch (EmptyDataException $emptyDataException) {
+			$this->response->error($emptyDataException->getMessage());
 		}
 	}
 

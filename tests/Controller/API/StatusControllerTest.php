@@ -221,6 +221,79 @@ class StatusControllerTest extends TestCase
 		$this->statusController->postStatus();
 	}
 
+	public function testSingleSuccess(): void
+	{
+		$statusId = 123;
+		$expectedData = [
+			'data' => [StatusEntity::from(['id' => $statusId, 'body' => 'Test status'])],
+			'permissions' => ['delete' => true, 'post' => true],
+			'pagination' => ['nextCursor' => null, 'hasMore' => false],
+			'total' => 1,
+		];
+
+		// Set the id in the request
+		$_REQUEST['id'] = $statusId;
+
+		$this->statusService->expects($this->once())
+			->method('getById')
+			->with($statusId)
+			->willReturn($expectedData);
+
+		$this->response->expects($this->once())
+			->method('success')
+			->with('', $expectedData);
+
+		$this->statusController->single();
+
+		// Clean up
+		unset($_REQUEST['id']);
+	}
+
+	public function testSingleWithMissingId(): void
+	{
+		$this->response->expects($this->once())
+			->method('error')
+			->with('error_no_status', Response::BAD_REQUEST);
+
+		$this->statusController->single();
+	}
+
+	public function testSingleWithZeroId(): void
+	{
+		$_REQUEST['id'] = 0;
+
+		$this->response->expects($this->once())
+			->method('error')
+			->with('error_no_status', Response::BAD_REQUEST);
+
+		$this->statusController->single();
+
+		// Clean up
+		unset($_REQUEST['id']);
+	}
+
+	public function testSingleThrowsEmptyDataException(): void
+	{
+		$statusId = 999;
+		$errorMessage = 'error_no_status';
+
+		$_REQUEST['id'] = $statusId;
+
+		$this->statusService->expects($this->once())
+			->method('getById')
+			->with($statusId)
+			->willThrowException(new EmptyDataException($errorMessage));
+
+		$this->response->expects($this->once())
+			->method('error')
+			->with($errorMessage);
+
+		$this->statusController->single();
+
+		// Clean up
+		unset($_REQUEST['id']);
+	}
+
 	public function testTotalSuccess(): void
 	{
 		$wallId = 456;

@@ -13,6 +13,7 @@ import { getStatus } from "./api/Status/Get";
 import { postStatus } from "./api/Status/Post";
 import Editor from "./components/Editor";
 import Loading from "./components/Loading";
+import SingleStatus from "./components/SingleStatus";
 import Status from "./components/Status";
 import { PermissionsContext } from "./context/PermissionsContext";
 import PermissionsDefault from "./DataSource/Permissions";
@@ -20,6 +21,16 @@ import smfTextVars from "./DataSource/Txt";
 import {displayMessage, showInfo} from "./utils/tooltip";
 
 export default function Wall(props: WallProps): React.JSX.Element {
+	// If statusId is provided, render SingleStatus component
+	// This avoids unnecessary hook initialization for the feed view
+	if (props.statusId && props.statusId > 0) {
+		return <SingleStatus statusId={props.statusId} />;
+	}
+
+	return <WallFeed {...props} />;
+}
+
+function WallFeed(props: WallProps): React.JSX.Element {
 	const [statusList, setStatusList] = useState<StatusListType>([]);
 	const [isLoading, setIsLoading] = useState(true);
   const [emptyData, setEmptyData] = useState(false);

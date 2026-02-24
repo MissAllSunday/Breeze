@@ -131,4 +131,62 @@ class StatusServiceTest extends TestCase
 
 		$this->statusService->recountLikes();
 	}
+
+	/**
+	 * @throws EmptyDataException
+	 */
+	public function testGetById(): void
+	{
+		$statusId = 123;
+		$wallId = 1;
+		$currentUserId = 1;
+		$statusEntity = StatusEntity::from([
+			'id' => $statusId,
+			'wall_id' => $wallId,
+			'user_id' => $currentUserId,
+			'body' => 'Test single status',
+		]);
+
+		$expectedPermissions = [
+			'delete' => true,
+			'edit' => false,
+			'post' => true,
+			'postComments' => true,
+		];
+
+		$expected = [
+			'data' => [$statusEntity],
+			'permissions' => $expectedPermissions,
+			'pagination' => [
+				'nextCursor' => null,
+				'hasMore' => false,
+			],
+			'total' => 1,
+		];
+
+		// Mock the repository to return the status entity
+		$this->statusRepository->method('getById')->willReturn($statusEntity);
+
+		// Mock permissions service
+		$this->permissionsService->method('permissions')
+			->with($wallId, $currentUserId)
+			->willReturn($expectedPermissions);
+
+		// Mock currentUserInfo
+		$this->statusService = $this->getMockBuilder(StatusService::class)
+			->setConstructorArgs([
+				$this->statusRepository,
+				$this->userRepository,
+				$this->permissionsService,
+				null,
+			])
+			->onlyMethods(['currentUserInfo'])
+			->getMock();
+
+		$this->statusService->method('currentUserInfo')->willReturn(['id' => $currentUserId]);
+
+		$result = $this->statusService->getById($statusId);
+
+		$this->assertEquals($expected, $result);
+	}
 }

@@ -28,7 +28,9 @@ class WallController extends BaseController
 	{
 		$currentUserInfo = $this->global('user_info');
 		$this->profileService->setEditor();
-		$this->render(__FUNCTION__);
+		$this->render(__FUNCTION__, [
+			'statusId' => $this->getRequest('id', 0),
+		]);
 		$this->profileService->loadComponents($currentUserInfo['id']);
 	}
 

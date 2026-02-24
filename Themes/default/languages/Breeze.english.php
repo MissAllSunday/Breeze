@@ -26,6 +26,7 @@ $txt['Breeze_general_previewing'] = 'Previewing';
 $txt['Breeze_general_preview'] = 'Preview';
 $txt['Breeze_general_close'] = 'Close';
 $txt['Breeze_general_cancel'] = 'Cancel';
+$txt['Breeze_general_goBack'] = 'Go Back';
 $txt['Breeze_general_posted_on'] = 'Posted on %s\'s User';
 
 // User Individual user settings

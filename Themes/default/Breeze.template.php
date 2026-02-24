@@ -4,9 +4,19 @@ declare(strict_types=1);
 
 use Breeze\Breeze;
 
-/**
- * @license http://www.mozilla.org/MPL/ MPL 2.0
- */
+function display_content(string $type = Breeze::ACTION_PROFILE, int $statusId = 0): string
+{
+	global $context;
+
+	return '
+		<div id="editor_container">
+		 	<script>
+				'. (!empty($context['bbcodes_handlers']) ? $context['bbcodes_handlers'] : '') .
+	'</script>
+			<div id="root" class="breeze_main_section" wallType="'. $type .'" statusId="'. $statusId .'">
+			</div>
+		</div>';
+}
 function template_profile(): void
 {
 	global $context, $txt, $scripturl;
@@ -18,13 +28,7 @@ function template_profile(): void
 	<hr />
 	<p class="clear" />
 	<div id="tab-wall" class="content">
-		<div id="editor_container">
-		 	<script>
-				', (!empty($context['bbcodes_handlers']) ? $context['bbcodes_handlers'] : '') ,
-			'</script>
-			<div id="root" class="breeze_main_section" wallType="profile">
-			</div>
-		</div>
+		', display_content() ,'
 	</div>';
 
 	if (!empty($aboutMe)) {
@@ -81,6 +85,8 @@ function template_profile(): void
 
 function template_wall(): void
 {
+	global $context;
+
 	echo '
-	<div id="root" class="breeze_main_section" wallType="', Breeze::ACTION_WALL ,'" />';
+	', display_content(Breeze::ACTION_WALL, $context[Breeze::NAME]['statusId']);
 }

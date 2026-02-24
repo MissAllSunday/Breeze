@@ -10,9 +10,11 @@ import Wall from "./Wall";
 const rootElement =
 	document.getElementById("root") ?? document.createElement("div");
 const root = createRoot(rootElement);
-const wallType = rootElement.getAttribute("wallType") ?? "profile";
+const wallType: string = rootElement.getAttribute("wallType") ?? "profile";
 // @ts-expect-error settings are loaded server side
 const pagination: number = window.breezePagination ?? 5;
+const urlParams = new URLSearchParams(window.location.search);
+const statusId: number = Number(urlParams.get("id")) || 0;
 
 // @ts-ignore settings are loaded server side
 const enableBuddiesTab: boolean =
@@ -27,6 +29,7 @@ if (wallType === "wall") {
 				wallType={wallType}
 				pagination={pagination}
 				name={smfTextVars.tabs.wall}
+        statusId={statusId}
 			/>
 		</React.StrictMode>,
 	);
@@ -38,6 +41,7 @@ if (wallType === "wall") {
 					wallType={wallType}
 					pagination={pagination}
 					name={smfTextVars.tabs.wall}
+					statusId={statusId}
 				/>
 				{enableAboutMeTab && (
 					<Tab content={smfVars.aboutMeContent} name={smfTextVars.tabs.about} />

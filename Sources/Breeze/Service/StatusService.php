@@ -134,6 +134,26 @@ class StatusService extends BaseService implements StatusServiceInterface
 	}
 
 	/**
+	 * @throws EmptyDataException
+	 */
+	public function getById(int $statusId): array
+	{
+		$currentUserInfo = $this->currentUserInfo();
+		$statusEntity = $this->statusRepository->getById($statusId);
+		$wallId = $statusEntity->getWallId();
+
+		return [
+			'data' => [$statusEntity],
+			'permissions' => $this->permissionsService->permissions($wallId, $currentUserInfo['id']),
+			'pagination' => [
+				'nextCursor' => null,
+				'hasMore' => false,
+			],
+			'total' => 1,
+		];
+	}
+
+	/**
 	 * @throws InvalidStatusException
 	 */
 	public function deleteById(int $statusId): void

@@ -29,6 +29,11 @@ interface StatusServiceInterface
 	public function getByBuddies(?string $cursor = null): array;
 
 	/**
+	 * @throws EmptyDataException
+	 */
+	public function getById(int $statusId): array;
+
+	/**
 	 * @throws InvalidStatusException
 	 */
 	public function deleteById(int $statusId): void;
