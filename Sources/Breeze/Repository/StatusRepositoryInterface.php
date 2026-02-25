@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\StatusEntity;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 
 interface StatusRepositoryInterface extends BaseRepositoryInterface
@@ -38,6 +39,9 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	 */
 	public function getNextCursor(array $statuses): ?string;
 
+	/**
+	 * @throws DataNotFoundException
+	 */
 	public function getById(int $id = 0): StatusEntity;
 
 	/**

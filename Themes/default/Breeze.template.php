@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 use Breeze\Breeze;
 
-function display_content(string $type = Breeze::ACTION_PROFILE, int $statusId = 0): string
+function display_content(string $type = Breeze::ACTION_PROFILE): string
 {
 	global $context;
 
 	return '
 		<div id="editor_container">
-		 	<script>
-				'. (!empty($context['bbcodes_handlers']) ? $context['bbcodes_handlers'] : '') .
-	'</script>
-			<div id="root" class="breeze_main_section" wallType="'. $type .'" statusId="'. $statusId .'">
+		 	<script>'. (!empty($context['bbcodes_handlers']) ? $context['bbcodes_handlers'] : '') . '</script>
+			<div id="root" class="breeze_main_section" wallType="'. $type .'">
 			</div>
 		</div>';
 }
@@ -85,8 +83,6 @@ function template_profile(): void
 
 function template_wall(): void
 {
-	global $context;
-
 	echo '
-	', display_content(Breeze::ACTION_WALL, $context[Breeze::NAME]['statusId']);
+	', display_content(Breeze::ACTION_WALL);
 }

@@ -8,6 +8,7 @@ namespace Breeze\Service;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 
 interface StatusServiceInterface
@@ -30,6 +31,7 @@ interface StatusServiceInterface
 
 	/**
 	 * @throws EmptyDataException
+	 * @throws DataNotFoundException
 	 */
 	public function getById(int $statusId): array;
 

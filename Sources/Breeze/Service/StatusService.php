@@ -13,6 +13,7 @@ use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\SettingsTrait;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 
 class StatusService extends BaseService implements StatusServiceInterface
@@ -134,7 +135,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 	}
 
 	/**
-	 * @throws EmptyDataException
+	 * @throws DataNotFoundException
 	 */
 	public function getById(int $statusId): array
 	{
