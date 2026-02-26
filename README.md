@@ -35,6 +35,9 @@ composer test && npm run test:run
 chmod +x generate_zip.sh && ./generate_zip.sh
 ```
 
+###### Documentation:
+- [Architecture](BREEZE_ARCHITECTURE.md)
+
 ###### Notes:
 
 Feel free to fork this repository and make your desired changes.
