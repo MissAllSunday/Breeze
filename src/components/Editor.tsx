@@ -47,6 +47,13 @@ const Editor: React.FunctionComponent<EditorProps> = (props: EditorProps) => {
 			return;
 		}
 
+    if (toSave === 'about:suki') {
+      return alert('What if everything around you\n' +
+        'Isn\'t quite as it seems?\n' +
+        'What if all the world you think you know\n' +
+        'Is an elaborate dream?');
+    }
+
 		const saved = props.saveContent(toSave);
 
 		if (saved) {
