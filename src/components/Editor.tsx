@@ -33,26 +33,26 @@ const Editor: React.FunctionComponent<EditorProps> = (props: EditorProps) => {
 	}, [props.isFull]);
 
 	const handleClick = useCallback(() => {
-		if (!window.confirm(smfVars.youSure)) {
-			return;
-		}
-
 		const toSave = props.isFull
 			? smfVars.smfEditorHandler.instance(textArea.current).val()
 			: content;
+
+		if (toSave === 'about:suki') {
+			return alert('What if everything around you\n' +
+				'Isn\'t quite as it seems?\n' +
+				'What if all the world you think you know\n' +
+				'Is an elaborate dream?');
+		}
+
+		if (!window.confirm(smfVars.youSure)) {
+			return;
+		}
 
 		if (toSave.length === 0) {
 			showError(smfTextVars.error.errorEmpty);
 
 			return;
 		}
-
-    if (toSave === 'about:suki') {
-      return alert('What if everything around you\n' +
-        'Isn\'t quite as it seems?\n' +
-        'What if all the world you think you know\n' +
-        'Is an elaborate dream?');
-    }
 
 		const saved = props.saveContent(toSave);
 

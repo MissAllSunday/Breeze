@@ -40,7 +40,7 @@ class Breeze
 	public const string SUPPORT_URL = 'https://missallsunday.com';
 	public const string REACT_DOM_VERSION = '19.1.2';
 	public const string REACT_VERSION = '19.1.2';
-	public const string REACT_HASH = 'index-eO9v2-sO';
+	public const string REACT_HASH = 'index-ssQ9RfpS';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';
