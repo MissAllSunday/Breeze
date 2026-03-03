@@ -10,8 +10,6 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\Event\EventServiceProvider;
-use Breeze\Event\Like\LikeCreatedEvent;
 use Breeze\LikesEnum;
 use Breeze\PermissionsEnum;
 
@@ -20,8 +18,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public const string CACHE_BY_CONTENT = 'getByContent';
 
 	public function __construct(
-		$dbClient,
-		protected ?EventServiceProvider $eventServiceProvider = null
+		$dbClient
 	) {
 		parent::__construct($dbClient);
 	}
@@ -240,29 +237,18 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	 *@throws InvalidDataException
 	 * @throws InvalidLikeException
 	 */
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): ?LikeInfoEntity
+	public function likeContent(LikeEntity $likeEntity): ?LikeInfoEntity
 	{
-		$LikeEntity = LikeEntity::from();
-		$LikeEntity->setContentType($type);
-		$LikeEntity->setContentId($contentId);
-		$LikeEntity->setIdMember($userId);
-
-		$isContentAlreadyLiked = $this->isContentAlreadyLiked($LikeEntity);
+		$isContentAlreadyLiked = $this->isContentAlreadyLiked($likeEntity);
+		$contentId = $likeEntity->getContentId();
 
 		if ($isContentAlreadyLiked) {
-			$this->deleteByContent($LikeEntity);
+			$this->deleteByContent($likeEntity);
 		} else {
-			$this->insert($LikeEntity);
+			$this->insert($likeEntity);
 		}
 
-		$likeInfo = $this->getByContent($type, [$contentId])[$contentId];
-
-		// Dispatch the like created event only when a new like is created (not when unliking)
-		if (!$isContentAlreadyLiked && isset($this->eventServiceProvider)) {
-			$this->eventServiceProvider->getDispatcher()->dispatch(new LikeCreatedEvent($LikeEntity));
-		}
-
-		return $likeInfo;
+		return $this->getByContent($likeEntity->getContentType(), [$contentId])[$contentId];
 	}
 
 	public function getById(int $id): null

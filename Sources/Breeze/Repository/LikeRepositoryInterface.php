@@ -45,7 +45,7 @@ interface LikeRepositoryInterface extends BaseRepositoryInterface
 	 * @throws InvalidLikeException
 	 * @throws InvalidDataException
 	 */
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): ?LikeInfoEntity;
+	public function likeContent(LikeEntity $likeEntity): ?LikeInfoEntity;
 
 	public function countOrphans(): int;
 

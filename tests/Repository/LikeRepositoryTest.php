@@ -26,7 +26,7 @@ class LikeRepositoryTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->dbClient = $this->createMock(ClientInterface::class);
-		$this->likeRepository = new LikeRepository($this->dbClient, null, null);
+		$this->likeRepository = new LikeRepository($this->dbClient);
 	}
 
 	public function testGetTableName(): void

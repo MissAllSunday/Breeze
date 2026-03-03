@@ -8,7 +8,7 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\LikesEnum;
 use Breeze\Repository\InvalidDataException;
-use Breeze\Repository\LikeRepositoryInterface;
+use Breeze\Service\LikeServiceInterface;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -21,7 +21,7 @@ class LikesControllerTest extends TestCase
 {
 	private LikesController $likesController;
 
-	private LikeRepositoryInterface | MockObject $likeRepository;
+	private LikeServiceInterface | MockObject $likeService;
 
 	private ValidateActionsInterface | MockObject $validateActions;
 
@@ -32,12 +32,12 @@ class LikesControllerTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
-		$this->likeRepository = $this->createMock(LikeRepositoryInterface::class);
+		$this->likeService = $this->createMock(LikeServiceInterface::class);
 		$this->validateActions = $this->createMock(ValidateActionsInterface::class);
 		$this->response = $this->createMock(Response::class);
 
 		$this->likesController = new LikesController(
-			$this->likeRepository,
+			$this->likeService,
 			$this->validateActions,
 			$this->response
 		);
@@ -68,7 +68,7 @@ class LikesControllerTest extends TestCase
 		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->likesController, $likeData);
 
-		$this->likeRepository->expects($this->once())
+		$this->likeService->expects($this->once())
 			->method('likeContent')
 			->with(
 				LikesEnum::Status,
@@ -104,7 +104,7 @@ class LikesControllerTest extends TestCase
 		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->likesController, $likeData);
 
-		$this->likeRepository->expects($this->once())
+		$this->likeService->expects($this->once())
 			->method('likeContent')
 			->with(
 				LikesEnum::Comments,
@@ -136,7 +136,7 @@ class LikesControllerTest extends TestCase
 
 		$exception = new InvalidDataException($errorMessage);
 
-		$this->likeRepository->expects($this->once())
+		$this->likeService->expects($this->once())
 			->method('likeContent')
 			->willThrowException($exception);
 

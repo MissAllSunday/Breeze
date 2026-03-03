@@ -107,7 +107,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			Response::class,
 		]],
 		LikesController::class => ['arguments' => [
-			LikeRepository::class,
+			LikeService::class,
 			ValidateLikes::class,
 			Response::class,
 		]],
@@ -143,7 +143,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		UserSettingsRepository::class => ['arguments' => [DatabaseClient::class, null], 'shared' => true],
 		AlertRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
 		CommentRepository::class => ['arguments' => [DatabaseClient::class, LikeRepository::class], 'shared' => true],
-		LikeRepository::class => ['arguments' => [DatabaseClient::class, null, EventServiceProvider::class], 'shared' => true],
+		LikeRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
 		StatusRepository::class => ['arguments' => [DatabaseClient::class, CommentRepository::class, LikeRepository::class], 'shared' => true],
 
 		// Services - Shared (Stateless business logic)
@@ -152,7 +152,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		PermissionsService::class => ['arguments' => [], 'shared' => true],
 		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class], 'shared' => true],
 		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class], 'shared' => true],
-		LikeService::class => ['arguments' => [LikeRepository::class], 'shared' => true],
+		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
 		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class], 'shared' => true],
 	];
 
