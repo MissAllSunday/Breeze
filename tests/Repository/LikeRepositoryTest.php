@@ -63,7 +63,7 @@ class LikeRepositoryTest extends TestCase
 			'status likes found' => [
 				LikesEnum::Status,
 				[1, 2],
-				[['content_id' => 1, 'like_time' => 5, 'id_member' => 1]],
+				[['content_id' => 1, 'content_type' => LikesEnum::Status->value, 'like_time' => 5, 'id_member' => 1]],
 				2,
 			],
 		];

@@ -111,9 +111,9 @@ class LikeEntity extends Entity implements EntityInterface
 
 	public function toInsert(): array
 	{
+		$this->setLikeTime(new DateTimeImmutable);
 		$arrayToInsert = $this->toArray();
 		$arrayToInsert[LikeEntity::TYPE] = $arrayToInsert[LikeEntity::TYPE]->value;
-		$arrayToInsert[LikeEntity::TIME] = time();
 
 		return array_intersect_key($arrayToInsert, array_flip(LikeEntity::getColumns()));
 	}

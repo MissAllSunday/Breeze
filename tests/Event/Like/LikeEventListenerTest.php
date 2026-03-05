@@ -131,6 +131,30 @@ class LikeEventListenerTest extends TestCase
 		$this->listener->onLikeCreated($event);
 	}
 
+	public function testOnLikeCreatedSkipsAlertWhenLikingOwnContent(): void
+	{
+		$likeEntity = $this->createMock(LikeEntity::class);
+		$likeEntity->method('getContentId')->willReturn(100);
+		$likeEntity->method('getContentType')->willReturn(LikesEnum::Status);
+		$likeEntity->method('getIdMember')->willReturn(10);
+
+		$statusEntity = $this->createMock(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(10);
+		$statusEntity->method('getId')->willReturn(100);
+
+		$this->container->method('get')
+			->with(StatusRepository::class)
+			->willReturn($this->statusRepository);
+
+		$this->statusRepository->method('getById')->willReturn($statusEntity);
+
+		$this->alertService->expects($this->never())
+			->method('send');
+
+		$event = new LikeCreatedEvent($likeEntity);
+		$this->listener->onLikeCreated($event);
+	}
+
 	public function testGetContentReturnsStatusEntity(): void
 	{
 		$likeEntity = $this->createMock(LikeEntity::class);

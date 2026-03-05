@@ -85,9 +85,15 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 		return AlertEntity::from($result);
 	}
 
-	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool
+	public function checkAlert($alertEntity): bool
 	{
-		if ($userId === 0 || ($alertType === '' || $alertType === '0')) {
+		$userId = $alertEntity->getIdMember();
+		$alertType = $alertEntity->getContentType();
+		$alertId = $alertEntity->getContentId();
+		$alertSender = $alertEntity->getIdMemberStarted();
+		$alertSenderQuery = !empty($alertSender) ? 'AND ' . AlertEntity::ID_MEMBER_STARTED . ' = {int:alertSender}' : '';
+
+		if (empty($userId) || empty($alertType)) {
 			return false;
 		}
 
@@ -99,8 +105,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 				AND ' . AlertEntity::IS_READ . ' = 0
 				AND ' . AlertEntity::CONTENT_TYPE . ' = {string:alertType}
 				' . ($alertId !== 0 ? 'AND ' . AlertEntity::CONTENT_ID . ' = {int:alertId}' : '') . '
-				' . ($alertSender !== '' && $alertSender !== '0' ?
-				'AND ' . AlertEntity::ID_MEMBER_STARTED . ' = {int:alertSender}' : ''),
+				' . ($alertSenderQuery),
 			[
 				'userId' => $userId,
 				'alertType' => $alertType,

@@ -88,7 +88,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		$this->dbClient->freeResult($request);
 
 		array_walk($likes, function (&$likeData, $contentId) use ($type): void {
-			$likeData = $this->buildLikeInfo($likeData, $type, $contentId);
+			$likeData = $this->buildLikeInfo($likeData, $type, (int) $contentId);
 		});
 
 		$this->setCache($cacheKey, $likes);
@@ -244,11 +244,11 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		if ($isContentAlreadyLiked) {
 			$this->deleteByContent($likeEntity);
-		} else {
-			$this->insert($likeEntity);
+
+			return $this->getByContent($likeEntity->getContentType(), [$contentId])[$contentId];
 		}
 
-		return $this->getByContent($likeEntity->getContentType(), [$contentId])[$contentId];
+		return $this->insert($likeEntity);
 	}
 
 	public function getById(int $id): null

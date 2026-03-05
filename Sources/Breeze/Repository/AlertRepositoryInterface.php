@@ -12,7 +12,7 @@ interface AlertRepositoryInterface extends BaseRepositoryInterface
 
 	public function update(AlertEntity $alertEntity): AlertEntity;
 
-	public function checkAlert(int $userId, string $alertType, int $alertId = 0, string $alertSender = ''): bool;
+	public function checkAlert(AlertEntity $alertEntity): bool;
 
 	public function delete(array $alertIds): bool;
 }

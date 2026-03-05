@@ -35,10 +35,7 @@ class LikeService implements LikeServiceInterface
 		]);
 		$likeInfo = $this->likeRepository->likeContent($likeEntity);
 
-		// Dispatch the like created event only when a new like is created
-		if (!$likeInfo->isAlreadyLiked()) {
-			$this->eventServiceProvider->getDispatcher()->dispatch(new LikeCreatedEvent($likeEntity));
-		}
+		$this->eventServiceProvider->getDispatcher()->dispatch(new LikeCreatedEvent($likeEntity));
 
 		return $likeInfo;
 	}

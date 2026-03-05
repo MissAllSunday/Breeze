@@ -9,6 +9,8 @@ use Breeze\Entity\LikeInfoEntity;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Like\LikeCreatedEvent;
 use Breeze\LikesEnum;
+use Breeze\Repository\InvalidDataException;
+use Breeze\Repository\InvalidLikeException;
 use Breeze\Repository\LikeRepositoryInterface;
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -42,6 +44,11 @@ class LikeServiceTest extends TestCase
 		);
 	}
 
+	/**
+	 * @throws InvalidDataException
+	 * @throws InvalidLikeException
+	 * @throws Exception
+	 */
 	public function testLikeContentDispatchesEventWhenNewLike(): void
 	{
 		$type = LikesEnum::Status;
@@ -49,7 +56,7 @@ class LikeServiceTest extends TestCase
 		$userId = 5;
 
 		$likeInfo = $this->createMock(LikeInfoEntity::class);
-		$likeInfo->method('isAlreadyLiked')->willReturn(false);
+		$likeInfo->method('isAlreadyLiked')->willReturn(true);
 
 		$this->likeRepository->expects($this->once())
 			->method('likeContent')
@@ -70,27 +77,6 @@ class LikeServiceTest extends TestCase
 			->with($this->callback(function ($event) {
 				return $event instanceof LikeCreatedEvent;
 			}));
-
-		$result = $this->likeService->likeContent($type, $contentId, $userId);
-
-		$this->assertSame($likeInfo, $result);
-	}
-
-	public function testLikeContentDoesNotDispatchEventWhenAlreadyLiked(): void
-	{
-		$type = LikesEnum::Status;
-		$contentId = 123;
-		$userId = 5;
-
-		$likeInfo = $this->createMock(LikeInfoEntity::class);
-		$likeInfo->method('isAlreadyLiked')->willReturn(true);
-
-		$this->likeRepository->expects($this->once())
-			->method('likeContent')
-			->willReturn($likeInfo);
-
-		$this->eventServiceProvider->expects($this->never())
-			->method('getDispatcher');
 
 		$result = $this->likeService->likeContent($type, $contentId, $userId);
 

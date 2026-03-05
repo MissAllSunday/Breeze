@@ -38,9 +38,15 @@ class LikeEventListener
 		$userId = $likeEntity->getIdMember();
 
 		$content = $this->getContent($likeEntity);
+		$contentOwnerId = $content->getUserId();
+
+		// Don't send alert if the user is liking their own content
+		if ($userId === $contentOwnerId) {
+			return;
+		}
 
 		$this->alertService->send(AlertEntity::from([
-			AlertEntity::ID_MEMBER => $content->getUserId(),
+			AlertEntity::ID_MEMBER => $contentOwnerId,
 			AlertEntity::ID_MEMBER_STARTED => $userId,
 			AlertEntity::CONTENT_TYPE => self::CONTENT_TYPE,
 			AlertEntity::CONTENT_ID => $content->getId(),

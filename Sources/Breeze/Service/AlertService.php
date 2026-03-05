@@ -23,6 +23,9 @@ class AlertService extends BaseService implements AlertServiceInterface
 
 	public function send(AlertEntity $alertEntity): void
 	{
+		if ($this->checkAlert($alertEntity)) {
+			return;
+		}
 		$this->alertRepository->insert($alertEntity);
 
 		updateMemberData($alertEntity->getIdMember(), ['alerts' => '+']);
@@ -42,6 +45,11 @@ class AlertService extends BaseService implements AlertServiceInterface
 			$handler = $this->handlerServiceProvider->getHandler($alertEntity);
 			$alert = $handler->resolve();
 		}
+	}
+
+	public function checkAlert(AlertEntity $alertEntity): bool
+	{
+		return $this->alertRepository->checkAlert($alertEntity);
 	}
 
 	public function getById(int $alertId): EntityInterface

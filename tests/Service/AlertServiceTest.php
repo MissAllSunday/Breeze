@@ -57,4 +57,44 @@ class AlertServiceTest extends TestCase
 
 		$this->assertTrue($result);
 	}
+
+	public function testCheckAlertDelegatesToRepository(): void
+	{
+		$alertEntity = AlertEntity::from([
+			AlertEntity::ID_MEMBER => 10,
+			AlertEntity::CONTENT_TYPE => 'Breeze_like',
+			AlertEntity::CONTENT_ID => 100,
+			AlertEntity::ID_MEMBER_STARTED => 5,
+		]);
+
+		$this->alertRepository
+			->expects($this->once())
+			->method('checkAlert')
+			->with($this->equalTo($alertEntity))
+			->willReturn(true);
+
+		$result = $this->alertService->checkAlert($alertEntity);
+
+		$this->assertTrue($result);
+	}
+
+	public function testCheckAlertReturnsFalseWhenNoExistingAlert(): void
+	{
+		$alertEntity = AlertEntity::from([
+			AlertEntity::ID_MEMBER => 10,
+			AlertEntity::CONTENT_TYPE => 'Breeze_like',
+			AlertEntity::CONTENT_ID => 100,
+			AlertEntity::ID_MEMBER_STARTED => 5,
+		]);
+
+		$this->alertRepository
+			->expects($this->once())
+			->method('checkAlert')
+			->with($this->equalTo($alertEntity))
+			->willReturn(false);
+
+		$result = $this->alertService->checkAlert($alertEntity);
+
+		$this->assertFalse($result);
+	}
 }

@@ -18,4 +18,6 @@ interface AlertServiceInterface
 	public function loadUsersInfo(array $userIds = []): array;
 
 	public function handle(array &$alerts): void;
+
+	public function checkAlert(AlertEntity $alertEntity): bool;
 }
