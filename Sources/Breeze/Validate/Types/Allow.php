@@ -54,6 +54,8 @@ class Allow
 
 		if (time() >= $floodData['time']) {
 			$this->unsetPersistenceValue($floodKeyName);
+		} else {
+			$this->setPersistenceValue($floodKeyName, $floodData);
 		}
 	}
 
