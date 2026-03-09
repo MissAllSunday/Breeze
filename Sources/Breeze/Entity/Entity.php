@@ -53,7 +53,7 @@ abstract class Entity implements EntityInterface
 
 		foreach ($data as $key => $value) {
 			if ($value instanceof \DateTimeInterface) {
-				$data[$key] = $value->format('Y-m-d H:i:s');
+				$data[$key] = $value->getTimestamp();
 			}
 
 			if (is_bool($value)) {
