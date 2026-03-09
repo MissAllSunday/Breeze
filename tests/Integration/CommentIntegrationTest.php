@@ -59,24 +59,15 @@ class CommentIntegrationTest extends TestCase
 			$this->markTestSkipped('Database connection not available');
 		}
 
-		// Clean up test data before each test
-		$this->cleanupTestData();
-	}
-
-	protected function tearDown(): void
-	{
-		// Clean up test data after each test
-		$this->cleanupTestData();
-	}
-
-	private function cleanupTestData(): void
-	{
 		global $testDbConfig;
 		$prefix = $testDbConfig['prefix'];
 
-		// Delete test comments and statuses
-		self::$pdo->exec("DELETE FROM `{$prefix}breeze_comments` WHERE user_id IN (100, 101, 102)");
-		self::$pdo->exec("DELETE FROM `{$prefix}breeze_status` WHERE user_id IN (100, 101, 102)");
+		// Ensure a clean state before every test
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_status`");
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_comments`");
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}user_likes`");
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}members`");
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_options`");
 	}
 
 	/**

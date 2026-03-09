@@ -49,6 +49,18 @@ abstract class Entity implements EntityInterface
 
 	public function toArray(): array
 	{
-		return get_object_vars($this);
+		$data = get_object_vars($this);
+
+		foreach ($data as $key => $value) {
+			if ($value instanceof \DateTimeInterface) {
+				$data[$key] = $value->format('Y-m-d H:i:s');
+			}
+
+			if (is_bool($value)) {
+				$data[$key] = $value ? 1 : 0;
+			}
+		}
+
+		return $data;
 	}
 }

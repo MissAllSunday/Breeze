@@ -159,54 +159,7 @@ try {
 	$pdo->exec("TRUNCATE TABLE `{$prefix}user_likes`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}members`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_options`");
-
-	// Insert test statuses for performance testing
-	$baseTime = time();
-	$statusCount = 2000; // Create 2000 statuses for performance testing
-
-	echo "Inserting $statusCount test statuses...\n";
-
-	$stmt = $pdo->prepare("
-        INSERT INTO `{$prefix}breeze_status`
-        (wall_id, user_id, created_at, body, likes)
-        VALUES (?, ?, ?, ?, ?)
-    ");
-
-	for ($i = 1; $i <= $statusCount; $i++) {
-		$wallId = ($i % 10) + 1; // Distribute across 10 walls
-		$userId = ($i % 5) + 1; // 5 different users
-		$createdAt = $baseTime - ($i * 60); // 1 minute apart
-		$body = "Test status #$i for performance testing";
-		$likes = rand(0, 50);
-
-		$stmt->execute([$wallId, $userId, $createdAt, $body, $likes]);
-
-		if ($i % 100 == 0) {
-			echo "  Inserted $i/$statusCount statuses...\n";
-		}
-	}
-
-	echo "✓ Inserted $statusCount test statuses\n";
-
-	// Insert some comments
-	echo "Inserting test comments...\n";
-	$stmt = $pdo->prepare("
-        INSERT INTO `{$prefix}breeze_comments`
-        (status_id, user_id, created_at, body, likes)
-        VALUES (?, ?, ?, ?, ?)
-    ");
-
-	for ($i = 1; $i <= 100; $i++) {
-		$statusId = rand(1, min(100, $statusCount));
-		$userId = rand(1, 5);
-		$createdAt = (string)($baseTime - ($i * 30));
-		$body = "Test comment #$i";
-		$likes = rand(0, 10);
-
-		$stmt->execute([$statusId, $userId, $createdAt, $body, $likes]);
-	}
-
-	echo "✓ Inserted 100 test comments\n";
+	echo "✓ Cleared existing test data\n";
 
 } catch (PDOException $e) {
 	die("✗ Failed to populate test data: " . $e->getMessage() . "\n");
@@ -246,5 +199,5 @@ try {
 echo "\n✅ Test database setup complete!\n\n";
 echo "Database: {$testDbConfig['database']}\n";
 echo "Prefix: {$testDbConfig['prefix']}\n";
-echo "\nYou can now run performance tests:\n";
-echo "  ./breezeVendor/bin/phpunit tests/Performance/PaginationPerformanceTest.php\n\n";
+echo "\nYou can now run tests:\n";
+echo "  ./breezeVendor/bin/phpunit\n\n";
