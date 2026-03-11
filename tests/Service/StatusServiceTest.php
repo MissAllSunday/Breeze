@@ -168,6 +168,7 @@ class StatusServiceTest extends TestCase
 		$this->statusRepository->method('getById')->willReturn($statusEntity);
 
 		// Mock permissions service
+		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
 		$this->permissionsService->method('permissions')
 			->with($wallId, $currentUserId)
 			->willReturn($expectedPermissions);
