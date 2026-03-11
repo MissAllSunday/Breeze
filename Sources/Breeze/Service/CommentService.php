@@ -31,7 +31,7 @@ class CommentService extends BaseService implements CommentServiceInterface
 		$commentEntity = CommentEntity::from($data);
 		$commentEntities = $this->commentRepository->insert($commentEntity);
 
-		if (!empty($commentEntities)) {
+		if ($commentEntities !== []) {
 			try {
 				$statusEntity = $this->statusRepository->getBasicInfoById($commentEntity->getStatusId());
 

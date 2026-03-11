@@ -91,7 +91,7 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 		$alertType = $alertEntity->getContentType();
 		$alertId = $alertEntity->getContentId();
 		$alertSender = $alertEntity->getIdMemberStarted();
-		$alertSenderQuery = !empty($alertSender) ? 'AND ' . AlertEntity::ID_MEMBER_STARTED . ' = {int:alertSender}' : '';
+		$alertSenderQuery = empty($alertSender) ? '' : 'AND ' . AlertEntity::ID_MEMBER_STARTED . ' = {int:alertSender}';
 
 		if (empty($userId) || empty($alertType)) {
 			return false;

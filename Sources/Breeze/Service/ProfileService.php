@@ -56,7 +56,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'editorIsRich' => $editorContext['rich_active'],
 			'currentUserAvatar' => $userInfo['avatar']['url'],
 			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
-			UserSettingsEntity::ABOUT_ME => !empty($wallUserSettings->getAboutMe()),
+			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadComponents();
@@ -113,7 +113,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if (!empty($currentUserSettings->getWall()) ||
+		if ($currentUserSettings->getWall() !== 0 ||
 			$this->isEnable(SettingsEntity::FORCE_WALL)) {
 			foreach ($profile_items as &$profileItem) {
 				if ($profileItem['area'] === 'summary') {
@@ -168,7 +168,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 	public function isAllowedToSeePage(UserSettingsEntity $profileSettings, int $profileId = 0, int $userId = 0): bool
 	{
 		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
-		$isWallEnable = !empty($profileSettings->getWall());
+		$isWallEnable = $profileSettings->getWall() !== 0;
 		$blockList = $profileSettings->getBlockList();
 
 		if (!$isWallEnable && !empty($forceWall)) {
@@ -183,13 +183,9 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return false;
 		}
 
-		if (!empty($profileSettings->getKickIgnored()) &&
-			!empty($blockList) &&
-			in_array($userId, $blockList, true)) {
-			return false;
-		}
-
-		return true;
+  return !($profileSettings->getKickIgnored() !== 0 &&
+			$blockList !== [] &&
+			in_array($userId, $blockList, true));
 	}
 
 	public function stalkingCheck(int $userStalkedId = 0): bool
@@ -204,7 +200,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$blockedList = $userStalkedSettings->getBlockList();
 		$kickIgnored = $userStalkedSettings->getKickIgnored();
 
-		if (!empty($kickIgnored) && !empty($blockedList)) {
+		if ($kickIgnored !== 0 && $blockedList !== []) {
 			return in_array((int) $user_info['id'], $blockedList, true);
 		}
 

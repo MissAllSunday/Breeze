@@ -38,14 +38,12 @@ class Components
 		$this->loadCSSFile(Components::CSS_FILE, [], 'smf_breeze');
 		$componentsToLoad = array_intersect(self::COMPONENTS, $components);
 
-		if (!empty($componentsToLoad)) {
-			foreach ($componentsToLoad as $component) {
+		foreach ($componentsToLoad as $component) {
 				$this->loadJavaScriptFile(self::FOLDER . $component . '.js', [
 					'defer' => false,
 					'default_theme' => true,
 				], strtolower(Breeze::PATTERN . $component));
 			}
-		}
 	}
 
 	public function loadJavaScriptFile(string $fileName, array $params = [], string $nameIdentifier = ''): void

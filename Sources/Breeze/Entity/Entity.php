@@ -18,8 +18,6 @@ abstract class Entity implements EntityInterface
 
 	abstract public static function from(array $data = []): EntityInterface;
 
-	protected function __clone() { }
-
 	protected function __construct(array $entry = [])
 	{
 		$this->setEntity($entry);

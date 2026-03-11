@@ -36,7 +36,7 @@ class AlertService extends BaseService implements AlertServiceInterface
 	 */
 	public function handle(array &$alerts): void
 	{
-		foreach ($alerts as $id => &$alert) {
+		foreach ($alerts as &$alert) {
 			if (!str_contains($alert['content_type'], Breeze::PATTERN)) {
 				continue;
 			}

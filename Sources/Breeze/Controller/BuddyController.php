@@ -82,7 +82,7 @@ class BuddyController extends BaseController implements ControllerInterface
 
 		$this->isAllowedTo('profile_extra_own');
 
-		if (empty($this->userReceivingId)) {
+		if ($this->userReceivingId === 0) {
 			Error::show('no_access');
 		}
 	}

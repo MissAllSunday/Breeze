@@ -294,7 +294,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		array_walk($status, function ($entity) use ($loadedUsers): void {
 			$commentsLoadedUsers = [$entity->getUserId()];
 
-			if (!empty($loadedUsers)) {
+			if ($loadedUsers !== []) {
 				$entity->setUsersInfo(array_intersect_key($loadedUsers, array_flip($commentsLoadedUsers)));
 			}
 		});
@@ -305,7 +305,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	protected function setComments(array $status, array $comments): array
 	{
 		array_walk($status, function ($singleStatus, $statusId) use ($comments): void {
-			$singleStatus->setComments(array_filter($comments, function ($comment) use ($statusId) {
+			$singleStatus->setComments(array_filter($comments, function ($comment) use ($statusId): bool {
 				return $comment->getStatusId() === $statusId;
 			}));
 		});
@@ -387,7 +387,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	 */
 	public function getNextCursor(array $statuses): ?string
 	{
-		if (empty($statuses)) {
+		if ($statuses === []) {
 			return null;
 		}
 
@@ -397,7 +397,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		}
 
 		$createdAt = $lastStatus->getCreatedAt();
-		if ($createdAt === null) {
+		if (!$createdAt instanceof \DateTimeImmutable) {
 			return null;
 		}
 

@@ -53,7 +53,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		// Generate next cursor
 		$nextCursor = null;
 		$hasMore = false;
-		if (!empty($statusByProfile)) {
+		if ($statusByProfile !== []) {
 			$nextCursor = $this->statusRepository->getNextCursor($statusByProfile);
 			$hasMore = count($statusByProfile) === $wallUserPagination;
 		}
@@ -104,7 +104,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$currentUserBuddies = $currentUserSettings->getBuddies();
 		$currentUserPagination = $currentUserSettings->getPaginationNumber();
 
-		if (empty($currentUserBuddies)) {
+		if ($currentUserBuddies === []) {
 			return [];
 		}
 
@@ -118,7 +118,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		// Generate next cursor
 		$nextCursor = null;
 		$hasMore = false;
-		if (!empty($statusByBuddies)) {
+		if ($statusByBuddies !== []) {
 			$nextCursor = $this->statusRepository->getNextCursor($statusByBuddies);
 			$hasMore = count($statusByBuddies) === $currentUserPagination;
 		}

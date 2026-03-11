@@ -18,7 +18,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public const string CACHE_BY_CONTENT = 'getByContent';
 
 	public function __construct(
-		$dbClient
+		\Breeze\Database\ClientInterface $dbClient
 	) {
 		parent::__construct($dbClient);
 	}
@@ -64,7 +64,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}
 
 		$likes = [];
-		$usersIds = [];
 
 		$request = $this->dbClient->query(
 			'
@@ -186,7 +185,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function buildLikeInfo(array $likeEntities, LikesEnum $type, int $contentId): LikeInfoEntity
 	{
 		// Only count data with actual likes
-		$likeFilledEntities = array_filter($likeEntities, function ($like) {
+		$likeFilledEntities = array_filter($likeEntities, function ($like): bool {
 			return !empty($like);
 		});
 

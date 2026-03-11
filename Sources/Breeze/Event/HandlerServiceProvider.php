@@ -13,9 +13,6 @@ use Breeze\Util\Validate\DataNotFoundException;
 
 class HandlerServiceProvider
 {
-	public function __construct(
-	) {}
-
 	/**
 	 * @throws DataNotFoundException
 	 */

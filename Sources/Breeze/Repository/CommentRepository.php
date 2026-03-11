@@ -290,7 +290,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	protected function setUsers(array $comments, array $usersIds): array
 	{
 		// Return early if there is nothing to work on
-		if (empty($comments) || empty($usersIds)) {
+		if ($comments === [] || $usersIds === []) {
 			return [];
 		}
 
@@ -300,7 +300,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		array_walk($comments, function ($comment, $id) use ($loadedUsers): void {
 			$commentsLoadedUsers = [$comment->getUserId()];
 
-			if (!empty($loadedUsers)) {
+			if ($loadedUsers !== []) {
 				$comment->setUsersInfo(array_intersect_key($loadedUsers, array_flip($commentsLoadedUsers)));
 			}
 		});

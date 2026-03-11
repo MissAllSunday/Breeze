@@ -33,7 +33,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	{
 		$set = 'SET ';
 		$columns = $entity->getColumns();
-		foreach ($entity->toArray() as $name => $type) {
+		foreach (array_keys($entity->toArray()) as $name) {
 			$set .= ' ' . $name . ' = {' . $columns[$name] . ':' . $name . '},';
 		}
 
@@ -172,7 +172,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	protected function setLikes(array $entities, LikesEnum $type): array
 	{
 		// Return early if there is no data to work with
-		if (empty($entities)) {
+		if ($entities === []) {
 			return [];
 		}
 
@@ -193,7 +193,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	protected function getDefaultQueryParams(): array
 	{
-		$tableName = $this->getTableName();
+		$this->getTableName();
 
 		return [
 			'from' => $this->getTableName() . ' AS ' . self::PARENT_LIKE_IDENTIFIER,

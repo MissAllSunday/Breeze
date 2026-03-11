@@ -15,6 +15,6 @@ class Time
 
 	public static function from(?DateTimeImmutable $dateTime): string
 	{
-		return timeformat($dateTime ? $dateTime->getTimestamp() : '');
+		return timeformat($dateTime instanceof \DateTimeImmutable ? $dateTime->getTimestamp() : '');
 	}
 }

@@ -49,7 +49,7 @@ class WallController extends BaseController
 			Error::show('error_no_access');
 		}
 
-		if (!empty($profileSettings->getEnableBuddiesTab()) && !empty($profileBuddies)) {
+		if ($profileSettings->getEnableBuddiesTab() !== 0 && $profileBuddies !== []) {
 			$buddiesData = $this->profileService->loadUsersInfo($profileBuddies);
 		}
 
