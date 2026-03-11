@@ -117,6 +117,24 @@ try {
 	die("✗ Failed to create user_likes table: " . $e->getMessage() . "\n");
 }
 
+// Create user_alerts table
+try {
+	$pdo->exec("
+            CREATE TABLE IF NOT EXISTS `user_alerts` (
+                `id_alert` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                `id_member` INT(10) UNSIGNED NOT NULL,
+                `alert_time` INT(10) UNSIGNED NOT NULL,
+                `alert_type` VARCHAR(20) NOT NULL,
+                `content_id` INT(10) UNSIGNED NOT NULL,
+                `is_read` TINYINT(1) NOT NULL DEFAULT 0,
+                PRIMARY KEY (`id_alert`),
+                KEY `id_member` (`id_member`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ");
+} catch (PDOException $e) {
+	die("✗ Failed to create user_alerts table: " . $e->getMessage() . "\n");
+}
+
 // Create members table (mock for testing)
 try {
 	$pdo->exec("

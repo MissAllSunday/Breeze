@@ -59,36 +59,6 @@ class FullStatusInteractionTest extends TestCase
 		self::$pdo = getTestDatabaseConnection();
 		initializeSmfDatabaseFunctions();
 
-		// Ensure native SMF tables used in tests exist in the test database
-		self::$pdo->exec("
-            CREATE TABLE IF NOT EXISTS `user_likes` (
-                `id_member` INT(10) UNSIGNED NOT NULL,
-                `id_content` INT(10) UNSIGNED NOT NULL,
-                `content_type` VARCHAR(20) NOT NULL,
-                `like_time` INT(10) UNSIGNED NOT NULL,
-                PRIMARY KEY (`id_member`, `id_content`, `content_type`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        ");
-		self::$pdo->exec("
-            CREATE TABLE IF NOT EXISTS `user_alerts` (
-                `id_alert` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `id_member` INT(10) UNSIGNED NOT NULL,
-                `alert_time` INT(10) UNSIGNED NOT NULL,
-                `alert_type` VARCHAR(20) NOT NULL,
-                `content_id` INT(10) UNSIGNED NOT NULL,
-                `is_read` TINYINT(1) NOT NULL DEFAULT 0,
-                PRIMARY KEY (`id_alert`),
-                KEY `id_member` (`id_member`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        ");
-		self::$pdo->exec("
-            CREATE TABLE IF NOT EXISTS `members` (
-                `id_member` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `member_name` VARCHAR(80) NOT NULL DEFAULT '',
-                PRIMARY KEY (`id_member`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        ");
-
 		self::$dbClient = new DatabaseClient();
 	}
 
