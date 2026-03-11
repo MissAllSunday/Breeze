@@ -14,9 +14,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: npm ci, build and test
         run: |
-          if [ -e package-lock.json ]; then
-          npm ci
-          else
-          npm i
-          fi
-          npm run test:run
+          make ui-install
+          make ui-test

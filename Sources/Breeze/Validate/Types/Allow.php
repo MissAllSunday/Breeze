@@ -38,6 +38,13 @@ class Allow
 
 		$floodData = $this->getPersistenceValue($floodKeyName);
 
+		// If the time window has expired, reset everything.
+		if (!empty($floodData) && time() > $floodData['time']) {
+			$this->unsetPersistenceValue($floodKeyName);
+			$floodData = null;
+		}
+
+		// If we don't have flood data, this is the first post in a while.
 		if (empty($floodData)) {
 			$floodData = [
 				'time' => time() + $seconds,
@@ -47,15 +54,12 @@ class Allow
 
 		$floodData['msgCount']++;
 
-		// Chatty one huh?
-		if ($floodData['msgCount'] >= $messages && time() <= $floodData['time']) {
-			throw new NotAllowedException('flood');
-		}
+		// Persist the new count *before* checking.
+		// This way, even if we throw, the incremented count is saved for the next check.
+		$this->setPersistenceValue($floodKeyName, $floodData);
 
-		if (time() >= $floodData['time']) {
-			$this->unsetPersistenceValue($floodKeyName);
-		} else {
-			$this->setPersistenceValue($floodKeyName, $floodData);
+		if ($floodData['msgCount'] > $messages && time() <= $floodData['time']) {
+			throw new NotAllowedException('flood');
 		}
 	}
 

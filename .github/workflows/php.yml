@@ -1,6 +1,7 @@
 name: Breeze tests
 
 on: [push, pull_request]
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -51,8 +52,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+        run: make install
       - name: Wait for MySQL
         run: |
           for i in {1..30}; do
@@ -68,8 +68,5 @@ jobs:
       - name: Verify MySQL connection
         run: |
           mysql -h 127.0.0.1 -P 3306 -u root -proot -e "SELECT VERSION();"
-      - name: Setup test database
-        run: |
-          php tests/setup-test-database.php
       - name: Test with phpunit
-        run: composer test
+        run: make test
