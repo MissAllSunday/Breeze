@@ -59,12 +59,8 @@ $testDbConfig = [
 	'prefix' => getenv('DB_PREFIX') ?: 'smf_',
 ];
 
-// Override with local config if it exists (for development)
-$localConfigFile = __DIR__ . '/database-config.local.php';
-if (file_exists($localConfigFile)) {
-	$localConfig = require $localConfigFile;
-	$testDbConfig = array_merge($testDbConfig, $localConfig);
-}
+// temp... lets see what github actions is actually using
+echo json_encode($testDbConfig);
 
 /**
  * Initialize database connection for tests

@@ -74,9 +74,9 @@ class FullStatusInteractionTest extends TestCase
 		// Ensure a clean state before every test
 		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_status`");
 		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_comments`");
-		self::$pdo->exec("TRUNCATE TABLE `user_likes`");
-		self::$pdo->exec("TRUNCATE TABLE `user_alerts`");
-		self::$pdo->exec("TRUNCATE TABLE `members`");
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}user_likes`");
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}user_alerts`");
+		self::$pdo->exec("TRUNCATE TABLE `{$prefix}members`");
 		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_options`");
 
 		$this->likeRepository = new LikeRepository(self::$dbClient);
