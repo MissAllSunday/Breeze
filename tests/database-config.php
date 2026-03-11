@@ -49,6 +49,7 @@ if (file_exists($envFile)) {
 
 // Database configuration from environment variables or defaults
 global $testDbConfig;
+
 $testDbConfig = [
 	'host' => getenv('DB_HOST') ?: '127.0.0.1',
 	'port' => getenv('DB_PORT') ?: '3306',

@@ -120,7 +120,7 @@ try {
 // Create user_alerts table
 try {
 	$pdo->exec("
-            CREATE TABLE IF NOT EXISTS `user_alerts` (
+            CREATE TABLE IF NOT EXISTS `{$prefix}user_alerts` (
                 `id_alert` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `id_member` INT(10) UNSIGNED NOT NULL,
                 `alert_time` INT(10) UNSIGNED NOT NULL,
