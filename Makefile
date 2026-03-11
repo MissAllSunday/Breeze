@@ -26,10 +26,6 @@ test: setup-test-database
 	@echo "Running PHPUnit tests..."
 	@composer test
 
-lint:
-	@echo "Running static analysis..."
-	@composer lint:check
-
 ui-install:
 	@echo "Installing node dependencies..."
 	@if [ -f package-lock.json ]; then npm ci; else npm install; fi
