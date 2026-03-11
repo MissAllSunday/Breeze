@@ -131,6 +131,7 @@ try {
                 KEY `id_member` (`id_member`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ");
+	echo "✓ Created table: {$prefix}user_alerts\n";
 } catch (PDOException $e) {
 	die("✗ Failed to create user_alerts table: " . $e->getMessage() . "\n");
 }
