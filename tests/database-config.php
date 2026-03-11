@@ -59,9 +59,6 @@ $testDbConfig = [
 	'prefix' => getenv('DB_PREFIX') ?: 'smf_',
 ];
 
-// temp... lets see what github actions is actually using
-echo json_encode($testDbConfig);
-
 /**
  * Initialize database connection for tests
  *

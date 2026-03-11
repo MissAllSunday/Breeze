@@ -121,15 +121,20 @@ try {
 try {
 	$pdo->exec("
             CREATE TABLE IF NOT EXISTS `{$prefix}user_alerts` (
-                `id_alert` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `id_member` INT(10) UNSIGNED NOT NULL,
-                `alert_time` INT(10) UNSIGNED NOT NULL,
-                `alert_type` VARCHAR(20) NOT NULL,
-                `content_id` INT(10) UNSIGNED NOT NULL,
-                `is_read` TINYINT(1) NOT NULL DEFAULT 0,
-                PRIMARY KEY (`id_alert`),
-                KEY `id_member` (`id_member`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+				`id_alert` INT UNSIGNED AUTO_INCREMENT,
+				`alert_time` INT UNSIGNED NOT NULL DEFAULT '0',
+				`id_member` MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',
+				`id_member_started` MEDIUMINT UNSIGNED NOT NULL DEFAULT '0',
+				`member_name` VARCHAR(255) NOT NULL DEFAULT '',
+				`content_type` VARCHAR(255) NOT NULL DEFAULT '',
+				`content_id` INT UNSIGNED NOT NULL DEFAULT '0',
+				`content_action` VARCHAR(255) NOT NULL DEFAULT '',
+				`is_read` INT UNSIGNED NOT NULL DEFAULT '0',
+				`extra` TEXT NOT NULL,
+				PRIMARY KEY (id_alert),
+				INDEX idx_id_member (id_member),
+				INDEX idx_alert_time (alert_time)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         ");
 	echo "✓ Created table: {$prefix}user_alerts\n";
 } catch (PDOException $e) {
