@@ -24,11 +24,11 @@ setup-test-database:
 
 test: setup-test-database
 	@echo "Running PHPUnit tests..."
-	@$(VENDOR_DIR)/bin/phpunit --display-deprecations
+	@composer test
 
 lint:
 	@echo "Running static analysis..."
-	@$(VENDOR_DIR)/bin/phpstan analyse --level 5 src/
+	@composer lint:check
 
 ui-install:
 	@echo "Installing node dependencies..."

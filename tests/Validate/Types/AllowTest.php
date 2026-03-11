@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Breeze\Validate\Types;
 
-use Breeze\Breeze;
-use Breeze\Entity\SettingsEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use PHPUnit\Framework\Attributes\DataProvider;
