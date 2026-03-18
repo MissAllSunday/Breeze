@@ -87,7 +87,7 @@ class Response
 
 	protected function appendToken(array $responseData): array
 	{
-		$token = createToken(self::CSRF_TOKEN_ACTION);
+		$token = createToken(self::CSRF_TOKEN_ACTION, 'get');
 
 		$responseData['token'] = [
 			'var' => $token[self::CSRF_TOKEN_ACTION . '_token_var'],

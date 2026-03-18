@@ -82,7 +82,7 @@ abstract class ApiBaseController
 
 	protected function validateCsrfToken(): void
 	{
-		validateToken(Response::CSRF_TOKEN_ACTION);
+		validateToken(Response::CSRF_TOKEN_ACTION, 'get');
 	}
 
 	abstract public function getSubActions(): array;
