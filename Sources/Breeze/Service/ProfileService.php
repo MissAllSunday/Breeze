@@ -13,6 +13,7 @@ use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Components;
+use Breeze\Util\Response;
 
 class ProfileService extends BaseService implements ProfileServiceInterface
 {
@@ -48,6 +49,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$wallUserSettings = $this->userSettingsRepository->getById($profileId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
 
+		$token = createToken(Response::CSRF_TOKEN_ACTION);
+
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
 			'pagination' => $wallUserSettings->getPaginationNumber(),
@@ -57,6 +60,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'currentUserAvatar' => $userInfo['avatar']['url'],
 			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
+			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
+			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadComponents();

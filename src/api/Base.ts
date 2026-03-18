@@ -1,5 +1,13 @@
 import SmfVars from "../DataSource/SMF";
 
+export const updateCsrfToken = (token: {
+	var: string;
+	value: string;
+}): void => {
+	SmfVars.csrfToken.var = token.var;
+	SmfVars.csrfToken.value = token.value;
+};
+
 export const baseConfig = (params: object = {}): object => ({
 	data: params,
 	headers: {
@@ -17,6 +25,10 @@ export const baseUrl = (
 	url.searchParams.append("action", action);
 	url.searchParams.append("sa", subAction);
 	url.searchParams.append(SmfVars.session.var, SmfVars.session.id);
+
+	if (SmfVars.csrfToken.var && SmfVars.csrfToken.value) {
+		url.searchParams.append(SmfVars.csrfToken.var, SmfVars.csrfToken.value);
+	}
 
 	additionalParams.map((objectValue): null => {
 		for (const [key, value] of Object.entries(objectValue)) {

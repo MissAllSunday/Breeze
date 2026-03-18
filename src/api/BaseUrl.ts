@@ -11,6 +11,10 @@ export const baseUrl = (
 	url.searchParams.append("sa", subAction);
 	url.searchParams.append(SmfVars.session.var, SmfVars.session.id);
 
+	if (SmfVars.csrfToken.var && SmfVars.csrfToken.value) {
+		url.searchParams.append(SmfVars.csrfToken.var, SmfVars.csrfToken.value);
+	}
+
 	additionalParams.map((objectValue): null => {
 		for (const [key, value] of Object.entries(objectValue)) {
 			url.searchParams.append(key, value);

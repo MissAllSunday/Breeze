@@ -51,7 +51,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 		<database>install.php</database>
 		<remove-dir name="$sourcedir/Breeze" />
 		<remove-dir name="$boarddir/breezeVendor" />
-		<remove-file name="$sourcedir/tasks/Breeze-Notify.php" />
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
 		<remove-file name="$themedir/BreezeBlocks.template.php" />

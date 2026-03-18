@@ -79,6 +79,7 @@ class BuddyController extends BaseController implements ControllerInterface
 	protected function check(): void
 	{
 		checkSession('get');
+		validateToken('buddy', 'get');
 
 		$this->isAllowedTo('profile_extra_own');
 

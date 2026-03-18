@@ -16,6 +16,8 @@ use Breeze\Util\Response;
 use Breeze\Util\Validate\Validations\ValidateData;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
+
+
 class UserSettingsController extends BaseController
 {
 	use PermissionsTrait;
@@ -67,6 +69,8 @@ class UserSettingsController extends BaseController
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 		$userId = $this->getRequest('u', 0);
 
+		createToken(self::AREA);
+
 		$this->userSettingsBuilder->setForm([
 			'name' => UserSettingsEntity::IDENTIFIER,
 			'url' => $scriptUrl . self::URL . ';u=' . $userId . ';sa=' . self::ACTION_SAVE,
@@ -80,6 +84,8 @@ class UserSettingsController extends BaseController
 
 	public function save(): void
 	{
+		validateToken(self::AREA);
+
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 		$userId = $this->getRequest('u', 0);
 		$userSettings = $this->getRequest('user_settings');

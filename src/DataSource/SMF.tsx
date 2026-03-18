@@ -52,6 +52,13 @@ const editorIsRich = window.breezeEditorIsRich || false;
 const currentUserAvatar =
 	window.breezeCurrentUserAvatar || `${window.smf_avatars_url}/default.png`;
 
+const csrfToken = {
+	// @ts-expect-error CSRF token var name set serverside
+	var: window.breezeCsrfTokenVar ?? "",
+	// @ts-expect-error CSRF token value set serverside
+	value: window.breezeCsrfTokenValue ?? "",
+};
+
 const smfVars = {
 	session,
 	youSure,
@@ -64,10 +71,11 @@ const smfVars = {
 	pagination,
 	aboutMeContent,
 	buddiesTabContent,
-  smfEditorHandler,
+	smfEditorHandler,
 	editorOptions,
 	editorIsRich,
 	currentUserAvatar,
+	csrfToken,
 };
 
 export default smfVars;

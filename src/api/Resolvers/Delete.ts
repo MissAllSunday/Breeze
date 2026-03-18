@@ -1,4 +1,5 @@
 import { showError, showInfo } from "../../utils/tooltip";
+import { updateCsrfToken } from "../Base";
 
 export const resolveDelete = async (
 	response: Response,
@@ -7,7 +8,12 @@ export const resolveDelete = async (
 	const deleted: boolean = response.ok && response.status === 204;
 
 	if (!deleted) {
-		const { message } = await response.json();
+		const { message, token } = await response.json();
+
+		if (token) {
+			updateCsrfToken(token);
+		}
+
 		showError(message);
 	} else {
 		showInfo(successMessage);

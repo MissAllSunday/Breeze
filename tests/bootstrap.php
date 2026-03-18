@@ -64,6 +64,22 @@ function remove_integration_function(): void
 function checkSession(): void
 {
 }
+function createToken(string $action, string $type = 'post'): array
+{
+	$tokenVar = $action . '_token_var';
+	$tokenVal = md5(mt_rand() . session_id() . (string) time());
+
+	$_SESSION['token'][$type . '-' . $action] = [$tokenVar, $tokenVal, time()];
+
+	$GLOBALS['context'][$action . '_token'] = $tokenVal;
+	$GLOBALS['context'][$action . '_token_var'] = $tokenVar;
+
+	return [$action . '_token_var' => $tokenVar, $action . '_token' => $tokenVal];
+}
+function validateToken(string $action, string $type = 'post', bool $reset = true): bool
+{
+	return true;
+}
 function smf_json_decode($s, $array = true)
 {
 	return json_decode($s, $array);

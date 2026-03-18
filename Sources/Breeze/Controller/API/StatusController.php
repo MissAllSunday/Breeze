@@ -136,4 +136,12 @@ class StatusController extends ApiBaseController
 	{
 		return self::SUB_ACTIONS;
 	}
+
+	public function getMutatingActions(): array
+	{
+		return [
+			self::ACTION_POST,
+			self::ACTION_DELETE,
+		];
+	}
 }

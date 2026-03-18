@@ -34,6 +34,8 @@ class Response
 		self::SUCCESS_TYPE,
 	];
 
+	public const string CSRF_TOKEN_ACTION = 'breeze';
+
 	protected array $response = [
 		'message' => '',
 		'content' => [],
@@ -51,9 +53,12 @@ class Response
 		]), $responseCode);
 	}
 
- public function print(array $responseData, int $responseCode = 200, string $type = ''): void
+	public function print(array $responseData, int $responseCode = 200, string $type = ''): void
 	{
 		$this->setGlobal('db_show_debug', false);
+
+		$responseData = $this->appendToken($responseData);
+
 		ob_end_clean();
 
 		if (!$this->global('enableCompressedOutput')) {
@@ -78,6 +83,18 @@ class Response
 				$this->getText(self::ERROR_TYPE . '_' . $message)
 			),
 		]), $responseCode);
+	}
+
+	protected function appendToken(array $responseData): array
+	{
+		$token = createToken(self::CSRF_TOKEN_ACTION);
+
+		$responseData['token'] = [
+			'var' => $token[self::CSRF_TOKEN_ACTION . '_token_var'],
+			'value' => $token[self::CSRF_TOKEN_ACTION . '_token'],
+		];
+
+		return $responseData;
 	}
 
 	public function redirect(string $uri): void

@@ -42,6 +42,7 @@ function template_profile(): void
 
 		if (!empty($context[Breeze::NAME]['buddiesData']))
 		{
+			$buddyToken = createToken('buddy', 'get');
 			echo '
 				<ul class="reset buddyList">';
 
@@ -60,7 +61,7 @@ function template_profile(): void
     				</li>
     				<li>
     					', $buddy['link_color'] ,'
-    					<a href="', $scripturl , '?action=buddy;u=', $buddy['id'], ';', $context['session_var'], '=', $context['session_id'], '">
+    					<a href="', $scripturl , '?action=buddy;u=', $buddy['id'], ';', $context['session_var'], '=', $context['session_id'], ';', $buddyToken['buddy_token_var'], '=', $buddyToken['buddy_token'], '">
     						<span class="main_icons ', $buddyIcon , '" title="', $txt['buddy_' . $buddyText] ,'" /></a>
 					</li>
   				</ul>';

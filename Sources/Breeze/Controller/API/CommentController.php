@@ -34,6 +34,14 @@ class CommentController extends ApiBaseController
 		return self::SUB_ACTIONS;
 	}
 
+	public function getMutatingActions(): array
+	{
+		return [
+			self::ACTION_POST_COMMENT,
+			self::ACTION_DELETE,
+		];
+	}
+
 	public function postComment(): void
 	{
 		try {

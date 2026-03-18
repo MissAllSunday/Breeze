@@ -63,6 +63,10 @@ abstract class ApiBaseController
 			$this->response->print([], Response::NOT_FOUND);
 		}
 
+		if ($this->isMutatingAction()) {
+			$this->validateCsrfToken();
+		}
+
 		try {
 			$this->validateActions->isValid();
 			$this->subActionCall();
@@ -71,5 +75,17 @@ abstract class ApiBaseController
 		}
 	}
 
+	protected function isMutatingAction(): bool
+	{
+		return in_array($this->subAction, $this->getMutatingActions(), true);
+	}
+
+	protected function validateCsrfToken(): void
+	{
+		validateToken(Response::CSRF_TOKEN_ACTION);
+	}
+
 	abstract public function getSubActions(): array;
+
+	abstract public function getMutatingActions(): array;
 }
