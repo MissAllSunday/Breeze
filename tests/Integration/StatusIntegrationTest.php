@@ -30,7 +30,7 @@ class StatusIntegrationTest extends TestCase
 
 	public static function setUpBeforeClass(): void
 	{
-		require_once __DIR__ . '/../database-config.php';
+		require_once __DIR__ . '/../setup-test-database.php';
 
 		if (!isDatabaseAvailable()) {
 			self::markTestSkipped('Database is not available. Run tests/setup-test-database.php first.');
@@ -54,24 +54,18 @@ class StatusIntegrationTest extends TestCase
 			$this->markTestSkipped('Database connection not available');
 		}
 
+		global $testDbConfig;
+
 		// Clean up test data before each test
-		$this->cleanupTestData();
+		truncateTestTables(self::$pdo, $testDbConfig['prefix']);
 	}
 
 	protected function tearDown(): void
 	{
-		// Clean up test data after each test
-		$this->cleanupTestData();
-	}
-
-	private function cleanupTestData(): void
-	{
 		global $testDbConfig;
-		$prefix = $testDbConfig['prefix'];
 
-		// Delete test statuses (this will cascade to comments via repository)
-		self::$pdo->exec("DELETE FROM `{$prefix}breeze_status` WHERE user_id IN (100, 101, 102)");
-		self::$pdo->exec("DELETE FROM `{$prefix}breeze_comments` WHERE user_id IN (100, 101, 102)");
+		// Clean up test data after each test
+		truncateTestTables(self::$pdo, $testDbConfig['prefix']);
 	}
 
 	/**

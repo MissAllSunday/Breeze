@@ -17,6 +17,29 @@ class AllowTest extends TestCase
 	public function setUp(): void
 	{
 		$this->allow = new Allow();
+
+		// Refresh flood session data with current timestamps to avoid timing issues
+		$_SESSION['Breeze']['flood_1'] = [
+			'time' => time() + 10,
+			'msgCount' => 0,
+		];
+
+		$_SESSION['Breeze']['flood_2'] = [
+			'time' => time() + 10,
+			'msgCount' => 666,
+		];
+
+		$_SESSION['Breeze']['flood_3'] = [
+			'time' => time() - 10,
+			'msgCount' => 666,
+		];
+
+		$_SESSION['Breeze']['flood_4'] = [
+			'time' => time() - 10,
+			'msgCount' => 3,
+		];
+
+		$_SESSION['Breeze']['flood_5'] = [];
 	}
 
 	/**

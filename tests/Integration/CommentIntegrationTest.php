@@ -35,7 +35,7 @@ class CommentIntegrationTest extends TestCase
 
 	public static function setUpBeforeClass(): void
 	{
-		require_once __DIR__ . '/../database-config.php';
+		require_once __DIR__ . '/../setup-test-database.php';
 
 		if (!isDatabaseAvailable()) {
 			self::markTestSkipped('Database is not available. Run tests/setup-test-database.php first.');
@@ -60,14 +60,9 @@ class CommentIntegrationTest extends TestCase
 		}
 
 		global $testDbConfig;
-		$prefix = $testDbConfig['prefix'];
 
 		// Ensure a clean state before every test
-		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_status`");
-		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_comments`");
-		self::$pdo->exec("TRUNCATE TABLE `{$prefix}user_likes`");
-		self::$pdo->exec("TRUNCATE TABLE `{$prefix}members`");
-		self::$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_options`");
+		truncateTestTables(self::$pdo, $testDbConfig['prefix']);
 	}
 
 	/**
