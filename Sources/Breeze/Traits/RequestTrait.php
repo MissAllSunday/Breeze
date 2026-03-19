@@ -32,12 +32,12 @@ trait RequestTrait
 		return $this->sanitize($_GET);
 	}
 
-	public function getRequest(string $variableName, $defaultValue = null)
+	public function getRequest(string $variableName, mixed $defaultValue = false): mixed
 	{
 		$this->init();
 
 		return empty($this->request[$variableName]) ?
-			$defaultValue ?? false : ($this->sanitize($this->request[$variableName]));
+			$defaultValue : $this->sanitize($this->request[$variableName]);
 	}
 
 	public function setPost(string $variableName, $variableValue): void

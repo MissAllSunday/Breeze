@@ -45,7 +45,7 @@ final class RequestTest extends TestCase
 			'not found' =>
 			[
 				'variableName' => 'Cornholio',
-				'expected' => false,
+				'expected' => null,
 				'defaultValue' => null,
 			],
 			'default value' =>
