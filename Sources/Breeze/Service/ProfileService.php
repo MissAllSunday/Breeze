@@ -48,7 +48,6 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$userInfo = $this->getCurrentUserInfo();
 		$wallUserSettings = $this->userSettingsRepository->getById($profileId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
-
 		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
 
 		$this->components->loadUIVars([

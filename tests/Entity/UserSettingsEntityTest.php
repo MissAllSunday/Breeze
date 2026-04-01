@@ -18,6 +18,7 @@ class UserSettingsEntityTest extends TestCase
 			'kickIgnored' => 'check',
 			'aboutMe' => 'textArea',
 			'enableBuddiesTab' => 'check',
+			'autoFollowBack' => 'check',
 		], UserSettingsEntity::getColumns());
 	}
 
@@ -30,6 +31,7 @@ class UserSettingsEntityTest extends TestCase
 			'kickIgnored' => 0,
 			'aboutMe' => '',
 			'enableBuddiesTab' => 0,
+			'autoFollowBack' => 0,
 		], UserSettingsEntity::getDefaultValues());
 	}
 
@@ -41,6 +43,7 @@ class UserSettingsEntityTest extends TestCase
 			'paginationNumber' => 5,
 			'kickIgnored' => 0,
 			'enableBuddiesTab' => 0,
+			'autoFollowBack' => 0,
 		], UserSettingsEntity::getInts());
 	}
 
@@ -66,6 +69,7 @@ class UserSettingsEntityTest extends TestCase
 		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::GENERAL_WALL, '1'));
 		$this->assertEquals(0, $entity->castValue(UserSettingsEntity::KICK_IGNORED, '0'));
 		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::ENABLE_BUDDIES_TAB, '1'));
+		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::AUTO_FOLLOW_BACK, '1'));
 		$this->assertEquals(10, $entity->castValue(UserSettingsEntity::PAGINATION_NUM, '10'));
 
 		// Test integer casting for member ID

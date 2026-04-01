@@ -16,6 +16,7 @@ class SettingsEntityTest extends TestCase
 			'forceWall' => 'check',
 			'maxFloodNum' => 'int',
 			'maxFloodMinutes' => 'int',
+			'allowAutoFollowBack' => 'check',
 		], SettingsEntity::getColumns());
 	}
 

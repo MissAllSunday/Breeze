@@ -18,6 +18,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public const string ENABLE_BUDDIES_TAB = 'enableBuddiesTab';
 	public const string BUDDIES = 'buddies';
 	public const string ABOUT_ME = 'aboutMe';
+	public const string AUTO_FOLLOW_BACK = 'autoFollowBack';
 	public const string USER_ID = 'userId';
 
 	protected int $wall = 0;
@@ -31,6 +32,8 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	protected int $enableBuddiesTab = 0;
 
 	protected string $aboutMe = '';
+
+	protected int $autoFollowBack = 0;
 
 	protected array $buddies = [];
 
@@ -51,6 +54,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::PAGINATION_NUM => SettingsEntity::TYPE_TEXT,
 			self::KICK_IGNORED => SettingsEntity::TYPE_CHECK,
 			self::ENABLE_BUDDIES_TAB => SettingsEntity::TYPE_CHECK,
+			self::AUTO_FOLLOW_BACK => SettingsEntity::TYPE_CHECK,
 			self::ABOUT_ME => SettingsEntity::TYPE_TEXTAREA,
 		];
 	}
@@ -63,6 +67,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::PAGINATION_NUM => 5,
 			self::KICK_IGNORED => 0,
 			self::ENABLE_BUDDIES_TAB => 0,
+			self::AUTO_FOLLOW_BACK => 0,
 			self::ABOUT_ME => '',
 		];
 	}
@@ -126,6 +131,16 @@ class UserSettingsEntity extends Entity implements EntityInterface
 		$this->enableBuddiesTab = $enableBuddiesTab;
 	}
 
+	public function getAutoFollowBack(): int
+	{
+		return $this->autoFollowBack;
+	}
+
+	public function setAutoFollowBack(int $autoFollowBack): void
+	{
+		$this->autoFollowBack = $autoFollowBack;
+	}
+
 	public function getAboutMe(): string
 	{
 		return $this->aboutMe;
@@ -179,6 +194,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::GENERAL_WALL,
 			self::KICK_IGNORED,
 			self::ENABLE_BUDDIES_TAB,
+			self::AUTO_FOLLOW_BACK,
 			self::PAGINATION_NUM,
 			MemberEntity::ID => (int) $value,
 			self::BLOCK_LIST, self::BUDDIES => explode(',', $value),
@@ -195,6 +211,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			'kickIgnored' => $this->getKickIgnored(),
 			'aboutMe' => $this->getAboutMe(),
 			'enableBuddiesTab' => $this->getEnableBuddiesTab(),
+			'autoFollowBack' => $this->getAutoFollowBack(),
 		];
 	}
 }

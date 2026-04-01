@@ -8,6 +8,7 @@ use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
+use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Database\DatabaseClient;
@@ -33,6 +34,7 @@ use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\AlertService;
+use Breeze\Service\BuddyService;
 use Breeze\Service\CommentService;
 use Breeze\Service\LikeService;
 use Breeze\Service\PermissionsService;
@@ -112,6 +114,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			Response::class,
 		]],
 		UserSettingsController::class => ['arguments' => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class]],
+		BuddyController::class => ['arguments' => [Response::class, BuddyService::class]],
 
 		// Entities - New instances (Data transfer objects)
 		AlertEntity::class => ['arguments' => []],
@@ -154,6 +157,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class], 'shared' => true],
 		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
 		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class], 'shared' => true],
+		BuddyService::class => ['arguments' => [ProfileService::class, AlertService::class], 'shared' => true],
 	];
 
 	public function provides(string $id): bool
