@@ -74,6 +74,7 @@ class UserSettingsController extends BaseController
 		$this->userSettingsBuilder->setForm([
 			'name' => UserSettingsEntity::IDENTIFIER,
 			'url' => $scriptUrl . self::URL . ';u=' . $userId . ';sa=' . self::ACTION_SAVE,
+			'token' => self::AREA,
 		], $this->userRepository->getById($userId)->toArray());
 
 		$this->render(__FUNCTION__, [

@@ -31,12 +31,9 @@ class SettingsBuilder implements SettingsBuilderInterface
 
 			$formatterClassName = ValueFormatter::getNameSpace() . $formatterFileInfo;
 
-		   if ($formatterClassName === ValueFormatter::class) {
-			   continue;
-		   }
-		   if ($formatterClassName === ValueFormatterInterface::class) {
-			   continue;
-		   }
+			if (in_array($formatterClassName, [ValueFormatter::class, ValueFormatterInterface::class], true)) {
+				continue;
+			}
 
 			$formatters[$formatterKey] = new $formatterClassName();
 		}

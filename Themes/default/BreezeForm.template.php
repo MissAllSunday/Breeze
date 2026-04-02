@@ -72,16 +72,26 @@ function template_breezeForm_Desc(array $elementOptions): string
 
 function template_breezeForm_Display($formOptions): string
 {
-	global $txt;
+	global $txt, $context;
 
 	$return = '';
 
 	$return .= '
-<form action="'. $formOptions['url'] .'" 
-	method="post" 
-	accept-charset="UTF-8" 
-	name="'. $formOptions['name'] .'" 
+<form action="'. $formOptions['url'] .'"
+	method="post"
+	accept-charset="UTF-8"
+	name="'. $formOptions['name'] .'"
 	id="'. $formOptions['name'] .'">';
+
+	$return .= '
+	<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '">';
+
+	$tokenVar = $formOptions['token'] ?? '';
+
+	if ($tokenVar !== '' && !empty($context[$tokenVar . '_token_var'])) {
+		$return .= '
+	<input type="hidden" name="' . $context[$tokenVar . '_token_var'] . '" value="' . $context[$tokenVar . '_token'] . '">';
+	}
 
 	$return .= '
 	<div class="windowbg2">
