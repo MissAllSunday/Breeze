@@ -12,10 +12,6 @@
     display: block;
 }
 
-.breeze_wall{
-
-}
-
 .breeze_anchor:hover {
     text-decoration: none;
 }
@@ -26,17 +22,16 @@ ul.status {
 }
 
 .status li.status {
-	display: inline-block;
-	width: 99%;
+	width: 100%;
 }
 
-ul.status li.status div.floatleft {
-	width: 15%;
+/* Re-use SMF's poster/postarea layout from index.css */
+.status li.status .poster {
 	text-align: center;
 }
 
-ul.status li.status div.floatright {
-	width: 84%;
+.status li.status .postarea .windowbg {
+	margin-top: 0;
 }
 
 div.avatar_compact {
@@ -101,22 +96,31 @@ img.comment_avatar {
     margin-left: 5px;
 }
 
-.pointer_cursor {
+button.pointer_cursor {
 	cursor: pointer;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	font: inherit;
+	color: inherit;
+	text-align: inherit;
+	box-shadow: none;
+	height: auto;
+	line-height: normal;
 }
 
-.userinfo {
+/* Poster area spacing within status items */
+.status .poster {
 	padding-top: 20px;
 }
 
 .fadeOut{
 	transition: 0.8s linear;
-	-webkit-animation: fadeinout .3s linear forwards;
 	animation: fadeinout .3s linear forwards;
 }
 .fadeIn{
-	transition:0.8s linear;
-	-webkit-animation: display .5s linear forwards;
+	transition: 0.8s linear;
 	animation: display .5s linear forwards;
 }
 
@@ -140,12 +144,11 @@ ul.buddyList {
 
 
 @media screen and (max-width: 720px){
-	ul.status li.status div.floatleft {
-		width: 0;
+	.status li.status .poster {
 		display: none;
 	}
-	ul.status li.status div.floatright {
-		width: 99%;
+	.status li.status .postarea {
+		margin-left: 0;
 	}
 
     .buddyList ul {
@@ -177,21 +180,10 @@ ul.buddyList {
     }
 }
 
-@-webkit-keyframes fadeinout {
-	0% { opacity: 0.6; }
-	50% { opacity: 0.2; }
-	100% { opacity: 0; }
-}
-
 @keyframes fadeinout {
 	0% { opacity: 0.6; }
 	50% { opacity: 0.2; }
 	100% { opacity: 0; }
-}
-@-webkit-keyframes display {
-	0% { opacity: 0.2; }
-	50% { opacity: 0.6; }
-	100% { opacity: 1; }
 }
 
 @keyframes display {
@@ -212,10 +204,16 @@ ul.buddyList {
 	left: 0;
 	bottom: 0;
 	right: 0;
+	font-size: 0;
+	line-height: 0;
+	color: transparent;
+	text-shadow: none;
+	background-color: transparent;
+	border: 0;
 }
 
 /* Transparent Overlay */
-.loading:before {
+.loading::before {
 	content: '';
 	display: block;
 	position: fixed;
@@ -224,99 +222,25 @@ ul.buddyList {
 	width: 100%;
 	height: 100%;
 	background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-	background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
 }
 
-/* :not(:required) hides these rules from IE9 and below */
-.loading:not(:required) {
-	/* hide "loading..." text */
-	font: 0/0 a;
-	color: transparent;
-	text-shadow: none;
-	background-color: transparent;
-	border: 0;
-}
-
-.loading:not(:required):after {
+.loading::after {
 	content: '';
 	display: block;
 	font-size: 10px;
 	width: 1em;
 	height: 1em;
 	margin-top: -0.5em;
-	-webkit-animation: spinner 150ms infinite linear;
-	-moz-animation: spinner 150ms infinite linear;
-	-ms-animation: spinner 150ms infinite linear;
-	-o-animation: spinner 150ms infinite linear;
 	animation: spinner 150ms infinite linear;
 	border-radius: 0.5em;
-	-webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
 	box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
 }
 
-/* Animation */
-
-@-webkit-keyframes spinner {
-	0% {
-		-webkit-transform: rotate(0deg);
-		-moz-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
-@-moz-keyframes spinner {
-	0% {
-		-webkit-transform: rotate(0deg);
-		-moz-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
-@-o-keyframes spinner {
-	0% {
-		-webkit-transform: rotate(0deg);
-		-moz-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
-}
 @keyframes spinner {
 	0% {
-		-webkit-transform: rotate(0deg);
-		-moz-transform: rotate(0deg);
-		-ms-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
 		transform: rotate(0deg);
 	}
 	100% {
-		-webkit-transform: rotate(360deg);
-		-moz-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
 		transform: rotate(360deg);
 	}
 }

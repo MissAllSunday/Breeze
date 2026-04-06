@@ -20,20 +20,20 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 
 	return (
 		<>
-			<ul className="user_info flow_auto">
+			<ul className="user_info">
 				<li>
-					<span
-						role="button"
-						tabIndex={0}
+					<button
+						type="button"
 						onClick={handleOpen}
 						className="pointer_cursor"
-						dangerouslySetInnerHTML={{ __html: props.userData.link_color }}
-					/>
+						style={{ color: props.userData.group_color }}
+					>
+						{props.userData.name}
+					</button>
 				</li>
 				<li className="avatar">
-					<span
-						role="button"
-						tabIndex={0}
+					<button
+						type="button"
 						onClick={handleOpen}
 						className="pointer_cursor"
 					>
@@ -41,7 +41,7 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 							href={props.userData.avatar.url}
 							userName={props.userData.username}
 						/>
-					</span>
+					</button>
 				</li>
 
 				<li className="postgroup">{props.userData.group}</li>
