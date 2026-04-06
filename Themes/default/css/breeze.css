@@ -115,6 +115,55 @@ button.pointer_cursor {
 	padding-top: 20px;
 }
 
+/* Mini Profile popup — re-uses SMF's poster/postarea layout */
+.mini_profile_body .poster {
+	text-align: center;
+	padding-top: 10px;
+}
+
+.mini_profile_body .postarea {
+	padding: 10px;
+}
+
+.mini_profile_field {
+	margin-bottom: 8px;
+}
+
+.mini_profile_label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 2px;
+}
+
+.mini_profile_value {
+	display: block;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+.mini_profile_custom_fields {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.mini_profile_custom_fields li {
+	margin: 3px 0;
+}
+
+.mini_profile_actions {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.mini_profile_online {
+	color: #0a0;
+}
+
+.mini_profile_offline {
+	color: #888;
+}
+
 .fadeOut{
 	transition: 0.8s linear;
 	animation: fadeinout .3s linear forwards;
