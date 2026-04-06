@@ -11,6 +11,7 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\LikesEnum;
+use Breeze\Service\ProfileService;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\TextTrait;
@@ -75,6 +76,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 			}
 
 			$loadedUsers[$userId] = $this->trimUserData(loadMemberContext($userId, true));
+			$loadedUsers[$userId]['legacy_url'] = sprintf(ProfileService::LEGACY_URL, $userId);
 		}
 
 		return $loadedUsers;

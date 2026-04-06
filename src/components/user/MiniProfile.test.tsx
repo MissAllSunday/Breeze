@@ -13,6 +13,12 @@ vi.mock("../../DataSource/Txt", () => ({
 	},
 }));
 
+vi.mock("../../DataSource/SMF", () => ({
+	default: {
+		script_url: "http://smf.local:8000/index.php",
+	},
+}));
+
 function act(show = true, overrides?: Partial<UserDataType>) {
 	const onClose = vi.fn();
 	const data: UserDataType = { ...userData.basic, ...overrides };
@@ -30,7 +36,7 @@ describe("MiniProfile", () => {
 			act(true, { name: "Astaroth" });
 
 			expect(screen.getByRole("dialog")).toBeInTheDocument();
-			expect(screen.getByText("Astaroth")).toBeInTheDocument();
+			expect(screen.getAllByText("Astaroth")[0]).toBeInTheDocument();
 		});
 
 		it("renders the avatar", () => {
@@ -71,18 +77,6 @@ describe("MiniProfile", () => {
 			expect(screen.queryByText("Signature")).not.toBeInTheDocument();
 		});
 
-		it("renders last active timestamp when present", () => {
-			act(true, { last_login_timestamp: "1695828664" });
-
-			expect(screen.getByText("1695828664")).toBeInTheDocument();
-		});
-
-		it("does not render last active when empty", () => {
-			act(true, { last_login_timestamp: "" });
-
-			expect(screen.queryByText("Last Active")).not.toBeInTheDocument();
-		});
-
 		it("renders custom fields when present", () => {
 			act(true, {
 				custom_fields: [
@@ -103,12 +97,14 @@ describe("MiniProfile", () => {
 			expect(screen.queryByText("Custom Fields")).not.toBeInTheDocument();
 		});
 
-		it("renders full profile link when href is present", () => {
-			act(true, { href: "https://forum.test/profile/1" });
+		it("renders avatar and name as links to legacy profile", () => {
+			act(true, { legacy_url: "?action=profile;area=legacy;u=1" });
 
-			const link = screen.getByText("View Full Profile");
-			expect(link).toBeInTheDocument();
-			expect(link).toHaveAttribute("href", "https://forum.test/profile/1");
+			const links = screen.getAllByRole("link");
+			const profileLinks = links.filter((link) =>
+				link.getAttribute("href")?.includes("action=profile;area=legacy;u=1"),
+			);
+			expect(profileLinks.length).toBeGreaterThanOrEqual(2);
 		});
 	});
 

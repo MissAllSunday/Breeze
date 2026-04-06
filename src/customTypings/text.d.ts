@@ -16,6 +16,8 @@ declare module "breezeTypesText" {
 		goUp: string;
 		goBack: string;
     emptyData: string;
+		buddyAdd: string;
+		buddyRemove: string;
 	}
 
 	interface LikeTextType {

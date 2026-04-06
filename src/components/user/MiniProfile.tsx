@@ -3,6 +3,7 @@ import type React from "react";
 
 import { Modal } from "../Modal";
 import Avatar from "./Avatar";
+import SmfVars from "../../DataSource/SMF";
 
 const MiniProfile: React.FunctionComponent<MiniProfileProps> = (
 	props: MiniProfileProps,
@@ -25,20 +26,24 @@ const MiniProfile: React.FunctionComponent<MiniProfileProps> = (
 				<div className="poster">
 					<ul className="user_info">
 						<li className="avatar">
-							<Avatar
-								href={userData.avatar.url}
-								userName={userData.username}
-								customClassName="mini_profile_avatar"
-							/>
+              <a href={SmfVars.script_url + userData.legacy_url}>
+                <Avatar
+                  href={userData.avatar.url}
+                  userName={userData.username}
+                  customClassName="mini_profile_avatar"
+                />
+              </a>
 						</li>
 						<li>
-							<span
-								className="mini_profile_name"
-								dangerouslySetInnerHTML={{ __html: userData.link_color }}
-							/>
+              <a href={SmfVars.script_url + userData.legacy_url}
+                className="pointer_cursor"
+                style={{ color: props.userData.group_color }}
+                >
+                {onlineIndicator} {props.userData.name}
+              </a>
 						</li>
 						<li className="postgroup">
-							{userData.group} {onlineIndicator}
+							{userData.group}
 						</li>
 						<li
 							className="icons"
@@ -47,47 +52,28 @@ const MiniProfile: React.FunctionComponent<MiniProfileProps> = (
 						{userData.title && (
 							<li className="breeze_description">{userData.title}</li>
 						)}
+
+            {userData.custom_fields?.length > 0 && (
+              <div className="mini_profile_field">
+                <ul className="mini_profile_custom_fields">
+                  {userData.custom_fields.map((field: CustomFieldType) => (
+                    <li key={field.col_name}>
+                      <strong>{field.title}</strong>:{" "}
+                      <span dangerouslySetInnerHTML={{ __html: field.value }} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 					</ul>
 				</div>
 				<div className="postarea">
 					{userData.signature && (
 						<div className="mini_profile_field">
-							<span className="mini_profile_label">Signature</span>
 							<span
 								className="mini_profile_value"
 								dangerouslySetInnerHTML={{ __html: userData.signature }}
 							/>
-						</div>
-					)}
-
-					{userData.last_login_timestamp && (
-						<div className="mini_profile_field">
-							<span className="mini_profile_label">Last Active</span>
-							<span className="mini_profile_value">
-								{userData.last_login_timestamp}
-							</span>
-						</div>
-					)}
-
-					{userData.custom_fields?.length > 0 && (
-						<div className="mini_profile_field">
-							<span className="mini_profile_label">Custom Fields</span>
-							<ul className="mini_profile_custom_fields">
-								{userData.custom_fields.map((field: CustomFieldType) => (
-									<li key={field.col_name}>
-										<strong>{field.title}</strong>:{" "}
-										<span dangerouslySetInnerHTML={{ __html: field.value }} />
-									</li>
-								))}
-							</ul>
-						</div>
-					)}
-
-					{userData.href && (
-						<div className="mini_profile_actions">
-							<a href={userData.href} className="button">
-								View Full Profile
-							</a>
 						</div>
 					)}
 				</div>

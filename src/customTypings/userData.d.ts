@@ -21,6 +21,7 @@ declare module "breezeTypesUser" {
 		is_guest: boolean;
 		is_reverse_buddy: boolean;
 		last_login_timestamp: string;
+		legacy_url: string;
 		link: string;
 		link_color: string;
 		name: string;

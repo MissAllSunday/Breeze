@@ -22,6 +22,7 @@ const basic: UserDataType = {
 	is_guest: false,
 	is_reverse_buddy: false,
 	last_login_timestamp: "1695828664",
+	legacy_url: "?action=profile;area=legacy;u=0",
 	link: '<a href="#">link</a>',
 	link_color: '<a href="#" style="color: rgb(255, 136, 57);">color link</a>',
 	name: "name",

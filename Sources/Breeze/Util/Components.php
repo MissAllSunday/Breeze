@@ -93,6 +93,8 @@ class Components
 				'goUp' => $this->getSmfText('go_up'),
 				'goBack' => $this->getText('general_goBack'),
 				'emptyData' => $this->getText('info_empty_data'),
+				'buddyAdd' => $this->getSmfText('buddy_add'),
+				'buddyRemove' => $this->getSmfText('buddy_remove'),
 			],
 			'tabs' => [
 				'wall' => $this->getText('tabs_wall'),

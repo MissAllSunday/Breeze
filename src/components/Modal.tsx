@@ -20,9 +20,8 @@ export const Modal: React.FunctionComponent<ModalProps> = (
 
 	const handleParentClick = useCallback(
 		(event: React.MouseEvent) => {
-			event.preventDefault();
-
 			if (event.target === event.currentTarget) {
+				event.preventDefault();
 				handleClose();
 			}
 		},
