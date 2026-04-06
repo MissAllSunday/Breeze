@@ -8,7 +8,7 @@ const basic: UserDataType = {
 		url: "https://missallsunday.com",
 	},
 	buddies: ["2", "3"],
-	custom_fields: [],
+	custom_fields: [] as UserDataType["custom_fields"],
 	email: "email@domain.com",
 	group: "some group",
 	group_color: "#666",

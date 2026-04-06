@@ -7,7 +7,7 @@ declare module "breezeTypesUser" {
 			url: string;
 		};
 		buddies: string[];
-		custom_fields: string[];
+		custom_fields: CustomFieldType[];
 		email: string;
 		group: string;
 		group_color: string;
@@ -39,6 +39,15 @@ declare module "breezeTypesUser" {
 		username_color: HTMLSpanElement;
 	}
 
+	interface CustomFieldType {
+		title: string;
+		col_name: string;
+		value: string;
+		simple: string;
+		raw: string;
+		placement: string;
+	}
+
 	interface AvatarDataType {
 		href: string;
 		userName: string;
@@ -46,6 +55,12 @@ declare module "breezeTypesUser" {
 	}
 	interface UserInfoProps {
 		userData: UserDataType;
+	}
+
+	interface MiniProfileProps {
+		userData: UserDataType;
+		show: boolean;
+		onClose: () => void;
 	}
 }
 
