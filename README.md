@@ -36,7 +36,8 @@ chmod +x generate_zip.sh && ./generate_zip.sh
 ```
 
 ###### Documentation:
-- [Architecture](BREEZE_ARCHITECTURE.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Testing Guide](docs/TESTING.md)
 
 ###### Notes:
 

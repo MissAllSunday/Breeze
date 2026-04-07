@@ -79,6 +79,7 @@ function devServerPlugin(): Plugin {
 					host: HOST || "0.0.0.0",
 					port: parseInt(PORT || "3000", 10),
 					open: true,
+					allowedHosts: ["app"],
 					...(https &&
 						SSL_CRT_FILE &&
 						SSL_KEY_FILE && {

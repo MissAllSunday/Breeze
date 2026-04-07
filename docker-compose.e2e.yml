@@ -16,6 +16,22 @@ services:
       retries: 5
       start_period: 30s
 
+  api:
+    image: php:8.3-cli
+    container_name: breeze_e2e_api
+    working_dir: /app
+    volumes:
+      - ./e2e/api:/app
+    ports:
+      - "8080:8000"
+    command: ["php", "-S", "0.0.0.0:8000", "index.php"]
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"file_get_contents('http://127.0.0.1:8000/?action=breezeStatus&sa=profile&sc=test');\" 2>/dev/null"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
   app:
     build:
       context: .
@@ -24,7 +40,7 @@ services:
     ports:
       - "3001:3000"
     environment:
-      VITE_APP_DEV_URL: "http://localhost:8000/index.php"
+      VITE_APP_DEV_URL: "http://api:8000/index.php"
       VITE_APP_DEV_THEME_URL: "/images"
       VITE_APP_DEV_SESSION_VAR: "sc"
       VITE_APP_DEV_SESSION_ID: "e2e_session"
@@ -40,12 +56,29 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      api:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 15s
+
+  e2e:
+    build:
+      context: ./e2e
+      dockerfile: Dockerfile
+    container_name: breeze_e2e_runner
+    environment:
+      BASE_URL: "http://app:3000"
+    depends_on:
+      app:
+        condition: service_healthy
+    volumes:
+      - ./e2e/tests:/e2e/tests
+      - ./e2e/playwright-report:/e2e/playwright-report
+      - ./e2e/test-results:/e2e/test-results
 
 volumes:
   breeze_e2e_db_data:

@@ -6,6 +6,19 @@
     <script type="module" src="src/index"></script>
 </head>
 <body>
+<script>
+// Stub for SMF's sceditor - required for the Editor component
+window.sceditor = {
+    create: function() {},
+    instance: function() {
+        return {
+            val: function(v) { return v !== undefined ? undefined : ''; },
+            createPermanentDropDown: function() {},
+            toggleSourceMode: function() {}
+        };
+    }
+};
+</script>
 <div id="root" wallType="wall"></div>
 <div id="tab-about" style="display:none;"></div>
 <div id="tab-buddies" style="display:none;"></div>
