@@ -221,14 +221,17 @@ docker compose -f docker-compose.e2e.yml down -v
 |---------|-----|
 | `app` container not healthy | Check `docker compose -f docker-compose.e2e.yml logs app` — usually a port conflict on 3001 |
 | Tests time out waiting for statuses | Verify the mock API is running: `curl http://localhost:8080/index.php?action=breezeStatus&sa=wall` |
-| `net::ERR_CONNECTION_REFUSED` in tests | Make sure `VITE_APP_DEV_URL` in `docker-compose.e2e.yml` points to `http://localhost:8080/index.php` and port 8080 is not in use |
+| `net::ERR_CONNECTION_REFUSED` in tests | Make sure `VITE_APP_DEV_URL` in `docker-compose.e2e.yml` points to `http://api:8000/index.php` (Docker internal hostname) |
 | Stale containers from a previous run | Run `docker compose -f docker-compose.e2e.yml down -v` before starting again |
 
 #### Running with a visible browser (headed / debug)
 
-Since the e2e service uses `network_mode: host` and all URLs use `localhost`,
-you can run Playwright **locally** against the Docker services and see the
-browser live.
+For local visual debugging, run Playwright **on the host** instead of inside
+Docker. The host browser hits the Docker services through port-mapped `localhost`.
+
+> **Note:** The headless Docker runner uses Docker-internal hostnames
+> (`http://api:8000`). When running locally, the browser needs `localhost`
+> URLs instead. Override `VITE_APP_DEV_URL` on the app container for this.
 
 **One-time setup:**
 
@@ -240,10 +243,11 @@ npx playwright install chromium
 cd ..
 ```
 
-**Start the stack** (same as before):
+**Start the stack with localhost API URL:**
 
 ```bash
-docker compose -f docker-compose.e2e.yml up -d --build --wait db api app
+VITE_APP_DEV_URL=http://localhost:8080/index.php \
+  docker compose -f docker-compose.e2e.yml up -d --build --wait db api app
 ```
 
 **Run tests with a visible browser:**
@@ -261,9 +265,8 @@ npx playwright test --ui --config=playwright.config.ts
 npx playwright test tests/wall.spec.ts --debug --config=playwright.config.ts
 ```
 
-> `baseURL` defaults to `http://localhost:3001` and the API is at
-> `http://localhost:8080` — both are the host-mapped Docker ports, so the
-> local browser reaches the same services as the headless Docker runner.
+> `baseURL` defaults to `http://localhost:3001` and the API override maps
+> to `http://localhost:8080` — both are host-mapped Docker ports.
 
 ### Writing Tests
 
@@ -284,7 +287,7 @@ test('wall loads and displays statuses', async ({ page }) => {
 
 - **Playwright config:** `e2e/playwright.config.ts`
 - **Dockerfile:** `e2e/Dockerfile` (based on `mcr.microsoft.com/playwright`)
-- **Base URL:** `http://localhost:3001` (host-mapped port, works both in Docker and locally)
+- **Base URL (Docker):** `http://app:3000` · **Base URL (local):** `http://localhost:3001`
 - **Reports:** `e2e/playwright-report/` (volume-mounted to host)
 - **Screenshots on failure:** `e2e/test-results/`
 

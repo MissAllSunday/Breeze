@@ -40,7 +40,7 @@ services:
     ports:
       - "3001:3000"
     environment:
-      VITE_APP_DEV_URL: "http://localhost:8080/index.php"
+      VITE_APP_DEV_URL: "http://api:8000/index.php"
       VITE_APP_DEV_THEME_URL: "/images"
       VITE_APP_DEV_SESSION_VAR: "sc"
       VITE_APP_DEV_SESSION_ID: "e2e_session"
@@ -70,9 +70,8 @@ services:
       context: ./e2e
       dockerfile: Dockerfile
     container_name: breeze_e2e_runner
-    network_mode: host
     environment:
-      BASE_URL: "http://localhost:3001"
+      BASE_URL: "http://app:3000"
     depends_on:
       app:
         condition: service_healthy
