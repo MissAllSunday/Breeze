@@ -7,12 +7,28 @@
 </head>
 <body>
 <script>
-// Stub for SMF's sceditor - required for the Editor component
+// Stub for SMF's sceditor - required for the Editor component.
+// Proxies val() to the underlying textarea so E2E tests can interact
+// with the editor via standard DOM fill/type.
+window.smf_you_sure = 'Are you sure you want to do this?';
 window.sceditor = {
     create: function() {},
-    instance: function() {
+    instance: function(textarea) {
         return {
-            val: function(v) { return v !== undefined ? undefined : ''; },
+            val: function(v) {
+                if (textarea) {
+                    if (v !== undefined) {
+                        var nativeSetter = Object.getOwnPropertyDescriptor(
+                            window.HTMLTextAreaElement.prototype, 'value'
+                        ).set;
+                        nativeSetter.call(textarea, v);
+                        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                        return;
+                    }
+                    return textarea.value;
+                }
+                return v !== undefined ? undefined : '';
+            },
             createPermanentDropDown: function() {},
             toggleSourceMode: function() {}
         };

@@ -92,7 +92,7 @@ function handlePostStatus(): void
         'isNew' => true,
     ];
 
-    respond($newStatus, 'Status posted', 201);
+    respond([$newStatus['id'] => $newStatus], 'Status posted', 201);
 }
 
 function handleComment(string $subAction): void

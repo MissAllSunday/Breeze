@@ -155,18 +155,115 @@ The `docker-compose.e2e.yml` file orchestrates four services:
 The mock API (`e2e/api/`) returns fixture data matching the real Breeze API
 contract so tests run without a full SMF installation.
 
-### Running E2E Tests
+### Running E2E Tests Locally
+
+#### 1. Start the stack
+
+Build and start the database, mock API, and Vite dev server.
+The `--wait` flag blocks until every container reports healthy.
 
 ```bash
-# Start all services and wait for healthy
 docker compose -f docker-compose.e2e.yml up -d --build --wait db api app
+```
 
-# Run the Playwright tests
+> **First run** pulls the MySQL and Node images, so it may take a few minutes.
+> Subsequent runs reuse cached layers and start in ~15 seconds.
+
+#### 2. Run the tests
+
+```bash
+# Run all E2E tests
 docker compose -f docker-compose.e2e.yml run --rm e2e
 
-# Tear down
+# Run a single test file
+docker compose -f docker-compose.e2e.yml run --rm e2e \
+  npx playwright test tests/wall.spec.ts --config=playwright.config.ts
+
+# Run tests matching a grep pattern
+docker compose -f docker-compose.e2e.yml run --rm e2e \
+  npx playwright test -g "displays mock statuses" --config=playwright.config.ts
+```
+
+Because `e2e/tests/` is volume-mounted, you can edit or add test files
+without rebuilding the container — just re-run step 2.
+
+#### 3. View the HTML report
+
+After a run, Playwright writes an HTML report to `e2e/playwright-report/`
+(volume-mounted to the host). Open it in your browser:
+
+```bash
+open e2e/playwright-report/index.html      # macOS
+xdg-open e2e/playwright-report/index.html  # Linux
+```
+
+Failure screenshots are saved to `e2e/test-results/`.
+
+#### 4. Tear down
+
+```bash
+# Stop containers and remove volumes
 docker compose -f docker-compose.e2e.yml down -v
 ```
+
+#### Quick reference (copy-paste)
+
+```bash
+# Full cycle: start → test → stop
+docker compose -f docker-compose.e2e.yml up -d --build --wait db api app
+docker compose -f docker-compose.e2e.yml run --rm e2e
+docker compose -f docker-compose.e2e.yml down -v
+```
+
+#### Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| `app` container not healthy | Check `docker compose -f docker-compose.e2e.yml logs app` — usually a port conflict on 3001 |
+| Tests time out waiting for statuses | Verify the mock API is running: `curl http://localhost:8080/index.php?action=breezeStatus&sa=wall` |
+| `net::ERR_CONNECTION_REFUSED` in tests | Make sure `VITE_APP_DEV_URL` in `docker-compose.e2e.yml` points to `http://localhost:8080/index.php` and port 8080 is not in use |
+| Stale containers from a previous run | Run `docker compose -f docker-compose.e2e.yml down -v` before starting again |
+
+#### Running with a visible browser (headed / debug)
+
+Since the e2e service uses `network_mode: host` and all URLs use `localhost`,
+you can run Playwright **locally** against the Docker services and see the
+browser live.
+
+**One-time setup:**
+
+```bash
+cd e2e
+npm init -y
+npm install @playwright/test
+npx playwright install chromium
+cd ..
+```
+
+**Start the stack** (same as before):
+
+```bash
+docker compose -f docker-compose.e2e.yml up -d --build --wait db api app
+```
+
+**Run tests with a visible browser:**
+
+```bash
+cd e2e
+
+# Headed mode — opens a Chromium window
+npx playwright test tests/wall.spec.ts --headed --config=playwright.config.ts
+
+# UI mode — interactive panel with timeline, DOM snapshot, step-by-step
+npx playwright test --ui --config=playwright.config.ts
+
+# Debug mode — pauses at each step with Playwright Inspector
+npx playwright test tests/wall.spec.ts --debug --config=playwright.config.ts
+```
+
+> `baseURL` defaults to `http://localhost:3001` and the API is at
+> `http://localhost:8080` — both are the host-mapped Docker ports, so the
+> local browser reaches the same services as the headless Docker runner.
 
 ### Writing Tests
 
@@ -187,7 +284,7 @@ test('wall loads and displays statuses', async ({ page }) => {
 
 - **Playwright config:** `e2e/playwright.config.ts`
 - **Dockerfile:** `e2e/Dockerfile` (based on `mcr.microsoft.com/playwright`)
-- **Base URL inside Docker:** `http://app:3000`
+- **Base URL:** `http://localhost:3001` (host-mapped port, works both in Docker and locally)
 - **Reports:** `e2e/playwright-report/` (volume-mounted to host)
 - **Screenshots on failure:** `e2e/test-results/`
 
