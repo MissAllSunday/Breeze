@@ -1,0 +1,52 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: breeze_e2e_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: breeze_test
+    ports:
+      - "3307:3306"
+    volumes:
+      - breeze_e2e_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: breeze_e2e_app
+    ports:
+      - "3001:3000"
+    environment:
+      VITE_APP_DEV_URL: "http://localhost:8000/index.php"
+      VITE_APP_DEV_THEME_URL: "/images"
+      VITE_APP_DEV_SESSION_VAR: "sc"
+      VITE_APP_DEV_SESSION_ID: "e2e_session"
+      VITE_APP_DEV_USER_ID: "1"
+      VITE_APP_DEV_WALL_ID: "1"
+      VITE_APP_DEV_IS_CURRENT_USER_OWNER: "true"
+      VITE_APP_DEV_USE_MOOD: "false"
+      VITE_APP_DEV_TEXT_TABS: '{"wall":"Wall","about":"About me","activity":"Recent activity"}'
+      VITE_APP_DEV_TEXT_ERROR: '{"wrongValues":"Wrong values were sent","errorEmpty":"You need to type something!","noStatus":"No status to display","generic":"There was an error"}'
+      VITE_APP_DEV_TEXT_LIKE: '{"like":"Like","unlike":"Unlike"}'
+      VITE_APP_DEV_TEXT: '{"deletedStatus":"Your status has been deleted","deletedComment":"Your comment was deleted!","save":"Save","delete":"Delete","editing":"Editing","close":"Close","cancel":"Cancel","send":"Send","preview":"Preview","previewing":"Previewing","end":"No more status to display","loadMore":"Load more","goUp":"Go Up","emptyData":"No data available"}'
+      VITE_APP_DEV_OWNER_SETTINGS: ""
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  breeze_e2e_db_data:
+
