@@ -195,3 +195,72 @@ test.describe('Wall - Post Status', () => {
     await expect(toast).toContainText('You need to type something!');
   });
 });
+
+
+test.describe('Wall - Delete Status', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await waitForStatuses(page);
+  });
+
+  test('delete button is visible on each status', async ({ page }) => {
+    const deleteButtons = page.locator('[data-testid="deleteStatus"]');
+
+    // Each of the 3 statuses should have a delete button
+    await expect(deleteButtons).toHaveCount(3);
+  });
+
+  test('clicking delete shows confirmation dialog', async ({ page }) => {
+    const deleteButton = page.locator('[data-testid="deleteStatus"]').first();
+
+    let dialogType = '';
+    let dialogMessage = '';
+    page.once('dialog', async (dialog) => {
+      dialogType = dialog.type();
+      dialogMessage = dialog.message();
+      await dialog.dismiss();
+    });
+
+    await deleteButton.dispatchEvent('click');
+
+    expect(dialogType).toBe('confirm');
+    expect(dialogMessage).toBeTruthy();
+  });
+
+  test('confirming removes the status from the list', async ({ page }) => {
+    // Accept all dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
+
+    // Click delete on the first status
+    const deleteButton = page.locator('#status-1 [data-testid="deleteStatus"]');
+    await deleteButton.dispatchEvent('click');
+
+    // Should go from 3 to 2 statuses
+    await expect(page.locator('li.status')).toHaveCount(2, { timeout: 10_000 });
+
+    // The deleted status (#status-1) should no longer exist
+    await expect(page.locator('#status-1')).toHaveCount(0);
+  });
+
+  test('cancelling keeps the status in the list', async ({ page }) => {
+    // Dismiss all dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.dismiss();
+    });
+
+    // Click delete on the first status
+    const deleteButton = page.locator('#status-1 [data-testid="deleteStatus"]');
+    await deleteButton.dispatchEvent('click');
+
+    // Wait a moment to confirm nothing was removed
+    await page.waitForTimeout(1000);
+
+    // All 3 statuses should still be present
+    await expect(page.locator('li.status')).toHaveCount(3);
+
+    // The first status should still exist
+    await expect(page.locator('#status-1')).toBeVisible();
+  });
+});
