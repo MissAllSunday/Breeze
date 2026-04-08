@@ -8,9 +8,9 @@ export DB_PREFIX := smf_
 
 VENDOR_DIR := breezeVendor
 
-.PHONY: all install test setup-test-database lint ui-install ui-test clean
+.PHONY: all install test setup-test-database lint ui-install ui-test e2e-up e2e-test e2e-down e2e clean
 
-all: install test ui-test
+all: install test ui-test e2e
 
 install:
 	@echo "Checking PHP version..."
@@ -33,6 +33,20 @@ ui-install:
 ui-test:
 	@echo "Running UI tests..."
 	@npm run test:run
+
+e2e-up:
+	@echo "Starting E2E services..."
+	@docker compose -f docker-compose.e2e.yml up -d --build --wait db api app
+
+e2e-test: e2e-up
+	@echo "Running E2E Playwright tests..."
+	@docker compose -f docker-compose.e2e.yml run --rm e2e
+
+e2e-down:
+	@echo "Tearing down E2E services..."
+	@docker compose -f docker-compose.e2e.yml down -v
+
+e2e: e2e-test e2e-down
 
 clean:
 	@echo "Cleaning up $(VENDOR_DIR) and node_modules..."

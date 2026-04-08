@@ -26,8 +26,15 @@ The mod uses the following scripts:
 - [React Hot Toast](https://react-hot-toast.com)
 
 ##### Tests
+
 ```bash
-composer test && npm run test:run
+# Run all tests (PHP + UI + E2E)
+make all
+
+# Run individually
+make test       # PHP (PHPUnit + PHPStan)
+make ui-test    # UI components (Vitest)
+make e2e        # E2E (Playwright + Docker)
 ```
 
 ##### Generate an optimized SMF package
