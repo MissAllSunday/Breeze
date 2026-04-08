@@ -115,7 +115,7 @@ function handleComment(string $subAction): void
                 'isNew' => true,
             ];
 
-            respond($newComment, 'Comment posted', 201);
+            respond([$newComment['id'] => $newComment], 'Comment posted', 201);
         })(),
         'deleteComment' => respondEmpty('Comment deleted', 204),
         default => respond([], 'Unknown sub-action', 404),
