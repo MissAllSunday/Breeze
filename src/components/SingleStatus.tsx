@@ -36,7 +36,11 @@ export default function SingleStatus(
 
 		getSingleStatus(props.statusId)
 			.then((statusResponse: IFetchStatus | undefined) => {
-				if (!statusResponse || !statusResponse.data || statusResponse.data.length === 0) {
+				if (
+					!statusResponse ||
+					!statusResponse.data ||
+					statusResponse.data.length === 0
+				) {
 					setNotFound(true);
 					return;
 				}
@@ -53,23 +57,20 @@ export default function SingleStatus(
 			});
 	}, [props.statusId]);
 
-	const removeStatus = useCallback(
-		(currentStatus: StatusType) => {
-			setIsLoading(true);
+	const removeStatus = useCallback((currentStatus: StatusType) => {
+		setIsLoading(true);
 
-			deleteStatus(currentStatus.id)
-				.then((deleted: boolean) => {
-					if (deleted) {
-						// Redirect to wall after deletion
-						window.location.href = `${smfVars.script_url}?action=wall`;
-					}
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
-		},
-		[],
-	);
+		deleteStatus(currentStatus.id)
+			.then((deleted: boolean) => {
+				if (deleted) {
+					// Redirect to wall after deletion
+					window.location.href = `${smfVars.script_url}?action=wall`;
+				}
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	}, []);
 
 	const goBack = () => {
 		window.history.back();
@@ -121,11 +122,7 @@ export default function SingleStatus(
 					/>
 				</div>
 				<ul className="status">
-					<Status
-						key={status.id}
-						status={status}
-						removeStatus={removeStatus}
-					/>
+					<Status key={status.id} status={status} removeStatus={removeStatus} />
 				</ul>
 				<div id="post_confirm_buttons">
 					<input
@@ -140,4 +137,3 @@ export default function SingleStatus(
 		</>
 	);
 }
-

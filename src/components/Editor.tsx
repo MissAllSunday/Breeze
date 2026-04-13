@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
 import type { EditorProps } from "breezeTypesEditor";
+import React, { useCallback, useEffect, useState } from "react";
 
 import smfVars from "../DataSource/SMF";
 import smfTextVars from "../DataSource/Txt";
 import { showError } from "../utils/tooltip";
+
 const Editor: React.FunctionComponent<EditorProps> = (props: EditorProps) => {
 	const [content, setContent] = useState("");
 
@@ -37,11 +38,13 @@ const Editor: React.FunctionComponent<EditorProps> = (props: EditorProps) => {
 			? smfVars.smfEditorHandler.instance(textArea.current).val()
 			: content;
 
-		if (toSave === 'about:suki') {
-			return alert('What if everything around you\n' +
-				'Isn\'t quite as it seems?\n' +
-				'What if all the world you think you know\n' +
-				'Is an elaborate dream?');
+		if (toSave === "about:suki") {
+			return alert(
+				"What if everything around you\n" +
+					"Isn't quite as it seems?\n" +
+					"What if all the world you think you know\n" +
+					"Is an elaborate dream?",
+			);
 		}
 
 		if (!window.confirm(smfVars.youSure)) {

@@ -2,11 +2,9 @@ import "@testing-library/jest-dom";
 import type { IFetchStatus } from "breezeTypesStatus";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi, beforeEach } from "vitest";
-
-import { status } from "../__fixtures__/status";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import permissions from "../__fixtures__/permissions";
-import { PermissionsContext } from "../context/PermissionsContext";
+import { status } from "../__fixtures__/status";
 import SingleStatus from "./SingleStatus";
 
 const MOCK_STATUS_ID = 123;
@@ -42,6 +40,7 @@ vi.mock("../utils/tooltip", () => ({
 
 // Mock window.location
 delete (window as { location?: Location }).location;
+// @ts-expect-error -- partial Location stub for testing
 window.location = { href: "" } as Location;
 
 // Mock smfTextVars
@@ -70,7 +69,6 @@ vi.mock("../DataSource/SMF", () => ({
 }));
 
 import { getSingleStatus } from "../api/Status/GetSingle";
-import { deleteStatus } from "../api/Status/Delete";
 
 function act(statusId = MOCK_STATUS_ID) {
 	return render(<SingleStatus statusId={statusId} />);
@@ -112,7 +110,9 @@ describe("SingleStatus component", () => {
 			act();
 
 			await waitFor(() => {
-				expect(screen.getAllByRole("button", { name: /go back/i })).toHaveLength(2);
+				expect(
+					screen.getAllByRole("button", { name: /go back/i }),
+				).toHaveLength(2);
 			});
 		});
 
@@ -121,7 +121,9 @@ describe("SingleStatus component", () => {
 			act();
 
 			await waitFor(() => {
-				expect(screen.getAllByRole("button", { name: /go back/i })).toHaveLength(2);
+				expect(
+					screen.getAllByRole("button", { name: /go back/i }),
+				).toHaveLength(2);
 			});
 
 			// Click the first Go Back button
@@ -141,7 +143,9 @@ describe("SingleStatus component", () => {
 
 			await waitFor(() => {
 				// Should show the Go Back button in error state
-				expect(screen.getByRole("button", { name: /go back/i })).toBeInTheDocument();
+				expect(
+					screen.getByRole("button", { name: /go back/i }),
+				).toBeInTheDocument();
 			});
 
 			// Should not show the status component
@@ -154,7 +158,10 @@ describe("SingleStatus component", () => {
 			(getSingleStatus as jest.Mock).mockResolvedValue(
 				status.customFetchStatus({
 					data: [status.custom({ id: MOCK_STATUS_ID, isNew: false })],
-					permissions: { ...permissions.basic, Status: { delete: true, edit: false, post: false } },
+					permissions: {
+						...permissions.basic,
+						Status: { delete: true, edit: false, post: false },
+					},
 				}),
 			);
 
@@ -167,4 +174,3 @@ describe("SingleStatus component", () => {
 		});
 	});
 });
-

@@ -1,11 +1,10 @@
 import type { UserInfoProps } from "breezeTypesUser";
 import type * as React from "react";
 import { useCallback, useState } from "react";
-
-import Avatar from "./Avatar";
-import MiniProfile from "./MiniProfile";
 import SmfVars from "../../DataSource/SMF";
 import smfTextVars from "../../DataSource/Txt";
+import Avatar from "./Avatar";
+import MiniProfile from "./MiniProfile";
 
 const UserInfo: React.FunctionComponent<UserInfoProps> = (
 	props: UserInfoProps,
@@ -20,15 +19,15 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 		setShowMiniProfile(false);
 	}, []);
 
-  const onlineIndicator = props.userData.online?.is_online ? (
-    <span className="mini_profile_online" title={props.userData.online.text}>
+	const onlineIndicator = props.userData.online?.is_online ? (
+		<span className="mini_profile_online" title={props.userData.online.text}>
 			&#x1F7E2;
 		</span>
-  ) : (
-    <span className="mini_profile_offline" title={props.userData.online?.text}>
+	) : (
+		<span className="mini_profile_offline" title={props.userData.online?.text}>
 			&#x26AB;
 		</span>
-  );
+	);
 
 	return (
 		<>
@@ -40,15 +39,11 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 						className="pointer_cursor"
 						style={{ color: props.userData.group_color }}
 					>
-            {onlineIndicator} {props.userData.name}
+						{onlineIndicator} {props.userData.name}
 					</button>
 				</li>
 				<li className="avatar">
-					<button
-						type="button"
-						onClick={handleOpen}
-						className="pointer_cursor"
-					>
+					<button type="button" onClick={handleOpen} className="pointer_cursor">
 						<Avatar
 							href={props.userData.avatar.url}
 							userName={props.userData.username}
@@ -61,8 +56,12 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 				/>
 				{SmfVars.user_id !== props.userData.id && (
 					<li>
-						<a href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}>
-							{props.userData.is_buddy ? smfTextVars.general.buddyRemove : smfTextVars.general.buddyAdd}
+						<a
+							href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}
+						>
+							{props.userData.is_buddy
+								? smfTextVars.general.buddyRemove
+								: smfTextVars.general.buddyAdd}
 						</a>
 					</li>
 				)}

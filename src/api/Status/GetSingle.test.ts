@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
 
-import type { IFetchStatus } from "breezeTypesStatus";
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { responses } from "../../__fixtures__/responses";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { status } from "../../__fixtures__/status";
 import { showError } from "../../utils/tooltip";
 import { baseUrl } from "../Base";
@@ -30,9 +28,7 @@ describe("getSingleStatus API function", () => {
 	});
 
 	it("calls baseUrl with correct parameters", async () => {
-		vi.spyOn(global, "fetch").mockResolvedValueOnce(
-			Promise.resolve(new Response()),
-		);
+		vi.spyOn(global, "fetch").mockResolvedValueOnce(new Response());
 		await getSingleStatus(MOCK_STATUS_ID);
 
 		expect(baseUrl as jest.Mock).toHaveBeenCalledWith(
@@ -45,9 +41,7 @@ describe("getSingleStatus API function", () => {
 	describe("when status is fetched successfully", () => {
 		it("calls resolveGet with the response", async () => {
 			const mockResponse = new Response();
-			vi.spyOn(global, "fetch").mockResolvedValueOnce(
-				Promise.resolve(mockResponse),
-			);
+			vi.spyOn(global, "fetch").mockResolvedValueOnce(mockResponse);
 			(resolveGet as jest.Mock).mockResolvedValue(status.fetchStatus);
 
 			const result = await getSingleStatus(MOCK_STATUS_ID);
@@ -69,4 +63,3 @@ describe("getSingleStatus API function", () => {
 		});
 	});
 });
-

@@ -15,7 +15,7 @@ declare module "breezeTypesText" {
 		loadMore: string;
 		goUp: string;
 		goBack: string;
-    emptyData: string;
+		emptyData: string;
 		buddyAdd: string;
 		buddyRemove: string;
 	}

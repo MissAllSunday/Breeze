@@ -1,7 +1,6 @@
 import smfVars from "../../DataSource/SMF";
 import smfTextVars from "../../DataSource/Txt";
-import { baseConfig } from "../Base";
-import { baseUrl } from "../Base";
+import { baseConfig, baseUrl } from "../Base";
 import { resolveDelete } from "../Resolvers/Delete";
 
 export const deleteComment = async (commentId: number): Promise<boolean> => {

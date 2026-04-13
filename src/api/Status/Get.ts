@@ -1,9 +1,9 @@
+import type { IFetchStatus } from "breezeTypesStatus";
 import smfVars from "../../DataSource/SMF";
 import smfTextVars from "../../DataSource/Txt";
 import { showError } from "../../utils/tooltip";
 import { baseUrl } from "../Base";
 import { resolveGet } from "../Resolvers/Get";
-import type { IFetchStatus } from "breezeTypesStatus";
 
 export const getStatus = async (
 	type: string,
@@ -20,15 +20,12 @@ export const getStatus = async (
 			params.cursor = cursor;
 		}
 
-		const response = await fetch(
-			baseUrl("breezeStatus", type, [params]),
-			{
-				method: "GET",
-				headers: {
-					"X-SMF-AJAX": "1",
-				},
+		const response = await fetch(baseUrl("breezeStatus", type, [params]), {
+			method: "GET",
+			headers: {
+				"X-SMF-AJAX": "1",
 			},
-		);
+		});
 
 		return await resolveGet(response);
 	} catch (_error: unknown) {

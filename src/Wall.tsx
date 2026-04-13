@@ -18,7 +18,7 @@ import Status from "./components/Status";
 import { PermissionsContext } from "./context/PermissionsContext";
 import PermissionsDefault from "./DataSource/Permissions";
 import smfTextVars from "./DataSource/Txt";
-import {displayMessage, showInfo} from "./utils/tooltip";
+import { displayMessage, showInfo } from "./utils/tooltip";
 
 export default function Wall(props: WallProps): React.JSX.Element {
 	// If statusId is provided, render SingleStatus component
@@ -33,21 +33,18 @@ export default function Wall(props: WallProps): React.JSX.Element {
 function WallFeed(props: WallProps): React.JSX.Element {
 	const [statusList, setStatusList] = useState<StatusListType>([]);
 	const [isLoading, setIsLoading] = useState(true);
-  const [emptyData, setEmptyData] = useState(false);
+	const [emptyData, setEmptyData] = useState(false);
 	const [permissions, setPermissions] =
 		useState<PermissionsContextType>(PermissionsDefault);
 	const [nextCursor, setNextCursor] = useState<string | null>(null);
 	const [hasMore, setHasMore] = useState<boolean>(false);
 	const ref = React.useRef<null | HTMLInputElement>(null);
 
-	useEffect(
-		() => {
-			if (ref.current) {
-				ref.current.scrollIntoView({ behavior: "smooth", block: "end" });
-			}
-		},
-		[],
-	);
+	useEffect(() => {
+		if (ref.current) {
+			ref.current.scrollIntoView({ behavior: "smooth", block: "end" });
+		}
+	}, []);
 
 	useEffect(() => {
 		getStatus(props.wallType, 0, null)
@@ -59,7 +56,7 @@ function WallFeed(props: WallProps): React.JSX.Element {
 				const fetchedStatusList: StatusListType = Object.values(
 					statusListResponse.data,
 				);
-        setEmptyData(statusListResponse.data.length === 0);
+				setEmptyData(statusListResponse.data.length === 0);
 				setStatusList(fetchedStatusList);
 				setPermissions(statusListResponse.permissions);
 				setNextCursor(statusListResponse.pagination.nextCursor);
@@ -95,43 +92,40 @@ function WallFeed(props: WallProps): React.JSX.Element {
 			});
 	}, [props.wallType, statusList.length, nextCursor, hasMore]);
 
-	const createStatus = useCallback(
-		(content: string) => {
-			setIsLoading(true);
+	const createStatus = useCallback((content: string) => {
+		setIsLoading(true);
 
-			postStatus(content)
-				.then((newStatus: StatusListType) => {
-					setStatusList((prevStatusList: StatusListType) => [...prevStatusList, ...Object.values(newStatus)]);
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
+		postStatus(content)
+			.then((newStatus: StatusListType) => {
+				setStatusList((prevStatusList: StatusListType) => [
+					...prevStatusList,
+					...Object.values(newStatus),
+				]);
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
 
-			return true;
-		},
-		[],
-	);
+		return true;
+	}, []);
 
-	const removeStatus = useCallback(
-		(currentStatus: StatusType) => {
-			setIsLoading(true);
+	const removeStatus = useCallback((currentStatus: StatusType) => {
+		setIsLoading(true);
 
-			deleteStatus(currentStatus.id)
-				.then((deleted: boolean) => {
-					if (deleted) {
-						setStatusList((prevStatusList: StatusListType) =>
-							prevStatusList.filter(
-								(status: StatusType) => currentStatus.id !== status.id,
-							),
-						);
-					}
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
-		},
-		[],
-	);
+		deleteStatus(currentStatus.id)
+			.then((deleted: boolean) => {
+				if (deleted) {
+					setStatusList((prevStatusList: StatusListType) =>
+						prevStatusList.filter(
+							(status: StatusType) => currentStatus.id !== status.id,
+						),
+					);
+				}
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	}, []);
 
 	const goUp = () => {
 		window.scrollTo({ top: 0, behavior: "smooth" });
@@ -151,13 +145,15 @@ function WallFeed(props: WallProps): React.JSX.Element {
 			/>
 			<PermissionsContext.Provider value={permissions}>
 				<ul className="status">
-					{!emptyData ? statusList.map((singleStatus: StatusType) => (
-						<Status
-							key={singleStatus.id}
-							status={singleStatus}
-							removeStatus={removeStatus}
-						/>
-					)) : displayMessage(smfTextVars.general.emptyData)}
+					{!emptyData
+						? statusList.map((singleStatus: StatusType) => (
+								<Status
+									key={singleStatus.id}
+									status={singleStatus}
+									removeStatus={removeStatus}
+								/>
+							))
+						: displayMessage(smfTextVars.general.emptyData)}
 				</ul>
 				<div id="post_confirm_buttons">
 					{hasMore ? (

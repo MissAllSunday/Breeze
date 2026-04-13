@@ -1,7 +1,7 @@
 import type { CommentListType, CommentType } from "breezeTypesComments";
 import type { StatusProps } from "breezeTypesStatus";
 import * as React from "react";
-import {type Ref, useCallback, useContext, useState} from "react";
+import { type Ref, useCallback, useContext, useState } from "react";
 
 import { deleteComment } from "../api/Comment/Delete";
 import { postComment } from "../api/Comment/Post";
@@ -56,7 +56,10 @@ function Status(props: StatusProps): React.ReactElement {
 				body: content,
 			})
 				.then((newComments: CommentListType) => {
-					setCommentsList((prevCommentsList: CommentListType) => [...prevCommentsList, ...Object.values(newComments)]);
+					setCommentsList((prevCommentsList: CommentListType) => [
+						...prevCommentsList,
+						...Object.values(newComments),
+					]);
 				})
 				.finally(() => {
 					setIsLoading(false);
@@ -67,26 +70,22 @@ function Status(props: StatusProps): React.ReactElement {
 		[props.status.id, permissions.Comments.post],
 	);
 
-	const removeComment = useCallback(
-		(comment: CommentType) => {
-			setIsLoading(true);
-			deleteComment(comment.id)
-				.then((deleted) => {
-					if (deleted) {
-						setCommentsList((prevCommentsList: CommentListType) =>
-							prevCommentsList.filter(
-								(currentComment: CommentType) =>
-									currentComment.id !== comment.id,
-							),
-						);
-					}
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
-		},
-		[],
-	);
+	const removeComment = useCallback((comment: CommentType) => {
+		setIsLoading(true);
+		deleteComment(comment.id)
+			.then((deleted) => {
+				if (deleted) {
+					setCommentsList((prevCommentsList: CommentListType) =>
+						prevCommentsList.filter(
+							(currentComment: CommentType) => currentComment.id !== comment.id,
+						),
+					);
+				}
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	}, []);
 
 	return (
 		<li

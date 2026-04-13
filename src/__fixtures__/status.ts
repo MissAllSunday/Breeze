@@ -1,4 +1,4 @@
-import type { StatusType, IFetchStatus } from "breezeTypesStatus";
+import type { IFetchStatus, StatusType } from "breezeTypesStatus";
 
 import { comments } from "./comments";
 import likes from "./likes";

@@ -48,7 +48,7 @@ describe("UserInfo", () => {
 		});
 
 		it("renders group icons", () => {
-			act({ group_icons: "<i class=\"icon\">star</i>" });
+			act({ group_icons: '<i class="icon">star</i>' });
 
 			const stars = screen.getAllByText("star");
 			expect(stars[0]).toBeInTheDocument();
@@ -117,7 +117,9 @@ describe("UserInfo", () => {
 			act({ id: 1 });
 
 			expect(screen.queryByText("Add to buddy list")).not.toBeInTheDocument();
-			expect(screen.queryByText("Remove from buddy list")).not.toBeInTheDocument();
+			expect(
+				screen.queryByText("Remove from buddy list"),
+			).not.toBeInTheDocument();
 		});
 	});
 
@@ -137,7 +139,9 @@ describe("UserInfo", () => {
 			const user = userEvent.setup();
 			act();
 
-			const avatarButtons = screen.getAllByRole("button", { name: userData.basic.username });
+			const avatarButtons = screen.getAllByRole("button", {
+				name: userData.basic.username,
+			});
 			await user.click(avatarButtons[0]);
 
 			const dialog = screen.getByRole("dialog");
@@ -152,4 +156,3 @@ describe("UserInfo", () => {
 		});
 	});
 });
-

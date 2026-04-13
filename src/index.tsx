@@ -29,7 +29,7 @@ if (wallType === "wall") {
 				wallType={wallType}
 				pagination={pagination}
 				name={smfTextVars.tabs.wall}
-        statusId={statusId}
+				statusId={statusId}
 			/>
 		</React.StrictMode>,
 	);

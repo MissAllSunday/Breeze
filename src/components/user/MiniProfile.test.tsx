@@ -80,8 +80,22 @@ describe("MiniProfile", () => {
 		it("renders custom fields when present", () => {
 			act(true, {
 				custom_fields: [
-					{ title: "Location", col_name: "cust_loc", value: "Earth", simple: "Earth", raw: "Earth", placement: "standard" },
-					{ title: "Mood", col_name: "cust_mood", value: "Happy", simple: "Happy", raw: "Happy", placement: "standard" },
+					{
+						title: "Location",
+						col_name: "cust_loc",
+						value: "Earth",
+						simple: "Earth",
+						raw: "Earth",
+						placement: "standard",
+					},
+					{
+						title: "Mood",
+						col_name: "cust_mood",
+						value: "Happy",
+						simple: "Happy",
+						raw: "Happy",
+						placement: "standard",
+					},
 				],
 			});
 
@@ -157,4 +171,3 @@ describe("MiniProfile", () => {
 		});
 	});
 });
-

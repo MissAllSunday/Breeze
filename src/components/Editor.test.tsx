@@ -98,7 +98,9 @@ describe("Editor component", () => {
 		await user.click(sendButton);
 
 		await waitFor(() => {
-			expect(mockSaveContent).toHaveBeenCalledWith("mocked full editor content");
+			expect(mockSaveContent).toHaveBeenCalledWith(
+				"mocked full editor content",
+			);
 			// For full editor, the val() method is called to clear the content
 			expect(smfVars.smfEditorHandler.instance().val).toHaveBeenCalledWith("");
 		});
@@ -152,8 +154,12 @@ describe("Editor component", () => {
 	it("initializes SMF editor when isFull is true", () => {
 		render(<Editor saveContent={mockSaveContent} isFull={true} />);
 		expect(smfVars.smfEditorHandler.create).toHaveBeenCalled();
-		expect(smfVars.smfEditorHandler.instance().createPermanentDropDown).toHaveBeenCalled();
-		expect(smfVars.smfEditorHandler.instance().toggleSourceMode).not.toHaveBeenCalled(); // editorIsRich is true
+		expect(
+			smfVars.smfEditorHandler.instance().createPermanentDropDown,
+		).toHaveBeenCalled();
+		expect(
+			smfVars.smfEditorHandler.instance().toggleSourceMode,
+		).not.toHaveBeenCalled(); // editorIsRich is true
 	});
 
 	it("does not initialize SMF editor when isFull is false", () => {

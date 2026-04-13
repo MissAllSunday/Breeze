@@ -25,4 +25,3 @@ export const getSingleStatus = async (
 		showError(smfTextVars.error.generic);
 	}
 };
-

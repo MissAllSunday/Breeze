@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import type { WallProps } from "breezeTypes";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import Wall from "./Wall";
 
@@ -57,7 +57,9 @@ describe("Wall component routing", () => {
 			act({ statusId });
 
 			expect(screen.getByTestId("single-status")).toBeInTheDocument();
-			expect(screen.getByText(`Single Status: ${statusId}`)).toBeInTheDocument();
+			expect(
+				screen.getByText(`Single Status: ${statusId}`),
+			).toBeInTheDocument();
 		});
 
 		it("does not render the feed view", () => {
@@ -100,7 +102,9 @@ describe("Wall component routing", () => {
 			const statusId = 456;
 			act({ statusId });
 
-			expect(screen.getByText(`Single Status: ${statusId}`)).toBeInTheDocument();
+			expect(
+				screen.getByText(`Single Status: ${statusId}`),
+			).toBeInTheDocument();
 		});
 
 		it("passes all props to WallFeed", () => {
@@ -117,4 +121,3 @@ describe("Wall component routing", () => {
 		});
 	});
 });
-

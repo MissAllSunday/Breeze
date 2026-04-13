@@ -25,7 +25,7 @@ declare module "breezeTypes" {
 		wallType: string;
 		pagination: number;
 		name: string;
-    statusId?: number
+		statusId?: number;
 	}
 }
 
