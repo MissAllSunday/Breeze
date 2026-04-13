@@ -23,10 +23,27 @@ class HandlerServiceProvider
 		return new $handlerClass($alertEntity);
 	}
 
+	private const array OWNER_SUFFIXES = [
+		EventAbstract::STATUS_OWNER,
+		EventAbstract::WALL_OWNER,
+		EventAbstract::COMMENT_OWNER,
+		EventAbstract::OWNER,
+	];
+
 	protected function buildHandlerName(AlertEntity $alertEntity): string
 	{
-		return ucfirst(str_replace(Breeze::PATTERN, '', $alertEntity->getContentType())) .
-			ucfirst(str_replace(Breeze::PATTERN, '', $alertEntity->getContentAction()));
+		$type = ucfirst(str_replace(Breeze::PATTERN, '', $alertEntity->getContentType()));
+		$action = str_replace(Breeze::PATTERN, '', $alertEntity->getContentAction());
+
+		foreach (self::OWNER_SUFFIXES as $suffix) {
+			if (str_ends_with($action, $suffix)) {
+				$action = substr($action, 0, -strlen($suffix));
+
+				break;
+			}
+		}
+
+		return $type . ucfirst($action);
 	}
 
 	/**

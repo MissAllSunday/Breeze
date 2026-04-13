@@ -47,6 +47,8 @@ class HandlerServiceProviderTest extends TestCase
 		return [
 			'status created' => ['Breeze_status', 'Breeze_created', StatusCreatedHandler::class],
 			'comment created' => ['Breeze_comment', 'Breeze_created', CommentCreatedHandler::class],
+			'comment created status owner' => ['Breeze_comment', 'Breeze_created_status_owner', CommentCreatedHandler::class],
+			'comment created profile owner' => ['Breeze_comment', 'Breeze_created_profile_owner', CommentCreatedHandler::class],
 			'like created' => ['Breeze_like', 'Breeze_created', LikeCreatedHandler::class],
 		];
 	}
@@ -102,8 +104,8 @@ class HandlerServiceProviderTest extends TestCase
 	public function testBuildHandlerNameWithStatusCreated(): void
 	{
 		$alertEntity = $this->createStub(AlertEntity::class);
-		$alertEntity->method('getContentType')->willReturn('breeze_status');
-		$alertEntity->method('getContentAction')->willReturn('breeze_created');
+		$alertEntity->method('getContentType')->willReturn('Breeze_status');
+		$alertEntity->method('getContentAction')->willReturn('Breeze_created');
 
 		$reflection = new \ReflectionClass($this->handlerServiceProvider);
 		$method = $reflection->getMethod('buildHandlerName');
@@ -111,7 +113,7 @@ class HandlerServiceProviderTest extends TestCase
 
 		$result = $method->invoke($this->handlerServiceProvider, $alertEntity);
 
-		$this->assertEquals('Breeze_statusBreeze_created', $result);
+		$this->assertEquals('StatusCreated', $result);
 	}
 
 	/**

@@ -31,19 +31,22 @@ class AlertService extends BaseService implements AlertServiceInterface
 		updateMemberData($alertEntity->getIdMember(), ['alerts' => '+']);
 	}
 
-	/**
-	 * @throws DataNotFoundException
-	 */
 	public function handle(array &$alerts): void
 	{
+		$this->setLanguage(Breeze::NAME . 'Alerts');
+
 		foreach ($alerts as &$alert) {
 			if (!str_contains($alert['content_type'], Breeze::PATTERN)) {
 				continue;
 			}
 
-			$alertEntity = AlertEntity::from($alert);
-			$handler = $this->handlerServiceProvider->getHandler($alertEntity);
-			$alert = $handler->resolve();
+			try {
+				$alertEntity = AlertEntity::from($alert);
+				$handler = $this->handlerServiceProvider->getHandler($alertEntity);
+				$alert = $handler->resolve();
+			} catch (DataNotFoundException) {
+				continue;
+			}
 		}
 	}
 

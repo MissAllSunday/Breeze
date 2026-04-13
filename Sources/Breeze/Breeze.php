@@ -229,12 +229,16 @@ class Breeze
 	 * @throws ContainerExceptionInterface
 	 * @throws NotFoundExceptionInterface
 	 */
-	public function alertsWrapper(array &$alerts, array &$formats): void
+	public function alertsWrapper(array &$alerts): void
 	{
 		$alertService = $this->container->get(AlertService::class);
-		$alertService->handle($alerts, $formats);
+		$alertService->handle($alerts);
 	}
 
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function adminMenuWrapper(array &$adminMenu): void
 	{
 		/** @var AdminController $adminController */
