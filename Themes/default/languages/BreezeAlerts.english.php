@@ -31,6 +31,10 @@ $txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} <a href="{href}" cla
 $txt['Breeze_alert_comment_status_owner_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made on your own wall';
 $txt['Breeze_alert_comment_poster_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {gender_possessive} status on {gender_possessive} own wall';
 
+// Comment deleted.
+$txt['Breeze_alert_comment_deleted_different_owner'] = '{poster} deleted a comment on the status made by {status_poster} on {wall_owner}\'s wall';
+$txt['Breeze_alert_comment_deleted_status_owner'] = '{poster} deleted a comment on your status made in {wall_owner}\'s wall';
+
 // Someone posted a status on your wall.
 $txt['Breeze_alert_status_owner'] = '{poster} posted a new status on your wall';
 $txt['Breeze_alert_status_owner_buddy'] = '{poster} posted a new status on {wall_owner}\'s wall';
@@ -55,6 +59,10 @@ $txt['Breeze_alert_mention_own_comment'] = '<a href="{href}" class="bbc_link" ta
 $txt['Breeze_alert_buddy_confirm'] = '{sender} wants to be your buddy!<br><a href="{href}">Confirm/Deny the invitation</a>';
 $txt['Breeze_alert_buddy_confirmed'] = '{receiver} confirmed your buddy invitation!';
 $txt['Breeze_alert_buddy_done'] = '{receiver} and {sender} have become buddies!.';
+
+// Buddy notification (new system).
+$txt['Breeze_alert_buddy_invite'] = '{poster} wants to be your buddy!';
+$txt['Breeze_alert_buddy_accepted'] = '{poster} accepted your buddy invitation!';
 
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';

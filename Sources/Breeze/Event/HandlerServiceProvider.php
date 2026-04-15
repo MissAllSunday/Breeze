@@ -6,7 +6,10 @@ namespace Breeze\Event;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
+use Breeze\Event\Buddy\BuddyAcceptedHandler;
+use Breeze\Event\Buddy\BuddyInviteHandler;
 use Breeze\Event\Comment\CommentCreatedHandler;
+use Breeze\Event\Comment\CommentDeletedHandler;
 use Breeze\Event\Like\LikeCreatedHandler;
 use Breeze\Event\Status\StatusCreatedHandler;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -54,7 +57,10 @@ class HandlerServiceProvider
 		return match ($this->buildHandlerName($alertEntity)) {
 			'StatusCreated' => StatusCreatedHandler::class,
 			'CommentCreated' => CommentCreatedHandler::class,
+			'CommentDeleted' => CommentDeletedHandler::class,
 			'LikeCreated' => LikeCreatedHandler::class,
+			'BuddyInvite' => BuddyInviteHandler::class,
+			'BuddyAccepted' => BuddyAcceptedHandler::class,
 			default => throw new DataNotFoundException('Handler not found'),
 		};
 	}
