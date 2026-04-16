@@ -145,15 +145,13 @@ function WallFeed(props: WallProps): React.JSX.Element {
 			/>
 			<PermissionsContext.Provider value={permissions}>
 				<ul className="status">
-					{!emptyData
-						? statusList.map((singleStatus: StatusType) => (
-								<Status
-									key={singleStatus.id}
-									status={singleStatus}
-									removeStatus={removeStatus}
-								/>
-							))
-						: displayMessage(smfTextVars.general.emptyData)}
+					{statusList.map((singleStatus: StatusType) => (
+            <Status
+              key={singleStatus.id}
+              status={singleStatus}
+              removeStatus={removeStatus}
+            />
+          ))}
 				</ul>
 				<div id="post_confirm_buttons">
 					{hasMore ? (

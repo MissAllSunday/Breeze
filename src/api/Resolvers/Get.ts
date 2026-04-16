@@ -6,7 +6,7 @@ export const resolveGet = async (
 	response: Response,
 ): Promise<IFetchStatus | undefined> => {
 	const { content, message, token } = await response.json();
-
+console.log(content, message, token);
 	if (token) {
 		updateCsrfToken(token);
 	}

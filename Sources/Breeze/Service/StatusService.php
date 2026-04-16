@@ -14,7 +14,6 @@ use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
-use Breeze\Util\Validate\EmptyDataException;
 
 class StatusService extends BaseService implements StatusServiceInterface
 {
@@ -35,9 +34,6 @@ class StatusService extends BaseService implements StatusServiceInterface
 		return $this->statusRepository;
 	}
 
-	/**
-	 * @throws EmptyDataException
-	 */
 	public function getByProfile(int $wallId, ?string $cursor = null): array
 	{
 		$wallUserSettings = $this->userRepository->getById($wallId);

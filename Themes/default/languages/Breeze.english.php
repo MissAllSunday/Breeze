@@ -124,8 +124,12 @@ $txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this sec
 // Loading text.
 $txt['Breeze_profile_of_username'] = 'Profile of {name}';
 $txt['Breeze_info_loading_end'] = 'There are no more status to display';
-$txt['Breeze_page_no_status'] = 'There are no status to display';
-$txt['Breeze_info_empty_data'] = 'There are no status to display';
+$txt['Breeze_page_no_status'] = 'There are no status to display'; // This will be replaced by conditional logic
+$txt['Breeze_info_empty_data'] = 'There are no status to display'; // This will be replaced by conditional logic
+
+// New empty wall messages
+$txt['Breeze_success_empty_data_own_wall'] = 'Welcome to your wall! Share your first status update.';
+$txt['Breeze_success_empty_data_other_wall'] = 'This user hasn\'t posted any status updates yet.';
 
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Wall';

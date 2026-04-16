@@ -8,7 +8,7 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\EmptyDataException;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
@@ -49,8 +49,10 @@ class StatusControllerTest extends TestCase
 	{
 		$wallId = 123;
 		$expectedData = [
-			'statuses' => [['id' => 1, 'body' => 'Test status']],
-			'pagination' => ['total' => 1],
+			'data' => [['id' => 1, 'body' => 'Test status']], // Corrected key from 'statuses' to 'data'
+			'permissions' => ['delete' => true, 'post' => true],
+			'pagination' => ['nextCursor' => null, 'hasMore' => false],
+			'total' => 1,
 		];
 
 		// Set up the data property via reflection since it's set in dispatch()
@@ -71,10 +73,15 @@ class StatusControllerTest extends TestCase
 		$this->statusController->profile();
 	}
 
-	public function testProfileThrowsEmptyDataException(): void
+	public function testProfileReturnsEmptyDataWhenNoStatusesFound(): void
 	{
 		$wallId = 123;
-		$errorMessage = 'No statuses found';
+		$expectedEmptyData = [
+			'data' => [], // Corrected key from 'statuses' to 'data'
+			'permissions' => ['delete' => true, 'post' => true], // Added permissions to match service return
+			'pagination' => ['nextCursor' => null, 'hasMore' => false], // Added pagination to match service return
+			'total' => 0,
+		];
 
 		$reflection = new \ReflectionClass($this->statusController);
 		$dataProperty = $reflection->getProperty('data');
@@ -83,11 +90,15 @@ class StatusControllerTest extends TestCase
 
 		$this->statusService->expects($this->once())
 			->method('getByProfile')
-			->willThrowException(new EmptyDataException($errorMessage));
+			->willReturn($expectedEmptyData);
+
+		$this->statusService->expects($this->once())
+			->method('currentUserInfo')
+			->willReturn(['id' => 456]);
 
 		$this->response->expects($this->once())
-			->method('error')
-			->with($errorMessage);
+			->method('success')
+			->with('empty_data_other_wall', $expectedEmptyData);
 
 		$this->statusController->profile();
 	}
@@ -95,7 +106,10 @@ class StatusControllerTest extends TestCase
 	public function testWallSuccess(): void
 	{
 		$expectedData = [
-			'statuses' => [['id' => 1, 'body' => 'Buddy status']],
+			'data' => [['id' => 1, 'body' => 'Buddy status']], // Corrected key from 'statuses' to 'data'
+			'permissions' => ['delete' => true, 'post' => true], // Added permissions to match service return
+			'pagination' => ['nextCursor' => null, 'hasMore' => false], // Added pagination to match service return
+			'total' => 1,
 		];
 
 		$this->statusService->expects($this->once())
@@ -110,17 +124,22 @@ class StatusControllerTest extends TestCase
 		$this->statusController->wall();
 	}
 
-	public function testWallThrowsEmptyDataException(): void
+	public function testWallReturnsEmptyDataWhenNoBuddiesStatusesFound(): void
 	{
-		$errorMessage = 'No buddy statuses found';
+		$expectedEmptyData = [
+			'data' => [], // Corrected key from 'statuses' to 'data'
+			'permissions' => ['delete' => true, 'post' => true], // Added permissions to match service return
+			'pagination' => ['nextCursor' => null, 'hasMore' => false], // Added pagination to match service return
+			'total' => 0,
+		];
 
 		$this->statusService->expects($this->once())
 			->method('getByBuddies')
-			->willThrowException(new EmptyDataException($errorMessage));
+			->willReturn($expectedEmptyData);
 
 		$this->response->expects($this->once())
-			->method('error')
-			->with($errorMessage);
+			->method('success')
+			->with('', $expectedEmptyData);
 
 		$this->statusController->wall();
 	}
@@ -272,7 +291,7 @@ class StatusControllerTest extends TestCase
 		unset($_REQUEST['id']);
 	}
 
-	public function testSingleThrowsEmptyDataException(): void
+	public function testSingleThrowsDataNotFoundException(): void
 	{
 		$statusId = 999;
 		$errorMessage = 'error_no_status';
@@ -282,7 +301,7 @@ class StatusControllerTest extends TestCase
 		$this->statusService->expects($this->once())
 			->method('getById')
 			->with($statusId)
-			->willThrowException(new EmptyDataException($errorMessage));
+			->willThrowException(new DataNotFoundException($errorMessage));
 
 		$this->response->expects($this->once())
 			->method('error')
@@ -298,7 +317,9 @@ class StatusControllerTest extends TestCase
 	{
 		$wallId = 456;
 		$expectedData = [
-			'statuses' => [['id' => 1]],
+			'data' => [['id' => 1]], // Corrected key from 'statuses' to 'data'
+			'permissions' => ['delete' => true, 'post' => true], // Added permissions to match service return
+			'pagination' => ['nextCursor' => null, 'hasMore' => false], // Added pagination to match service return
 			'total' => 10,
 		];
 

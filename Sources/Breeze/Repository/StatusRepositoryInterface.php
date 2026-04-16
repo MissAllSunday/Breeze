@@ -7,7 +7,6 @@ namespace Breeze\Repository;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Util\Validate\DataNotFoundException;
-use Breeze\Util\Validate\EmptyDataException;
 
 interface StatusRepositoryInterface extends BaseRepositoryInterface
 {
@@ -17,9 +16,6 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	 */
 	public function insert(StatusEntity $statusEntity): array;
 
-	/**
-	 * @throws EmptyDataException
-	 */
 	public function getByProfile(array $userProfiles = [], int $maxIndex = 0, ?string $cursor = null): array;
 
 	public function getBy(string $columnName, array $data = [], int $maxIndex = 0, ?string $cursor = null): array;

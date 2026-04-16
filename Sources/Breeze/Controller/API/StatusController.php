@@ -10,7 +10,6 @@ use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\DataNotFoundException;
-use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class StatusController extends ApiBaseController
@@ -41,29 +40,32 @@ class StatusController extends ApiBaseController
 
 	public function profile(): void
 	{
-		try {
-			$statusByProfile = $this->statusService->getByProfile(
-				$this->data[StatusEntity::WALL_ID],
-				$this->getRequest('cursor', null)
-			);
+		$cursor = $this->getRequest('cursor', null);
+		$wallId = $this->data[StatusEntity::WALL_ID];
+		$message = '';
 
-			$this->response->success('', $statusByProfile);
-		} catch (EmptyDataException $emptyDataException) {
-			$this->response->error($emptyDataException->getMessage());
+		$statusByProfile = $this->statusService->getByProfile(
+			$wallId,
+			$cursor
+		);
+
+		if ($statusByProfile['data'] === [] && $cursor === null) {
+			$currentUserInfo = $this->statusService->currentUserInfo();
+			$message = $wallId === $currentUserInfo['id']
+				? 'empty_data_own_wall'
+				: 'empty_data_other_wall';
 		}
+
+		$this->response->success($message, $statusByProfile);
 	}
 
 	public function wall(): void
 	{
-		try {
-			$buddiesStatus = $this->statusService->getByBuddies(
-				$this->getRequest('cursor', null)
-			);
+		$buddiesStatus = $this->statusService->getByBuddies(
+			$this->getRequest('cursor', null)
+		);
 
-			$this->response->success('', $buddiesStatus);
-		} catch (EmptyDataException $exception) {
-			$this->response->error($exception->getMessage());
-		}
+		$this->response->success('', $buddiesStatus);
 	}
 
 	public function deleteStatus(): void
@@ -101,8 +103,6 @@ class StatusController extends ApiBaseController
 			);
 
 			$this->response->success('', $statusByProfile);
-		} catch (EmptyDataException $emptyDataException) {
-			$this->response->error($emptyDataException->getMessage());
 		} catch (InvalidStatusException $invalidStatusException) {
 			$this->response->error($invalidStatusException->getMessage());
 		}
@@ -122,8 +122,6 @@ class StatusController extends ApiBaseController
 			$singleStatus = $this->statusService->getById($statusId);
 
 			$this->response->success('', $singleStatus);
-		} catch (EmptyDataException $emptyDataException) {
-			$this->response->error($emptyDataException->getMessage());
 		} catch (DataNotFoundException $dataNotFoundException) {
 			$this->response->error($dataNotFoundException->getMessage());
 		}

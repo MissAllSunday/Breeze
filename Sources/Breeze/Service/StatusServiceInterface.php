@@ -14,7 +14,6 @@ use Breeze\Util\Validate\EmptyDataException;
 interface StatusServiceInterface
 {
 	/**
-	 * @throws EmptyDataException
 	 * @return array [StatusEntity]
 	 *
 	 */
@@ -23,7 +22,6 @@ interface StatusServiceInterface
 	public function getRepository(): StatusRepositoryInterface;
 
 	/**
-	 * @throws EmptyDataException
 	 * @return array [StatusEntity]
 	 *
 	 */
