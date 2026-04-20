@@ -59,7 +59,7 @@ function Tabs(props: {
 
 	return (
 		<>
-			<div id="Breeze_tabs" className="generic_menu">
+			<div id="Breeze_tabs">
 				<ul className="dropmenu breezeTabs">
 					{tabs.map((tab: TabType) => (
 						<li className="subsections" key={tab.href}>
