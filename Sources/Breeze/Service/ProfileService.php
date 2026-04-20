@@ -57,6 +57,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'editorOptions' => $editorContext['sce_options'],
 			'editorIsRich' => $editorContext['rich_active'],
 			'currentUserAvatar' => $userInfo['avatar']['url'],
+			'isCurrentUserOwner' => $userInfo['id'] === $profileId,
+			'isBuddy' => in_array($profileId, $userInfo['buddies'] ?? [], true),
 			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
 			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],

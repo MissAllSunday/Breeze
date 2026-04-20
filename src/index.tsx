@@ -39,7 +39,7 @@ if (wallType === "wall") {
 		<React.StrictMode>
 			<Tabs
 				buttons={
-					!smfVars.isCurrentUserOwner ? (
+					!smfVars.isCurrentUserOwner && !smfVars.isBuddy ? (
 						<Button
 							label={"Add buddy"}
 							onClick={(): void => {

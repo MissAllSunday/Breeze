@@ -24,6 +24,9 @@ const isCurrentUserOwner = Boolean(
 	window.breezeIsCurrentUserOwner ??
 		process.env.VITE_APP_DEV_IS_CURRENT_USER_OWNER,
 );
+// @ts-expect-error settings are loaded server side
+const isBuddy: boolean =
+	Boolean(window.breezeIsBuddy) ?? false;
 // @ts-expect-error SMF variable
 const smf_images_url: string =
 	window.smf_images_url ?? process.env.VITE_APP_DEV_THEME_URL;
@@ -67,6 +70,7 @@ const smfVars = {
 	user_id,
 	wall_id,
 	isCurrentUserOwner,
+	isBuddy,
 	smf_images_url,
 	pagination,
 	aboutMeContent,
