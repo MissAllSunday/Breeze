@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Breeze;
+use Breeze\Entity\EntityInterface;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\PersistenceTrait;
@@ -49,12 +50,29 @@ abstract class BaseController implements ControllerInterface
 		}
 
 		if ($templateParams !== []) {
+			$templateParams = $this->normalizeTemplateParams($templateParams);
 			$context[Breeze::NAME] = array_merge($context[Breeze::NAME], $templateParams);
 		}
 
 		$context['sub_template'] = $subActionName;
 
 		$this->setGlobal('context', $context);
+	}
+
+	/**
+	 * Recursively convert EntityInterface objects to arrays in template parameters
+	 */
+	private function normalizeTemplateParams(array $params): array
+	{
+		foreach ($params as &$value) {
+			if ($value instanceof EntityInterface) {
+				$value = $value->toArray();
+			} elseif (is_array($value)) {
+				$value = $this->normalizeTemplateParams($value);
+			}
+		}
+
+		return $params;
 	}
 
 	public function subActionCall(): void

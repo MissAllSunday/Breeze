@@ -248,4 +248,47 @@ class WallControllerTest extends TestCase
 		// Clean up
 		unset($_REQUEST['u']);
 	}
+
+	public function testProfileConvertsEntityToArrayInContext(): void
+	{
+		$profileId = 456;
+		$currentUserId = 123;
+		$_REQUEST['u'] = $profileId;
+
+		$profileSettings = UserSettingsEntity::from([
+			'wall' => 1,
+			'generalWall' => 0,
+			'paginationNumber' => 10,
+		]);
+		$currentUserInfo = ['id' => $currentUserId];
+
+		$this->profileService->expects($this->once())
+			->method('getUserSettings')
+			->with($profileId)
+			->willReturn($profileSettings);
+
+		$this->profileService->expects($this->once())
+			->method('getCurrentUserInfo')
+			->willReturn($currentUserInfo);
+
+		$this->profileService->expects($this->once())
+			->method('isAllowedToSeePage')
+			->willReturn(true);
+
+		$this->profileService->expects($this->once())
+			->method('setEditor');
+
+		$this->profileService->expects($this->once())
+			->method('loadComponents');
+
+		$this->wallController->profile();
+
+		// Verify that profileSettings was converted to array in context
+		$this->assertIsArray($GLOBALS['context']['Breeze']['profileSettings']);
+		$this->assertEquals(1, $GLOBALS['context']['Breeze']['profileSettings']['wall']);
+		$this->assertEquals(10, $GLOBALS['context']['Breeze']['profileSettings']['paginationNumber']);
+
+		// Clean up
+		unset($_REQUEST['u']);
+	}
 }

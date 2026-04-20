@@ -1,11 +1,10 @@
-import type React from "react";
 import type { ReactElement } from "react";
 import { Children, useCallback, useEffect, useState } from "react";
 import type Tab from "./Tab";
 
 interface TabType {
 	active: boolean;
-	contentElement: React.ReactElement;
+	contentElement: ReactElement;
 	href: string;
 	index: number;
 	name: string;
@@ -15,6 +14,7 @@ type TabsType = TabType[];
 
 function Tabs(props: {
 	children: Array<ReactElement<typeof Tab>>;
+	buttons?: ReactElement;
 }): ReactElement {
 	const [tabs, setTabs] = useState<TabsType>([]);
 
@@ -72,6 +72,11 @@ function Tabs(props: {
 							</a>
 						</li>
 					))}
+					{props.buttons && (
+						<li className="subsections">
+							{props.buttons}
+						</li>
+					)}
 				</ul>
 			</div>
 			<ul>

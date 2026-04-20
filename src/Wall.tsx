@@ -18,7 +18,7 @@ import Status from "./components/Status";
 import { PermissionsContext } from "./context/PermissionsContext";
 import PermissionsDefault from "./DataSource/Permissions";
 import smfTextVars from "./DataSource/Txt";
-import { displayMessage, showInfo } from "./utils/tooltip";
+import { showInfo } from "./utils/tooltip";
 
 export default function Wall(props: WallProps): React.JSX.Element {
 	// If statusId is provided, render SingleStatus component
@@ -33,7 +33,6 @@ export default function Wall(props: WallProps): React.JSX.Element {
 function WallFeed(props: WallProps): React.JSX.Element {
 	const [statusList, setStatusList] = useState<StatusListType>([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [emptyData, setEmptyData] = useState(false);
 	const [permissions, setPermissions] =
 		useState<PermissionsContextType>(PermissionsDefault);
 	const [nextCursor, setNextCursor] = useState<string | null>(null);
@@ -56,7 +55,6 @@ function WallFeed(props: WallProps): React.JSX.Element {
 				const fetchedStatusList: StatusListType = Object.values(
 					statusListResponse.data,
 				);
-				setEmptyData(statusListResponse.data.length === 0);
 				setStatusList(fetchedStatusList);
 				setPermissions(statusListResponse.permissions);
 				setNextCursor(statusListResponse.pagination.nextCursor);

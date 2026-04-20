@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Breeze\Breeze;
+use Breeze\Entity\UserSettingsEntity;
 
 function display_content(string $type = Breeze::ACTION_PROFILE): string
 {
@@ -17,10 +18,12 @@ function display_content(string $type = Breeze::ACTION_PROFILE): string
 }
 function template_profile(): void
 {
-	global $context, $txt, $scripturl;
+	global $context, $scripturl, $txt;
 
-	$aboutMe = $context[Breeze::NAME]['profileSettings']->getAboutMe();
-	$enableBuddiesTab = $context[Breeze::NAME]['profileSettings']->getEnableBuddiesTab();
+	$profileSettings = $context[Breeze::NAME]['profileSettings'];
+	$buddiesData = $context[Breeze::NAME]['buddiesData'];
+	$aboutMe = $profileSettings[UserSettingsEntity::ABOUT_ME] ?? '';
+	$enableBuddiesTab = $profileSettings[UserSettingsEntity::ENABLE_BUDDIES_TAB] ?? 0;
 
 	echo '
 	<hr />
@@ -36,17 +39,17 @@ function template_profile(): void
 		</div>';
 	}
 
-	if (!empty($enableBuddiesTab)) {
+	if ($enableBuddiesTab)
+	{
 		echo '
 		<div id="tab-buddies" class="windowbg" style="display: none;">';
-
-		if (!empty($context[Breeze::NAME]['buddiesData']))
+		if (!empty($buddiesData))
 		{
 			$buddyToken = createToken('buddy', 'get');
 			echo '
 				<ul class="reset buddyList">';
 
-			foreach ($context[Breeze::NAME]['buddiesData'] as $buddy) {
+			foreach ($buddiesData as $buddy) {
 				$buddyIcon = $buddy['is_buddy'] ? 'delete' : 'plus';
 				$buddyText = $buddy['is_buddy'] ? 'remove' : 'add';
 				echo '

@@ -1,4 +1,3 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 
 import Tab from "./components/Tab";
@@ -6,6 +5,8 @@ import Tabs from "./components/Tabs";
 import smfVars from "./DataSource/SMF";
 import smfTextVars from "./DataSource/Txt";
 import Wall from "./Wall";
+import Button from "./components/Button";
+import React from "react";
 
 const rootElement =
 	document.getElementById("root") ?? document.createElement("div");
@@ -36,7 +37,18 @@ if (wallType === "wall") {
 } else {
 	root.render(
 		<React.StrictMode>
-			<Tabs>
+			<Tabs
+				buttons={
+					!smfVars.isCurrentUserOwner ? (
+						<Button
+							label={"Add buddy"}
+							onClick={(): void => {
+								throw new Error("Function not implemented.");
+							}}
+						/>
+					) : undefined
+				}
+			>
 				<Wall
 					wallType={wallType}
 					pagination={pagination}
