@@ -29,6 +29,17 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 		</span>
 	);
 
+	const buddyButton = SmfVars.canShowAddBuddyButton ? (
+			<a
+				href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}
+				title={props.userData.is_buddy
+					? smfTextVars.general.buddyRemove
+					: smfTextVars.general.buddyAdd}
+			>
+				<span className={`main_icons ${props.userData.is_buddy ? 'delete' : 'plus'}`} />
+			</a>
+	) : null;
+
 	return (
 		<>
 			<ul className="user_info">
@@ -39,7 +50,7 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 						className="pointer_cursor"
 						style={{ color: props.userData.group_color }}
 					>
-						{onlineIndicator} {props.userData.name}
+						{onlineIndicator} {props.userData.name} &nbsp; {buddyButton}
 					</button>
 				</li>
 				<li className="avatar">
@@ -54,17 +65,6 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 					className="icons"
 					dangerouslySetInnerHTML={{ __html: props.userData.group_icons }}
 				/>
-				{SmfVars.user_id !== props.userData.id && (
-					<li>
-						<a
-							href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}
-						>
-							{props.userData.is_buddy
-								? smfTextVars.general.buddyRemove
-								: smfTextVars.general.buddyAdd}
-						</a>
-					</li>
-				)}
 			</ul>
 			<MiniProfile
 				userData={props.userData}

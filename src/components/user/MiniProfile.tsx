@@ -1,6 +1,7 @@
 import type { CustomFieldType, MiniProfileProps } from "breezeTypesUser";
 import type React from "react";
 import SmfVars from "../../DataSource/SMF";
+import smfTextVars from "../../DataSource/Txt";
 import { Modal } from "../Modal";
 import Avatar from "./Avatar";
 
@@ -18,6 +19,17 @@ const MiniProfile: React.FunctionComponent<MiniProfileProps> = (
 			&#x26AB;
 		</span>
 	);
+
+	const buddyButton = SmfVars.canShowAddBuddyButton ? (
+			<a
+				href={`${SmfVars.script_url}?action=buddy;u=${userData.id}`}
+				title={userData.is_buddy
+					? smfTextVars.general.buddyRemove
+					: smfTextVars.general.buddyAdd}
+			>
+				<span className={`main_icons ${userData.is_buddy ? 'delete' : 'plus'}`} />
+			</a>
+	) : null;
 
 	const profileBody = (
 		<div className="mini_profile_body">
@@ -41,6 +53,7 @@ const MiniProfile: React.FunctionComponent<MiniProfileProps> = (
 							>
 								{onlineIndicator} {props.userData.name}
 							</a>
+              &nbsp;{buddyButton}
 						</li>
 						<li className="postgroup">{userData.group}</li>
 						<li
