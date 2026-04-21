@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import type { UserDataType } from "breezeTypesUser";
-import { render, screen } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, afterEach } from "vitest";
 
 import { userData } from "../../__fixtures__/userData";
 import UserInfo from "./UserInfo";
@@ -21,6 +21,7 @@ vi.mock("../../DataSource/SMF", () => ({
 	default: {
 		script_url: "http://smf.local:8000/index.php",
 		user_id: 1,
+		canShowAddBuddyButton: true,
 	},
 }));
 
@@ -31,6 +32,9 @@ function act(overrides?: Partial<UserDataType>) {
 }
 
 describe("UserInfo", () => {
+	afterEach(() => {
+		cleanup();
+	});
 	describe("rendering", () => {
 		it("renders the user name", () => {
 			act({ name: "Astaroth" });
@@ -91,36 +95,72 @@ describe("UserInfo", () => {
 	});
 
 	describe("buddy link", () => {
-		it("renders 'Add to buddy list' when user is not a buddy", () => {
+		it("renders buddy icon with 'Add to buddy list' title when user is not a buddy", () => {
 			act({ id: 2, is_buddy: false });
 
-			const link = screen.getByText("Add to buddy list");
+			const links = screen.getAllByTitle("Add to buddy list");
+			// Get the first link (from UserInfo, not MiniProfile)
+			const link = links[0];
 			expect(link).toBeInTheDocument();
 			expect(link).toHaveAttribute(
 				"href",
 				"http://smf.local:8000/index.php?action=buddy;u=2",
 			);
+
+			const icon = link.querySelector(".main_icons.plus");
+			expect(icon).toBeInTheDocument();
 		});
 
-		it("renders 'Remove from buddy list' when user is a buddy", () => {
+		it("renders buddy icon with 'Remove from buddy list' title when user is a buddy", () => {
 			act({ id: 3, is_buddy: true });
 
-			const link = screen.getByText("Remove from buddy list");
+			const links = screen.getAllByTitle("Remove from buddy list");
+			// Get the first link (from UserInfo, not MiniProfile)
+			const link = links[0];
 			expect(link).toBeInTheDocument();
 			expect(link).toHaveAttribute(
 				"href",
 				"http://smf.local:8000/index.php?action=buddy;u=3",
 			);
+
+			const icon = link.querySelector(".main_icons.delete");
+			expect(icon).toBeInTheDocument();
 		});
 
-		it("does not render buddy link when viewing own profile", () => {
-			act({ id: 1 });
+		it("does not render buddy link when canShowAddBuddyButton is false", async () => {
+			// Clear modules and set up new mock with canShowAddBuddyButton = false
+			vi.resetModules();
+			vi.doMock("../../DataSource/SMF", () => ({
+				default: {
+					script_url: "http://smf.local:8000/index.php",
+					user_id: 1,
+					canShowAddBuddyButton: false,
+				},
+			}));
 
-			expect(screen.queryByText("Add to buddy list")).not.toBeInTheDocument();
+			// Re-import UserInfo with the new mock
+			const { default: UserInfoFalse } = await import("./UserInfo");
+
+			const data: UserDataType = { ...userData.basic, id: 2, is_buddy: false };
+			render(<UserInfoFalse userData={data} />);
+
+			expect(screen.queryByTitle("Add to buddy list")).not.toBeInTheDocument();
 			expect(
-				screen.queryByText("Remove from buddy list"),
+				screen.queryByTitle("Remove from buddy list"),
 			).not.toBeInTheDocument();
+
+			// Clean up and restore original mocks
+			vi.resetModules();
+			vi.doMock("../../DataSource/SMF", () => ({
+				default: {
+					script_url: "http://smf.local:8000/index.php",
+					user_id: 1,
+					canShowAddBuddyButton: true,
+				},
+			}));
 		});
+
+
 	});
 
 	describe("mini profile modal", () => {

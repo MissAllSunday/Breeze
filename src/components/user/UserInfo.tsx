@@ -30,14 +30,14 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 	);
 
 	const buddyButton = SmfVars.canShowAddBuddyButton ? (
-			<a
-				href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}
-				title={props.userData.is_buddy
-					? smfTextVars.general.buddyRemove
-					: smfTextVars.general.buddyAdd}
-			>
-				<span className={`main_icons ${props.userData.is_buddy ? 'delete' : 'plus'}`} />
-			</a>
+		<a
+			href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}
+			title={props.userData.is_buddy
+				? smfTextVars.general.buddyRemove
+				: smfTextVars.general.buddyAdd}
+		>
+			<span className={`main_icons ${props.userData.is_buddy ? 'delete' : 'plus'}`} />
+		</a>
 	) : null;
 
 	return (
@@ -50,8 +50,9 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 						className="pointer_cursor"
 						style={{ color: props.userData.group_color }}
 					>
-						{onlineIndicator} {props.userData.name} &nbsp; {buddyButton}
+						{onlineIndicator} {props.userData.name}
 					</button>
+          &nbsp; {buddyButton}
 				</li>
 				<li className="avatar">
 					<button type="button" onClick={handleOpen} className="pointer_cursor">
