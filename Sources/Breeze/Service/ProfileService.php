@@ -58,7 +58,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'editorIsRich' => $editorContext['rich_active'],
 			'currentUserAvatar' => $userInfo['avatar']['url'],
 			'isCurrentUserOwner' => $userInfo['id'] === $profileId,
-			'isBuddy' => in_array($profileId, $userInfo['buddies'] ?? [], true),
+			'canShowAddBuddyButton' => $this->canShowAddBuddyButton($profileId, $userInfo['id'], $wallUserSettings),
 			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
 			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
@@ -66,6 +66,39 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadComponents();
+	}
+
+	public function canShowAddBuddyButton(
+		int $profileId = 0,
+		int $userId = 0,
+		?UserSettingsEntity $wallUserSettings = null
+	): bool
+	{
+		// Check 1: Not viewing your own wall
+		if ($userId === $profileId) {
+			return false;
+		}
+
+		// Check 2: Already a buddy
+		$userInfo = $this->getCurrentUserInfo();
+		if (in_array($profileId, $userInfo['buddies'] ?? [], true)) {
+			return false;
+		}
+
+		// Check 3 & 4: Not in the user's wall ignore list or blocked from sending buddy requests
+		if ($wallUserSettings === null) {
+			$wallUserSettings = $this->userSettingsRepository->getById($profileId);
+		}
+
+		$blockList = $wallUserSettings->getBlockList();
+		$isInBlockList = !empty($blockList) && in_array($userId, $blockList, true);
+
+		// If in block list and wall owner has enabled "block buddy requests from ignored users"
+		if ($isInBlockList && $wallUserSettings->getBlockBuddyRequests() !== 0) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function updateMemberData(int $userId, array $updatedData): void

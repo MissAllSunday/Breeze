@@ -18,6 +18,7 @@ class UserSettingsEntityTest extends TestCase
 			'kickIgnored' => 'check',
 			'aboutMe' => 'textArea',
 			'enableBuddiesTab' => 'check',
+			'blockBuddyRequests' => 'check',
 			'autoFollowBack' => 'check',
 		], UserSettingsEntity::getColumns());
 	}
@@ -31,6 +32,7 @@ class UserSettingsEntityTest extends TestCase
 			'kickIgnored' => 0,
 			'aboutMe' => '',
 			'enableBuddiesTab' => 0,
+			'blockBuddyRequests' => 0,
 			'autoFollowBack' => 0,
 		], UserSettingsEntity::getDefaultValues());
 	}
@@ -43,6 +45,7 @@ class UserSettingsEntityTest extends TestCase
 			'paginationNumber' => 5,
 			'kickIgnored' => 0,
 			'enableBuddiesTab' => 0,
+			'blockBuddyRequests' => 0,
 			'autoFollowBack' => 0,
 		], UserSettingsEntity::getInts());
 	}

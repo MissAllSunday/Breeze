@@ -144,4 +144,104 @@ class ProfileServiceTest extends TestCase
 			],
 		];
 	}
+
+	#[DataProvider('canShowAddBuddyButtonProvider')]
+	public function testCanShowAddBuddyButton(
+		int $profileId,
+		int $userId,
+		array $userBuddies,
+		UserSettingsEntity $wallUserSettings,
+		bool $expected
+	): void {
+		$this->profileService = $this->getMockBuilder(ProfileService::class)
+			->setConstructorArgs([
+				$this->userSettingsRepository,
+				$this->components,
+				$this->permissionsService,
+			])
+			->onlyMethods(['getCurrentUserInfo'])
+			->getMock();
+
+		$this->profileService->method('getCurrentUserInfo')->willReturn([
+			'id' => $userId,
+			'buddies' => $userBuddies,
+		]);
+
+		$result = $this->profileService->canShowAddBuddyButton(
+			$profileId,
+			$userId,
+			$wallUserSettings
+		);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public static function canShowAddBuddyButtonProvider(): array
+	{
+		return [
+			'own wall - hide button' => [
+				'profileId' => 1,
+				'userId' => 1,
+				'userBuddies' => [],
+				'wallUserSettings' => UserSettingsEntity::from([]),
+				'expected' => false,
+			],
+			'already buddy - hide button' => [
+				'profileId' => 2,
+				'userId' => 1,
+				'userBuddies' => [2, 3, 4],
+				'wallUserSettings' => UserSettingsEntity::from([]),
+				'expected' => false,
+			],
+			'in ignore list with block enabled - hide button' => [
+				'profileId' => 2,
+				'userId' => 1,
+				'userBuddies' => [],
+				'wallUserSettings' => UserSettingsEntity::from([
+					UserSettingsEntity::BLOCK_LIST => '1,5,10',
+					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
+				]),
+				'expected' => false,
+			],
+			'in ignore list with block disabled - show button' => [
+				'profileId' => 2,
+				'userId' => 1,
+				'userBuddies' => [],
+				'wallUserSettings' => UserSettingsEntity::from([
+					UserSettingsEntity::BLOCK_LIST => '1,5,10',
+					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 0,
+				]),
+				'expected' => true,
+			],
+			'not in ignore list - show button' => [
+				'profileId' => 2,
+				'userId' => 1,
+				'userBuddies' => [],
+				'wallUserSettings' => UserSettingsEntity::from([
+					UserSettingsEntity::BLOCK_LIST => '5,10',
+					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
+				]),
+				'expected' => true,
+			],
+			'empty ignore list with block enabled - show button' => [
+				'profileId' => 2,
+				'userId' => 1,
+				'userBuddies' => [],
+				'wallUserSettings' => UserSettingsEntity::from([
+					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
+				]),
+				'expected' => true,
+			],
+			'valid buddy request candidate - show button' => [
+				'profileId' => 2,
+				'userId' => 1,
+				'userBuddies' => [3, 4, 5],
+				'wallUserSettings' => UserSettingsEntity::from([
+					UserSettingsEntity::BLOCK_LIST => '10,20',
+					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
+				]),
+				'expected' => true,
+			],
+		];
+	}
 }
