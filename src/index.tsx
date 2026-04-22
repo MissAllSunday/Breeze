@@ -14,7 +14,10 @@ const root = createRoot(rootElement);
 const wallType: string = rootElement.getAttribute("wallType") ?? "profile";
 // @ts-expect-error settings are loaded server side
 const pagination: number = window.breezePagination ?? 5;
-const urlParams = new URLSearchParams(window.location.search);
+
+// Parse URL parameters - SMF uses semicolons (;) as delimiters instead of ampersands (&)
+const searchString = window.location.search.substring(1); // Remove leading '?'
+const urlParams = new URLSearchParams(searchString.replace(/;/g, "&")); // Convert ; to &
 const statusId: number = Number(urlParams.get("id")) || 0;
 
 // @ts-ignore settings are loaded server side
