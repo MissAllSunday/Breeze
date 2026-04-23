@@ -6,6 +6,7 @@ namespace Breeze\Event\Status;
 
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Repository\AlertRepository;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,6 +17,8 @@ class StatusCreatedHandlerTest extends TestCase
 {
 	private AlertEntity|MockObject $alertEntity;
 
+	private AlertRepository|MockObject $alertRepository;
+
 	private StatusCreatedHandler|MockObject $handler;
 
 	/**
@@ -24,9 +27,10 @@ class StatusCreatedHandlerTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->alertEntity = $this->createMock(AlertEntity::class);
+		$this->alertRepository = $this->createMock(AlertRepository::class);
 
 		$this->handler = $this->getMockBuilder(StatusCreatedHandler::class)
-			->setConstructorArgs([$this->alertEntity])
+			->setConstructorArgs([$this->alertEntity, $this->alertRepository])
 			->onlyMethods(['getText', 'parserText', 'global'])
 			->getMock();
 	}

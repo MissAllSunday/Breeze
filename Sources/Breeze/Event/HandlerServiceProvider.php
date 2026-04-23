@@ -12,10 +12,15 @@ use Breeze\Event\Comment\CommentCreatedHandler;
 use Breeze\Event\Comment\CommentDeletedHandler;
 use Breeze\Event\Like\LikeCreatedHandler;
 use Breeze\Event\Status\StatusCreatedHandler;
+use Breeze\Repository\AlertRepository;
 use Breeze\Util\Validate\DataNotFoundException;
 
 class HandlerServiceProvider
 {
+	public function __construct(
+		protected AlertRepository $alertRepository
+	) {}
+
 	/**
 	 * @throws DataNotFoundException
 	 */
@@ -23,7 +28,7 @@ class HandlerServiceProvider
 	{
 		$handlerClass = $this->getHandlerClass($alertEntity);
 
-		return new $handlerClass($alertEntity);
+		return new $handlerClass($alertEntity, $this->alertRepository);
 	}
 
 	private const array OWNER_SUFFIXES = [

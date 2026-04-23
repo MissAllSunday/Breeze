@@ -9,6 +9,7 @@ use Breeze\Controller\API\StatusController;
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventAbstract;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Repository\AlertRepository;
 use Breeze\Traits\TextTrait;
 
 class CommentCreatedHandler implements EventHandlerInterface
@@ -17,12 +18,18 @@ class CommentCreatedHandler implements EventHandlerInterface
 
 	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}';
 
+	protected array $extra = [];
+
+	protected array $usersInfo = [];
+
 	public function __construct(
-		protected AlertEntity $alertEntity
+		protected AlertEntity $alertEntity,
+		protected AlertRepository $alertRepository
 	) {}
 
 	public function resolve(): array
 	{
+		$this->extra = $this->alertEntity->getExtra();
 		$this->buildAlertText();
 		$this->buildTargetHref();
 
@@ -42,8 +49,7 @@ class CommentCreatedHandler implements EventHandlerInterface
 
 	protected function buildTargetHref(): void
 	{
-		$extra = $this->alertEntity->getExtra();
-		$statusId = $extra['status_id'] ?? 0;
+		$statusId = $this->extra['status_id'] ?? 0;
 
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
@@ -55,18 +61,36 @@ class CommentCreatedHandler implements EventHandlerInterface
 
 	protected function buildProfileOwnerText(): void
 	{
+		$statusOwnerId = $this->extra['status_owner_id'] ?? 0;
+		$wallOwnerId = $this->extra['wall_id'] ?? 0;
+
+		if (empty($this->usersInfo)) {
+			$this->usersInfo = $this->alertRepository->loadUsersInfo([$statusOwnerId, $wallOwnerId]);
+		}
+
+		$statusOwnerName = $this->usersInfo[$statusOwnerId]['name'] ?? 'Unknown User';
+		$wallOwnerName = $this->usersInfo[$wallOwnerId]['name'] ?? 'Unknown User';
+
 		$this->alertEntity->setText($this->parserText($this->getText('alert_comment_different_owner'), [
 			'poster' => $this->alertEntity->getSenderName(),
-			'status_poster' => 'status_poster_name', // @todo change this to the actual status poster name
-			'wall_owner' => 'wall_owner_name',
+			'status_poster' => $statusOwnerName,
+			'wall_owner' => $wallOwnerName,
 		]));
 	}
 
 	protected function buildStatusOwnerText(): void
 	{
+		$wallOwnerId = $this->extra['wall_id'] ?? 0;
+
+		if (empty($this->usersInfo)) {
+			$this->usersInfo = $this->alertRepository->loadUsersInfo([$wallOwnerId]);
+		}
+
+		$wallOwnerName = $this->usersInfo[$wallOwnerId]['name'] ?? 'Unknown User';
+
 		$this->alertEntity->setText($this->parserText($this->getText('alert_comment_status_owner'), [
 			'poster' => $this->alertEntity->getSenderName(),
-			'wall_owner' => 'wall_owner_name',
+			'wall_owner' => $wallOwnerName,
 		]));
 	}
 }

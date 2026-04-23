@@ -7,6 +7,7 @@ namespace Breeze\Event\Comment;
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventAbstract;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Repository\AlertRepository;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,6 +18,8 @@ class CommentCreatedHandlerTest extends TestCase
 {
 	private AlertEntity|MockObject $alertEntity;
 
+	private AlertRepository|MockObject $alertRepository;
+
 	private CommentCreatedHandler|MockObject $handler;
 
 	/**
@@ -25,9 +28,10 @@ class CommentCreatedHandlerTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->alertEntity = $this->createMock(AlertEntity::class);
+		$this->alertRepository = $this->createMock(AlertRepository::class);
 
 		$this->handler = $this->getMockBuilder(CommentCreatedHandler::class)
-			->setConstructorArgs([$this->alertEntity])
+			->setConstructorArgs([$this->alertEntity, $this->alertRepository])
 			->onlyMethods(['getText', 'parserText', 'global'])
 			->getMock();
 	}
@@ -109,10 +113,24 @@ class CommentCreatedHandlerTest extends TestCase
 		$this->handler->method('getText')->willReturn('Alert text');
 		$this->handler->method('parserText')->willReturn('Parsed alert text');
 
+		$this->alertRepository->method('loadUsersInfo')
+			->willReturn([
+				3 => ['name' => 'Status Owner'],
+				5 => ['name' => 'Wall Owner'],
+			]);
+
 		$this->alertEntity->expects($this->once())
 			->method('setText');
 
 		$reflection = new \ReflectionClass($this->handler);
+
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, [
+			'status_owner_id' => 3,
+			'wall_id' => 5,
+		]);
+
 		$method = $reflection->getMethod('buildAlertText');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);
@@ -130,10 +148,22 @@ class CommentCreatedHandlerTest extends TestCase
 		$this->handler->method('getText')->willReturn('Alert text');
 		$this->handler->method('parserText')->willReturn('Parsed alert text');
 
+		$this->alertRepository->method('loadUsersInfo')
+			->willReturn([
+				5 => ['name' => 'Wall Owner'],
+			]);
+
 		$this->alertEntity->expects($this->once())
 			->method('setText');
 
 		$reflection = new \ReflectionClass($this->handler);
+
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, [
+			'wall_id' => 5,
+		]);
+
 		$method = $reflection->getMethod('buildAlertText');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);
@@ -141,11 +171,11 @@ class CommentCreatedHandlerTest extends TestCase
 
 	public function testBuildTargetHrefWithStatusId(): void
 	{
-		$extra = ['status_id' => 456];
+		$reflection = new \ReflectionClass($this->handler);
 
-		$this->alertEntity->expects($this->once())
-			->method('getExtra')
-			->willReturn($extra);
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, ['status_id' => 456]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -162,7 +192,6 @@ class CommentCreatedHandlerTest extends TestCase
 			->method('setTargetHref')
 			->with('http://example.com?action=wall;sa=single;id=456');
 
-		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);

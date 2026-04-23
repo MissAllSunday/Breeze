@@ -137,10 +137,10 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusEventListener::class => ['arguments' => [AlertService::class], 'shared' => true],
 		CommentEventListener::class => ['arguments' => [AlertService::class], 'shared' => true],
 		LikeEventListener::class => ['arguments' => [AlertService::class, ContainerInterface::class], 'shared' => true],
-		HandlerServiceProvider::class => ['arguments' => [], 'shared' => true],
+		HandlerServiceProvider::class => ['arguments' => [AlertRepository::class], 'shared' => true],
 
 		// Event Handlers - New instances (Created per event)
-		StatusCreatedHandler::class => ['arguments' => [AlertEntity::class]],
+		StatusCreatedHandler::class => ['arguments' => [AlertEntity::class, AlertRepository::class]],
 
 		// Repositories - Shared (Stateless data access)
 		UserSettingsRepository::class => ['arguments' => [DatabaseClient::class, null], 'shared' => true],

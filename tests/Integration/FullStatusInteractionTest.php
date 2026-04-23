@@ -78,7 +78,7 @@ class FullStatusInteractionTest extends TestCase
 		$this->statusRepository = new StatusRepository(self::$dbClient, $this->commentRepository, $this->likeRepository);
 
 		$alertRepository = new AlertRepository(self::$dbClient);
-		$handlerServiceProvider = new HandlerServiceProvider();
+		$handlerServiceProvider = new HandlerServiceProvider($alertRepository);
 		$alertService = new AlertService($alertRepository, $handlerServiceProvider);
 
 		$container = $this->createMock(ContainerInterface::class);

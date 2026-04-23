@@ -8,10 +8,12 @@ use Breeze\Entity\AlertEntity;
 use Breeze\Event\Comment\CommentCreatedHandler;
 use Breeze\Event\Like\LikeCreatedHandler;
 use Breeze\Event\Status\StatusCreatedHandler;
+use Breeze\Repository\AlertRepository;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 
@@ -20,9 +22,12 @@ class HandlerServiceProviderTest extends TestCase
 {
 	private HandlerServiceProvider $handlerServiceProvider;
 
+	private AlertRepository|MockObject $alertRepository;
+
 	protected function setUp(): void
 	{
-		$this->handlerServiceProvider = new HandlerServiceProvider();
+		$this->alertRepository = $this->createMock(AlertRepository::class);
+		$this->handlerServiceProvider = new HandlerServiceProvider($this->alertRepository);
 	}
 
 	/**

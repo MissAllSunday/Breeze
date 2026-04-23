@@ -8,6 +8,7 @@ use Breeze\Breeze;
 use Breeze\Controller\API\StatusController;
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Repository\AlertRepository;
 use Breeze\Traits\TextTrait;
 
 class LikeCreatedHandler implements EventHandlerInterface
@@ -17,7 +18,8 @@ class LikeCreatedHandler implements EventHandlerInterface
 	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={contentId}';
 
 	public function __construct(
-		protected AlertEntity $alertEntity
+		protected AlertEntity $alertEntity,
+		protected AlertRepository $alertRepository
 	) {}
 
 	public function resolve(): array

@@ -6,6 +6,7 @@ namespace Breeze\Event\Buddy;
 
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Repository\AlertRepository;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,6 +17,8 @@ class BuddyAcceptedHandlerTest extends TestCase
 {
 	private AlertEntity|MockObject $alertEntity;
 
+	private AlertRepository|MockObject $alertRepository;
+
 	private BuddyAcceptedHandler|MockObject $handler;
 
 	/**
@@ -24,9 +27,10 @@ class BuddyAcceptedHandlerTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->alertEntity = $this->createMock(AlertEntity::class);
+		$this->alertRepository = $this->createMock(AlertRepository::class);
 
 		$this->handler = $this->getMockBuilder(BuddyAcceptedHandler::class)
-			->setConstructorArgs([$this->alertEntity])
+			->setConstructorArgs([$this->alertEntity, $this->alertRepository])
 			->onlyMethods(['getText', 'parserText', 'global'])
 			->getMock();
 	}

@@ -7,6 +7,7 @@ namespace Breeze\Event\Buddy;
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Repository\AlertRepository;
 use Breeze\Traits\TextTrait;
 
 class BuddyAcceptedHandler implements EventHandlerInterface
@@ -16,7 +17,8 @@ class BuddyAcceptedHandler implements EventHandlerInterface
 	protected const string TARGET_HREF = '{scriptUrl}?action=profile;u={userId}';
 
 	public function __construct(
-		protected AlertEntity $alertEntity
+		protected AlertEntity $alertEntity,
+		protected AlertRepository $alertRepository
 	) {}
 
 	public function resolve(): array
