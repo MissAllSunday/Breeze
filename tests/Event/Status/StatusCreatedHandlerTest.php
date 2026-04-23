@@ -165,13 +165,14 @@ class StatusCreatedHandlerTest extends TestCase
 		$this->handler->expects($this->once())
 			->method('parserText')
 			->with($this->anything(), $this->callback(function ($params) {
-				return isset($params['statusId']) && $params['statusId'] === 999;
+				return isset($params['statusId']) && $params['statusId'] === 999
+					&& isset($params['anchor']) && $params['anchor'] === '#status-999';
 			}))
-			->willReturn('http://example.com?action=wall;sa=single;id=999');
+			->willReturn('http://example.com?action=wall;sa=single;id=999#status-999');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;sa=single;id=999');
+			->with('http://example.com?action=wall;sa=single;id=999#status-999');
 
 		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildTargetHref');

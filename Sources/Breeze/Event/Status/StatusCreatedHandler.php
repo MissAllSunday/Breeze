@@ -15,7 +15,7 @@ class StatusCreatedHandler implements EventHandlerInterface
 {
 	use TextTrait;
 
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}{anchor}';
 
 	public function __construct(
 		protected AlertEntity $alertEntity,
@@ -40,11 +40,14 @@ class StatusCreatedHandler implements EventHandlerInterface
 
 	protected function buildTargetHref(): void
 	{
+		$statusId = $this->alertEntity->getContentId();
+
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
 			'action' => Breeze::ACTION_WALL,
 			'subAction' => StatusController::ACTION_SINGLE,
-			'statusId' => $this->alertEntity->getContentId(),
+			'statusId' => $statusId,
+			'anchor' => '#status-' . $statusId,
 		]));
 	}
 }

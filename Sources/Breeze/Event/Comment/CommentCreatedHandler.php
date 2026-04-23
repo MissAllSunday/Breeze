@@ -16,7 +16,7 @@ class CommentCreatedHandler implements EventHandlerInterface
 {
 	use TextTrait;
 
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}{anchor}';
 
 	protected array $extra = [];
 
@@ -50,12 +50,15 @@ class CommentCreatedHandler implements EventHandlerInterface
 	protected function buildTargetHref(): void
 	{
 		$statusId = $this->extra['status_id'] ?? 0;
+		$commentId = $this->extra['comment_id'] ?? 0;
+		$anchor = $commentId !== 0 ? '#comment-' . $commentId : '';
 
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
 			'action' => Breeze::ACTION_WALL,
 			'subAction' => StatusController::ACTION_SINGLE,
 			'statusId' => $statusId,
+			'anchor' => $anchor,
 		]));
 	}
 

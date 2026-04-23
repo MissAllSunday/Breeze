@@ -16,7 +16,7 @@ class CommentDeletedHandler implements EventHandlerInterface
 {
 	use TextTrait;
 
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}{anchor}';
 
 	protected array $extra = [];
 
@@ -59,6 +59,7 @@ class CommentDeletedHandler implements EventHandlerInterface
 			'action' => Breeze::ACTION_WALL,
 			'subAction' => StatusController::ACTION_SINGLE,
 			'statusId' => $statusId,
+			'anchor' => '',
 		]));
 	}
 

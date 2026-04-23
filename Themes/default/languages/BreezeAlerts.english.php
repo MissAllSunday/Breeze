@@ -24,12 +24,12 @@ $txt['Breeze_alert_gender_pronoun_Female'] = 'she';
 $txt['Breeze_alert_gender_pronoun_None'] = 'he/she';
 
 // Comment notification.
-$txt['Breeze_alert_comment_different_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by {status_poster} on {wall_owner}\'s wall';
-$txt['Breeze_alert_comment_different_owner_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on the status made by {status_poster} on your own wall';
-$txt['Breeze_alert_comment_status_owner'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made in {wall_owner}\'s wall';
-$txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {status_owner}\'s status made in {wall_owner}\'s wall';
-$txt['Breeze_alert_comment_status_owner_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on your status made on your own wall';
-$txt['Breeze_alert_comment_poster_own_wall'] = '{poster} <a href="{href}" class="bbc_link" target="_blank">commented</a> on {gender_possessive} status on {gender_possessive} own wall';
+$txt['Breeze_alert_comment_different_owner'] = '{poster} commented on the status made by {status_poster} on {wall_owner}\'s wall';
+$txt['Breeze_alert_comment_different_owner_own_wall'] = '{poster} commented on the status made by {status_poster} on your own wall';
+$txt['Breeze_alert_comment_status_owner'] = '{poster} commented on your status made in {wall_owner}\'s wall';
+$txt['Breeze_alert_comment_status_owner_buddy'] = '{poster} commented on {status_owner}\'s status made in {wall_owner}\'s wall';
+$txt['Breeze_alert_comment_status_owner_own_wall'] = '{poster} commented on your status made on your own wall';
+$txt['Breeze_alert_comment_poster_own_wall'] = '{poster} commented on {gender_possessive} status on {gender_possessive} own wall';
 
 // Comment deleted.
 $txt['Breeze_alert_comment_deleted_different_owner'] = '{poster} deleted a comment on the status made by {status_poster} on {wall_owner}\'s wall';

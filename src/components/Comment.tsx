@@ -20,7 +20,7 @@ function Comment(props: CommentProps): React.ReactElement {
 	}, [props, permissions]);
 
 	return (
-		<div className={`${classType} comment`}>
+		<div className={`${classType} comment`} id={`comment-${props.comment.id.toString()}`}>
 			<div className="avatar_compact">
 				<Avatar
 					href={props.comment.userData.avatar.url}

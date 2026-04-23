@@ -157,7 +157,8 @@ class CommentDeletedHandlerTest extends TestCase
 		$this->handler->expects($this->once())
 			->method('parserText')
 			->with($this->anything(), $this->callback(function ($params) {
-				return isset($params['statusId']) && $params['statusId'] === 456;
+				return isset($params['statusId']) && $params['statusId'] === 456
+					&& isset($params['anchor']) && $params['anchor'] === '';
 			}))
 			->willReturn('http://example.com?action=wall;sa=single;id=456');
 

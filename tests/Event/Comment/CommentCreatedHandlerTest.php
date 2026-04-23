@@ -175,7 +175,7 @@ class CommentCreatedHandlerTest extends TestCase
 
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['status_id' => 456]);
+		$extraProperty->setValue($this->handler, ['status_id' => 456, 'comment_id' => 789]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -184,13 +184,14 @@ class CommentCreatedHandlerTest extends TestCase
 		$this->handler->expects($this->once())
 			->method('parserText')
 			->with($this->anything(), $this->callback(function ($params) {
-				return isset($params['statusId']) && $params['statusId'] === 456;
+				return isset($params['statusId']) && $params['statusId'] === 456
+					&& isset($params['anchor']) && $params['anchor'] === '#comment-789';
 			}))
-			->willReturn('http://example.com?action=wall;sa=single;id=456');
+			->willReturn('http://example.com?action=wall;sa=single;id=456#comment-789');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;sa=single;id=456');
+			->with('http://example.com?action=wall;sa=single;id=456#comment-789');
 
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);
