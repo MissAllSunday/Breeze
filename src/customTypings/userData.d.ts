@@ -38,6 +38,8 @@ declare module "breezeTypesUser" {
 		title: string;
 		username: string;
 		username_color: HTMLSpanElement;
+		blockList?: number[];
+		blockBuddyRequests?: number;
 	}
 
 	interface CustomFieldType {

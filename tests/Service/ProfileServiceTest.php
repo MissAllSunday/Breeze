@@ -193,6 +193,13 @@ class ProfileServiceTest extends TestCase
 				'wallUserSettings' => UserSettingsEntity::from([]),
 				'expected' => false,
 			],
+			'already buddy with string ids - hide button' => [
+				'profileId' => 2,
+				'userId' => 1,
+				'userBuddies' => ['2', '3', '4'],
+				'wallUserSettings' => UserSettingsEntity::from([]),
+				'expected' => false,
+			],
 			'in ignore list with block enabled - hide button' => [
 				'profileId' => 2,
 				'userId' => 1,
@@ -243,5 +250,56 @@ class ProfileServiceTest extends TestCase
 				'expected' => true,
 			],
 		];
+	}
+
+	public function testLoadUsersInfoEnrichesWithBreezeSettings(): void
+	{
+		$this->userSettingsRepository
+			->method('loadUsersInfo')
+			->willReturn([
+				2 => [
+					'id' => 2,
+					'name' => 'Test User',
+					'avatar' => ['href' => 'avatar.png'],
+				],
+			]);
+
+		$settings = UserSettingsEntity::from([
+			UserSettingsEntity::BLOCK_LIST => '1,5',
+			UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
+		]);
+
+		$this->userSettingsRepository
+			->method('getByIds')
+			->with([2])
+			->willReturn([2 => $settings]);
+
+		$result = $this->profileService->loadUsersInfo([2]);
+
+		$this->assertEquals([1, 5], $result[2]['blockList']);
+		$this->assertEquals(1, $result[2]['blockBuddyRequests']);
+	}
+
+	public function testLoadUsersInfoHandlesMissingSettingsGracefully(): void
+	{
+		$this->userSettingsRepository
+			->method('loadUsersInfo')
+			->willReturn([
+				3 => [
+					'id' => 3,
+					'name' => 'Another User',
+					'avatar' => ['href' => 'avatar.png'],
+				],
+			]);
+
+		$this->userSettingsRepository
+			->method('getByIds')
+			->with([3])
+			->willReturn([]);
+
+		$result = $this->profileService->loadUsersInfo([3]);
+
+		$this->assertEquals([], $result[3]['blockList']);
+		$this->assertEquals(0, $result[3]['blockBuddyRequests']);
 	}
 }

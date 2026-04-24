@@ -16,6 +16,7 @@ vi.mock("../../DataSource/Txt", () => ({
 vi.mock("../../DataSource/SMF", () => ({
 	default: {
 		script_url: "http://smf.local:8000/index.php",
+		user_id: 0,
 	},
 }));
 

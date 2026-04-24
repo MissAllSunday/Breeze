@@ -96,7 +96,8 @@ img.comment_avatar {
     margin-left: 5px;
 }
 
-button.pointer_cursor {
+button.pointer_cursor,
+span[role="button"].pointer_cursor {
 	cursor: pointer;
 	background: none;
 	border: none;

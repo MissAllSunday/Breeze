@@ -63,6 +63,76 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 		return $userSettings;
 	}
 
+	/**
+	 * @return array<int, UserSettingsEntity>
+	 */
+	public function getByIds(array $ids): array
+	{
+		$ids = array_filter(array_map('intval', $ids));
+
+		if ($ids === []) {
+			return [];
+		}
+
+		$entities = [];
+		$cacheMisses = [];
+
+		foreach ($ids as $id) {
+			$cached = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $id));
+			if ($cached !== []) {
+				$entities[$id] = UserSettingsEntity::from($cached);
+			} else {
+				$cacheMisses[] = $id;
+			}
+		}
+
+		if ($cacheMisses === []) {
+			return $entities;
+		}
+
+		$result = $this->dbClient->query(
+			'SELECT mem.' . (implode(', mem.', MemberEntity::getColumns())) . ',
+			op.' . OptionsEntity::VARIABLE . ', op.' . OptionsEntity::VALUE . '
+			FROM {db_prefix}' . MemberEntity::TABLE . ' AS mem
+				LEFT JOIN {db_prefix}' . OptionsEntity::TABLE . ' AS op
+					ON (op.' . OptionsEntity::MEMBER_ID . ' = mem.' . MemberEntity::ID . ')
+			WHERE mem.' . MemberEntity::ID . ' IN ({array_int:userIds})',
+			[
+				'userIds' => $cacheMisses,
+			]
+		);
+
+		$rowsByMember = [];
+		while ($row = $this->dbClient->fetchAssoc($result)) {
+			$memberId = (int) $row[MemberEntity::ID];
+			$rowsByMember[$memberId][] = $row;
+		}
+
+		$this->dbClient->freeResult($result);
+
+		foreach ($rowsByMember as $memberId => $rows) {
+			$userData = [];
+
+			foreach ($rows as $row) {
+				if (!empty($row[OptionsEntity::VARIABLE])) {
+					$userData[$row[OptionsEntity::VARIABLE]] = $row[OptionsEntity::VALUE];
+				}
+			}
+
+			$firstRow = $rows[0] ?? [];
+			$userData += [
+				UserSettingsEntity::BUDDIES => empty($firstRow[MemberEntity::BUDDY_LIST]) ? '' : $firstRow[MemberEntity::BUDDY_LIST],
+				UserSettingsEntity::BLOCK_LIST => empty($firstRow[MemberEntity::IGNORE_LIST]) ? '' : $firstRow[MemberEntity::IGNORE_LIST],
+			];
+
+			$entity = UserSettingsEntity::from($userData);
+			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $memberId), $entity);
+			$entities[$memberId] = $entity;
+		}
+
+		return $entities;
+	}
+
 	public function insert(array $userSettings, $userId): bool
 	{
 		$toInsert = [];

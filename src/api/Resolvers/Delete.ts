@@ -5,15 +5,14 @@ export const resolveDelete = async (
 	response: Response,
 	successMessage: string,
 ): Promise<boolean> => {
+	const { message, token } = await response.json();
 	const deleted: boolean = response.ok && response.status === 204;
 
+	if (token) {
+		updateCsrfToken(token);
+	}
+
 	if (!deleted) {
-		const { message, token } = await response.json();
-
-		if (token) {
-			updateCsrfToken(token);
-		}
-
 		showError(message);
 	} else {
 		showInfo(successMessage);

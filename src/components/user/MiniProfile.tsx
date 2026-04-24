@@ -2,6 +2,7 @@ import type { CustomFieldType, MiniProfileProps } from "breezeTypesUser";
 import type React from "react";
 import SmfVars from "../../DataSource/SMF";
 import smfTextVars from "../../DataSource/Txt";
+import canShowAddBuddyButton from "../../utils/canShowAddBuddyButton";
 import { Modal } from "../Modal";
 import Avatar from "./Avatar";
 
@@ -20,7 +21,7 @@ const MiniProfile: React.FunctionComponent<MiniProfileProps> = (
 		</span>
 	);
 
-	const buddyButton = SmfVars.canShowAddBuddyButton ? (
+	const buddyButton = canShowAddBuddyButton(userData, SmfVars.user_id) ? (
 			<a
 				href={`${SmfVars.script_url}?action=buddy;u=${userData.id}`}
 				title={userData.is_buddy

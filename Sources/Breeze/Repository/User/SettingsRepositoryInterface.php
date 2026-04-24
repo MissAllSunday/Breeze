@@ -11,5 +11,10 @@ interface SettingsRepositoryInterface extends BaseRepositoryInterface
 {
 	public function getById(int $id): UserSettingsEntity;
 
+	/**
+	 * @return array<int, UserSettingsEntity>
+	 */
+	public function getByIds(array $ids): array;
+
 	public function insert(array $userSettings, int $userId): bool;
 }

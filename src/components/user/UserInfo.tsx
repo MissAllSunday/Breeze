@@ -3,6 +3,7 @@ import type * as React from "react";
 import { useCallback, useState } from "react";
 import SmfVars from "../../DataSource/SMF";
 import smfTextVars from "../../DataSource/Txt";
+import canShowAddBuddyButton from "../../utils/canShowAddBuddyButton";
 import Avatar from "./Avatar";
 import MiniProfile from "./MiniProfile";
 
@@ -29,7 +30,7 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 		</span>
 	);
 
-	const buddyButton = SmfVars.canShowAddBuddyButton ? (
+	const buddyButton = canShowAddBuddyButton(props.userData, SmfVars.user_id) ? (
 		<a
 			href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}
 			title={props.userData.is_buddy

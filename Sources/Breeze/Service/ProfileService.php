@@ -46,6 +46,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 	{
 		$context = $this->global('context');
 		$userInfo = $this->getCurrentUserInfo();
+		$currentUserId = (int) ($userInfo['id'] ?? 0);
 		$wallUserSettings = $this->userSettingsRepository->getById($profileId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
 		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
@@ -57,8 +58,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'editorOptions' => $editorContext['sce_options'],
 			'editorIsRich' => $editorContext['rich_active'],
 			'currentUserAvatar' => $userInfo['avatar']['url'],
-			'isCurrentUserOwner' => $userInfo['id'] === $profileId,
-			'canShowAddBuddyButton' => $this->canShowAddBuddyButton($profileId, $userInfo['id'], $wallUserSettings),
+			'isCurrentUserOwner' => $currentUserId === $profileId,
+			'canShowAddBuddyButton' => $this->canShowAddBuddyButton($profileId, $currentUserId, $wallUserSettings),
 			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
 			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
@@ -81,7 +82,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 
 		// Check 2: Already a buddy
 		$userInfo = $this->getCurrentUserInfo();
-		if (in_array($profileId, $userInfo['buddies'] ?? [], true)) {
+		$buddies = array_map('intval', $userInfo['buddies'] ?? []);
+		if (in_array($profileId, $buddies, true)) {
 			return false;
 		}
 
@@ -138,6 +140,21 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 	public function getUserSettings(int $userId): UserSettingsEntity
 	{
 		return $this->userSettingsRepository->getById($userId);
+	}
+
+	public function loadUsersInfo(array $userIds = []): array
+	{
+		$usersInfo = parent::loadUsersInfo($userIds);
+		$userIds = array_keys($usersInfo);
+		$settingsById = $this->userSettingsRepository->getByIds($userIds);
+
+		foreach ($usersInfo as $userId => &$userData) {
+			$settings = $settingsById[(int) $userId] ?? null;
+			$userData['blockList'] = $settings?->getBlockList() ?? [];
+			$userData['blockBuddyRequests'] = $settings?->getBlockBuddyRequests() ?? 0;
+		}
+
+		return $usersInfo;
 	}
 
 	public function hookProfilePopUp(&$profile_items): void

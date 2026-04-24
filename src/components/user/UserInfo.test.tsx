@@ -21,7 +21,6 @@ vi.mock("../../DataSource/SMF", () => ({
 	default: {
 		script_url: "http://smf.local:8000/index.php",
 		user_id: 1,
-		canShowAddBuddyButton: true,
 	},
 }));
 
@@ -127,37 +126,13 @@ describe("UserInfo", () => {
 			expect(icon).toBeInTheDocument();
 		});
 
-		it("does not render buddy link when canShowAddBuddyButton is false", async () => {
-			// Clear modules and set up new mock with canShowAddBuddyButton = false
-			vi.resetModules();
-			vi.doMock("../../DataSource/SMF", () => ({
-				default: {
-					script_url: "http://smf.local:8000/index.php",
-					user_id: 1,
-					canShowAddBuddyButton: false,
-				},
-			}));
-
-			// Re-import UserInfo with the new mock
-			const { default: UserInfoFalse } = await import("./UserInfo");
-
-			const data: UserDataType = { ...userData.basic, id: 2, is_buddy: false };
-			render(<UserInfoFalse userData={data} />);
+		it("does not render buddy link when viewing own profile", () => {
+			act({ id: 1, is_buddy: false });
 
 			expect(screen.queryByTitle("Add to buddy list")).not.toBeInTheDocument();
 			expect(
 				screen.queryByTitle("Remove from buddy list"),
 			).not.toBeInTheDocument();
-
-			// Clean up and restore original mocks
-			vi.resetModules();
-			vi.doMock("../../DataSource/SMF", () => ({
-				default: {
-					script_url: "http://smf.local:8000/index.php",
-					user_id: 1,
-					canShowAddBuddyButton: true,
-				},
-			}));
 		});
 
 
