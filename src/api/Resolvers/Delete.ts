@@ -5,7 +5,7 @@ export const resolveDelete = async (
 	response: Response,
 	successMessage: string,
 ): Promise<boolean> => {
-	const deleted: boolean = response.ok && response.status === 204;
+	const deleted: boolean = response.ok && response.status === 200;
 
 	let message = "";
 	let token = null;

@@ -14,13 +14,13 @@ const MOCK_BAD_RESPONSE = responses.custom({
 
 const MOCK_GOOD_RESPONSE = responses.custom({
 	ok: true,
-	status: 204,
+	status: 200,
 	json: () => Promise.resolve({ message: "some server error", token: { var: "good_var", value: "good_value" } }),
 });
 
-const MOCK_EMPTY_204_RESPONSE = responses.custom({
+const MOCK_EMPTY_200_RESPONSE = responses.custom({
 	ok: true,
-	status: 204,
+	status: 200,
 	json: () => Promise.reject(new SyntaxError("Unexpected end of JSON input")),
 });
 
@@ -72,8 +72,8 @@ describe("resolves Deleting call", () => {
 
 			expect(updateCsrfToken as jest.Mock).toHaveBeenCalledWith({ var: "good_var", value: "good_value" });
 		});
-		it("returns true even with an empty 204 body", async () => {
-			const result = await resolveDelete(MOCK_EMPTY_204_RESPONSE, "success!");
+		it("returns true even with an empty 200 body", async () => {
+			const result = await resolveDelete(MOCK_EMPTY_200_RESPONSE, "success!");
 
 			expect(result).toBe(true);
 			expect(showInfo as jest.Mock).toHaveBeenCalled();

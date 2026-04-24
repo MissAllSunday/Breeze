@@ -117,7 +117,7 @@ class CommentControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('deleted_comment', [], Response::NO_CONTENT);
+			->with('deleted_comment', [], Response::OK);
 
 		$this->commentController->deleteComment();
 	}

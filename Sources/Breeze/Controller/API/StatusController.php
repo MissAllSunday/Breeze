@@ -73,7 +73,7 @@ class StatusController extends ApiBaseController
 		try {
 			$this->statusService->deleteById($this->data[StatusEntity::ID]);
 
-			$this->response->success('deleted_status', [], Response::NO_CONTENT);
+			$this->response->success('deleted_status');
 		} catch (InvalidStatusException $exception) {
 			$this->response->error($exception->getMessage());
 		}

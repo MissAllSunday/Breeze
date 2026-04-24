@@ -67,7 +67,7 @@ function handleStatus(string $subAction): void
             'total' => 1,
         ]),
         'postStatus' => handlePostStatus(),
-        'deleteStatus' => respondEmpty('Status deleted', 204),
+        'deleteStatus' => respondEmpty('Status deleted', 200),
         'total' => respond(['total' => count($mockStatuses)]),
         default => respond([], 'Unknown sub-action', 404),
     };
@@ -117,7 +117,7 @@ function handleComment(string $subAction): void
 
             respond([$newComment['id'] => $newComment], 'Comment posted', 201);
         })(),
-        'deleteComment' => respondEmpty('Comment deleted', 204),
+        'deleteComment' => respondEmpty('Comment deleted', 200),
         default => respond([], 'Unknown sub-action', 404),
     };
 }

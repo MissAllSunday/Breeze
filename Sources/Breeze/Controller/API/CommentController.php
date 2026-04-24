@@ -62,7 +62,7 @@ class CommentController extends ApiBaseController
 		try {
 			$this->commentService->deleteById($this->data[CommentEntity::ID]);
 
-			$this->response->success('deleted_comment', [], Response::NO_CONTENT);
+			$this->response->success('deleted_comment');
 		} catch (DataNotFoundException $dataNotFoundException) {
 			$this->response->error($dataNotFoundException->getMessage());
 		}

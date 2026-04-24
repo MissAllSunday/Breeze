@@ -159,7 +159,7 @@ class StatusControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('deleted_status', [], Response::NO_CONTENT);
+			->with('deleted_status', [], Response::OK);
 
 		$this->statusController->deleteStatus();
 	}
