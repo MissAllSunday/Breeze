@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { responses } from "../../__fixtures__/responses";
 import { showError, showInfo } from "../../utils/tooltip";
 import { updateCsrfToken } from "../Base";
@@ -18,6 +18,12 @@ const MOCK_GOOD_RESPONSE = responses.custom({
 	json: () => Promise.resolve({ message: "some server error", token: { var: "good_var", value: "good_value" } }),
 });
 
+const MOCK_EMPTY_204_RESPONSE = responses.custom({
+	ok: true,
+	status: 204,
+	json: () => Promise.reject(new SyntaxError("Unexpected end of JSON input")),
+});
+
 vi.mock("../../utils/tooltip", () => ({
 	showError: vi.fn(() => "some error string"),
 	showInfo: vi.fn(() => "some success string"),
@@ -28,6 +34,10 @@ vi.mock("../Base", () => ({
 }));
 
 describe("resolves Deleting call", () => {
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+
 	describe("and resource was not deleted", () => {
 		it("shows error message", async () => {
 			await resolveDelete(MOCK_BAD_RESPONSE, "success!");
@@ -61,6 +71,13 @@ describe("resolves Deleting call", () => {
 			await resolveDelete(MOCK_GOOD_RESPONSE, "success!");
 
 			expect(updateCsrfToken as jest.Mock).toHaveBeenCalledWith({ var: "good_var", value: "good_value" });
+		});
+		it("returns true even with an empty 204 body", async () => {
+			const result = await resolveDelete(MOCK_EMPTY_204_RESPONSE, "success!");
+
+			expect(result).toBe(true);
+			expect(showInfo as jest.Mock).toHaveBeenCalled();
+			expect(updateCsrfToken as jest.Mock).not.toHaveBeenCalled();
 		});
 	});
 });
