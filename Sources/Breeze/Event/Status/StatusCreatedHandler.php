@@ -6,24 +6,15 @@ namespace Breeze\Event\Status;
 
 use Breeze\Breeze;
 use Breeze\Controller\API\StatusController;
-use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
-use Breeze\Repository\AlertRepository;
-use Breeze\Traits\TextTrait;
 
-class StatusCreatedHandler implements EventHandlerInterface
+class StatusCreatedHandler extends BaseHandler implements EventHandlerInterface
 {
-	use TextTrait;
-
 	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}{anchor}';
-
-	public function __construct(
-		protected AlertEntity $alertEntity,
-		protected AlertRepository $alertRepository
-	) {}
 
 	public function resolve(): array
 	{
+		$this->extra = $this->alertEntity->getExtra();
 		$this->buildAlertText();
 		$this->buildTargetHref();
 		$this->alertEntity->setIcon('<span class="alert_icon main_icons people"></span>');

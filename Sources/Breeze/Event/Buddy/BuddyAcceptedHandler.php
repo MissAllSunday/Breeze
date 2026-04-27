@@ -5,27 +5,18 @@ declare(strict_types=1);
 namespace Breeze\Event\Buddy;
 
 use Breeze\Breeze;
-use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
-use Breeze\Repository\AlertRepository;
-use Breeze\Traits\TextTrait;
 
-class BuddyAcceptedHandler implements EventHandlerInterface
+class BuddyAcceptedHandler extends BaseHandler implements EventHandlerInterface
 {
-	use TextTrait;
-
 	protected const string TARGET_HREF = '{scriptUrl}?action=profile;u={userId}';
-
-	public function __construct(
-		protected AlertEntity $alertEntity,
-		protected AlertRepository $alertRepository
-	) {}
 
 	public function resolve(): array
 	{
+		$this->extra = $this->alertEntity->getExtra();
 		$this->buildAlertText();
 		$this->buildTargetHref();
-		$this->alertEntity->setIcon('<span class="alert_icon main_icons people"></span>');
+		$this->setPeopleIcon();
 
 		return $this->alertEntity->toArray();
 	}

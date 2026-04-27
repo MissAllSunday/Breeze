@@ -6,24 +6,15 @@ namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
 use Breeze\Controller\API\StatusController;
-use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
-use Breeze\Repository\AlertRepository;
-use Breeze\Traits\TextTrait;
 
-class LikeCreatedHandler implements EventHandlerInterface
+class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 {
-	use TextTrait;
-
 	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={contentId}';
-
-	public function __construct(
-		protected AlertEntity $alertEntity,
-		protected AlertRepository $alertRepository
-	) {}
 
 	public function resolve(): array
 	{
+		$this->extra = $this->alertEntity->getExtra();
 		$this->buildAlertText();
 		$this->buildTargetHref();
 
@@ -32,8 +23,7 @@ class LikeCreatedHandler implements EventHandlerInterface
 
 	protected function buildAlertText(): void
 	{
-		$extra = $this->alertEntity->getExtra();
-		$contentType = $extra['content_type'] ?? '';
+		$contentType = $this->extra['content_type'] ?? '';
 
 		// Determine the content type for the alert text
 		$type = match ($contentType) {
@@ -50,9 +40,8 @@ class LikeCreatedHandler implements EventHandlerInterface
 
 	protected function buildTargetHref(): void
 	{
-		$extra = $this->alertEntity->getExtra();
-		$contentId = $extra['content_id'] ?? 0;
-		$contentType = $extra['content_type'] ?? '';
+		$contentId = $this->extra['content_id'] ?? 0;
+		$contentType = $this->extra['content_type'] ?? '';
 
 		// Determine the appropriate action and subaction based on content type
 		$action = Breeze::ACTION_WALL;

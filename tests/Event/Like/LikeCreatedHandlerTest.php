@@ -45,11 +45,11 @@ class LikeCreatedHandlerTest extends TestCase
 	{
 		$expectedArray = ['key' => 'value'];
 
-		$this->alertEntity->expects($this->exactly(2))
+		$this->alertEntity->method('getSenderName')->willReturn('Luffy');
+
+		$this->alertEntity->expects($this->once())
 			->method('getExtra')
 			->willReturn(['content_type' => Breeze::NAME . '_status', 'content_id' => 123]);
-
-		$this->alertEntity->method('getSenderName')->willReturn('Luffy');
 
 		$this->handler->expects($this->atLeast(1))
 			->method('getText')
@@ -81,13 +81,12 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildAlertTextWithStatusType(): void
 	{
-		$extra = ['content_type' => Breeze::NAME . '_status'];
-
-		$this->alertEntity->expects($this->once())
-			->method('getExtra')
-			->willReturn($extra);
-
 		$this->alertEntity->method('getSenderName')->willReturn('Jane Doe');
+
+		$reflection = new \ReflectionClass($this->handler);
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_status']);
 
 		$this->handler->expects($this->exactly(2))
 			->method('getText')
@@ -101,7 +100,6 @@ class LikeCreatedHandlerTest extends TestCase
 			->method('setText')
 			->with('Jane Doe liked your status');
 
-		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildAlertText');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);
@@ -109,13 +107,12 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildAlertTextWithCommentType(): void
 	{
-		$extra = ['content_type' => Breeze::NAME . '_comment'];
-
-		$this->alertEntity->expects($this->once())
-			->method('getExtra')
-			->willReturn($extra);
-
 		$this->alertEntity->method('getSenderName')->willReturn('Bob Smith');
+
+		$reflection = new \ReflectionClass($this->handler);
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_comment']);
 
 		$this->handler->expects($this->exactly(2))
 			->method('getText')
@@ -129,7 +126,6 @@ class LikeCreatedHandlerTest extends TestCase
 			->method('setText')
 			->with('Bob Smith liked your comment');
 
-		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildAlertText');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);
@@ -137,11 +133,10 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildTargetHrefWithStatusType(): void
 	{
-		$extra = ['content_type' => Breeze::NAME . '_status', 'content_id' => 456];
-
-		$this->alertEntity->expects($this->once())
-			->method('getExtra')
-			->willReturn($extra);
+		$reflection = new \ReflectionClass($this->handler);
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_status', 'content_id' => 456]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -158,7 +153,6 @@ class LikeCreatedHandlerTest extends TestCase
 			->method('setTargetHref')
 			->with('http://example.com?action=wall;sa=single;id=456');
 
-		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);
@@ -166,11 +160,10 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildTargetHrefWithCommentType(): void
 	{
-		$extra = ['content_type' => Breeze::NAME . '_comment', 'content_id' => 789];
-
-		$this->alertEntity->expects($this->once())
-			->method('getExtra')
-			->willReturn($extra);
+		$reflection = new \ReflectionClass($this->handler);
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_comment', 'content_id' => 789]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -183,7 +176,6 @@ class LikeCreatedHandlerTest extends TestCase
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref');
 
-		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);
