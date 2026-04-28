@@ -72,7 +72,7 @@ class PermissionsService implements PermissionsServiceInterface
 		}
 
 		$perm[PermissionsEnum::TYPE_STATUS]['delete'] = $this->handleDelete(PermissionsEnum::TYPE_STATUS, $isPosterOwner, $isProfileOwner);
-		$perm[PermissionsEnum::TYPE_COMMENTS]['delete'] =  $this->handleDelete(PermissionsEnum::TYPE_STATUS, $isPosterOwner, $isProfileOwner);
+		$perm[PermissionsEnum::TYPE_COMMENTS]['delete'] =  $this->handleDelete(PermissionsEnum::TYPE_COMMENTS, $isPosterOwner, $isProfileOwner);
 
 		return $perm;
 	}

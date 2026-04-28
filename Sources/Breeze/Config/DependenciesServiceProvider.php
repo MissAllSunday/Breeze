@@ -86,8 +86,8 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		DeleteStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
 		PostStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
 		StatusByProfile::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
-		DeleteComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class]],
-		PostComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class]],
+		DeleteComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class]],
+		PostComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class]],
 		Like::class => ['arguments' => [Data::class, User::class, Allow::class, LikeRepository::class]],
 
 		// Composite Validators - New instances (Hold request state)

@@ -144,6 +144,7 @@ function allowedTo($permissionName)
 		'admin_forum' => false,
 		'likes_like' => false,
 		'breeze_deleteProfileStatus' => true,
+		'breeze_deleteProfileComments' => true,
 	];
 
 	return $dummyPermissions[$permissionName] ?? false;

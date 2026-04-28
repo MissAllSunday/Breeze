@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Comment;
 
 use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
@@ -16,6 +17,7 @@ class PostCommentTest extends TestCase
 	public function testGetParams(): void
 	{
 		$commentRepository = $this->createStub(CommentRepositoryInterface::class);
+		$statusRepository = $this->createStub(StatusRepositoryInterface::class);
 		$validateAllow = $this->createStub(Allow::class);
 		$validateUser = $this->createStub(User::class);
 		$validateData = $this->createStub(Data::class);
@@ -24,7 +26,8 @@ class PostCommentTest extends TestCase
 			$validateData,
 			$validateUser,
 			$validateAllow,
-			$commentRepository
+			$commentRepository,
+			$statusRepository
 		);
 
 		$this->assertEquals([

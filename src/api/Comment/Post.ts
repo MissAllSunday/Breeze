@@ -8,7 +8,7 @@ import { resolvePost } from "../Resolvers/Post";
 
 export const postComment = async (
 	commentParams: object,
-): Promise<CommentListType> => {
+): Promise<CommentListType | undefined> => {
 	try {
 		const postCommentResults = await fetch(
 			baseUrl("breezeComment", "postComment"),
@@ -23,7 +23,9 @@ export const postComment = async (
 			},
 		);
 
-		return await resolvePost(postCommentResults);
+		return (await resolvePost(postCommentResults)) as
+			| CommentListType
+			| undefined;
 	} catch (_error: unknown) {
 		showError(smfTextVars.error.generic);
 	}

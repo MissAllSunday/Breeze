@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { responses } from "../../__fixtures__/responses";
 import { status } from "../../__fixtures__/status";
-import { showInfo } from "../../utils/tooltip";
+import { showError, showInfo } from "../../utils/tooltip";
 import { resolvePost } from "./Post";
 
 const MOCK_GOOD_RESPONSE = responses.custom({
@@ -28,6 +28,7 @@ const MOCK_BAD_RESPONSE = responses.custom({
 
 vi.mock("../../utils/tooltip", () => ({
 	showInfo: vi.fn(() => "some error string"),
+	showError: vi.fn(() => "some error string"),
 }));
 
 describe("resolves Post call", () => {
@@ -51,6 +52,11 @@ describe("resolves Post call", () => {
 			await resolvePost(MOCK_BAD_RESPONSE);
 
 			expect(showInfo as jest.Mock).not.toHaveBeenCalled();
+		});
+		it("shows error message from server response", async () => {
+			await resolvePost(MOCK_BAD_RESPONSE);
+
+			expect(showError as jest.Mock).toHaveBeenCalledWith("some server error");
 		});
 	});
 });

@@ -55,7 +55,11 @@ function Status(props: StatusProps): React.ReactElement {
 				status_id: props.status.id,
 				body: content,
 			})
-				.then((newComments: CommentListType) => {
+				.then((newComments: CommentListType | undefined) => {
+					if (!newComments) {
+						return;
+					}
+
 					setCommentsList((prevCommentsList: CommentListType) => [
 						...prevCommentsList,
 						...Object.values(newComments),

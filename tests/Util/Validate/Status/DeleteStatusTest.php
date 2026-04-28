@@ -41,6 +41,11 @@ class DeleteStatusTest extends TestCase
 		}
 
 		$statusRepository->method('getCurrentUserInfo')->willReturn(['id' => 666]);
+		$statusRepository->method('getById')->willReturn(\Breeze\Entity\StatusEntity::from([
+			'id' => $data[\Breeze\Entity\StatusEntity::ID] ?? 1,
+			'wall_id' => 1,
+			'user_id' => $data[\Breeze\Entity\StatusEntity::USER_ID],
+		]));
 
 		if ($isExpectedException) {
 			$validateAllow->method('permissions')->willThrowException(new NotAllowedException());
@@ -56,6 +61,7 @@ class DeleteStatusTest extends TestCase
 		return [
 			'deleteOwn' => [
 				'data' => [
+					\Breeze\Entity\StatusEntity::ID => 1,
 					'user_id' => 666,
 				],
 				'permissionName' => 'deleteOwnStatus',
@@ -63,6 +69,7 @@ class DeleteStatusTest extends TestCase
 			],
 			'deleteAny' => [
 				'data' => [
+					\Breeze\Entity\StatusEntity::ID => 2,
 					'user_id' => 1,
 				],
 				'permissionName' => 'deleteStatus',
@@ -70,6 +77,7 @@ class DeleteStatusTest extends TestCase
 			],
 			'pass' => [
 				'data' => [
+					\Breeze\Entity\StatusEntity::ID => 3,
 					'user_id' => 1,
 				],
 				'permissionName' => 'yep',

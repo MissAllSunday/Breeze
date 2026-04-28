@@ -6,11 +6,16 @@ namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity;
 use Breeze\PermissionsEnum;
+use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Repository\InvalidDataException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
 class PostComment extends BaseActions implements ValidateDataInterface
 {
@@ -21,6 +26,16 @@ class PostComment extends BaseActions implements ValidateDataInterface
 	];
 
 	protected const string SUCCESS_KEY = 'published_comment';
+
+	public function __construct(
+		Data $validateData,
+		User $validateUser,
+		Allow $validateAllow,
+		BaseRepositoryInterface $repository,
+		protected StatusRepositoryInterface $statusRepository
+	) {
+		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
+	}
 
 	/**
 	 * @throws InvalidDataException
@@ -35,10 +50,22 @@ class PostComment extends BaseActions implements ValidateDataInterface
 
 	/**
 	 * @throws NotAllowedException
+	 * @throws DataNotFoundException
 	 */
 	public function checkAllow(): void
 	{
-		$this->validateAllow->permissions(PermissionsEnum::POST_COMMENTS, PermissionsEnum::POST_COMMENTS);
+		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
+		$wallOwnerId = $this->statusRepository
+			->getBasicInfoById($this->data[CommentEntity::STATUS_ID])
+			->getWallId();
+
+		if ($currentUserId !== $wallOwnerId) {
+			$this->validateAllow->permissions(
+				PermissionsEnum::POST_COMMENTS,
+				PermissionsEnum::POST_COMMENTS
+			);
+		}
+
 		$this->validateAllow->floodControl($this->data[CommentEntity::USER_ID]);
 	}
 

@@ -7,6 +7,7 @@ namespace Breeze\Util\Validate\Validations\Status;
 use Breeze\Entity\StatusEntity;
 use Breeze\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
@@ -26,10 +27,25 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkAllow(): void
 	{
-		$permissionName = $this->repository->getCurrentUserInfo()['id'] === $this->data[StatusEntity::USER_ID] ?
-			PermissionsEnum::DELETE_OWN_STATUS : PermissionsEnum::DELETE_STATUS;
+		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
+		$statusUserId = $this->data[StatusEntity::USER_ID];
 
-		$this->validateAllow->permissions($permissionName, 'deleteStatus');
+		if ($currentUserId === $statusUserId) {
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_STATUS, 'deleteStatus');
+
+			return;
+		}
+
+		assert($this->repository instanceof StatusRepositoryInterface);
+		$status = $this->repository->getById($this->data[StatusEntity::ID]);
+
+		if ($status->getWallId() === $currentUserId) {
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_STATUS, 'deleteStatus');
+
+			return;
+		}
+
+		$this->validateAllow->permissions(PermissionsEnum::DELETE_STATUS, 'deleteStatus');
 	}
 
 	/**

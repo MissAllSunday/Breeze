@@ -38,7 +38,12 @@ class PostStatus extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkAllow(): void
 	{
-		$this->validateAllow->permissions(PermissionsEnum::POST_STATUS, PermissionsEnum::POST_STATUS);
+		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
+
+		if ($currentUserId !== $this->data[StatusEntity::WALL_ID]) {
+			$this->validateAllow->permissions(PermissionsEnum::POST_STATUS, PermissionsEnum::POST_STATUS);
+		}
+
 		$this->validateAllow->floodControl($this->data[StatusEntity::WALL_ID]);
 	}
 

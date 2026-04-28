@@ -6,7 +6,9 @@ import { showError } from "../../utils/tooltip";
 import { baseConfig, baseUrl } from "../Base";
 import { resolvePost } from "../Resolvers/Post";
 
-export const postStatus = async (content: string): Promise<StatusListType> => {
+export const postStatus = async (
+	content: string,
+): Promise<StatusListType | undefined> => {
 	try {
 		const response = await fetch(baseUrl("breezeStatus", "postStatus"), {
 			method: "POST",
@@ -19,7 +21,7 @@ export const postStatus = async (content: string): Promise<StatusListType> => {
 			),
 		});
 
-		return await resolvePost(response);
+		return (await resolvePost(response)) as StatusListType | undefined;
 	} catch (_error: unknown) {
 		showError(smfTextVars.error.generic);
 	}

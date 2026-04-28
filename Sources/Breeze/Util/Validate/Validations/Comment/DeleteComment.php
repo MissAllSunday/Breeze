@@ -6,11 +6,16 @@ namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity;
 use Breeze\PermissionsEnum;
+use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidDataException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
 class DeleteComment extends BaseActions implements ValidateDataInterface
 {
@@ -20,6 +25,16 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 	];
 
 	protected const string SUCCESS_KEY = 'deleted_comment';
+
+	public function __construct(
+		Data $validateData,
+		User $validateUser,
+		Allow $validateAllow,
+		CommentRepositoryInterface $repository,
+		protected StatusRepositoryInterface $statusRepository
+	) {
+		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
+	}
 
 	public function successKeyString(): string
 	{
@@ -31,10 +46,26 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkAllow(): void
 	{
-		$permissionName = $this->repository->getCurrentUserInfo()['id'] === $this->data[CommentEntity::USER_ID] ?
-			PermissionsEnum::DELETE_OWN_COMMENTS : PermissionsEnum::DELETE_COMMENTS;
+		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
+		$commentUserId = $this->data[CommentEntity::USER_ID];
 
-		$this->validateAllow->permissions($permissionName, 'deleteStatus');
+		if ($currentUserId === $commentUserId) {
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_COMMENTS, 'deleteStatus');
+
+			return;
+		}
+
+		$comment = $this->repository->getById($this->data[CommentEntity::ID]);
+		assert($comment instanceof CommentEntity);
+		$status = $this->statusRepository->getBasicInfoById($comment->getStatusId());
+
+		if ($status->getWallId() === $currentUserId) {
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_COMMENTS, 'deleteStatus');
+
+			return;
+		}
+
+		$this->validateAllow->permissions(PermissionsEnum::DELETE_COMMENTS, 'deleteStatus');
 	}
 
 	/**

@@ -94,7 +94,11 @@ function WallFeed(props: WallProps): React.JSX.Element {
 		setIsLoading(true);
 
 		postStatus(content)
-			.then((newStatus: StatusListType) => {
+			.then((newStatus: StatusListType | undefined) => {
+				if (!newStatus) {
+					return;
+				}
+
 				setStatusList((prevStatusList: StatusListType) => [
 					...prevStatusList,
 					...Object.values(newStatus),

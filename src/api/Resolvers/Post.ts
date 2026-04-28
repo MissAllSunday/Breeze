@@ -1,7 +1,8 @@
 import type { CommentListType } from "breezeTypesComments";
 import type { LikeType } from "breezeTypesLikes";
 import type { StatusListType } from "breezeTypesStatus";
-import { showInfo } from "../../utils/tooltip";
+import smfTextVars from "../../DataSource/Txt";
+import { showError, showInfo } from "../../utils/tooltip";
 import { updateCsrfToken } from "../Base";
 
 export const resolvePost = async (
@@ -18,4 +19,6 @@ export const resolvePost = async (
 
 		return content;
 	}
+
+	showError(message ?? smfTextVars.error.generic);
 };
