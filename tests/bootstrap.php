@@ -64,6 +64,12 @@ function remove_integration_function(): void
 function checkSession(): void
 {
 }
+function is_not_guest(string $errorTextKey = 'login_to_continue'): void
+{
+	if (!empty($GLOBALS['user_info']['is_guest'])) {
+		fatal_lang_error($errorTextKey);
+	}
+}
 function createToken(string $action, string $type = 'post'): array
 {
 	$tokenVar = $action . '_token_var';

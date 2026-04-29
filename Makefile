@@ -8,7 +8,7 @@ export DB_PREFIX := smf_
 
 VENDOR_DIR := breezeVendor
 
-.PHONY: all install test setup-test-database lint ui-install ui-test e2e-up e2e-test e2e-down e2e clean
+.PHONY: all install test setup-test-database lint coverage ui-install ui-test e2e-up e2e-test e2e-down e2e clean
 
 all: install test ui-test e2e
 
@@ -25,6 +25,16 @@ setup-test-database:
 test: setup-test-database
 	@echo "Running PHPUnit tests..."
 	@composer test
+
+lint:
+	@echo "Running PHP-CS-Fixer auto-fix..."
+	@composer lint
+	@echo "Running UI linter..."
+	@npm run lint
+
+coverage:
+	@echo "Generating HTML coverage report..."
+	@composer coverage
 
 ui-install:
 	@echo "Installing node dependencies..."

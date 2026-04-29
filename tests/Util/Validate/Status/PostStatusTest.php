@@ -7,7 +7,9 @@ namespace Breeze\Util\Validate\Status;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\NotAllowedException;
+use Breeze\Util\Validate\Validations\Status\DeleteStatus;
 use Breeze\Util\Validate\Validations\Status\PostStatus;
+use Breeze\Util\Validate\Validations\Status\StatusByProfile;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
@@ -103,5 +105,24 @@ class PostStatusTest extends TestCase
 				'isExpectedException' => true,
 			],
 		];
+	}
+
+	public function testSetValidatorWithUnknownActionDoesNotSetValidator(): void
+	{
+		$repository = $this->createStub(StatusRepositoryInterface::class);
+		$validateAllow = $this->createStub(Allow::class);
+		$validateUser = $this->createStub(User::class);
+		$validateData = $this->createStub(Data::class);
+
+		$validateStatus = new \Breeze\Util\Validate\Validations\Status\ValidateStatus(
+			new DeleteStatus($validateData, $validateUser, $validateAllow, $repository),
+			new PostStatus($validateData, $validateUser, $validateAllow, $repository),
+			new StatusByProfile($validateData, $validateUser, $validateAllow, $repository)
+		);
+
+		$data = ['some' => 'data'];
+		$validateStatus->setUp($data, 'nonExistentAction');
+
+		$this->assertNull($validateStatus->validator);
 	}
 }

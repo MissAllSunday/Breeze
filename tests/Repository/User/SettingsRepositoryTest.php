@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Repository\User;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -161,5 +162,84 @@ class SettingsRepositoryTest extends TestCase
 		$result = $this->settingsRepository->getByIds([99, 100]);
 
 		$this->assertEquals([], $result);
+	}
+
+	public function testInsertSuccess(): void
+	{
+		$userId = 1;
+		$userSettings = ['wall' => 1, 'generalWall' => 1];
+
+		$this->dbClient->expects($this->once())
+			->method('replace')
+			->with(
+				OptionsEntity::TABLE,
+				[
+					OptionsEntity::MEMBER_ID => 'int',
+					OptionsEntity::VARIABLE => 'string',
+					OptionsEntity::VALUE => 'string',
+				],
+				$this->callback(function (array $toInsert) use ($userId) {
+					$mapped = [];
+					foreach ($toInsert as [$id, $name, $value]) {
+						$mapped[$name] = $value;
+						if ($id !== $userId) {
+							return false;
+						}
+					}
+
+					return isset($mapped['wall']) && $mapped['wall'] === 1
+						&& isset($mapped['generalWall']) && $mapped['generalWall'] === 1
+						&& isset($mapped['paginationNumber']) && $mapped['paginationNumber'] === 5;
+				}),
+				OptionsEntity::MEMBER_ID
+			)
+			->willReturn(1);
+
+		$result = $this->settingsRepository->insert($userSettings, $userId);
+
+		$this->assertTrue($result);
+	}
+
+	public function testInsertReturnsFalseWhenReplaceReturnsZero(): void
+	{
+		$this->dbClient->expects($this->once())
+			->method('replace')
+			->willReturn(0);
+
+		$result = $this->settingsRepository->insert([], 1);
+
+		$this->assertFalse($result);
+	}
+
+	public function testInsertEncodesJsonValues(): void
+	{
+		$userId = 1;
+		$coverData = ['url' => 'avatar.jpg'];
+		$userSettings = ['cover' => $coverData];
+
+		$this->dbClient->expects($this->once())
+			->method('replace')
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->callback(function (array $toInsert) use ($coverData, $userId) {
+					foreach ($toInsert as [$id, $name, $value]) {
+						if ($id !== $userId) {
+							return false;
+						}
+						if ($name === 'cover' && $value !== json_encode($coverData)) {
+							return false;
+						}
+					}
+
+					return true;
+				}),
+				$this->anything()
+			)
+			->willReturn(1);
+
+		$result = $this->settingsRepository->insert($userSettings, $userId);
+
+		$this->assertTrue($result);
 	}
 }

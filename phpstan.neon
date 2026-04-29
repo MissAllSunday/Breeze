@@ -9,7 +9,6 @@ parameters:
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:
     - '/Function saveDBSettings not found./'
-    - '/Function is_not_guest not found./'
     - '/Function tokenTxtReplace not found./'
     - '/Function create_control_richedit not found./'
     - '/Method Breeze\\Service\\Actions\\AdminService::init\(\) invoked with 0 parameters, 1 required./'

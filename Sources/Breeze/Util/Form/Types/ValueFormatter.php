@@ -7,6 +7,9 @@ namespace Breeze\Util\Form\Types;
 
 use Breeze\Traits\TextTrait;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class ValueFormatter
 {
 	use TextTrait;

@@ -43,7 +43,9 @@ composer coverage
 
 ```bash
 make install        # Install PHP dependencies
-make test           # Setup test DB + run all tests
+make test           # Setup test DB + run all tests (lint + phpunit + phpstan)
+make lint           # Auto-fix PHP (PHP-CS-Fixer) + UI (Biome) code style
+make coverage       # Generate HTML coverage report (tests/log/coverage/)
 ```
 
 ### Test Structure

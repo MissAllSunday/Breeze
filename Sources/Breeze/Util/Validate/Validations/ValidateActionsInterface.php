@@ -8,6 +8,9 @@ use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 
+/**
+ * @codeCoverageIgnore
+ */
 interface ValidateActionsInterface
 {
 	public function setUp(array $data, string $subAction): void;

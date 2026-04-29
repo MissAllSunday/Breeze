@@ -33,6 +33,8 @@ make all
 
 # Run individually
 make test       # PHP (PHPUnit + PHPStan)
+make lint       # Auto-fix PHP (PHP-CS-Fixer) + UI (Biome) code style
+make coverage   # Generate HTML coverage report
 make ui-test    # UI components (Vitest)
 make e2e        # E2E (Playwright + Docker)
 ```
