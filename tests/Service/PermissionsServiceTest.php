@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class PermissionsServiceTest extends TestCase
 {
 	private PermissionsService $permissionsService;
@@ -124,6 +126,204 @@ class PermissionsServiceTest extends TestCase
 						'adminForum' => false,
 						'profileView' => false,
 					],
+				],
+			],
+			'profile owner with different poster' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 2,
+				'expected' => [
+					'Status' => [
+						'edit' => false,
+						'delete' => true,
+						'post' => true,
+					],
+					'Comments' => [
+						'edit' => false,
+						'delete' => true,
+						'post' => true,
+					],
+					'isEnable' => [
+						'enableLikes' => false,
+					],
+					'Forum' => [
+						'likesLike' => false,
+						'adminForum' => false,
+						'profileView' => false,
+					],
+				],
+			],
+			'poster owner with different profile' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 2,
+				'expected' => [
+					'Status' => [
+						'edit' => false,
+						'delete' => false,
+						'post' => false,
+					],
+					'Comments' => [
+						'edit' => false,
+						'delete' => false,
+						'post' => false,
+					],
+					'isEnable' => [
+						'enableLikes' => false,
+					],
+					'Forum' => [
+						'likesLike' => false,
+						'adminForum' => false,
+						'profileView' => false,
+					],
+				],
+			],
+		];
+	}
+
+	#[DataProvider('permissionsWithMockProvider')]
+	public function testPermissionsWithControlledPermissions(
+		array $user_info,
+		int $profileOwner,
+		int $userPoster,
+		array $permissionsMap,
+		array $expectedStatus,
+		array $expectedComments,
+	): void {
+		$GLOBALS['user_info'] = $user_info;
+
+		$mockService = $this->getMockBuilder(PermissionsService::class)
+			->onlyMethods(['isAllowedTo'])
+			->getMock();
+
+		$mockService->method('isAllowedTo')
+			->willReturnCallback(function (string $permission) use ($permissionsMap): bool {
+				return $permissionsMap[$permission] ?? false;
+			});
+
+		$result = $mockService->permissions($profileOwner, $userPoster);
+
+		$this->assertEquals($expectedStatus, $result['Status']);
+		$this->assertEquals($expectedComments, $result['Comments']);
+	}
+
+	public static function permissionsWithMockProvider(): array
+	{
+		return [
+			'non-owner with general delete permissions' => [
+				'user_info' => ['id' => 3, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 2,
+				'permissionsMap' => [
+					'deleteStatus' => true,
+					'deleteComments' => true,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => false,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => false,
+				],
+			],
+			'non-owner with general post permissions' => [
+				'user_info' => ['id' => 3, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 2,
+				'permissionsMap' => [
+					'postStatus' => true,
+					'postComments' => true,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => true,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => true,
+				],
+			],
+			'profile owner with profile delete false' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 2,
+				'permissionsMap' => [
+					'deleteProfileStatus' => false,
+					'deleteProfileComments' => false,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => true,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => true,
+				],
+			],
+			'poster owner with own delete true' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 2,
+				'permissionsMap' => [
+					'deleteOwnStatus' => true,
+					'deleteOwnComments' => true,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => false,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => false,
+				],
+			],
+			'poster owner with own delete false' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 2,
+				'permissionsMap' => [
+					'deleteOwnStatus' => false,
+					'deleteOwnComments' => false,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => false,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => false,
+				],
+			],
+			'profile owner and poster with own true profile false' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'profileOwner' => 1,
+				'userPoster' => 1,
+				'permissionsMap' => [
+					'deleteOwnStatus' => true,
+					'deleteProfileStatus' => false,
+					'deleteOwnComments' => true,
+					'deleteProfileComments' => false,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => true,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => true,
 				],
 			],
 		];

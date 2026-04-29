@@ -27,6 +27,8 @@ class DeleteCommentTest extends TestCase
 
 	private User | MockObject $validateUser;
 
+	private StatusRepositoryInterface | MockObject $statusRepository;
+
 	private DeleteComment $deleteComment;
 
 	/**
@@ -38,14 +40,14 @@ class DeleteCommentTest extends TestCase
 		$this->validateAllow = $this->createMock(Allow::class);
 		$this->validateUser = $this->createMock(User::class);
 		$validateData = $this->createStub(Data::class);
-		$statusRepository = $this->createStub(StatusRepositoryInterface::class);
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 
 		$this->deleteComment = new DeleteComment(
 			$validateData,
 			$this->validateUser,
 			$this->validateAllow,
 			$this->commentRepository,
-			$statusRepository
+			$this->statusRepository
 		);
 	}
 
@@ -94,5 +96,57 @@ class DeleteCommentTest extends TestCase
 		$this->expectException(DataNotFoundException::class);
 
 		$this->deleteComment->checkUser();
+	}
+
+	public function testCheckAllowAsProfileOwner(): void
+	{
+		$this->deleteComment->setData([
+			CommentEntity::ID => 5,
+			CommentEntity::USER_ID => 2,
+		]);
+
+		$this->commentRepository->method('getCurrentUserInfo')->willReturn(['id' => 666]);
+		$this->commentRepository->method('getById')->willReturn(CommentEntity::from([
+			CommentEntity::ID => 5,
+			CommentEntity::STATUS_ID => 10,
+			CommentEntity::USER_ID => 2,
+		]));
+		$this->statusRepository->method('getBasicInfoById')->willReturn(\Breeze\Entity\StatusEntity::from([
+			\Breeze\Entity\StatusEntity::ID => 10,
+			\Breeze\Entity\StatusEntity::WALL_ID => 666,
+			\Breeze\Entity\StatusEntity::USER_ID => 2,
+		]));
+
+		$this->validateAllow->expects($this->once())
+			->method('permissions')
+			->with('deleteProfileComments', 'deleteStatus');
+
+		$this->deleteComment->checkAllow();
+	}
+
+	public function testCheckAllowAsGeneralAdmin(): void
+	{
+		$this->deleteComment->setData([
+			CommentEntity::ID => 6,
+			CommentEntity::USER_ID => 2,
+		]);
+
+		$this->commentRepository->method('getCurrentUserInfo')->willReturn(['id' => 999]);
+		$this->commentRepository->method('getById')->willReturn(CommentEntity::from([
+			CommentEntity::ID => 6,
+			CommentEntity::STATUS_ID => 10,
+			CommentEntity::USER_ID => 2,
+		]));
+		$this->statusRepository->method('getBasicInfoById')->willReturn(\Breeze\Entity\StatusEntity::from([
+			\Breeze\Entity\StatusEntity::ID => 10,
+			\Breeze\Entity\StatusEntity::WALL_ID => 666,
+			\Breeze\Entity\StatusEntity::USER_ID => 2,
+		]));
+
+		$this->validateAllow->expects($this->once())
+			->method('permissions')
+			->with('deleteComments', 'deleteStatus');
+
+		$this->deleteComment->checkAllow();
 	}
 }

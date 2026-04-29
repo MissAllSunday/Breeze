@@ -43,7 +43,7 @@ class DeleteStatusTest extends TestCase
 		$statusRepository->method('getCurrentUserInfo')->willReturn(['id' => 666]);
 		$statusRepository->method('getById')->willReturn(\Breeze\Entity\StatusEntity::from([
 			'id' => $data[\Breeze\Entity\StatusEntity::ID] ?? 1,
-			'wall_id' => 1,
+			'wall_id' => $data[\Breeze\Entity\StatusEntity::WALL_ID] ?? 1,
 			'user_id' => $data[\Breeze\Entity\StatusEntity::USER_ID],
 		]));
 
@@ -82,6 +82,24 @@ class DeleteStatusTest extends TestCase
 				],
 				'permissionName' => 'yep',
 				'isExpectedException' => false,
+			],
+			'deleteProfileOwner' => [
+				'data' => [
+					\Breeze\Entity\StatusEntity::ID => 10,
+					'user_id' => 1,
+					\Breeze\Entity\StatusEntity::WALL_ID => 666,
+				],
+				'permissionName' => 'deleteProfileStatus',
+				'isExpectedException' => false,
+			],
+			'deleteProfileOwnerDeny' => [
+				'data' => [
+					\Breeze\Entity\StatusEntity::ID => 11,
+					'user_id' => 1,
+					\Breeze\Entity\StatusEntity::WALL_ID => 666,
+				],
+				'permissionName' => 'deleteProfileStatus',
+				'isExpectedException' => true,
 			],
 		];
 	}
