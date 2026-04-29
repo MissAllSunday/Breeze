@@ -56,6 +56,7 @@ class WallControllerTest extends TestCase
 			],
 		];
 		unset($_REQUEST['u']);
+		unset($_REQUEST['id']);
 		$_SESSION['Breeze'] = [
 			'notice' => [
 				'message' => 'Kaizoku ou ni ore wa naru',
@@ -114,6 +115,29 @@ class WallControllerTest extends TestCase
 			->with($userId);
 
 		$this->wallController->wall();
+	}
+
+	public function testWallSetsPageTitleWhenIdIsPresent(): void
+	{
+		$statusId = 24;
+		$userId = 123;
+		$_REQUEST['id'] = $statusId;
+		$GLOBALS['user_info'] = ['id' => $userId];
+		$GLOBALS['txt']['Breeze_user_single_status'] = 'Single Status';
+
+		$this->profileService->expects($this->once())
+			->method('setEditor');
+
+		$this->profileService->expects($this->once())
+			->method('loadComponents')
+			->with($userId);
+
+		$this->wallController->wall();
+
+		$this->assertEquals('Single Status', $GLOBALS['context']['page_title']);
+
+		// Clean up
+		unset($_REQUEST['id']);
 	}
 
 	public function testProfileWithValidUser(): void
