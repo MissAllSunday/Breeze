@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
-use Breeze\Controller\API\StatusController;
 use Breeze\Event\EventHandlerInterface;
 
 class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 {
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={contentId}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};id={contentId}';
 
 	public function resolve(): array
 	{
@@ -41,19 +40,10 @@ class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 	protected function buildTargetHref(): void
 	{
 		$contentId = $this->extra['content_id'] ?? 0;
-		$contentType = $this->extra['content_type'] ?? '';
-
-		// Determine the appropriate action and subaction based on content type
-		$action = Breeze::ACTION_WALL;
-		$subAction = match ($contentType) {
-			Breeze::NAME . '_status', Breeze::NAME . '_comment' => StatusController::ACTION_SINGLE, // Comments link to their parent status
-			default => '',
-		};
 
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-			'action' => $action,
-			'subAction' => $subAction,
+			'action' => Breeze::ACTION_WALL,
 			'contentId' => $contentId,
 		]));
 	}

@@ -59,7 +59,7 @@ class CommentCreatedHandlerTest extends TestCase
 
 		$this->handler->expects($this->once())
 			->method('parserText')
-			->willReturn('http://example.com?action=wall;sa=single;id=123');
+			->willReturn('http://example.com?action=wall;id=123');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref');
@@ -187,11 +187,11 @@ class CommentCreatedHandlerTest extends TestCase
 				return isset($params['statusId']) && $params['statusId'] === 456
 					&& isset($params['anchor']) && $params['anchor'] === '#comment-789';
 			}))
-			->willReturn('http://example.com?action=wall;sa=single;id=456#comment-789');
+			->willReturn('http://example.com?action=wall;id=456#comment-789');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;sa=single;id=456#comment-789');
+			->with('http://example.com?action=wall;id=456#comment-789');
 
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);

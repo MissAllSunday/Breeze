@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Breeze\Event\Comment;
 
 use Breeze\Breeze;
-use Breeze\Controller\API\StatusController;
 use Breeze\Event\EventAbstract;
 use Breeze\Event\EventHandlerInterface;
 
 class CommentDeletedHandler extends BaseHandler implements EventHandlerInterface
 {
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};sa={subAction};id={statusId}{anchor}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};id={statusId}{anchor}';
 
 	public function resolve(): array
 	{
@@ -45,7 +44,6 @@ class CommentDeletedHandler extends BaseHandler implements EventHandlerInterface
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
 			'action' => Breeze::ACTION_WALL,
-			'subAction' => StatusController::ACTION_SINGLE,
 			'statusId' => $statusId,
 			'anchor' => '',
 		]));

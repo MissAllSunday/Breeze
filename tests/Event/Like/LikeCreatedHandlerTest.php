@@ -147,11 +147,11 @@ class LikeCreatedHandlerTest extends TestCase
 			->with($this->anything(), $this->callback(function ($params) {
 				return isset($params['contentId']) && $params['contentId'] === 456;
 			}))
-			->willReturn('http://example.com?action=wall;sa=single;id=456');
+			->willReturn('http://example.com?action=wall;id=456');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;sa=single;id=456');
+			->with('http://example.com?action=wall;id=456');
 
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);
@@ -171,7 +171,7 @@ class LikeCreatedHandlerTest extends TestCase
 
 		$this->handler->expects($this->once())
 			->method('parserText')
-			->willReturn('http://example.com?action=wall;sa=single;id=789');
+			->willReturn('http://example.com?action=wall;id=789');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref');
