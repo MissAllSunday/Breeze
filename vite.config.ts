@@ -47,6 +47,17 @@ function envPlugin(): Plugin {
     name: "env-plugin",
     config(_, { mode }) {
       const env = loadEnv(mode, ".", ["VITE_APP_", "NODE_ENV", "PUBLIC_URL"]);
+
+      // Allow runtime environment variables to override .env file values.
+      // This is required for Docker-based E2E testing where compose sets
+      // VITE_APP_DEV_URL (etc.) but loadEnv only reads .env files.
+      const prefixes = ["VITE_APP_", "NODE_ENV", "PUBLIC_URL"];
+      for (const [key, value] of Object.entries(process.env)) {
+        if (value !== undefined && prefixes.some((p) => key.startsWith(p))) {
+          env[key] = value;
+        }
+      }
+
       return {
         define: Object.fromEntries(
           Object.entries(env).map(([key, value]) => [
