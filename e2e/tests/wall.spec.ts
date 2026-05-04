@@ -24,7 +24,26 @@ test.beforeEach(async ({ request }) => {
 
 test.describe('Wall - Display Statuses', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('console', (msg) => {
+      console.log(`[browser console ${msg.type()}] ${msg.text()}`);
+    });
     await page.goto('/');
+  });
+
+  test('diagnostic: API reachable from browser', async ({ page }) => {
+    const result = await page.evaluate(async () => {
+      try {
+        const res = await fetch('http://api:8000/?action=breezeStatus&sa=profile&sc=test', {
+          headers: { 'X-SMF-AJAX': '1' }
+        });
+        const text = await res.text();
+        return { status: res.status, bodyPreview: text.slice(0, 200) };
+      } catch (e: unknown) {
+        return { error: (e as Error).message };
+      }
+    });
+    console.log('DIAGNOSTIC fetch result:', result);
+    expect(result.status).toBe(200);
   });
 
   test('page loads successfully', async ({ page }) => {
@@ -104,6 +123,9 @@ test.describe('Wall - Display Statuses', () => {
 
 test.describe('Wall - Post Status', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('console', (msg) => {
+      console.log(`[browser console ${msg.type()}] ${msg.text()}`);
+    });
     await page.goto('/');
     await waitForStatuses(page);
   });
@@ -216,6 +238,9 @@ test.describe('Wall - Post Status', () => {
 
 test.describe('Wall - Likes', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('console', (msg) => {
+      console.log(`[browser console ${msg.type()}] ${msg.text()}`);
+    });
     await page.goto('/');
     await waitForStatuses(page);
   });
@@ -397,6 +422,9 @@ test.describe('Wall - Likes', () => {
 
 test.describe('Wall - Delete Status', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('console', (msg) => {
+      console.log(`[browser console ${msg.type()}] ${msg.text()}`);
+    });
     await page.goto('/');
     await waitForStatuses(page);
   });

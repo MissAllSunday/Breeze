@@ -27,6 +27,9 @@ test.beforeEach(async ({ request }) => {
 // ---------------------------------------------------------------------------
 test.describe('Comments - Display', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('console', (msg) => {
+      console.log(`[browser console ${msg.type()}] ${msg.text()}`);
+    });
     await page.goto('/');
     await waitForStatuses(page);
   });
@@ -60,6 +63,9 @@ test.describe('Comments - Display', () => {
 // ---------------------------------------------------------------------------
 test.describe('Comments - Post Comment', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('console', (msg) => {
+      console.log(`[browser console ${msg.type()}] ${msg.text()}`);
+    });
     await page.goto('/');
     await waitForStatuses(page);
   });
@@ -137,6 +143,9 @@ test.describe('Comments - Post Comment', () => {
 // ---------------------------------------------------------------------------
 test.describe('Comments - Delete Comment', () => {
   test.beforeEach(async ({ page }) => {
+    page.on('console', (msg) => {
+      console.log(`[browser console ${msg.type()}] ${msg.text()}`);
+    });
     await page.goto('/');
     await waitForStatuses(page);
   });

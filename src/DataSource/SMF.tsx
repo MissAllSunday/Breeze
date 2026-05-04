@@ -13,6 +13,9 @@ const ajaxIndicator = window.ajax_indicator ?? false;
 // @ts-expect-error SMF external variable
 const script_url = window.smf_scripturl ?? process.env.VITE_APP_DEV_URL;
 
+// eslint-disable-next-line no-console
+console.log("[SMF Debug] script_url:", script_url);
+
 const user_id = parseInt(
 	window.smf_member_id ?? process.env.VITE_APP_DEV_USER_ID,
 );

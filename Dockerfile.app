@@ -13,7 +13,7 @@ COPY . .
 # take full precedence. Vite's loadEnv() always reads .env files and ignores
 # runtime env vars; without this, the baked-in dev URL would override the
 # container's configured API endpoint.
-RUN rm -f .env
+RUN rm -f .env && ls -la .env* || echo "No .env files in image"
 
 ENV BROWSER=none
 
