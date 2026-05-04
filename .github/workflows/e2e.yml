@@ -32,6 +32,16 @@ jobs:
       - name: Start services
         run: docker compose -f docker-compose.e2e.yml up -d --build --wait db api app
 
+      - name: Dump container logs on failure
+        if: failure()
+        run: |
+          echo "=== DB logs ==="
+          docker logs breeze_e2e_db || true
+          echo "=== API logs ==="
+          docker logs breeze_e2e_api || true
+          echo "=== APP logs ==="
+          docker logs breeze_e2e_app || true
+
       - name: Run Playwright tests
         run: docker compose -f docker-compose.e2e.yml run --rm e2e
 

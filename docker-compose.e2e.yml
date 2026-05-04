@@ -1,7 +1,10 @@
 services:
   db:
     image: mysql:8.0
+    platform: linux/amd64
     container_name: breeze_e2e_db
+    security_opt:
+      - apparmor:unconfined
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: breeze_test
@@ -11,11 +14,11 @@ services:
       - breeze_e2e_db_data:/var/lib/mysql
       - ./e2e/api/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 10
+      start_period: 60s
 
   api:
     build:
