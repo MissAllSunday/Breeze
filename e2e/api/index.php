@@ -79,37 +79,21 @@ $permissions = [
     'Forum' => ['likesLike' => true, 'adminForum' => false, 'profileView' => true],
 ];
 
-$mockStatuses = [];
-for ($i = 1; $i <= 3; $i++) {
-    $commentLikesInfo = array_merge($likesInfo, [
-        'contentId' => $i * 100,
-        'type' => 'brz_comment',
-    ]);
-
-    $mockStatuses[] = [
-        'id' => $i,
-        'wall_id' => 1,
-        'user_id' => 1,
-        'likes' => 0,
-        'body' => "This is mock status #{$i} for E2E testing.",
-        'created_at' => date('M d, Y h:i A', time() - ($i * 3600)),
-        'likesInfo' => array_merge($likesInfo, ['contentId' => $i]),
-        'comments' => [
-            [
-                'id' => $i * 100,
-                'status_id' => $i,
-                'user_id' => 1,
-                'likes' => 0,
-                'body' => "A comment on status #{$i}",
-                'likesInfo' => $commentLikesInfo,
-                'created_at' => date('M d, Y h:i A', time() - ($i * 1800)),
-                'userData' => $userData,
-                'isNew' => false,
-            ],
-        ],
-        'userData' => $userData,
-        'isNew' => false,
-    ];
+// Database connection — lives in the same Docker network as the db container
+try {
+    $pdo = new PDO(
+        'mysql:host=db;port=3306;dbname=breeze_test;charset=utf8mb4',
+        'root',
+        'root',
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]
+    );
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]);
+    exit;
 }
 
 require __DIR__ . '/router.php';

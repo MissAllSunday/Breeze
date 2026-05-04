@@ -9,6 +9,7 @@ services:
       - "3307:3306"
     volumes:
       - breeze_e2e_db_data:/var/lib/mysql
+      - ./e2e/api/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 10s
@@ -17,14 +18,18 @@ services:
       start_period: 30s
 
   api:
-    image: php:8.3-cli
+    build:
+      context: ./e2e/api
+      dockerfile: Dockerfile
     container_name: breeze_e2e_api
     working_dir: /app
     volumes:
       - ./e2e/api:/app
     ports:
       - "8080:8000"
-    command: ["php", "-S", "0.0.0.0:8000", "index.php"]
+    depends_on:
+      db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "php -r \"file_get_contents('http://127.0.0.1:8000/?action=breezeStatus&sa=profile&sc=test');\" 2>/dev/null"]
       interval: 5s

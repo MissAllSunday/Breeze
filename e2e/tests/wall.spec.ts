@@ -1,9 +1,26 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page, type APIRequestContext } from '@playwright/test';
 
-/** Wait for the initial 3 mock statuses to be rendered. */
-async function waitForStatuses(page: Page) {
-  await expect(page.locator('li.status')).toHaveCount(3, { timeout: 10_000 });
+/** Wait for statuses to be rendered. Defaults to 3 (fixture count). */
+async function waitForStatuses(page: Page, count: number = 3) {
+  await expect(page.locator('li.status')).toHaveCount(count, { timeout: 10_000 });
 }
+
+/** Reset the mock API database back to its initial fixture state. */
+async function resetDatabase(request: APIRequestContext) {
+  const response = await request.get('http://api:8000/?action=reset');
+  if (!response.ok()) {
+    console.error('Database reset failed:', await response.text());
+    throw new Error('Database reset failed');
+  }
+}
+
+test.beforeAll(async ({ request }) => {
+  await resetDatabase(request);
+});
+
+test.beforeEach(async ({ request }) => {
+  await resetDatabase(request);
+});
 
 test.describe('Wall - Display Statuses', () => {
   test.beforeEach(async ({ page }) => {
@@ -196,6 +213,187 @@ test.describe('Wall - Post Status', () => {
   });
 });
 
+
+test.describe('Wall - Likes', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await waitForStatuses(page);
+  });
+
+  test('like button is visible on each status', async ({ page }) => {
+    // Each status has a Like component; comments also have likes nested inside,
+    // so we assert per-status to avoid counting comment likes.
+    for (let i = 1; i <= 3; i++) {
+      const statusLike = page.locator(`#status-${i} .breeze_anchor.pointer_cursor`).first();
+      await expect(statusLike).toBeVisible();
+    }
+  });
+
+  test('like button is visible on each comment', async ({ page }) => {
+    // Each comment has a Like component
+    const commentLikes = page.locator('.comment .breeze_anchor.pointer_cursor');
+    await expect(commentLikes).toHaveCount(3);
+  });
+
+  test('clicking status like shows confirmation dialog', async ({ page }) => {
+    // .first() because the comment's like button is also nested inside #status-1
+    const likeButton = page.locator('#status-1 .breeze_anchor.pointer_cursor').first();
+
+    let dialogType = '';
+    page.once('dialog', async (dialog) => {
+      dialogType = dialog.type();
+      await dialog.dismiss();
+    });
+
+    await likeButton.click();
+
+    expect(dialogType).toBe('confirm');
+  });
+
+  test('confirming like on status changes emoji and shows like info', async ({ page }) => {
+    // Accept all confirmation dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
+
+    const firstStatus = page.locator('#status-1');
+    // .first() to avoid matching the nested comment like button
+    const likeButton = firstStatus.locator('.breeze_anchor.pointer_cursor').first();
+
+    // Initial state: thumbs up (not yet liked)
+    await expect(likeButton).toContainText('👍');
+
+    // Like info should not be visible initially (count is 0)
+    await expect(firstStatus.locator('[data-testid="likesInfo"]')).toHaveCount(0);
+
+    await likeButton.click();
+
+    // After liking: emoji changes to thumbs down
+    await expect(likeButton).toContainText('👎');
+
+    // Like info link should appear showing the like count
+    const likesInfo = firstStatus.locator('[data-testid="likesInfo"]');
+    await expect(likesInfo).toBeVisible();
+  });
+
+  test('clicking like info opens likers modal', async ({ page }) => {
+    // Accept all confirmation dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
+
+    const firstStatus = page.locator('#status-1');
+    const likeButton = firstStatus.locator('.breeze_anchor.pointer_cursor').first();
+
+    // Like the status first
+    await likeButton.click();
+
+    // Click the likes info link to open the modal
+    const likesInfo = firstStatus.locator('[data-testid="likesInfo"]');
+    await likesInfo.click();
+
+    // Modal should be visible
+    const modal = page.locator('#smf_popup.show');
+    await expect(modal).toBeVisible();
+
+    // Modal header should contain the like emoji
+    await expect(modal.locator('.popup_heading')).toContainText('👍');
+
+    // Close the modal — the icon span is 0×0 in headless E2E because the SMF
+    // icon font never loads, so Playwright can't compute a click point even with
+    // force:true. We use a JS click instead.
+    await modal.locator('.hide_popup').evaluate((el) => (el as HTMLElement).click());
+    await expect(modal).toHaveCount(0);
+  });
+
+  test('confirming like on comment changes emoji', async ({ page }) => {
+    // Accept all confirmation dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
+
+    const firstComment = page.locator('#comment-100');
+    const likeButton = firstComment.locator('.breeze_anchor.pointer_cursor');
+
+    // Initial state: thumbs up
+    await expect(likeButton).toContainText('👍');
+
+    await likeButton.click();
+
+    // After liking: emoji changes to thumbs down
+    await expect(likeButton).toContainText('👎');
+  });
+
+  test('clicking like again unlikes the status', async ({ page }) => {
+    // Accept all confirmation dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
+
+    const firstStatus = page.locator('#status-1');
+    const likeButton = firstStatus.locator('.breeze_anchor.pointer_cursor').first();
+
+    // Like the status first
+    await likeButton.click();
+    await expect(likeButton).toContainText('👎');
+
+    // Click again to unlike
+    await likeButton.click();
+
+    // Emoji changes back to thumbs up
+    await expect(likeButton).toContainText('👍');
+
+    // Like info should be gone again
+    await expect(firstStatus.locator('[data-testid="likesInfo"]')).toHaveCount(0);
+  });
+
+  test('clicking like again unlikes the comment', async ({ page }) => {
+    // Accept all confirmation dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
+
+    const firstComment = page.locator('#comment-100');
+    const likeButton = firstComment.locator('.breeze_anchor.pointer_cursor');
+
+    // Like the comment first
+    await likeButton.click();
+    await expect(likeButton).toContainText('👎');
+
+    // Click again to unlike
+    await likeButton.click();
+
+    // Emoji changes back to thumbs up
+    await expect(likeButton).toContainText('👍');
+  });
+
+  test('posted status survives a page refresh', async ({ page }) => {
+    // Accept all confirmation dialogs
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
+
+    const editor = page.locator('[data-testid="content"]').first();
+    const sendButton = page.locator('[data-testid="send"]').first();
+
+    await editor.fill('Persistent status test');
+    await sendButton.click();
+
+    // Wait for the new status to appear
+    await expect(page.locator('li.status')).toHaveCount(4, { timeout: 10_000 });
+
+    // Refresh the page
+    await page.goto('/');
+    await waitForStatuses(page, 4);
+
+    // All 4 statuses should still be present (including the new one)
+    const allStatuses = page.locator('li.status');
+    await expect(allStatuses).toHaveCount(4);
+
+    // New statuses are sorted newest-first, so the posted status is first
+    await expect(allStatuses.first()).toContainText('Persistent status test');
+  });
+});
 
 test.describe('Wall - Delete Status', () => {
   test.beforeEach(async ({ page }) => {

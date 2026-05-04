@@ -1,9 +1,26 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page, type APIRequestContext } from '@playwright/test';
 
-/** Wait for the initial 3 mock statuses to be rendered. */
-async function waitForStatuses(page: Page) {
-  await expect(page.locator('li.status')).toHaveCount(3, { timeout: 10_000 });
+/** Wait for the given number of mock statuses to be rendered. */
+async function waitForStatuses(page: Page, count: number = 3) {
+  await expect(page.locator('li.status')).toHaveCount(count, { timeout: 10_000 });
 }
+
+/** Reset the mock API database back to its initial fixture state. */
+async function resetDatabase(request: APIRequestContext) {
+  const response = await request.get('http://api:8000/?action=reset');
+  if (!response.ok()) {
+    console.error('Database reset failed:', await response.text());
+    throw new Error('Database reset failed');
+  }
+}
+
+test.beforeAll(async ({ request }) => {
+  await resetDatabase(request);
+});
+
+test.beforeEach(async ({ request }) => {
+  await resetDatabase(request);
+});
 
 // ---------------------------------------------------------------------------
 // Display
