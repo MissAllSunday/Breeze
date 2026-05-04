@@ -12,7 +12,7 @@ services:
       - "3307:3306"
     volumes:
       - breeze_e2e_db_data:/var/lib/mysql
-      - ./e2e/api/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./e2e/api/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
       interval: 10s
@@ -34,10 +34,10 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "php -r \"file_get_contents('http://127.0.0.1:8000/?action=breezeStatus&sa=profile&sc=test');\" 2>/dev/null"]
+      test: ["CMD-SHELL", "php -r \"\$r=file_get_contents('http://127.0.0.1:8000/?action=breezeStatus&sa=profile&sc=test'); if(\$r===false||json_decode(\$r)===null) exit(1);\""]
       interval: 5s
       timeout: 3s
-      retries: 3
+      retries: 10
       start_period: 5s
 
   app:
