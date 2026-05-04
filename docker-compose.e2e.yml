@@ -34,7 +34,7 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "php -r \"\$r=file_get_contents('http://127.0.0.1:8000/?action=breezeStatus&sa=profile&sc=test'); if(\$r===false||json_decode(\$r)===null) exit(1);\""]
+      test: ["CMD-SHELL", "curl -sf 'http://127.0.0.1:8000/?action=breezeStatus&sa=profile&sc=test' >/dev/null || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 10
