@@ -58,11 +58,6 @@ function envPlugin(): Plugin {
         }
       }
 
-      // eslint-disable-next-line no-console
-      console.log("[envPlugin] mode:", mode);
-      // eslint-disable-next-line no-console
-      console.log("[envPlugin] VITE_APP_DEV_URL:", env.VITE_APP_DEV_URL);
-
       return {
         define: Object.fromEntries(
           Object.entries(env).map(([key, value]) => [
