@@ -9,15 +9,17 @@ RUN npm ci
 
 COPY . .
 
-# Remove the local .env file so that Docker Compose environment variables
-# take full precedence. Vite's loadEnv() always reads .env files and ignores
-# runtime env vars; without this, the baked-in dev URL would override the
-# container's configured API endpoint.
-RUN rm -f .env && ls -la .env* || echo "No .env files in image"
+# Remove the committed .env so it cannot override the runtime values we will
+# write in the entrypoint script.
+RUN rm -f .env
 
 ENV BROWSER=none
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 EXPOSE 3000
 
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["npx", "vite", "--no-open"]
 
