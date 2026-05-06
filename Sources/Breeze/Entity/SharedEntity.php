@@ -123,8 +123,8 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 	public function toInsert(): array
 	{
 		$this->unsetId();
+		$this->setCreatedAt(new \DateTimeImmutable());
 		$toInsert = $this->toArray();
-		$toInsert[self::CREATED_AT] = time();
 
 		return array_intersect_key($toInsert, array_flip(static::getColumns()));
 	}

@@ -7,10 +7,15 @@ export DB_PASSWORD := root
 export DB_PREFIX := smf_
 
 VENDOR_DIR := breezeVendor
+SYNC_SCRIPT := ./brp.sh
 
-.PHONY: all install test setup-test-database lint coverage ui-install ui-test e2e-up e2e-test e2e-down e2e clean
+.PHONY: all install test setup-test-database lint coverage ui-install ui-test e2e-up e2e-test e2e-down e2e clean sync
 
 all: install test ui-test e2e
+
+sync: lint
+	@echo "Sync with local SMF env"
+	@sh $(SYNC_SCRIPT)
 
 install:
 	@echo "Checking PHP version..."
