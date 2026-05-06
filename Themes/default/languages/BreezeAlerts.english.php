@@ -14,9 +14,12 @@ declare(strict_types=1);
 
 global $txt;
 
+use Breeze\LikesEnum;
+
+
 // types
-$txt['Breeze_alert_br_com'] = 'comment';
-$txt['Breeze_alert_br_sta'] = 'status';
+$txt['Breeze_alert_' . LikesEnum::Comments->value] = 'comment';
+$txt['Breeze_alert_' . LikesEnum::Status->value] = 'status';
 
 // Gender related stuff.
 $txt['Breeze_alert_gender_possessive_Female'] = 'her';
