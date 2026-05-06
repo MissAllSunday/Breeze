@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Event\Like;
 
-use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\LikesEnum;
 use Breeze\Repository\AlertRepository;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
@@ -44,30 +44,57 @@ class LikeCreatedHandlerTest extends TestCase
 	public function testResolveReturnsArray(): void
 	{
 		$expectedArray = ['key' => 'value'];
+		$senderName = 'Luffy';
+		$contentType = LikesEnum::Status->value;
+		$contentId = 123;
+		$scriptUrl = 'http://example.com';
+		$alertLikeText = 'mocked_alert_like_text';
+		$statusTypeText = 'mocked_status_type_text';
+		$parsedAlertText = 'Luffy liked your status';
+		$parsedTargetHref = 'http://example.com?action=wall;id=123';
 
-		$this->alertEntity->method('getSenderName')->willReturn('Luffy');
+
+		$this->alertEntity->method('getSenderName')->willReturn($senderName);
 
 		$this->alertEntity->expects($this->once())
 			->method('getExtra')
-			->willReturn(['content_type' => Breeze::NAME . '_status', 'content_id' => 123]);
+			->willReturn(['content_type' => $contentType, 'content_id' => $contentId]);
 
-		$this->handler->expects($this->atLeast(1))
+		// getText is called twice: once for 'alert_like', once for 'alert_' . $contentType
+		$this->handler->expects($this->exactly(2))
 			->method('getText')
-			->willReturn('Alert text');
+			->willReturnMap([
+				['alert_like', $alertLikeText],
+				['alert_' . $contentType, $statusTypeText],
+			]);
 
+		// parserText is called twice: once for buildAlertText, once for buildTargetHref
 		$this->handler->expects($this->exactly(2))
 			->method('parserText')
-			->willReturn('Parsed text');
+			->willReturnMap([
+				[
+					$alertLikeText,
+					['poster' => $senderName, 'type' => $statusTypeText],
+					$parsedAlertText,
+				],
+				[
+					LikeCreatedHandler::TARGET_HREF,
+					['scriptUrl' => $scriptUrl, 'action' => 'wall', 'contentId' => $contentId],
+					$parsedTargetHref,
+				],
+			]);
 
 		$this->handler->expects($this->once())
 			->method('global')
-			->willReturn('http://example.com');
+			->willReturn($scriptUrl);
 
 		$this->alertEntity->expects($this->once())
-			->method('setText');
+			->method('setText')
+			->with($parsedAlertText);
 
 		$this->alertEntity->expects($this->once())
-			->method('setTargetHref');
+			->method('setTargetHref')
+			->with($parsedTargetHref);
 
 		$this->alertEntity->expects($this->once())
 			->method('toArray')
@@ -81,24 +108,40 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildAlertTextWithStatusType(): void
 	{
-		$this->alertEntity->method('getSenderName')->willReturn('Jane Doe');
+		$senderName = 'Jane Doe';
+		$contentType = LikesEnum::Status->value;
+		$alertLikeText = 'alert_like_text';
+		$statusTypeText = 'Status type text';
+		$parsedAlertText = 'Jane Doe liked your status';
+
+		$this->alertEntity->method('getSenderName')->willReturn($senderName);
 
 		$reflection = new \ReflectionClass($this->handler);
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_status']);
+		$extraProperty->setValue($this->handler, ['content_type' => $contentType]);
 
+		// getText is called twice: once for 'alert_like', once for 'alert_' . $contentType
 		$this->handler->expects($this->exactly(2))
 			->method('getText')
-			->willReturnOnConsecutiveCalls('general.status', 'alert_like');
+			->willReturnMap([
+				['alert_like', $alertLikeText],
+				['alert_' . $contentType, $statusTypeText],
+			]);
 
 		$this->handler->expects($this->once())
 			->method('parserText')
-			->willReturn('Jane Doe liked your status');
+			->with(
+				$alertLikeText,
+				$this->callback(function ($params) use ($senderName, $statusTypeText) {
+					return $params['poster'] === $senderName && $params['type'] === $statusTypeText;
+				})
+			)
+			->willReturn($parsedAlertText);
 
 		$this->alertEntity->expects($this->once())
 			->method('setText')
-			->with('Jane Doe liked your status');
+			->with($parsedAlertText);
 
 		$method = $reflection->getMethod('buildAlertText');
 		$method->setAccessible(true);
@@ -107,24 +150,63 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildAlertTextWithCommentType(): void
 	{
-		$this->alertEntity->method('getSenderName')->willReturn('Bob Smith');
+		$senderName = 'Bob Smith';
+		$contentType = LikesEnum::Comments->value;
+		$alertLikeText = 'alert_like_text';
+		$commentTypeText = 'Comment type text';
+		$parsedAlertText = 'Bob Smith liked your comment';
+
+		$this->alertEntity->method('getSenderName')->willReturn($senderName);
 
 		$reflection = new \ReflectionClass($this->handler);
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_comment']);
+		$extraProperty->setValue($this->handler, ['content_type' => $contentType]);
 
+		// getText is called twice: once for 'alert_like', once for 'alert_' . $contentType
 		$this->handler->expects($this->exactly(2))
 			->method('getText')
-			->willReturnOnConsecutiveCalls('general.comment', 'alert_like');
+			->willReturnMap([
+				['alert_like', $alertLikeText],
+				['alert_' . $contentType, $commentTypeText],
+			]);
 
 		$this->handler->expects($this->once())
 			->method('parserText')
-			->willReturn('Bob Smith liked your comment');
+			->with(
+				$alertLikeText,
+				$this->callback(function ($params) use ($senderName, $commentTypeText) {
+					return $params['poster'] === $senderName && $params['type'] === $commentTypeText;
+				})
+			)
+			->willReturn($parsedAlertText);
 
 		$this->alertEntity->expects($this->once())
 			->method('setText')
-			->with('Bob Smith liked your comment');
+			->with($parsedAlertText);
+
+		$method = $reflection->getMethod('buildAlertText');
+		$method->setAccessible(true);
+		$method->invoke($this->handler);
+	}
+
+	public function testBuildAlertTextWithInvalidContentType(): void
+	{
+		$this->alertEntity->method('getSenderName')->willReturn('Invalid User');
+
+		$reflection = new \ReflectionClass($this->handler);
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, ['content_type' => 'invalid_type']);
+
+		$this->handler->expects($this->never())
+			->method('getText');
+
+		$this->handler->expects($this->never())
+			->method('parserText');
+
+		$this->alertEntity->expects($this->never())
+			->method('setText');
 
 		$method = $reflection->getMethod('buildAlertText');
 		$method->setAccessible(true);
@@ -133,25 +215,33 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildTargetHrefWithStatusType(): void
 	{
+		$contentType = LikesEnum::Status->value;
+		$contentId = 456;
+		$scriptUrl = 'http://example.com';
+		$parsedTargetHref = 'http://example.com?action=wall;id=456';
+
 		$reflection = new \ReflectionClass($this->handler);
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_status', 'content_id' => 456]);
+		$extraProperty->setValue($this->handler, ['content_type' => $contentType, 'content_id' => $contentId]);
 
 		$this->handler->expects($this->once())
 			->method('global')
-			->willReturn('http://example.com');
+			->willReturn($scriptUrl);
 
 		$this->handler->expects($this->once())
 			->method('parserText')
-			->with($this->anything(), $this->callback(function ($params) {
-				return isset($params['contentId']) && $params['contentId'] === 456;
-			}))
-			->willReturn('http://example.com?action=wall;id=456');
+			->with(
+				LikeCreatedHandler::TARGET_HREF,
+				$this->callback(function ($params) use ($scriptUrl, $contentId) {
+					return $params['scriptUrl'] === $scriptUrl && $params['action'] === 'wall' && $params['contentId'] === $contentId;
+				})
+			)
+			->willReturn($parsedTargetHref);
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;id=456');
+			->with($parsedTargetHref);
 
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);
@@ -160,21 +250,33 @@ class LikeCreatedHandlerTest extends TestCase
 
 	public function testBuildTargetHrefWithCommentType(): void
 	{
+		$contentType = LikesEnum::Comments->value;
+		$contentId = 789;
+		$scriptUrl = 'http://example.com';
+		$parsedTargetHref = 'http://example.com?action=wall;id=789';
+
 		$reflection = new \ReflectionClass($this->handler);
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['content_type' => Breeze::NAME . '_comment', 'content_id' => 789]);
+		$extraProperty->setValue($this->handler, ['content_type' => $contentType, 'content_id' => $contentId]);
 
 		$this->handler->expects($this->once())
 			->method('global')
-			->willReturn('http://example.com');
+			->willReturn($scriptUrl);
 
 		$this->handler->expects($this->once())
 			->method('parserText')
-			->willReturn('http://example.com?action=wall;id=789');
+			->with(
+				LikeCreatedHandler::TARGET_HREF,
+				$this->callback(function ($params) use ($scriptUrl, $contentId) {
+					return $params['scriptUrl'] === $scriptUrl && $params['action'] === 'wall' && $params['contentId'] === $contentId;
+				})
+			)
+			->willReturn($parsedTargetHref);
 
 		$this->alertEntity->expects($this->once())
-			->method('setTargetHref');
+			->method('setTargetHref')
+			->with($parsedTargetHref);
 
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);

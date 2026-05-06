@@ -6,10 +6,11 @@ namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\LikesEnum;
 
 class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 {
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};id={contentId}';
+	public const string TARGET_HREF = '{scriptUrl}?action={action};id={contentId}';
 
 	public function resolve(): array
 	{
@@ -24,16 +25,13 @@ class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 	{
 		$contentType = $this->extra['content_type'] ?? '';
 
-		// Determine the content type for the alert text
-		$type = match ($contentType) {
-			Breeze::NAME . '_status' => $this->getText('general.status'),
-			Breeze::NAME . '_comment' => $this->getText('general.comment'),
-			default => $this->getText('general.content'),
-		};
+		if (!LikesEnum::isValid($contentType)) {
+			return;
+		}
 
 		$this->alertEntity->setText($this->parserText($this->getText('alert_like'), [
 			'poster' => $this->alertEntity->getSenderName(),
-			'type' => $type,
+			'type' => $this->getText('alert_' . $contentType),
 		]));
 	}
 
