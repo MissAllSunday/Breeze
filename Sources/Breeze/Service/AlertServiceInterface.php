@@ -20,4 +20,6 @@ interface AlertServiceInterface
 	public function handle(array &$alerts): void;
 
 	public function checkAlert(AlertEntity $alertEntity): bool;
+
+	public function getPendingBuddyAlerts(int $userId): array;
 }

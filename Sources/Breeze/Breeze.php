@@ -9,6 +9,7 @@ use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
+use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
@@ -47,11 +48,13 @@ class Breeze
 	public const string ACTION_LIKE = 'breezeLike';
 	public const string ACTION_WALL = 'wall';
 	public const string ACTION_PROFILE = 'profile';
+	public const string ACTION_BUDDY = 'buddy';
 	public const array ACTIONS = [
 		self::ACTION_STATUS => StatusController::class,
 		self::ACTION_COMMENT => CommentController::class,
 		self::ACTION_LIKE => LikesController::class,
 		self::ACTION_WALL => WallController::class,
+		self::ACTION_BUDDY => BuddyController::class,
 	];
 	public const string SCRIPT_URL ='scripturl';
 
@@ -201,7 +204,6 @@ class Breeze
 
 	public function actions(array &$actions): void
 	{
-		//@todo replace SMF's buddy action with Breeze's
 		$action = $this->getRequest('action', '');
 
 		if (empty($action) || !array_key_exists($action, self::ACTIONS)) {

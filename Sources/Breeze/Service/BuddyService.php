@@ -75,4 +75,32 @@ class BuddyService implements BuddyServiceInterface
 			AlertEntity::CONTENT_ACTION => self::CONTENT_ACTION_ACCEPTED,
 		]));
 	}
+
+	public function getPendingRequests(int $userId): array
+	{
+		$alerts = $this->alertService->getPendingBuddyAlerts($userId);
+
+		if ($alerts === []) {
+			return [];
+		}
+
+		$senderIds = array_map(fn ($alert) => $alert->getIdMemberStarted(), $alerts);
+		$senderData = $this->profileService->loadUsersInfo($senderIds);
+
+		$requests = [];
+		foreach ($alerts as $alert) {
+			$senderId = $alert->getIdMemberStarted();
+			$requests[] = [
+				'alert' => $alert->toArray(),
+				'sender' => $senderData[$senderId] ?? [],
+			];
+		}
+
+		return $requests;
+	}
+
+	public function declineBuddyRequest(int $alertId): void
+	{
+		$this->alertService->delete($alertId);
+	}
 }

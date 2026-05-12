@@ -9,7 +9,7 @@ use Breeze\Event\EventHandlerInterface;
 
 class BuddyInviteHandler extends BaseHandler implements EventHandlerInterface
 {
-	protected const string TARGET_HREF = '{scriptUrl}?action=profile;area=lists;sa=buddies';
+	protected const string TARGET_HREF = '{scriptUrl}?action=buddy;sa=requests';
 
 	public function resolve(): array
 	{

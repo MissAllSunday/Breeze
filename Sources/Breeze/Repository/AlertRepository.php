@@ -120,4 +120,31 @@ class AlertRepository extends BaseRepository implements AlertRepositoryInterface
 
 		return (bool) $result;
 	}
+
+	public function getPendingBuddyAlerts(int $userId): array
+	{
+		$request = $this->dbClient->query(
+			'
+			SELECT ' . implode(', ', AlertEntity::getColumns()) . '
+			FROM {db_prefix}' . AlertEntity::TABLE . '
+			WHERE ' . AlertEntity::ID_MEMBER . ' = {int:userId}
+				AND ' . AlertEntity::CONTENT_TYPE . ' = {string:contentType}
+				AND ' . AlertEntity::CONTENT_ACTION . ' = {string:contentAction}
+				AND ' . AlertEntity::IS_READ . ' = 0',
+			[
+				'userId' => $userId,
+				'contentType' => 'Breeze_buddy',
+				'contentAction' => 'Breeze_invite',
+			]
+		);
+
+		$alerts = [];
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$alerts[] = AlertEntity::from($row);
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return $alerts;
+	}
 }

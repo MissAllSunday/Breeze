@@ -170,6 +170,12 @@ $txt['Breeze_buddy_message'] = 'Buddy message';
 $txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br>
  no HTML or BBC is allowed. Leave the field empty if you do not want to send a message';
 
+// Buddy Requests page
+$txt['Breeze_user_buddy_requests_title'] = 'Buddy Requests';
+$txt['Breeze_user_accept'] = 'Accept';
+$txt['Breeze_user_decline'] = 'Decline';
+$txt['Breeze_user_buddy_requests_empty'] = 'You have no pending buddy requests.';
+
 // Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
 $txt['cannot_breeze_postComments'] = $txt['Breeze_error_postComments'];

@@ -12,8 +12,14 @@ use Breeze\Util\Response;
 class BuddyController extends BaseController implements ControllerInterface
 {
 	protected const string ACTION_HANDLE = 'handle';
+	protected const string ACTION_CONFIRM = 'confirm';
+	protected const string ACTION_DECLINE = 'decline';
+	protected const string ACTION_REQUESTS = 'requests';
 	protected const array SUB_ACTIONS = [
 		self::ACTION_HANDLE,
+		self::ACTION_CONFIRM,
+		self::ACTION_DECLINE,
+		self::ACTION_REQUESTS,
 	];
 
 	protected int $userReceivingId;
@@ -43,7 +49,7 @@ class BuddyController extends BaseController implements ControllerInterface
 
 	public function handle(): void
 	{
-		$this->check();
+		$this->checkMutation();
 
 		$currentUserInfo = $this->global('user_info');
 
@@ -52,17 +58,48 @@ class BuddyController extends BaseController implements ControllerInterface
 		} else {
 			$this->buddyService->addBuddy($this->userReceivingId, $currentUserInfo);
 		}
+
+		$this->response->redirect('action=profile;u=' . $this->userReceivingId);
 	}
 
 	public function confirm(): void
 	{
-		$this->check();
+		$this->checkMutation();
 
 		$currentUserInfo = $this->global('user_info');
 		$this->buddyService->confirmBuddy($this->userReceivingId, $currentUserInfo);
+
+		$this->response->redirect('action=buddy;sa=requests');
 	}
 
-	protected function check(): void
+	public function decline(): void
+	{
+		$this->checkMutation();
+
+		$alertId = $this->getRequest('alert', 0);
+		$this->buddyService->declineBuddyRequest($alertId);
+
+		$this->response->redirect('action=buddy;sa=requests');
+	}
+
+	public function requests(): void
+	{
+		$this->isAllowedTo('profile_extra_own');
+
+		$currentUserInfo = $this->global('user_info');
+		$pendingRequests = $this->buddyService->getPendingRequests($currentUserInfo['id']);
+		$buddyToken = createToken('buddy', 'get');
+
+		$this->render(self::ACTION_REQUESTS, [
+			'pendingRequests' => $pendingRequests,
+			'buddyToken' => $buddyToken,
+			'scriptUrl' => $this->global('scripturl'),
+			'sessionVar' => $this->global('session_var'),
+			'sessionId' => $this->global('session_id'),
+		]);
+	}
+
+	protected function checkMutation(): void
 	{
 		checkSession('get');
 		validateToken('buddy', 'get');

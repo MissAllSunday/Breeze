@@ -15,4 +15,6 @@ interface AlertRepositoryInterface extends BaseRepositoryInterface
 	public function checkAlert(AlertEntity $alertEntity): bool;
 
 	public function delete(array $alertIds): bool;
+
+	public function getPendingBuddyAlerts(int $userId): array;
 }

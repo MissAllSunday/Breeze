@@ -92,7 +92,7 @@ class BuddyControllerTest extends TestCase
 
 	public function testGetSubActions(): void
 	{
-		$this->assertEquals(['handle'], $this->controller->getSubActions());
+		$this->assertEquals(['handle', 'confirm', 'decline', 'requests'], $this->controller->getSubActions());
 	}
 
 	public function testGetMainAction(): void

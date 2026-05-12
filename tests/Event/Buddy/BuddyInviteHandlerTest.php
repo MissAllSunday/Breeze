@@ -83,8 +83,8 @@ class BuddyInviteHandlerTest extends TestCase
 	public function testBuildTargetHref(): void
 	{
 		$this->handler->expects($this->once())->method('global')->willReturn('http://example.com');
-		$this->handler->expects($this->once())->method('parserText')->with($this->stringContains('buddies'), $this->anything())->willReturn('http://example.com/buddies');
-		$this->alertEntity->expects($this->once())->method('setTargetHref')->with('http://example.com/buddies');
+		$this->handler->expects($this->once())->method('parserText')->with($this->stringContains('buddy;sa=requests'), $this->anything())->willReturn('http://example.com/buddy;sa=requests');
+		$this->alertEntity->expects($this->once())->method('setTargetHref')->with('http://example.com/buddy;sa=requests');
 
 		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildTargetHref');

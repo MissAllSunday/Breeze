@@ -64,4 +64,9 @@ class AlertService extends BaseService implements AlertServiceInterface
 	{
 		return $this->alertRepository->delete([$alertId]);
 	}
+
+	public function getPendingBuddyAlerts(int $userId): array
+	{
+		return $this->alertRepository->getPendingBuddyAlerts($userId);
+	}
 }
