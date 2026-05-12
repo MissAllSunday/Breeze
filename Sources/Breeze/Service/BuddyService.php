@@ -6,7 +6,9 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
+use Breeze\Entity\BuddyRequestEntity;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Repository\BuddyRequestRepositoryInterface;
 use Breeze\Traits\TextTrait;
 
 class BuddyService implements BuddyServiceInterface
@@ -19,12 +21,24 @@ class BuddyService implements BuddyServiceInterface
 
 	public function __construct(
 		protected ProfileServiceInterface $profileService,
-		protected AlertServiceInterface $alertService
+		protected AlertServiceInterface $alertService,
+		protected BuddyRequestRepositoryInterface $buddyRequestRepository,
 	) {
 	}
 
 	public function addBuddy(int $receiverId, array $currentUserInfo): void
 	{
+		$existingStatus = $this->buddyRequestRepository->getStatus(
+			$currentUserInfo['id'],
+			$receiverId
+		);
+
+		if ($existingStatus !== null) {
+			return;
+		}
+
+		$this->buddyRequestRepository->insert($currentUserInfo['id'], $receiverId);
+
 		$this->alertService->send(AlertEntity::from([
 			AlertEntity::ID_MEMBER => $receiverId,
 			AlertEntity::ID_MEMBER_STARTED => $currentUserInfo['id'],
@@ -36,6 +50,9 @@ class BuddyService implements BuddyServiceInterface
 
 	public function removeBuddy(int $receiverId, array $currentUserInfo): void
 	{
+		$this->buddyRequestRepository->delete($currentUserInfo['id'], $receiverId);
+		$this->buddyRequestRepository->delete($receiverId, $currentUserInfo['id']);
+
 		$newBuddiesList = array_diff($currentUserInfo['buddies'], [$receiverId]);
 
 		$this->profileService->updateMemberData($currentUserInfo['id'], [
@@ -45,6 +62,12 @@ class BuddyService implements BuddyServiceInterface
 
 	public function confirmBuddy(int $senderId, array $currentUserInfo): void
 	{
+		$this->buddyRequestRepository->updateStatus(
+			$senderId,
+			$currentUserInfo['id'],
+			BuddyRequestEntity::ACCEPTED
+		);
+
 		// Add the original sender to the current user's buddy list
 		$this->profileService->updateMemberData($currentUserInfo['id'], [
 			'buddies' => implode(',', array_merge($currentUserInfo['buddies'], [$senderId])),
@@ -78,20 +101,20 @@ class BuddyService implements BuddyServiceInterface
 
 	public function getPendingRequests(int $userId): array
 	{
-		$alerts = $this->alertService->getPendingBuddyAlerts($userId);
+		$pendingRequests = $this->buddyRequestRepository->getPendingByReceiver($userId);
 
-		if ($alerts === []) {
+		if ($pendingRequests === []) {
 			return [];
 		}
 
-		$senderIds = array_map(fn ($alert) => $alert->getIdMemberStarted(), $alerts);
+		$senderIds = array_map(fn ($request) => $request->getSenderId(), $pendingRequests);
 		$senderData = $this->profileService->loadUsersInfo($senderIds);
 
 		$requests = [];
-		foreach ($alerts as $alert) {
-			$senderId = $alert->getIdMemberStarted();
+		foreach ($pendingRequests as $request) {
+			$senderId = $request->getSenderId();
 			$requests[] = [
-				'alert' => $alert->toArray(),
+				'request' => $request->jsonSerialize(),
 				'sender' => $senderData[$senderId] ?? [],
 			];
 		}
@@ -99,8 +122,13 @@ class BuddyService implements BuddyServiceInterface
 		return $requests;
 	}
 
-	public function declineBuddyRequest(int $alertId): void
+	public function declineBuddyRequest(int $senderId, int $receiverId): void
 	{
-		$this->alertService->delete($alertId);
+		$this->buddyRequestRepository->delete($senderId, $receiverId);
+	}
+
+	public function getBuddyStatusForUsers(int $currentUserId, array $userIds): array
+	{
+		return $this->buddyRequestRepository->getStatusesForUsers($currentUserId, $userIds);
 	}
 }

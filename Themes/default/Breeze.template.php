@@ -52,8 +52,8 @@ function template_profile(): void
 				<ul class="reset buddyList">';
 
 			foreach ($buddiesData as $buddy) {
-				$buddyIcon = $buddy['is_buddy'] ? 'delete' : 'plus';
-				$buddyText = $buddy['is_buddy'] ? 'remove' : 'add';
+				$buddyIcon = ($buddy['buddy_status'] ?? '') === 'confirmed' ? 'delete' : 'plus';
+				$buddyText = ($buddy['buddy_status'] ?? '') === 'confirmed' ? 'remove' : 'add';
 				echo '
 				<ul class="flow_auto">
     				<li class="avatar">
@@ -124,10 +124,9 @@ function template_buddyRequests(): void
 
 		foreach ($pendingRequests as $request) {
 			$sender = $request['sender'] ?? [];
-			$alert = $request['alert'] ?? [];
+			$req = $request['request'] ?? [];
 			$senderId = $sender['id'] ?? 0;
-			$alertId = $alert['idAlert'] ?? 0;
-			$senderName = $sender['name'] ?? $alert['senderName'] ?? 'Unknown';
+			$senderName = $sender['name'] ?? 'Unknown';
 			$senderAvatar = $sender['avatar']['url'] ?? '';
 			$senderLink = $sender['link'] ?? '';
 
@@ -144,7 +143,7 @@ function template_buddyRequests(): void
 							<a href="', $scripturl, '?action=buddy;sa=confirm;u=', $senderId, ';', $sessionVar, '=', $sessionId, ';', $buddyToken['buddy_token_var'], '=', $buddyToken['buddy_token'], '" class="button">
 								<span class="main_icons check" title="', $txt['Breeze_user_accept'] ?? 'Accept', '"></span> ', $txt['Breeze_user_accept'] ?? 'Accept', '
 							</a>
-							<a href="', $scripturl, '?action=buddy;sa=decline;u=', $senderId, ';alert=', $alertId, ';', $sessionVar, '=', $sessionId, ';', $buddyToken['buddy_token_var'], '=', $buddyToken['buddy_token'], '" class="button">
+							<a href="', $scripturl, '?action=buddy;sa=decline;u=', $senderId, ';', $sessionVar, '=', $sessionId, ';', $buddyToken['buddy_token_var'], '=', $buddyToken['buddy_token'], '" class="button">
 								<span class="main_icons delete" title="', $txt['Breeze_user_decline'] ?? 'Decline', '"></span> ', $txt['Breeze_user_decline'] ?? 'Decline', '
 							</a>
 						</div>

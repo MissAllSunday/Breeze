@@ -6,6 +6,7 @@ namespace Breeze\Service;
 
 use Breeze\Entity\AlertEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Repository\BuddyRequestRepositoryInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,6 +19,8 @@ class BuddyServiceTest extends TestCase
 
 	private ProfileServiceInterface|MockObject $profileService;
 
+	private BuddyRequestRepositoryInterface|MockObject $buddyRequestRepository;
+
 	private BuddyService $buddyService;
 
 	private array $currentUserInfo;
@@ -29,10 +32,12 @@ class BuddyServiceTest extends TestCase
 	{
 		$this->alertService = $this->createMock(AlertServiceInterface::class);
 		$this->profileService = $this->createMock(ProfileServiceInterface::class);
+		$this->buddyRequestRepository = $this->createMock(BuddyRequestRepositoryInterface::class);
 
 		$this->buddyService = new BuddyService(
 			$this->profileService,
-			$this->alertService
+			$this->alertService,
+			$this->buddyRequestRepository
 		);
 
 		$this->currentUserInfo = [

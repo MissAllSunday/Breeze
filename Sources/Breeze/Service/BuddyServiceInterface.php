@@ -14,5 +14,7 @@ interface BuddyServiceInterface
 
 	public function getPendingRequests(int $userId): array;
 
-	public function declineBuddyRequest(int $alertId): void;
+	public function declineBuddyRequest(int $senderId, int $receiverId): void;
+
+	public function getBuddyStatusForUsers(int $currentUserId, array $userIds): array;
 }

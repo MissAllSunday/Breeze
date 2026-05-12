@@ -52,8 +52,13 @@ class BuddyController extends BaseController implements ControllerInterface
 		$this->checkMutation();
 
 		$currentUserInfo = $this->global('user_info');
+		$statuses = $this->buddyService->getBuddyStatusForUsers(
+			$currentUserInfo['id'],
+			[$this->userReceivingId]
+		);
+		$status = $statuses[$this->userReceivingId] ?? 'none';
 
-		if (in_array($this->userReceivingId, $currentUserInfo['buddies'])) {
+		if ($status === 'confirmed' || in_array($this->userReceivingId, $currentUserInfo['buddies'])) {
 			$this->buddyService->removeBuddy($this->userReceivingId, $currentUserInfo);
 		} else {
 			$this->buddyService->addBuddy($this->userReceivingId, $currentUserInfo);
@@ -76,8 +81,11 @@ class BuddyController extends BaseController implements ControllerInterface
 	{
 		$this->checkMutation();
 
-		$alertId = $this->getRequest('alert', 0);
-		$this->buddyService->declineBuddyRequest($alertId);
+		$currentUserInfo = $this->global('user_info');
+		$this->buddyService->declineBuddyRequest(
+			$this->userReceivingId,
+			$currentUserInfo['id']
+		);
 
 		$this->response->redirect('action=buddy;sa=requests');
 	}

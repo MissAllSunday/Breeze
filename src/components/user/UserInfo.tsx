@@ -30,14 +30,25 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 		</span>
 	);
 
+	const buddyStatus = props.userData.buddy_status ?? (props.userData.is_buddy ? 'confirmed' : 'none');
+	const buddyIconClass = {
+		confirmed: 'delete',
+		pending: 'clock',
+		none: 'plus',
+	}[buddyStatus];
+	const buddyTitle = {
+		confirmed: smfTextVars.general.buddyRemove,
+		pending: 'Pending',
+		none: smfTextVars.general.buddyAdd,
+	}[buddyStatus];
+
 	const buddyButton = canShowAddBuddyButton(props.userData, SmfVars.user_id) ? (
 		<a
-			href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id};${SmfVars.session.var}=${SmfVars.session.id}${SmfVars.buddyToken?.var ? `;${SmfVars.buddyToken.var}=${SmfVars.buddyToken.value}` : ''}`}
-			title={props.userData.is_buddy
-				? smfTextVars.general.buddyRemove
-				: smfTextVars.general.buddyAdd}
+			href={buddyStatus !== 'pending' ? `${SmfVars.script_url}?action=buddy;u=${props.userData.id};${SmfVars.session.var}=${SmfVars.session.id}${SmfVars.buddyToken?.var ? `;${SmfVars.buddyToken.var}=${SmfVars.buddyToken.value}` : ''}` : undefined}
+			title={buddyTitle}
+			style={buddyStatus === 'pending' ? { pointerEvents: 'none' } : undefined}
 		>
-			<span className={`main_icons ${props.userData.is_buddy ? 'delete' : 'plus'}`} />
+			<span className={`main_icons ${buddyIconClass}`} />
 		</a>
 	) : null;
 

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Entity\BuddyRequestEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\PermissionsEnum;
+use Breeze\Repository\BuddyRequestRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
@@ -37,7 +39,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 	public function __construct(
 		protected UserSettingsRepository $userSettingsRepository,
 		protected Components $components,
-		protected PermissionsServiceInterface $permissionsService
+		protected PermissionsServiceInterface $permissionsService,
+		protected BuddyRequestRepositoryInterface $buddyRequestRepository,
 	) {
 		parent::__construct($userSettingsRepository);
 	}
@@ -83,10 +86,15 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return false;
 		}
 
-		// Check 2: Already a buddy
+		// Check 2: Already a buddy (confirmed or pending)
 		$userInfo = $this->getCurrentUserInfo();
 		$buddies = array_map('intval', $userInfo['buddies'] ?? []);
 		if (in_array($profileId, $buddies, true)) {
+			return false;
+		}
+
+		$existingStatus = $this->buddyRequestRepository->getStatus($userId, $profileId);
+		if ($existingStatus === BuddyRequestEntity::PENDING || $existingStatus === BuddyRequestEntity::ACCEPTED) {
 			return false;
 		}
 
@@ -150,11 +158,24 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$usersInfo = parent::loadUsersInfo($userIds);
 		$userIds = array_keys($usersInfo);
 		$settingsById = $this->userSettingsRepository->getByIds($userIds);
+		$currentUserId = (int) ($this->getCurrentUserInfo()['id'] ?? 0);
+		$buddyStatuses = $currentUserId !== 0
+			? $this->buddyRequestRepository->getStatusesForUsers($currentUserId, $userIds)
+			: [];
 
 		foreach ($usersInfo as $userId => &$userData) {
 			$settings = $settingsById[(int) $userId] ?? null;
 			$userData['blockList'] = $settings?->getBlockList() ?? [];
 			$userData['blockBuddyRequests'] = $settings?->getBlockBuddyRequests() ?? 0;
+
+			$status = $buddyStatuses[(int) $userId] ?? null;
+			if (($userData['is_buddy'] ?? false)) {
+				$userData['buddy_status'] = 'confirmed';
+			} elseif ($status === 'pending') {
+				$userData['buddy_status'] = 'pending';
+			} else {
+				$userData['buddy_status'] = 'none';
+			}
 		}
 
 		return $usersInfo;

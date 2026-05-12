@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Repository\BuddyRequestRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Components;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -22,6 +23,8 @@ class ProfileServiceTest extends TestCase
 
 	private PermissionsServiceInterface|MockObject $permissionsService;
 
+	private BuddyRequestRepositoryInterface|MockObject $buddyRequestRepository;
+
 	private ProfileService $profileService;
 
 	/**
@@ -32,11 +35,13 @@ class ProfileServiceTest extends TestCase
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
 		$this->components = $this->createStub(Components::class);
 		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$this->buddyRequestRepository = $this->createMock(BuddyRequestRepositoryInterface::class);
 
 		$this->profileService = new ProfileService(
 			$this->userSettingsRepository,
 			$this->components,
-			$this->permissionsService
+			$this->permissionsService,
+			$this->buddyRequestRepository
 		);
 	}
 
@@ -68,6 +73,7 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
+				$this->buddyRequestRepository,
 			])
 			->onlyMethods(['getSetting', 'isAllowedTo'])
 			->getMock();
@@ -112,6 +118,7 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
+				$this->buddyRequestRepository,
 			])
 			->onlyMethods(['global'])
 			->getMock();
@@ -158,6 +165,7 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
+				$this->buddyRequestRepository,
 			])
 			->onlyMethods(['getCurrentUserInfo'])
 			->getMock();
