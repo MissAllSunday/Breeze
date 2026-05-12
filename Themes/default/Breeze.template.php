@@ -45,7 +45,9 @@ function template_profile(): void
 		<div id="tab-buddies" class="windowbg" style="display: none;">';
 		if (!empty($buddiesData))
 		{
-			$buddyToken = createToken('buddy', 'get');
+			$buddyToken = !empty($context['buddy_token_var'])
+				? ['buddy_token_var' => $context['buddy_token_var'], 'buddy_token' => $context['buddy_token']]
+				: createToken('buddy', 'get');
 			echo '
 				<ul class="reset buddyList">';
 
