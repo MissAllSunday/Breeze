@@ -32,7 +32,7 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 
 	const buddyButton = canShowAddBuddyButton(props.userData, SmfVars.user_id) ? (
 		<a
-			href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id}`}
+			href={`${SmfVars.script_url}?action=buddy;u=${props.userData.id};${SmfVars.session.var}=${SmfVars.session.id}${SmfVars.buddyToken?.var ? `;${SmfVars.buddyToken.var}=${SmfVars.buddyToken.value}` : ''}`}
 			title={props.userData.is_buddy
 				? smfTextVars.general.buddyRemove
 				: smfTextVars.general.buddyAdd}

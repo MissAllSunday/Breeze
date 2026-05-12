@@ -50,6 +50,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$wallUserSettings = $this->userSettingsRepository->getById($profileId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
 		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
+		$buddyToken = createToken('buddy', 'get');
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
@@ -64,6 +65,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
 			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
 			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
+			'buddyTokenVar' => $buddyToken['buddy_token_var'],
+			'buddyTokenValue' => $buddyToken['buddy_token'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadComponents();

@@ -17,6 +17,8 @@ vi.mock("../../DataSource/SMF", () => ({
 	default: {
 		script_url: "http://smf.local:8000/index.php",
 		user_id: 0,
+		session: { var: "sc", id: "test_session_123" },
+		buddyToken: { var: "buddy_token_var", value: "test_buddy_token_456" },
 	},
 }));
 

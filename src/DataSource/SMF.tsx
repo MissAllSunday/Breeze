@@ -62,6 +62,13 @@ const csrfToken = {
 	value: window.breezeCsrfTokenValue ?? "",
 };
 
+const buddyToken = {
+	// @ts-expect-error Buddy token var set serverside
+	var: window.breezeBuddyTokenVar ?? "",
+	// @ts-expect-error Buddy token value set serverside
+	value: window.breezeBuddyTokenValue ?? "",
+};
+
 const smfVars = {
 	session,
 	youSure,
@@ -80,6 +87,7 @@ const smfVars = {
 	editorIsRich,
 	currentUserAvatar,
 	csrfToken,
+	buddyToken,
 };
 
 export default smfVars;

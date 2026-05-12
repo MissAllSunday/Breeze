@@ -21,6 +21,8 @@ vi.mock("../../DataSource/SMF", () => ({
 	default: {
 		script_url: "http://smf.local:8000/index.php",
 		user_id: 1,
+		session: { var: "sc", id: "test_session_123" },
+		buddyToken: { var: "buddy_token_var", value: "test_buddy_token_456" },
 	},
 }));
 
@@ -103,7 +105,7 @@ describe("UserInfo", () => {
 			expect(link).toBeInTheDocument();
 			expect(link).toHaveAttribute(
 				"href",
-				"http://smf.local:8000/index.php?action=buddy;u=2",
+				"http://smf.local:8000/index.php?action=buddy;u=2;sc=test_session_123;buddy_token_var=test_buddy_token_456",
 			);
 
 			const icon = link.querySelector(".main_icons.plus");
@@ -119,7 +121,7 @@ describe("UserInfo", () => {
 			expect(link).toBeInTheDocument();
 			expect(link).toHaveAttribute(
 				"href",
-				"http://smf.local:8000/index.php?action=buddy;u=3",
+				"http://smf.local:8000/index.php?action=buddy;u=3;sc=test_session_123;buddy_token_var=test_buddy_token_456",
 			);
 
 			const icon = link.querySelector(".main_icons.delete");
