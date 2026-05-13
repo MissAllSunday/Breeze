@@ -6,7 +6,7 @@ namespace Breeze\Controller\API;
 
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Util\Response;

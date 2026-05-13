@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
+use Breeze\Enums\LikesEnum;
 use Breeze\Fixtures\LikeFixtures;
-use Breeze\LikesEnum;
 use PHPUnit\Framework\TestCase;
 
 class LikeEntityTest extends TestCase
