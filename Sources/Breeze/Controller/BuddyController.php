@@ -8,6 +8,7 @@ namespace Breeze\Controller;
 use Breeze\Service\BuddyServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Response;
+use Throwable;
 
 class BuddyController extends BaseController implements ControllerInterface
 {
@@ -49,22 +50,27 @@ class BuddyController extends BaseController implements ControllerInterface
 
 	public function handle(): void
 	{
-		$this->checkMutation();
+		try {
+			$this->checkMutation();
+			$call = 'add';
 
-		$currentUserInfo = $this->global('user_info');
-		$statuses = $this->buddyService->getBuddyStatusForUsers(
-			$currentUserInfo['id'],
-			[$this->userReceivingId]
-		);
-		$status = $statuses[$this->userReceivingId] ?? 'none';
+			$currentUserInfo = $this->global('user_info');
+			$statuses = $this->buddyService->getBuddyStatusForUsers(
+				$currentUserInfo['id'],
+				[$this->userReceivingId]
+			);
+			$status = $statuses[$this->userReceivingId] ?? 'none';
 
-		if ($status === 'confirmed' || in_array($this->userReceivingId, $currentUserInfo['buddies'])) {
-			$this->buddyService->removeBuddy($this->userReceivingId, $currentUserInfo);
-		} else {
-			$this->buddyService->addBuddy($this->userReceivingId, $currentUserInfo);
+			if ($status === 'confirmed' || in_array($this->userReceivingId, $currentUserInfo['buddies'])) {
+				$call = 'remove';
+			}
+
+			$this->buddyService->{$call}($this->userReceivingId, $currentUserInfo);
+			$this->response->success('buddy_' . $call);
+		} catch (Throwable $e) {
+			log_error($e->getMessage());
+			$this->response->error($e->getMessage());
 		}
-
-		$this->response->redirect('action=profile;u=' . $this->userReceivingId);
 	}
 
 	public function confirm(): void

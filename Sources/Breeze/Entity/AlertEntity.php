@@ -65,7 +65,6 @@ class AlertEntity extends Entity implements EntityInterface
 
 	protected string | null $sender_filename = null;
 
-	// SMF's already formated time as string
 	protected string $time = '';
 
 	protected bool $visible = false;
@@ -324,12 +323,12 @@ class AlertEntity extends Entity implements EntityInterface
 	public function toInsert(): array
 	{
 		$this->unsetIdAlert();
-		$toInsert = $this->toArray();
-		$toInsert[self::IS_READ] = (int) $this->is_read;
-		$toInsert[self::EXTRA] = Json::encode($this->extra);
-		$toInsert[self::ALERT_TIME] = time();
+		$this->setAlertTime(new \DateTimeImmutable());
 
-		return array_intersect_key($toInsert, array_flip(AlertEntity::getColumns()));
+		$toInsert = $this->toArray();
+		$toInsert[self::EXTRA] = Json::encode($this->extra);
+
+		return array_intersect_key($toInsert, array_flip(static::getColumns()));
 	}
 
 	/**
