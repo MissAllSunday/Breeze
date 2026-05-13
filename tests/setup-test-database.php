@@ -132,6 +132,7 @@ function truncateTestTables(PDO $pdo, string $prefix): void
 	$pdo->exec("TRUNCATE TABLE `{$prefix}user_alerts`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}members`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_options`");
+	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_buddy_requests`");
 }
 
 // Only run the setup script when executed directly (not when included by tests)
