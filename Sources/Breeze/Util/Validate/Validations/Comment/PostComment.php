@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Comment;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\PermissionsEnum;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\StatusRepositoryInterface;

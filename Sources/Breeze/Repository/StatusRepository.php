@@ -10,7 +10,7 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use Breeze\Util\Json;
 use Breeze\Util\Parser;
 use Breeze\Util\Validate\DataNotFoundException;

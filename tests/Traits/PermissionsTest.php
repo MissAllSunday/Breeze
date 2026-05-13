@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Traits;
 
-use Breeze\PermissionsEnum;
+use Breeze\Enums\PermissionsEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

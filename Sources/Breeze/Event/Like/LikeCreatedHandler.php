@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
+use Breeze\Enums\LikesEnum;
 use Breeze\Event\EventHandlerInterface;
-use Breeze\LikesEnum;
 
 class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 {

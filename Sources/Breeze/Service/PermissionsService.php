@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\PermissionsEnum;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;

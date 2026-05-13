@@ -36,6 +36,8 @@ class BuddyControllerTest extends TestCase
 			'buddies' => [],
 		];
 
+		$this->buddyService->method('getBuddyStatusForUsers')->willReturn([]);
+
 		$this->controller = new BuddyController(
 			$this->response,
 			$this->buddyService

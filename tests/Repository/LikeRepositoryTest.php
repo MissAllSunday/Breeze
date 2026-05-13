@@ -6,7 +6,7 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\LikeInfoEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;

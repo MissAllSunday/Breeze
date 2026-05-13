@@ -8,7 +8,7 @@ use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntityInterface;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepository;

@@ -8,7 +8,8 @@ use Breeze\Breeze;
 use Breeze\Entity\BuddyRequestEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\PermissionsEnum;
+use Breeze\Enums\BuddyStatus;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\BuddyRequestRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use Breeze\Traits\PermissionsTrait;
@@ -168,14 +169,11 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			$userData['blockList'] = $settings?->getBlockList() ?? [];
 			$userData['blockBuddyRequests'] = $settings?->getBlockBuddyRequests() ?? 0;
 
-			$status = $buddyStatuses[(int) $userId] ?? null;
+			$status = $buddyStatuses[(int) $userId] ?? BuddyStatus::None;
 			if (($userData['is_buddy'] ?? false)) {
-				$userData['buddy_status'] = 'confirmed';
-			} elseif ($status === 'pending') {
-				$userData['buddy_status'] = 'pending';
-			} else {
-				$userData['buddy_status'] = 'none';
+				$status = BuddyStatus::Confirmed;
 			}
+			$userData['buddy_status'] = $status->value;
 		}
 
 		return $usersInfo;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\Likes;
 
 use Breeze\Entity\LikeEntity;
-use Breeze\LikesEnum;
-use Breeze\PermissionsEnum;
+use Breeze\Enums\LikesEnum;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;

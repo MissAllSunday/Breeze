@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\LikeInfoEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 
 interface LikeServiceInterface
 {

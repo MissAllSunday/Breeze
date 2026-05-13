@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Event\Like;
 
 use Breeze\Entity\AlertEntity;
+use Breeze\Enums\LikesEnum;
 use Breeze\Event\EventHandlerInterface;
-use Breeze\LikesEnum;
 use Breeze\Repository\AlertRepository;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;

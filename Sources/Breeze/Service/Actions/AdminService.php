@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
-use Breeze\PermissionsEnum;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\PermissionsServiceInterface;

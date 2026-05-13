@@ -7,7 +7,7 @@ namespace Breeze\Event\Like;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepository;

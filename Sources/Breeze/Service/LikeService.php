@@ -6,9 +6,9 @@ namespace Breeze\Service;
 
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
+use Breeze\Enums\LikesEnum;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Like\LikeCreatedEvent;
-use Breeze\LikesEnum;
 use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\InvalidLikeException;
 use Breeze\Repository\LikeRepositoryInterface;

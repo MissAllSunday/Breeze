@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Entity;
 
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use Breeze\Util\Time;
 use DateMalformedStringException;
 use DateTimeImmutable;

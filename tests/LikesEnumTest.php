@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze;
 
+use Breeze\Enums\LikesEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

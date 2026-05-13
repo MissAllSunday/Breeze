@@ -5,10 +5,10 @@ declare(strict_types=1);
 
 namespace Breeze\Controller;
 
+use Breeze\Enums\BuddyStatus;
 use Breeze\Service\BuddyServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Response;
-use Throwable;
 
 class BuddyController extends BaseController implements ControllerInterface
 {
@@ -52,24 +52,25 @@ class BuddyController extends BaseController implements ControllerInterface
 	{
 		try {
 			$this->checkMutation();
-			$call = 'add';
+			$action = 'add';
 
 			$currentUserInfo = $this->global('user_info');
 			$statuses = $this->buddyService->getBuddyStatusForUsers(
 				$currentUserInfo['id'],
 				[$this->userReceivingId]
 			);
-			$status = $statuses[$this->userReceivingId] ?? 'none';
+			$status = $statuses[$this->userReceivingId] ?? BuddyStatus::None;
 
-			if ($status === 'confirmed' || in_array($this->userReceivingId, $currentUserInfo['buddies'])) {
-				$call = 'remove';
+			if ($status === BuddyStatus::Confirmed || in_array($this->userReceivingId, $currentUserInfo['buddies'])) {
+				$action = 'remove';
 			}
 
+			$call = $action . 'Buddy';
 			$this->buddyService->{$call}($this->userReceivingId, $currentUserInfo);
-			$this->response->success('buddy_' . $call);
-		} catch (Throwable $e) {
+			$this->response->success('buddy_' . $action);
+		} catch (\Throwable $e) {
 			log_error($e->getMessage());
-			$this->response->error($e->getMessage());
+			$this->response->error('generic');
 		}
 	}
 

@@ -10,8 +10,8 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\LikesEnum;
-use Breeze\PermissionsEnum;
+use Breeze\Enums\LikesEnum;
+use Breeze\Enums\PermissionsEnum;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {

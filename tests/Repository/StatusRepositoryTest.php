@@ -9,7 +9,7 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use Breeze\Util\Validate\DataNotFoundException;
 use DateMalformedStringException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;

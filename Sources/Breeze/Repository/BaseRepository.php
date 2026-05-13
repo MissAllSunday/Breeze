@@ -10,7 +10,7 @@ use Breeze\Entity\EntityInterface;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\SharedEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 use Breeze\Service\ProfileService;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\PermissionsTrait;

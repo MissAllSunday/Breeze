@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Fixtures;
 
 use Breeze\Entity\LikeEntity;
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 
 class LikeFixtures
 {
