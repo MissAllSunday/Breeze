@@ -6,8 +6,8 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
-use Breeze\Entity\BuddyRequestEntity;
 use Breeze\Entity\SettingsEntity;
+use Breeze\Enums\BuddyStatus;
 use Breeze\Repository\BuddyRequestRepositoryInterface;
 use Breeze\Traits\TextTrait;
 
@@ -17,7 +17,7 @@ class BuddyService implements BuddyServiceInterface
 
 	protected const string CONTENT_TYPE = Breeze::PATTERN . 'buddy';
 	protected const string CONTENT_ACTION_INVITE = Breeze::PATTERN . 'invite';
-	protected const string CONTENT_ACTION_ACCEPTED = Breeze::PATTERN . 'accepted';
+	protected const string CONTENT_ACTION_CONFIRMED = Breeze::PATTERN . 'confirmed';
 
 	public function __construct(
 		protected ProfileServiceInterface $profileService,
@@ -65,7 +65,7 @@ class BuddyService implements BuddyServiceInterface
 		$this->buddyRequestRepository->updateStatus(
 			$senderId,
 			$currentUserInfo['id'],
-			BuddyRequestEntity::CONFIRMED
+			BuddyStatus::Confirmed->toDbStatus()
 		);
 
 		// Add the original sender to the current user's buddy list
@@ -95,7 +95,7 @@ class BuddyService implements BuddyServiceInterface
 			AlertEntity::ID_MEMBER_STARTED => $currentUserInfo['id'],
 			AlertEntity::CONTENT_TYPE => self::CONTENT_TYPE,
 			AlertEntity::CONTENT_ID => $currentUserInfo['id'],
-			AlertEntity::CONTENT_ACTION => self::CONTENT_ACTION_ACCEPTED,
+			AlertEntity::CONTENT_ACTION => self::CONTENT_ACTION_CONFIRMED,
 		]));
 	}
 

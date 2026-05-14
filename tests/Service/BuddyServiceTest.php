@@ -90,7 +90,7 @@ class BuddyServiceTest extends TestCase
 				return $alert->getIdMember() === 5
 					&& $alert->getIdMemberStarted() === 10
 					&& $alert->getContentType() === 'Breeze_buddy'
-					&& $alert->getContentAction() === 'Breeze_accepted';
+					&& $alert->getContentAction() === 'Breeze_confirmed';
 			}));
 
 		$this->buddyService->confirmBuddy(5, $this->currentUserInfo);

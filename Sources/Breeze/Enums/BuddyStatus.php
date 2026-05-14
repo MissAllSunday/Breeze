@@ -20,4 +20,13 @@ enum BuddyStatus: string
 			default => self::None,
 		};
 	}
+
+	public function toDbStatus(): int
+	{
+		return match ($this) {
+			self::Pending => BuddyRequestEntity::PENDING,
+			self::Confirmed => BuddyRequestEntity::CONFIRMED,
+			default => throw new \InvalidArgumentException('None has no DB status'),
+		};
+	}
 }

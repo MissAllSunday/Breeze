@@ -70,7 +70,7 @@ class BuddyAcceptedHandlerTest extends TestCase
 	public function testBuildAlertText(): void
 	{
 		$this->alertEntity->method('getSenderName')->willReturn('John Doe');
-		$this->handler->expects($this->once())->method('getText')->with('alert_buddy_accepted')->willReturn('Accepted text');
+		$this->handler->expects($this->once())->method('getText')->with('alert_buddy_confirmed')->willReturn('Confirmed text');
 		$this->handler->expects($this->once())->method('parserText')->willReturn('Parsed text');
 		$this->alertEntity->expects($this->once())->method('setText')->with('Parsed text');
 

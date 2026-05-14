@@ -23,7 +23,7 @@ class BuddyAcceptedHandler extends BaseHandler implements EventHandlerInterface
 
 	protected function buildAlertText(): void
 	{
-		$this->alertEntity->setText($this->parserText($this->getText('alert_buddy_accepted'), [
+		$this->alertEntity->setText($this->parserText($this->getText('alert_buddy_confirmed'), [
 			'poster' => $this->alertEntity->getSenderName(),
 		]));
 	}

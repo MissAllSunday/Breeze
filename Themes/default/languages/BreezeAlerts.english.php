@@ -68,7 +68,7 @@ $txt['Breeze_alert_buddy_done'] = '{receiver} and {sender} have become buddies!.
 
 // Buddy notification (new system).
 $txt['Breeze_alert_buddy_invite'] = '{poster} wants to be your buddy!';
-$txt['Breeze_alert_buddy_accepted'] = '{poster} accepted your buddy invitation!';
+$txt['Breeze_alert_buddy_confirmed'] = '{poster} confirmed your buddy invitation!';
 
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';

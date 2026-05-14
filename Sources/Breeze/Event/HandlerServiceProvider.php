@@ -65,7 +65,7 @@ class HandlerServiceProvider
 			'CommentDeleted' => CommentDeletedHandler::class,
 			'LikeCreated' => LikeCreatedHandler::class,
 			'BuddyInvite' => BuddyInviteHandler::class,
-			'BuddyAccepted' => BuddyAcceptedHandler::class,
+			'BuddyConfirmed' => BuddyAcceptedHandler::class,
 			default => throw new DataNotFoundException('Handler not found'),
 		};
 	}
