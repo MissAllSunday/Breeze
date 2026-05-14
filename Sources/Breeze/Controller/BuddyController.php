@@ -67,6 +67,13 @@ class BuddyController extends BaseController implements ControllerInterface
 
 			$call = $action . 'Buddy';
 			$this->buddyService->{$call}($this->userReceivingId, $currentUserInfo);
+
+			if (empty($_SERVER['HTTP_X_SMF_AJAX'])) {
+				$this->response->redirect('action=profile;u=' . $this->userReceivingId);
+
+				return;
+			}
+
 			$this->response->success('buddy_' . $action);
 		} catch (\Throwable $e) {
 			log_error($e->getMessage());

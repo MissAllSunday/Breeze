@@ -7,12 +7,20 @@ import { describe, expect, it, vi, afterEach } from "vitest";
 import { userData } from "../../__fixtures__/userData";
 import UserInfo from "./UserInfo";
 
+vi.mock("../../utils/tooltip", () => ({
+	showInfo: vi.fn(),
+	showError: vi.fn(),
+}));
+
 vi.mock("../../DataSource/Txt", () => ({
 	default: {
 		general: {
 			close: "Close",
 			buddyAdd: "Add to buddy list",
 			buddyRemove: "Remove from buddy list",
+		},
+		error: {
+			generic: "There was an error",
 		},
 	},
 }));
@@ -103,10 +111,7 @@ describe("UserInfo", () => {
 			// Get the first link (from UserInfo, not MiniProfile)
 			const link = links[0];
 			expect(link).toBeInTheDocument();
-			expect(link).toHaveAttribute(
-				"href",
-				"http://smf.local:8000/index.php?action=buddy;u=2;sc=test_session_123;buddy_token_var=test_buddy_token_456",
-			);
+			expect(link).toHaveAttribute("href", "#");
 
 			const icon = link.querySelector(".main_icons.plus");
 			expect(icon).toBeInTheDocument();
@@ -119,10 +124,7 @@ describe("UserInfo", () => {
 			// Get the first link (from UserInfo, not MiniProfile)
 			const link = links[0];
 			expect(link).toBeInTheDocument();
-			expect(link).toHaveAttribute(
-				"href",
-				"http://smf.local:8000/index.php?action=buddy;u=3;sc=test_session_123;buddy_token_var=test_buddy_token_456",
-			);
+			expect(link).toHaveAttribute("href", "#");
 
 			const icon = link.querySelector(".main_icons.delete");
 			expect(icon).toBeInTheDocument();

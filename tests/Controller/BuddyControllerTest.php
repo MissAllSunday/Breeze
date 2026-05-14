@@ -29,6 +29,7 @@ class BuddyControllerTest extends TestCase
 		$this->response = $this->createMock(Response::class);
 
 		$_REQUEST['u'] = 5;
+		$_SERVER['HTTP_X_SMF_AJAX'] = '1';
 
 		$GLOBALS['user_info'] = [
 			'id' => 10,
@@ -47,6 +48,7 @@ class BuddyControllerTest extends TestCase
 	protected function tearDown(): void
 	{
 		unset($_REQUEST['u']);
+		unset($_SERVER['HTTP_X_SMF_AJAX']);
 	}
 
 	public function testHandleDelegatesToAddBuddy(): void
