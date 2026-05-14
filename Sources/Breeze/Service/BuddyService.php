@@ -65,7 +65,7 @@ class BuddyService implements BuddyServiceInterface
 		$this->buddyRequestRepository->updateStatus(
 			$senderId,
 			$currentUserInfo['id'],
-			BuddyRequestEntity::ACCEPTED
+			BuddyRequestEntity::CONFIRMED
 		);
 
 		// Add the original sender to the current user's buddy list

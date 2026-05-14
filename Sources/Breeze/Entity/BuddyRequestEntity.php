@@ -14,8 +14,7 @@ class BuddyRequestEntity extends Entity implements EntityInterface
 	public const string CREATED_AT = 'created_at';
 
 	public const int PENDING = 0;
-	public const int ACCEPTED = 1;
-	public const int DECLINED = 2;
+	public const int CONFIRMED = 1;
 
 	protected int $id = 0;
 

@@ -95,7 +95,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		}
 
 		$existingStatus = $this->buddyRequestRepository->getStatus($userId, $profileId);
-		if ($existingStatus === BuddyRequestEntity::PENDING || $existingStatus === BuddyRequestEntity::ACCEPTED) {
+		if ($existingStatus === BuddyRequestEntity::PENDING || $existingStatus === BuddyRequestEntity::CONFIRMED) {
 			return false;
 		}
 

@@ -16,7 +16,7 @@ enum BuddyStatus: string
 	{
 		return match ($dbStatus) {
 			BuddyRequestEntity::PENDING => self::Pending,
-			BuddyRequestEntity::ACCEPTED => self::Confirmed,
+			BuddyRequestEntity::CONFIRMED => self::Confirmed,
 			default => self::None,
 		};
 	}
