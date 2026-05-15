@@ -56,6 +56,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
 		$buddyToken = createToken('buddy', 'get');
 
+		$pendingBuddyRequests = $this->buddyRequestRepository->getPendingByReceiver($currentUserId);
+
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
 			'pagination' => $wallUserSettings->getPaginationNumber(),
@@ -71,6 +73,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
 			'buddyTokenVar' => $buddyToken['buddy_token_var'],
 			'buddyTokenValue' => $buddyToken['buddy_token'],
+			'pendingBuddyRequestsCount' => count($pendingBuddyRequests),
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadComponents();

@@ -120,7 +120,7 @@ class BuddyRequestRepository implements BuddyRequestRepositoryInterface
 		$row = $this->dbClient->fetchAssoc($request);
 		$this->dbClient->freeResult($request);
 
-		return $row !== null ? (int) $row[BuddyRequestEntity::STATUS] : null;
+		return is_array($row) ? (int) $row[BuddyRequestEntity::STATUS] : null;
 	}
 
 	public function getStatusesForUsers(int $currentUserId, array $userIds): array

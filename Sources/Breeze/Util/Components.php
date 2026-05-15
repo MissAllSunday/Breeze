@@ -95,6 +95,7 @@ class Components
 				'emptyData' => $this->getText('info_empty_data'),
 				'buddyAdd' => $this->getSmfText('buddy_add'),
 				'buddyRemove' => $this->getSmfText('buddy_remove'),
+				'invitationPending' => $this->getText('invitation_pending'),
 			],
 			'tabs' => [
 				'wall' => $this->getText('tabs_wall'),

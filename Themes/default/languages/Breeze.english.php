@@ -171,6 +171,7 @@ $txt['Breeze_buddy_error'] = 'There was an error, please try again';
 $txt['Breeze_buddy_message'] = 'Buddy message';
 $txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br>
  no HTML or BBC is allowed. Leave the field empty if you do not want to send a message';
+$txt['Breeze_invitation_pending'] = 'Invitation pending';
 
 // Buddy Requests page
 $txt['Breeze_user_buddy_requests_title'] = 'Buddy Requests';

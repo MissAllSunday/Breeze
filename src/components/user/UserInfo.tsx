@@ -86,14 +86,19 @@ const UserInfo: React.FunctionComponent<UserInfoProps> = (
 	}, [localBuddyStatus, isBuddyLoading, props.userData.id]);
 
 	const buddyButton = canShowAddBuddyButton(props.userData, SmfVars.user_id) ? (
-		<a
-			href="#"
-			onClick={handleBuddyClick}
-			title={buddyTitle}
-			style={localBuddyStatus === 'pending' || isBuddyLoading ? { pointerEvents: 'none' } : undefined}
-		>
-			<span className={`main_icons ${buddyIconClass}`} />
-		</a>
+		<>
+			<a
+				href="#"
+				onClick={handleBuddyClick}
+				title={buddyTitle}
+				style={localBuddyStatus === 'pending' || isBuddyLoading ? { pointerEvents: 'none' } : undefined}
+			>
+				<span className={`main_icons ${buddyIconClass}`} />
+			</a>
+			{localBuddyStatus === 'pending' && (
+				<span className="smalltext">{smfTextVars.general.invitationPending}</span>
+			)}
+		</>
 	) : null;
 
 	return (

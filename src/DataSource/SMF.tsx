@@ -47,6 +47,10 @@ const buddiesTab =
 const buddiesTabContent = buddiesTab.innerHTML;
 buddiesTab.innerHTML = "";
 
+// @ts-expect-error Backend variable
+const pendingBuddyRequestsCount: number =
+	window.breezePendingBuddyRequestsCount ?? 0;
+
 // @ts-expect-error editor gets defined serverside
 const editorOptions = window.breezeEditorOptions || [];
 // @ts-expect-error editor gets defined serverside
@@ -82,6 +86,7 @@ const smfVars = {
 	pagination,
 	aboutMeContent,
 	buddiesTabContent,
+	pendingBuddyRequestsCount,
 	smfEditorHandler,
 	editorOptions,
 	editorIsRich,

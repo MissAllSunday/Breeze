@@ -18,6 +18,7 @@ declare module "breezeTypesText" {
 		emptyData: string;
 		buddyAdd: string;
 		buddyRemove: string;
+		invitationPending: string;
 	}
 
 	interface LikeTextType {

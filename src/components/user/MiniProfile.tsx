@@ -78,14 +78,19 @@ const MiniProfile: React.FunctionComponent<MiniProfileProps> = (
 	}, [localBuddyStatus, isBuddyLoading, userData.id]);
 
 	const buddyButton = canShowAddBuddyButton(userData, SmfVars.user_id) ? (
-			<a
-				href="#"
-				onClick={handleBuddyClick}
-				title={buddyTitle}
-				style={localBuddyStatus === 'pending' || isBuddyLoading ? { pointerEvents: 'none' } : undefined}
-			>
-				<span className={`main_icons ${buddyIconClass}`} />
-			</a>
+			<>
+				<a
+					href="#"
+					onClick={handleBuddyClick}
+					title={buddyTitle}
+					style={localBuddyStatus === 'pending' || isBuddyLoading ? { pointerEvents: 'none' } : undefined}
+				>
+					<span className={`main_icons ${buddyIconClass}`} />
+				</a>
+				{localBuddyStatus === 'pending' && (
+					<span className="smalltext">{smfTextVars.general.invitationPending}</span>
+				)}
+			</>
 	) : null;
 
 	const profileBody = (

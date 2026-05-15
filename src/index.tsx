@@ -65,6 +65,7 @@ if (wallType === "wall") {
 					<Tab
 						content={smfVars.buddiesTabContent}
 						name={smfTextVars.tabs.buddies}
+						badge={smfVars.pendingBuddyRequestsCount || undefined}
 					/>
 				)}
 			</Tabs>
