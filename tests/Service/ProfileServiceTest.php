@@ -22,8 +22,6 @@ class ProfileServiceTest extends TestCase
 
 	private PermissionsServiceInterface|MockObject $permissionsService;
 
-	private BuddyServiceInterface|MockObject $buddyService;
-
 	private ProfileService $profileService;
 
 	/**
@@ -34,13 +32,11 @@ class ProfileServiceTest extends TestCase
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
 		$this->components = $this->createStub(Components::class);
 		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
-		$this->buddyService = $this->createMock(BuddyServiceInterface::class);
 
 		$this->profileService = new ProfileService(
 			$this->userSettingsRepository,
 			$this->components,
 			$this->permissionsService,
-			$this->buddyService
 		);
 	}
 
@@ -72,7 +68,6 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
-				$this->buddyService,
 			])
 			->onlyMethods(['getSetting', 'isAllowedTo'])
 			->getMock();
@@ -117,7 +112,6 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
-				$this->buddyService,
 			])
 			->onlyMethods(['global'])
 			->getMock();
@@ -164,7 +158,6 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
-				$this->buddyService,
 			])
 			->onlyMethods(['getCurrentUserInfo'])
 			->getMock();

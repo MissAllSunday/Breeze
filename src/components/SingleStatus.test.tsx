@@ -66,7 +66,6 @@ vi.mock("../DataSource/SMF", () => ({
 		user_id: 1,
 		wall_id: 1,
 		session: { var: "sc", id: "test_session_123" },
-		buddyToken: { var: "buddy_token_var", value: "test_buddy_token_456" },
 	},
 }));
 

@@ -18,7 +18,6 @@ declare module "breezeTypesUser" {
 		is_activated: string;
 		is_banned: boolean;
 		is_buddy: boolean;
-		buddy_status?: 'none' | 'pending' | 'confirmed';
 		is_guest: boolean;
 		is_reverse_buddy: boolean;
 		last_login_timestamp: string;
@@ -40,7 +39,6 @@ declare module "breezeTypesUser" {
 		username: string;
 		username_color: HTMLSpanElement;
 		blockList?: number[];
-		blockBuddyRequests?: number;
 	}
 
 	interface CustomFieldType {

@@ -12,4 +12,3 @@ parameters:
     - '/Function tokenTxtReplace not found./'
     - '/Function create_control_richedit not found./'
     - '/Method Breeze\\Service\\Actions\\AdminService::init\(\) invoked with 0 parameters, 1 required./'
-    - '/Function checkSession invoked with 1 parameter, 0 required./'

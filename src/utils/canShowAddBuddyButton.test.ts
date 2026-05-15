@@ -59,34 +59,4 @@ describe("canShowAddBuddyButton", () => {
 		const user = makeUser({ id: 2, is_buddy: false });
 		expect(canShowAddBuddyButton(user, 1)).toBe(true);
 	});
-
-	it("returns false when the current user is in the displayed user's block list and blockBuddyRequests is enabled", () => {
-		const user = makeUser({
-			id: 2,
-			is_buddy: false,
-			blockList: [1, 5],
-			blockBuddyRequests: 1,
-		});
-		expect(canShowAddBuddyButton(user, 1)).toBe(false);
-	});
-
-	it("returns true when blockBuddyRequests is disabled even if in block list", () => {
-		const user = makeUser({
-			id: 2,
-			is_buddy: false,
-			blockList: [1, 5],
-			blockBuddyRequests: 0,
-		});
-		expect(canShowAddBuddyButton(user, 1)).toBe(true);
-	});
-
-	it("returns true when not in block list even if blockBuddyRequests is enabled", () => {
-		const user = makeUser({
-			id: 2,
-			is_buddy: false,
-			blockList: [5, 10],
-			blockBuddyRequests: 1,
-		});
-		expect(canShowAddBuddyButton(user, 1)).toBe(true);
-	});
 });

@@ -47,10 +47,6 @@ const buddiesTab =
 const buddiesTabContent = buddiesTab.innerHTML;
 buddiesTab.innerHTML = "";
 
-// @ts-expect-error Backend variable
-const pendingBuddyRequestsCount: number =
-	window.breezePendingBuddyRequestsCount ?? 0;
-
 // @ts-expect-error editor gets defined serverside
 const editorOptions = window.breezeEditorOptions || [];
 // @ts-expect-error editor gets defined serverside
@@ -66,13 +62,6 @@ const csrfToken = {
 	value: window.breezeCsrfTokenValue ?? "",
 };
 
-const buddyToken = {
-	// @ts-expect-error Buddy token var set serverside
-	var: window.breezeBuddyTokenVar ?? "",
-	// @ts-expect-error Buddy token value set serverside
-	value: window.breezeBuddyTokenValue ?? "",
-};
-
 const smfVars = {
 	session,
 	youSure,
@@ -86,13 +75,11 @@ const smfVars = {
 	pagination,
 	aboutMeContent,
 	buddiesTabContent,
-	pendingBuddyRequestsCount,
 	smfEditorHandler,
 	editorOptions,
 	editorIsRich,
 	currentUserAvatar,
 	csrfToken,
-	buddyToken,
 };
 
 export default smfVars;

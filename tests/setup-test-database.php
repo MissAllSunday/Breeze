@@ -103,19 +103,6 @@ function createTestTables(PDO $pdo, string $prefix): void
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 	");
 
-	$pdo->exec("
-		CREATE TABLE IF NOT EXISTS `{$prefix}breeze_buddy_requests` (
-			`id` INT(4) NOT NULL AUTO_INCREMENT,
-			`sender_id` INT(4) NOT NULL,
-			`receiver_id` INT(4) NOT NULL,
-			`status` TINYINT(1) NOT NULL DEFAULT 0,
-			`created_at` INT(11) NOT NULL DEFAULT 0,
-			PRIMARY KEY (`id`),
-			UNIQUE KEY `sender_receiver` (`sender_id`, `receiver_id`),
-			KEY `idx_receiver_status` (`receiver_id`, `status`),
-			KEY `idx_sender_status` (`sender_id`, `status`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-	");
 }
 
 /**
@@ -132,7 +119,6 @@ function truncateTestTables(PDO $pdo, string $prefix): void
 	$pdo->exec("TRUNCATE TABLE `{$prefix}user_alerts`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}members`");
 	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_options`");
-	$pdo->exec("TRUNCATE TABLE `{$prefix}breeze_buddy_requests`");
 }
 
 // Only run the setup script when executed directly (not when included by tests)

@@ -189,69 +189,6 @@ if (empty($context['uninstalling'])) {
 		'parameters' => [],
 	];
 
-	// Buddy requests
-	$tables[] = [
-		'table_name' => '{db_prefix}breeze_buddy_requests',
-		'columns' => [
-			[
-				'name' => 'id',
-				'type' => 'int',
-				'size' => 4,
-				'null' => false,
-				'auto' => true,
-			],
-			[
-				'name' => 'sender_id',
-				'type' => 'int',
-				'size' => 4,
-				'null' => false,
-			],
-			[
-				'name' => 'receiver_id',
-				'type' => 'int',
-				'size' => 4,
-				'null' => false,
-			],
-			[
-				'name' => 'status',
-				'type' => 'tinyint',
-				'size' => 1,
-				'null' => false,
-				'default' => 0,
-			],
-			[
-				'name' => 'created_at',
-				'type' => 'int',
-				'size' => 11,
-				'null' => false,
-				'default' => 0,
-			],
-		],
-		'indexes' => [
-			[
-				'type' => 'primary',
-				'columns' => ['id'],
-			],
-			[
-				'type' => 'unique',
-				'columns' => ['sender_id', 'receiver_id'],
-			],
-			[
-				'name' => 'idx_receiver_status',
-				'type' => 'index',
-				'columns' => ['receiver_id', 'status'],
-			],
-			[
-				'name' => 'idx_sender_status',
-				'type' => 'index',
-				'columns' => ['sender_id', 'status'],
-			],
-		],
-		'if_exists' => 'ignore',
-		'error' => 'fatal',
-		'parameters' => [],
-	];
-
 	// Installing
 	foreach ($tables as $table) {
 		$smcFunc['db_create_table'](

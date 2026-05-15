@@ -6,8 +6,6 @@ namespace Breeze\Event;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
-use Breeze\Event\Buddy\BuddyAcceptedHandler;
-use Breeze\Event\Buddy\BuddyInviteHandler;
 use Breeze\Event\Comment\CommentCreatedHandler;
 use Breeze\Event\Comment\CommentDeletedHandler;
 use Breeze\Event\Like\LikeCreatedHandler;
@@ -64,8 +62,6 @@ class HandlerServiceProvider
 			'CommentCreated' => CommentCreatedHandler::class,
 			'CommentDeleted' => CommentDeletedHandler::class,
 			'LikeCreated' => LikeCreatedHandler::class,
-			'BuddyInvite' => BuddyInviteHandler::class,
-			'BuddyConfirmed' => BuddyAcceptedHandler::class,
 			default => throw new DataNotFoundException('Handler not found'),
 		};
 	}

@@ -45,15 +45,12 @@ function template_profile(): void
 		<div id="tab-buddies" class="windowbg" style="display: none;">';
 		if (!empty($buddiesData))
 		{
-			$buddyToken = !empty($context['buddy_token_var'])
-				? ['buddy_token_var' => $context['buddy_token_var'], 'buddy_token' => $context['buddy_token']]
-				: createToken('buddy', 'get');
 			echo '
 				<ul class="reset buddyList">';
 
 			foreach ($buddiesData as $buddy) {
-				$buddyIcon = ($buddy['buddy_status'] ?? '') === 'confirmed' ? 'delete' : 'plus';
-				$buddyText = ($buddy['buddy_status'] ?? '') === 'confirmed' ? 'remove' : 'add';
+				$buddyIcon = !empty($buddy['is_buddy']) ? 'delete' : 'plus';
+				$buddyText = !empty($buddy['is_buddy']) ? 'remove' : 'add';
 				echo '
 				<ul class="flow_auto">
     				<li class="avatar">
@@ -66,7 +63,7 @@ function template_profile(): void
     				</li>
     				<li>
     					', $buddy['link_color'] ,'
-    					<a href="', $scripturl , '?action=buddy;u=', $buddy['id'], ';', $context['session_var'], '=', $context['session_id'], ';', $buddyToken['buddy_token_var'], '=', $buddyToken['buddy_token'], '">
+    					<a href="', $scripturl , '?action=buddy;u=', $buddy['id'], ';', $context['session_var'], '=', $context['session_id'], '">
     						<span class="main_icons ', $buddyIcon , '" title="', $txt['buddy_' . $buddyText] ,'" /></a>
 					</li>
   				</ul>';
@@ -93,72 +90,4 @@ function template_wall(): void
 	', display_content(Breeze::ACTION_WALL);
 }
 
-function template_buddyRequests(): void
-{
-	global $context, $scripturl, $txt;
 
-	$pendingRequests = $context[Breeze::NAME]['pendingRequests'] ?? [];
-	$buddyToken = $context[Breeze::NAME]['buddyToken'] ?? [];
-	$sessionVar = $context[Breeze::NAME]['sessionVar'] ?? 'sc';
-	$sessionId = $context[Breeze::NAME]['sessionId'] ?? '';
-	$currentUserId = $context['user']['id'] ?? 0;
-
-	echo '
-	<div class="cat_bar">
-		<h3 class="catbg">', $txt['Breeze_user_buddy_requests_title'] ?? 'Buddy Requests', '</h3>
-	</div>
-	<div class="windowbg noup">
-		<div class="padding">
-			<ul class="quickbuttons">
-				<li>
-					<a href="', $scripturl, '?action=profile;area=lists;sa=buddies" class="button">', $txt['buddies'] ?? 'Buddies', '</a>
-				</li>
-				<li>
-					<a href="', $scripturl, '?action=profile;area=lists;sa=ignore;u=', $currentUserId, '" class="button">', $txt['ignore'] ?? 'Ignore List', '</a>
-				</li>
-			</ul>';
-
-	if (!empty($pendingRequests)) {
-		echo '
-			<ul class="reset buddyList">';
-
-		foreach ($pendingRequests as $request) {
-			$sender = $request['sender'] ?? [];
-			$req = $request['request'] ?? [];
-			$senderId = $sender['id'] ?? 0;
-			$senderName = $sender['name'] ?? 'Unknown';
-			$senderAvatar = $sender['avatar']['url'] ?? '';
-			$senderLink = $sender['link'] ?? '';
-
-			echo '
-				<li class="flow_auto">
-					<div class="avatar">
-						<a href="', $senderLink, '">
-							<img src="', $senderAvatar, '" alt="', $senderName, '" class="avatar" />
-						</a>
-					</div>
-					<div class="user_info">
-						', $senderLink, '
-						<div class="action_links">
-							<a href="', $scripturl, '?action=buddy;sa=confirm;u=', $senderId, ';', $sessionVar, '=', $sessionId, ';', $buddyToken['buddy_token_var'], '=', $buddyToken['buddy_token'], '" class="button">
-								<span class="main_icons check" title="', $txt['Breeze_user_accept'] ?? 'Accept', '"></span> ', $txt['Breeze_user_accept'] ?? 'Accept', '
-							</a>
-							<a href="', $scripturl, '?action=buddy;sa=decline;u=', $senderId, ';', $sessionVar, '=', $sessionId, ';', $buddyToken['buddy_token_var'], '=', $buddyToken['buddy_token'], '" class="button">
-								<span class="main_icons delete" title="', $txt['Breeze_user_decline'] ?? 'Decline', '"></span> ', $txt['Breeze_user_decline'] ?? 'Decline', '
-							</a>
-						</div>
-					</div>
-				</li>';
-		}
-
-		echo '
-			</ul>';
-	} else {
-		echo '
-			<p class="information">', $txt['Breeze_user_buddy_requests_empty'] ?? 'You have no pending buddy requests.', '</p>';
-	}
-
-	echo '
-		</div>
-	</div>';
-}

@@ -8,7 +8,6 @@ use Breeze\Controller\AdminController;
 use Breeze\Controller\API\CommentController;
 use Breeze\Controller\API\LikesController;
 use Breeze\Controller\API\StatusController;
-use Breeze\Controller\BuddyController;
 use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Database\DatabaseClient;
@@ -28,14 +27,12 @@ use Breeze\Event\Like\LikeEventListener;
 use Breeze\Event\Status\StatusCreatedHandler;
 use Breeze\Event\Status\StatusEventListener;
 use Breeze\Repository\AlertRepository;
-use Breeze\Repository\BuddyRequestRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\Actions\AdminService;
 use Breeze\Service\AlertService;
-use Breeze\Service\BuddyService;
 use Breeze\Service\CommentService;
 use Breeze\Service\LikeService;
 use Breeze\Service\PermissionsService;
@@ -115,7 +112,6 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			Response::class,
 		]],
 		UserSettingsController::class => ['arguments' => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class]],
-		BuddyController::class => ['arguments' => [Response::class, BuddyService::class]],
 
 		// Entities - New instances (Data transfer objects)
 		AlertEntity::class => ['arguments' => []],
@@ -146,20 +142,18 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		// Repositories - Shared (Stateless data access)
 		UserSettingsRepository::class => ['arguments' => [DatabaseClient::class, null], 'shared' => true],
 		AlertRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
-		BuddyRequestRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
 		CommentRepository::class => ['arguments' => [DatabaseClient::class, LikeRepository::class], 'shared' => true],
 		LikeRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
 		StatusRepository::class => ['arguments' => [DatabaseClient::class, CommentRepository::class, LikeRepository::class], 'shared' => true],
 
 		// Services - Shared (Stateless business logic)
 		AdminService::class => ['arguments' => [SettingsBuilder::class, StatusService::class, CommentService::class, LikeService::class], 'shared' => true],
-		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class, BuddyService::class], 'shared' => true],
+		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class], 'shared' => true],
 		PermissionsService::class => ['arguments' => [], 'shared' => true],
 		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class], 'shared' => true],
 		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class], 'shared' => true],
 		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
 		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class], 'shared' => true],
-		BuddyService::class => ['arguments' => [UserSettingsRepository::class, AlertService::class, BuddyRequestRepository::class], 'shared' => true],
 	];
 
 	public function provides(string $id): bool

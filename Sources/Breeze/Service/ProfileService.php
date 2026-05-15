@@ -7,7 +7,6 @@ namespace Breeze\Service;
 use Breeze\Breeze;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Enums\BuddyStatus;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use Breeze\Traits\PermissionsTrait;
@@ -39,7 +38,6 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		protected UserSettingsRepository $userSettingsRepository,
 		protected Components $components,
 		protected PermissionsServiceInterface $permissionsService,
-		protected BuddyServiceInterface $buddyService,
 	) {
 		parent::__construct($userSettingsRepository);
 	}
@@ -52,9 +50,6 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$wallUserSettings = $this->userSettingsRepository->getById($profileId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
 		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
-		$buddyToken = createToken('buddy', 'get');
-
-		$pendingBuddyRequests = $this->buddyService->getPendingRequests($currentUserId);
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
@@ -69,9 +64,6 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
 			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
 			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
-			'buddyTokenVar' => $buddyToken['buddy_token_var'],
-			'buddyTokenValue' => $buddyToken['buddy_token'],
-			'pendingBuddyRequestsCount' => count($pendingBuddyRequests),
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 		$this->components->loadComponents();
@@ -88,16 +80,10 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return false;
 		}
 
-		// Check 2: Already a buddy (confirmed or pending)
+		// Check 2: Already a buddy
 		$userInfo = $this->getCurrentUserInfo();
 		$buddies = array_map('intval', $userInfo['buddies'] ?? []);
 		if (in_array($profileId, $buddies, true)) {
-			return false;
-		}
-
-		$buddyStatuses = $this->buddyService->getBuddyStatusForUsers($userId, [$profileId]);
-		$status = $buddyStatuses[$profileId] ?? BuddyStatus::None;
-		if ($status === BuddyStatus::Pending || $status === BuddyStatus::Confirmed) {
 			return false;
 		}
 
@@ -161,21 +147,11 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$usersInfo = parent::loadUsersInfo($userIds);
 		$userIds = array_keys($usersInfo);
 		$settingsById = $this->userSettingsRepository->getByIds($userIds);
-		$currentUserId = (int) ($this->getCurrentUserInfo()['id'] ?? 0);
-		$buddyStatuses = $currentUserId !== 0
-			? $this->buddyService->getBuddyStatusForUsers($currentUserId, $userIds)
-			: [];
 
 		foreach ($usersInfo as $userId => &$userData) {
 			$settings = $settingsById[(int) $userId] ?? null;
 			$userData['blockList'] = $settings?->getBlockList() ?? [];
 			$userData['blockBuddyRequests'] = $settings?->getBlockBuddyRequests() ?? 0;
-
-			$status = $buddyStatuses[(int) $userId] ?? BuddyStatus::None;
-			if (($userData['is_buddy'] ?? false)) {
-				$status = BuddyStatus::Confirmed;
-			}
-			$userData['buddy_status'] = $status->value;
 		}
 
 		return $usersInfo;

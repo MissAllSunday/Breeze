@@ -13,20 +13,8 @@ const canShowAddBuddyButton = (
 	userData: UserDataType,
 	currentUserId: number,
 ): boolean => {
-	// Check 1: Don't show on your own profile.
-	if (userData.id === currentUserId) {
-		return false;
-	}
-
-	// Checks 2 & 3: Block list.
-	const blockList = userData.blockList ?? [];
-	const blockBuddyRequests = userData.blockBuddyRequests ?? 0;
-
-	if (blockBuddyRequests !== 0 && blockList.includes(currentUserId)) {
-		return false;
-	}
-
-	return true;
+	// Don't show the button on your own profile.
+	return userData.id !== currentUserId;
 };
 
 export default canShowAddBuddyButton;
