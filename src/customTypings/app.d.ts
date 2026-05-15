@@ -14,7 +14,6 @@ declare module "breezeTypes" {
 	interface TabContentProps {
 		content: string;
 		name: string;
-		badge?: number;
 	}
 
 	interface WallState {

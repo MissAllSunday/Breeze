@@ -4,7 +4,6 @@ import type Tab from "./Tab";
 
 interface TabType {
 	active: boolean;
-	badge?: number;
 	contentElement: ReactElement;
 	href: string;
 	index: number;
@@ -24,7 +23,7 @@ function Tabs(props: {
 
 		Children.forEach(
 			props.children,
-			(child: ReactElement<any>, index: number) => {
+			(child: ReactElement<typeof Tab>, index: number) => {
 				if (child === null) {
 					return;
 				}
@@ -33,7 +32,6 @@ function Tabs(props: {
 					index,
 					href: `#tab-${index}`,
 					name: child.props.name,
-					badge: child.props.badge,
 					active: index === 0,
 					contentElement: child,
 				});
@@ -71,9 +69,6 @@ function Tabs(props: {
 								onClick={() => changeTab(tab)}
 							>
 								{tab.name}
-								{tab.badge ? (
-									<span className="badge">{tab.badge}</span>
-								) : null}
 							</a>
 						</li>
 					))}
