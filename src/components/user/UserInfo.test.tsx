@@ -110,7 +110,7 @@ describe("UserInfo", () => {
 			// Get the first link (from UserInfo, not MiniProfile)
 			const link = links[0];
 			expect(link).toBeInTheDocument();
-			expect(link).toHaveAttribute("href", "#");
+			expect(link).toHaveAttribute("href", "http://smf.local:8000/index.php?action=buddy;u=2;sc=test_session_123");
 
 			const icon = link.querySelector(".main_icons.plus");
 			expect(icon).toBeInTheDocument();
@@ -123,7 +123,7 @@ describe("UserInfo", () => {
 			// Get the first link (from UserInfo, not MiniProfile)
 			const link = links[0];
 			expect(link).toBeInTheDocument();
-			expect(link).toHaveAttribute("href", "#");
+			expect(link).toHaveAttribute("href", "http://smf.local:8000/index.php?action=buddy;u=3;sc=test_session_123");
 
 			const icon = link.querySelector(".main_icons.delete");
 			expect(icon).toBeInTheDocument();
