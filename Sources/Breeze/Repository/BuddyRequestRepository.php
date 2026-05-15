@@ -4,15 +4,50 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
-use Breeze\Database\ClientInterface;
 use Breeze\Entity\BuddyRequestEntity;
-use Breeze\Enums\BuddyStatus;
+use Breeze\Entity\EntityInterface;
 
-class BuddyRequestRepository implements BuddyRequestRepositoryInterface
+class BuddyRequestRepository extends BaseRepository implements BuddyRequestRepositoryInterface
 {
-	public function __construct(
-		protected readonly ClientInterface $dbClient
-	) {}
+	public function getTableName(): string
+	{
+		return BuddyRequestEntity::TABLE;
+	}
+
+	public function getColumnId(): string
+	{
+		return BuddyRequestEntity::ID;
+	}
+
+	public function getColumnPosterId(): string
+	{
+		return BuddyRequestEntity::SENDER_ID;
+	}
+
+	public function getColumns(): array
+	{
+		return array_keys(BuddyRequestEntity::getColumns());
+	}
+
+	public function getById(int $id): ?EntityInterface
+	{
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:table}
+			WHERE {raw:idColumn} = {int:idValue}',
+			[
+				'table' => BuddyRequestEntity::TABLE,
+				'columns' => implode(', ', $this->getColumns()),
+				'idColumn' => BuddyRequestEntity::ID,
+				'idValue' => $id,
+			]
+		);
+
+		$results = $this->prepareData($request);
+
+		return $results[0] ?? null;
+	}
 
 	public function insert(int $senderId, int $receiverId): void
 	{
@@ -34,7 +69,7 @@ class BuddyRequestRepository implements BuddyRequestRepositoryInterface
 		);
 	}
 
-	public function delete(int $senderId, int $receiverId): void
+	public function deleteByUsers(int $senderId, int $receiverId): void
 	{
 		$this->dbClient->query(
 			'
@@ -71,96 +106,61 @@ class BuddyRequestRepository implements BuddyRequestRepositoryInterface
 		);
 	}
 
-	public function getPendingByReceiver(int $receiverId): array
+	public function getBy(string $columnName, array $data = []): array
 	{
-		$request = $this->dbClient->query(
-			'
-			SELECT {raw:columns}
-			FROM {db_prefix}{raw:table}
-			WHERE {raw:receiver} = {int:receiverId}
-				AND {raw:status} = {int:pending}',
-			[
-				'table' => BuddyRequestEntity::TABLE,
-				'columns' => implode(', ', array_keys(BuddyRequestEntity::getColumns())),
-				'receiver' => BuddyRequestEntity::RECEIVER_ID,
-				'status' => BuddyRequestEntity::STATUS,
-				'receiverId' => $receiverId,
-				'pending' => BuddyRequestEntity::PENDING,
-			]
-		);
-
-		$results = [];
-		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$results[] = BuddyRequestEntity::from($row);
-		}
-
-		$this->dbClient->freeResult($request);
-
-		return $results;
-	}
-
-	public function getStatus(int $senderId, int $receiverId): ?int
-	{
-		$request = $this->dbClient->query(
-			'
-			SELECT {raw:status}
-			FROM {db_prefix}{raw:table}
-			WHERE ({raw:sender} = {int:senderId} AND {raw:receiver} = {int:receiverId})
-				OR ({raw:sender} = {int:receiverId} AND {raw:receiver} = {int:senderId})',
-			[
-				'table' => BuddyRequestEntity::TABLE,
-				'status' => BuddyRequestEntity::STATUS,
-				'sender' => BuddyRequestEntity::SENDER_ID,
-				'receiver' => BuddyRequestEntity::RECEIVER_ID,
-				'senderId' => $senderId,
-				'receiverId' => $receiverId,
-			]
-		);
-
-		$row = $this->dbClient->fetchAssoc($request);
-		$this->dbClient->freeResult($request);
-
-		return is_array($row) ? (int) $row[BuddyRequestEntity::STATUS] : null;
-	}
-
-	public function getStatusesForUsers(int $currentUserId, array $userIds): array
-	{
-		if ($userIds === []) {
+		if ($data === [] || !in_array($columnName, $this->getColumns(), true)) {
 			return [];
 		}
 
 		$request = $this->dbClient->query(
 			'
-			SELECT
-				{raw:sender},
-				{raw:receiver},
-				{raw:status}
+			SELECT {raw:columns}
 			FROM {db_prefix}{raw:table}
-			WHERE {raw:sender} = {int:currentUserId}
-				AND {raw:receiver} IN ({array_int:userIds})
-				OR {raw:receiver} = {int:currentUserId}
-					AND {raw:sender} IN ({array_int:userIds})',
+			WHERE {raw:columnName} IN ({array_int:data})',
 			[
 				'table' => BuddyRequestEntity::TABLE,
-				'sender' => BuddyRequestEntity::SENDER_ID,
-				'receiver' => BuddyRequestEntity::RECEIVER_ID,
-				'status' => BuddyRequestEntity::STATUS,
-				'currentUserId' => $currentUserId,
-				'userIds' => array_map('intval', $userIds),
+				'columns' => implode(', ', $this->getColumns()),
+				'columnName' => $columnName,
+				'data' => array_map('intval', $data),
 			]
 		);
 
-		$results = [];
-		while ($row = $this->dbClient->fetchAssoc($request)) {
-			$senderId = (int) $row[BuddyRequestEntity::SENDER_ID];
-			$receiverId = (int) $row[BuddyRequestEntity::RECEIVER_ID];
-			$status = (int) $row[BuddyRequestEntity::STATUS];
+		return $this->prepareData($request);
+	}
 
-			if ($senderId === $currentUserId) {
-				$results[$receiverId] = BuddyStatus::fromDbStatus($status);
-			} elseif ($receiverId === $currentUserId) {
-				$results[$senderId] = BuddyStatus::fromDbStatus($status);
-			}
+	public function getStatusBy(int $status, string $columnName = '', array $data = []): array
+	{
+		$where = '{raw:status} = {int:statusValue}';
+		$params = [
+			'table' => BuddyRequestEntity::TABLE,
+			'columns' => implode(', ', $this->getColumns()),
+			'status' => BuddyRequestEntity::STATUS,
+			'statusValue' => $status,
+		];
+
+		if ($columnName !== '' && $data !== [] && in_array($columnName, $this->getColumns(), true)) {
+			$where .= ' AND {raw:columnName} IN ({array_int:data})';
+			$params['columnName'] = $columnName;
+			$params['data'] = array_map('intval', $data);
+		}
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:table}
+			WHERE ' . $where,
+			$params
+		);
+
+		return $this->prepareData($request);
+	}
+
+	protected function prepareData(object $request): array
+	{
+		$results = [];
+
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$results[] = BuddyRequestEntity::from($row);
 		}
 
 		$this->dbClient->freeResult($request);

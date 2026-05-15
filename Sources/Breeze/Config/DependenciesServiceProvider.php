@@ -153,13 +153,13 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 
 		// Services - Shared (Stateless business logic)
 		AdminService::class => ['arguments' => [SettingsBuilder::class, StatusService::class, CommentService::class, LikeService::class], 'shared' => true],
-		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class, BuddyRequestRepository::class], 'shared' => true],
+		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class, BuddyService::class], 'shared' => true],
 		PermissionsService::class => ['arguments' => [], 'shared' => true],
 		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class], 'shared' => true],
 		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class], 'shared' => true],
 		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
 		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class], 'shared' => true],
-		BuddyService::class => ['arguments' => [ProfileService::class, AlertService::class, BuddyRequestRepository::class], 'shared' => true],
+		BuddyService::class => ['arguments' => [UserSettingsRepository::class, AlertService::class, BuddyRequestRepository::class], 'shared' => true],
 	];
 
 	public function provides(string $id): bool

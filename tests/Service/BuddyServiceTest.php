@@ -7,6 +7,7 @@ namespace Breeze\Service;
 use Breeze\Entity\AlertEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\BuddyRequestRepositoryInterface;
+use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,7 +18,7 @@ class BuddyServiceTest extends TestCase
 {
 	private AlertServiceInterface|MockObject $alertService;
 
-	private ProfileServiceInterface|MockObject $profileService;
+	private UserSettingsRepository|MockObject $userSettingsRepository;
 
 	private BuddyRequestRepositoryInterface|MockObject $buddyRequestRepository;
 
@@ -31,11 +32,11 @@ class BuddyServiceTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->alertService = $this->createMock(AlertServiceInterface::class);
-		$this->profileService = $this->createMock(ProfileServiceInterface::class);
+		$this->userSettingsRepository = $this->createMock(UserSettingsRepository::class);
 		$this->buddyRequestRepository = $this->createMock(BuddyRequestRepositoryInterface::class);
 
 		$this->buddyService = new BuddyService(
-			$this->profileService,
+			$this->userSettingsRepository,
 			$this->alertService,
 			$this->buddyRequestRepository
 		);
@@ -65,11 +66,8 @@ class BuddyServiceTest extends TestCase
 	{
 		$this->currentUserInfo['buddies'] = [5, 7, 12];
 
-		$this->profileService->expects($this->once())
-			->method('updateMemberData')
-			->with(10, $this->callback(function (array $data) {
-				return $data['buddies'] === '7,12';
-			}));
+		$this->buddyRequestRepository->expects($this->exactly(2))
+			->method('deleteByUsers');
 
 		$this->buddyService->removeBuddy(5, $this->currentUserInfo);
 	}
@@ -77,12 +75,6 @@ class BuddyServiceTest extends TestCase
 	public function testConfirmBuddyAddsSenderAndSendsAlert(): void
 	{
 		$GLOBALS['modSettings']['Breeze_allowAutoFollowBack'] = false;
-
-		$this->profileService->expects($this->once())
-			->method('updateMemberData')
-			->with(10, $this->callback(function (array $data) {
-				return str_contains($data['buddies'], '5');
-			}));
 
 		$this->alertService->expects($this->once())
 			->method('send')
@@ -103,15 +95,12 @@ class BuddyServiceTest extends TestCase
 		$currentUserSettings = UserSettingsEntity::from(['autoFollowBack' => 1]);
 		$senderSettings = UserSettingsEntity::from(['buddies' => '3,7']);
 
-		$this->profileService->expects($this->exactly(2))
-			->method('getUserSettings')
+		$this->userSettingsRepository->expects($this->exactly(2))
+			->method('getById')
 			->willReturnCallback(fn (int $userId) => match ($userId) {
 				10 => $currentUserSettings,
 				5 => $senderSettings,
 			});
-
-		$this->profileService->expects($this->exactly(2))
-			->method('updateMemberData');
 
 		$this->alertService->expects($this->once())
 			->method('send');
@@ -125,14 +114,10 @@ class BuddyServiceTest extends TestCase
 
 		$currentUserSettings = UserSettingsEntity::from(['autoFollowBack' => 0]);
 
-		$this->profileService->expects($this->once())
-			->method('getUserSettings')
+		$this->userSettingsRepository->expects($this->once())
+			->method('getById')
 			->with(10)
 			->willReturn($currentUserSettings);
-
-		$this->profileService->expects($this->once())
-			->method('updateMemberData')
-			->with(10, $this->anything());
 
 		$this->alertService->expects($this->once())
 			->method('send');
@@ -147,16 +132,12 @@ class BuddyServiceTest extends TestCase
 		$currentUserSettings = UserSettingsEntity::from(['autoFollowBack' => 1]);
 		$senderSettings = UserSettingsEntity::from(['buddies' => '10,7']);
 
-		$this->profileService->expects($this->exactly(2))
-			->method('getUserSettings')
+		$this->userSettingsRepository->expects($this->exactly(2))
+			->method('getById')
 			->willReturnCallback(fn (int $userId) => match ($userId) {
 				10 => $currentUserSettings,
 				5 => $senderSettings,
 			});
-
-		$this->profileService->expects($this->once())
-			->method('updateMemberData')
-			->with(10, $this->anything());
 
 		$this->buddyService->confirmBuddy(5, $this->currentUserInfo);
 	}

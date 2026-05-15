@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
-use Breeze\Entity\BuddyRequestEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Enums\BuddyStatus;
 use Breeze\Enums\PermissionsEnum;
-use Breeze\Repository\BuddyRequestRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
@@ -41,7 +39,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		protected UserSettingsRepository $userSettingsRepository,
 		protected Components $components,
 		protected PermissionsServiceInterface $permissionsService,
-		protected BuddyRequestRepositoryInterface $buddyRequestRepository,
+		protected BuddyServiceInterface $buddyService,
 	) {
 		parent::__construct($userSettingsRepository);
 	}
@@ -56,7 +54,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
 		$buddyToken = createToken('buddy', 'get');
 
-		$pendingBuddyRequests = $this->buddyRequestRepository->getPendingByReceiver($currentUserId);
+		$pendingBuddyRequests = $this->buddyService->getPendingRequests($currentUserId);
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
@@ -97,8 +95,9 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return false;
 		}
 
-		$existingStatus = $this->buddyRequestRepository->getStatus($userId, $profileId);
-		if ($existingStatus === BuddyRequestEntity::PENDING || $existingStatus === BuddyRequestEntity::CONFIRMED) {
+		$buddyStatuses = $this->buddyService->getBuddyStatusForUsers($userId, [$profileId]);
+		$status = $buddyStatuses[$profileId] ?? BuddyStatus::None;
+		if ($status === BuddyStatus::Pending || $status === BuddyStatus::Confirmed) {
 			return false;
 		}
 
@@ -164,7 +163,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$settingsById = $this->userSettingsRepository->getByIds($userIds);
 		$currentUserId = (int) ($this->getCurrentUserInfo()['id'] ?? 0);
 		$buddyStatuses = $currentUserId !== 0
-			? $this->buddyRequestRepository->getStatusesForUsers($currentUserId, $userIds)
+			? $this->buddyService->getBuddyStatusForUsers($currentUserId, $userIds)
 			: [];
 
 		foreach ($usersInfo as $userId => &$userData) {

@@ -6,9 +6,11 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
+use Breeze\Entity\BuddyRequestEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Enums\BuddyStatus;
 use Breeze\Repository\BuddyRequestRepositoryInterface;
+use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository;
 use Breeze\Traits\TextTrait;
 
 class BuddyService implements BuddyServiceInterface
@@ -20,7 +22,7 @@ class BuddyService implements BuddyServiceInterface
 	protected const string CONTENT_ACTION_CONFIRMED = Breeze::PATTERN . 'confirmed';
 
 	public function __construct(
-		protected ProfileServiceInterface $profileService,
+		protected UserSettingsRepository $userSettingsRepository,
 		protected AlertServiceInterface $alertService,
 		protected BuddyRequestRepositoryInterface $buddyRequestRepository,
 	) {
@@ -28,13 +30,22 @@ class BuddyService implements BuddyServiceInterface
 
 	public function addBuddy(int $receiverId, array $currentUserInfo): void
 	{
-		$existingStatus = $this->buddyRequestRepository->getStatus(
-			$currentUserInfo['id'],
-			$receiverId
+		$sentRequests = $this->buddyRequestRepository->getBy(
+			BuddyRequestEntity::SENDER_ID,
+			[$currentUserInfo['id']]
+		);
+		$receivedRequests = $this->buddyRequestRepository->getBy(
+			BuddyRequestEntity::RECEIVER_ID,
+			[$currentUserInfo['id']]
 		);
 
-		if ($existingStatus !== null) {
-			return;
+		foreach (array_merge($sentRequests, $receivedRequests) as $request) {
+			if (
+				($request->getSenderId() === $currentUserInfo['id'] && $request->getReceiverId() === $receiverId) ||
+				($request->getReceiverId() === $currentUserInfo['id'] && $request->getSenderId() === $receiverId)
+			) {
+				return;
+			}
 		}
 
 		$this->buddyRequestRepository->insert($currentUserInfo['id'], $receiverId);
@@ -50,12 +61,12 @@ class BuddyService implements BuddyServiceInterface
 
 	public function removeBuddy(int $receiverId, array $currentUserInfo): void
 	{
-		$this->buddyRequestRepository->delete($currentUserInfo['id'], $receiverId);
-		$this->buddyRequestRepository->delete($receiverId, $currentUserInfo['id']);
+		$this->buddyRequestRepository->deleteByUsers($currentUserInfo['id'], $receiverId);
+		$this->buddyRequestRepository->deleteByUsers($receiverId, $currentUserInfo['id']);
 
 		$newBuddiesList = array_diff($currentUserInfo['buddies'], [$receiverId]);
 
-		$this->profileService->updateMemberData($currentUserInfo['id'], [
+		updateMemberData($currentUserInfo['id'], [
 			'buddies' => implode(',', $newBuddiesList),
 		]);
 	}
@@ -69,20 +80,20 @@ class BuddyService implements BuddyServiceInterface
 		);
 
 		// Add the original sender to the current user's buddy list
-		$this->profileService->updateMemberData($currentUserInfo['id'], [
+		updateMemberData($currentUserInfo['id'], [
 			'buddies' => implode(',', array_merge($currentUserInfo['buddies'], [$senderId])),
 		]);
 
 		// If admin allows auto follow back and user has it enabled, add bidirectionally
 		if ($this->isEnable(SettingsEntity::ALLOW_AUTO_FOLLOW_BACK)) {
-			$currentUserSettings = $this->profileService->getUserSettings($currentUserInfo['id']);
+			$currentUserSettings = $this->userSettingsRepository->getById($currentUserInfo['id']);
 
 			if ($currentUserSettings->getAutoFollowBack() === 1) {
-				$senderSettings = $this->profileService->getUserSettings($senderId);
+				$senderSettings = $this->userSettingsRepository->getById($senderId);
 				$senderBuddies = $senderSettings->getBuddies();
 
 				if (!in_array($currentUserInfo['id'], $senderBuddies)) {
-					$this->profileService->updateMemberData($senderId, [
+					updateMemberData($senderId, [
 						'buddies' => implode(',', array_merge($senderBuddies, [$currentUserInfo['id']])),
 					]);
 				}
@@ -101,34 +112,60 @@ class BuddyService implements BuddyServiceInterface
 
 	public function getPendingRequests(int $userId): array
 	{
-		$pendingRequests = $this->buddyRequestRepository->getPendingByReceiver($userId);
+		$pendingRequests = $this->buddyRequestRepository->getStatusBy(
+			BuddyRequestEntity::PENDING,
+			BuddyRequestEntity::RECEIVER_ID,
+			[$userId]
+		);
 
-		if ($pendingRequests === []) {
+		if (empty($pendingRequests)) {
 			return [];
 		}
 
-		$senderIds = array_map(fn ($request) => $request->getSenderId(), $pendingRequests);
-		$senderData = $this->profileService->loadUsersInfo($senderIds);
+		$senderIds = array_map(fn (BuddyRequestEntity $request) => $request->getSenderId(), $pendingRequests);
+		$senderData = $this->buddyRequestRepository->loadUsersInfo($senderIds);
 
-		$requests = [];
-		foreach ($pendingRequests as $request) {
+		return array_map(function (BuddyRequestEntity $request) use ($senderData) {
 			$senderId = $request->getSenderId();
-			$requests[] = [
+
+			return [
 				'request' => $request->jsonSerialize(),
 				'sender' => $senderData[$senderId] ?? [],
 			];
-		}
-
-		return $requests;
+		}, $pendingRequests);
 	}
 
 	public function declineBuddyRequest(int $senderId, int $receiverId): void
 	{
-		$this->buddyRequestRepository->delete($senderId, $receiverId);
+		$this->buddyRequestRepository->deleteByUsers($senderId, $receiverId);
 	}
 
 	public function getBuddyStatusForUsers(int $currentUserId, array $userIds): array
 	{
-		return $this->buddyRequestRepository->getStatusesForUsers($currentUserId, $userIds);
+		if ($userIds === []) {
+			return [];
+		}
+
+		$sent = $this->buddyRequestRepository->getBy(
+			BuddyRequestEntity::SENDER_ID,
+			[$currentUserId]
+		);
+		$received = $this->buddyRequestRepository->getBy(
+			BuddyRequestEntity::RECEIVER_ID,
+			[$currentUserId]
+		);
+
+		$results = [];
+		foreach (array_merge($sent, $received) as $request) {
+			$otherUserId = $request->getSenderId() === $currentUserId
+				? $request->getReceiverId()
+				: $request->getSenderId();
+
+			if (in_array($otherUserId, $userIds, true)) {
+				$results[$otherUserId] = BuddyStatus::fromDbStatus($request->getStatus());
+			}
+		}
+
+		return $results;
 	}
 }
