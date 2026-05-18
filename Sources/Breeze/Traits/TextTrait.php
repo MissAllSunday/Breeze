@@ -114,21 +114,20 @@ trait TextTrait
 
 	public function timeElapsed(int $timeInSeconds): string
 	{
-		$txt = $this->global('txt');
 		$sinceTime = time() - $timeInSeconds;
 		$timeElapsed = '';
 
 		if ($sinceTime < 1) {
-			return $txt['time_just_now'];
+			return $this->getText('time_just_now');
 		}
 
 		$timePeriods = [
-			12 * 30 * 24 * 60 * 60 => $txt['time_year'],
-			30 * 24 * 60 * 60 => $txt['time_month'],
-			24 * 60 * 60 => $txt['time_day'],
-			60 * 60 => $txt['time_hour'],
-			60 => $txt['time_minute'],
-			1 => $txt['time_second'],
+			12 * 30 * 24 * 60 * 60 => $this->getText('time_year'),
+			30 * 24 * 60 * 60 => $this->getText('time_month'),
+			24 * 60 * 60 => $this->getText('time_day'),
+			60 * 60 => $this->getText('time_hour'),
+			60 => $this->getText('time_minute'),
+			1 => $this->getText('time_second'),
 		];
 
 		foreach ($timePeriods as $seconds => $timeString) {
@@ -137,7 +136,7 @@ trait TextTrait
 				$timeCountRounded = round($timeCount);
 
 				$timeElapsed = $timeCountRounded . ' ' . $timeString .
-					($timeCountRounded > 1 ? 's ' : ' ') . $txt['time_ago'];
+					($timeCountRounded > 1 ? 's ' : ' ') . $this->getText('time_ago');
 
 				break;
 			}

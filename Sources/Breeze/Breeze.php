@@ -40,7 +40,7 @@ class Breeze
 	public const string SUPPORT_URL = 'https://missallsunday.com';
 	public const string REACT_DOM_VERSION = '19.1.2';
 	public const string REACT_VERSION = '19.1.2';
-	public const string REACT_HASH = 'index-B3ciaInx';
+	public const string REACT_HASH = 'index-BAURpg9S';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';
@@ -96,7 +96,7 @@ class Breeze
 			$wallController = $this->container->get(WallController::class);
 
 			$profileAreas['info']['areas']['summary'] = [
-				'label' => $this->getText('general_wall'),
+				'label' => $this->getText('tabs_wall'),
 				'icon' => 'smiley',
 				'function' => fn () => $wallController->dispatch(),
 				'permission' => [
@@ -124,7 +124,7 @@ class Breeze
 			'title' => $this->getText('general_my_wall_settings'),
 			'areas' => [
 				ProfileService::SETTINGS_AREA => [
-					'label' => $this->getText(ProfileService::AREA . '_main_title'),
+					'label' => $this->getText(ProfileService::SETTINGS_AREA . '_main_title'),
 					'icon' => 'maintain',
 					'function' => fn () => $settingsController->dispatch(),
 					'enabled' => $context['user']['is_owner'],
@@ -153,7 +153,7 @@ class Breeze
 			$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($currentUserInfo['id']);
 			if (!empty($menu_buttons['profile']['sub_buttons']['summary'])) {
 				$menu_buttons['profile']['sub_buttons']['summary'] = [
-					'title' => $this->getText('summary'),
+					'title' => $this->getText('general_summary'),
 					'href' => $scriptUrl . '?action=profile;area=' . ProfileService::LEGACY_AREA,
 					'show' => true,
 				];
@@ -179,7 +179,7 @@ class Breeze
 						!empty($currentUserSettings->getGeneralWall()),
 					'sub_buttons' => [
 						'noti' => [
-							'title' => $this->getText('user_notisettings_name'),
+							'title' => $this->getText('user_noti_settings_name'),
 							'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
 							'show' => !$currentUserInfo['is_guest'],
 							'sub_buttons' => [],

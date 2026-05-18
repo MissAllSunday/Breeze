@@ -25,8 +25,8 @@ final class TextTest extends TestCase
 		return [
 			'text exists' =>
 			[
-				'textKeyName' => 'time_year',
-				'expected' => 'year',
+				'textKeyName' => 'guest_title',
+				'expected' => 'Guest',
 			],
 			'text doesnt exists' =>
 			[
