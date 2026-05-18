@@ -28,11 +28,6 @@ If you like this modification and would like to show your appreciation, please c
 $txt['Breeze_page_donate_link'] = 'donation';
 $txt['Breeze_page_credits'] = 'Credits';
 $txt['Breeze_page_credits_decs'] = 'Breeze is brought to you by the following persons and/or scripts:';
-$txt['Breeze_enable_general_wall'] = 'Enable UserSettingsController User';
-$txt['Breeze_enable_general_wall_sub'] = 'If enable, a general wall will appear,
-in this general wall the user will be able to see his/her buddie\'s status and recent activity';
-$txt['Breeze_menu_position'] = 'SelectType the position for the general User button.';
-$txt['Breeze_menu_position_sub'] = 'By default is next to the home button.';
 
 // SettingsTrait
 $txt['Breeze_master'] = 'Enable Breeze mod';
@@ -42,8 +37,6 @@ $txt['Breeze_forceWall_sub'] = 'By default, the wall is disabled and users needs
  if you check this option their wall will be enabled, keep in mind this option will enable everyone\'s wall
   including inactive members and bots.<br /> They can still manually disable their wall if they want it,
    this option only enables it but does not really force the wall to be always enable.';
-$txt['Breeze_aboutMeMaxLength'] = 'The max length for the "about me" block ';
-$txt['Breeze_aboutMeMaxLength_sub'] = 'If left empty, the mod will use the default value: 1024';
 $txt['Breeze_maxFloodNum'] = 'How many messages can an user make';
 $txt['Breeze_maxFloodNum_sub'] = 'The amount of total messages, including status and messages across all walls
  an user can make. Defaults to 10';

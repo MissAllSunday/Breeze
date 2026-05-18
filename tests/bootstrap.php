@@ -303,14 +303,14 @@ $modSettings = [
 ];
 
 $txt = [
-	'time_year' => 'year',
-	'time_month' => 'month',
-	'time_day' => 'day',
-	'time_hour' => 'hour',
-	'time_minute' => 'minute',
-	'time_second' => 'second',
-	'time_ago' => 'ago',
-	'time_just_now' => 'just now',
+	'Breeze_time_year' => 'year',
+	'Breeze_time_month' => 'month',
+	'Breeze_time_day' => 'day',
+	'Breeze_time_hour' => 'hour',
+	'Breeze_time_minute' => 'minute',
+	'Breeze_time_second' => 'second',
+	'Breeze_time_ago' => 'ago',
+	'Breeze_time_just_now' => 'just now',
 	'Breeze_lol' => 'lol',
 	'guest_title' => 'Guest',
 	'number_format' => '1,234.00',

@@ -9,15 +9,12 @@ declare(strict_types=1);
 global $txt;
 
 // General strings
-$txt['Breeze_breeze_main_title'] = 'My wall';
 $txt['Breeze_generalWall'] = 'Wall';
-$txt['Breeze_general_wall_page'] = 'page';
 $txt['Breeze_general_summary'] = 'Summary';
 $txt['Breeze_load_more'] = 'Load more';
 $txt['Breeze_admin'] = 'Admin panel';
+$txt['Breeze_user_noti_settings_name'] = 'Alert Settings';
 $txt['Breeze_general_my_wall_settings'] = 'My wall settings';
-$txt['Breeze_general_loading'] = 'Loading..';
-$txt['Breeze_general_like'] = 'Like';
 $txt['Breeze_general_delete'] = 'Delete';
 $txt['Breeze_general_save'] = 'Save';
 $txt['Breeze_general_send'] = 'Send';
@@ -27,12 +24,10 @@ $txt['Breeze_general_preview'] = 'Preview';
 $txt['Breeze_general_close'] = 'Close';
 $txt['Breeze_general_cancel'] = 'Cancel';
 $txt['Breeze_general_goBack'] = 'Go Back';
-$txt['Breeze_general_posted_on'] = 'Posted on %s\'s User';
 
 // User Individual user settings
 $txt['Breeze_breezeSettings_main_title'] = 'My wall settings';
 $txt['Breeze_user_settings_main_desc'] = 'Configure your wall and other general settings';
-$txt['Breeze_user_buddysettings_name'] = 'Buddy Requests';
 $txt['Breeze_user_single_status'] = 'Single Status';
 $txt['Breeze_user_settings_paginationNumber'] = 'How many status will be displayed per page';
 $txt['Breeze_user_settings_paginationNumber_desc'] = 'Enter the number of status you want
@@ -41,8 +36,6 @@ $txt['Breeze_user_settings_generalWall'] = 'Enable the general wall';
 $txt['Breeze_user_settings_generalWall_desc'] = 'The general wall is a unique page where you can see the status
  and updates from your buddies. This setting allows you to enable/disable it';
 $txt['Breeze_user_settings_submit'] = 'Submit';
-$txt['Breeze_user_settings_cancel'] = 'Cancel';
-$txt['Breeze_user_settings_checkAll'] = 'select all options';
 $txt['Breeze_user_settings_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_wall_desc'] = 'If you want to use your wall, you need to check this option,
 otherwise your profile will show the default page';
@@ -57,10 +50,7 @@ $txt['Breeze_user_settings_autoFollowBack_desc'] = 'Automatically follow back a 
 $txt['Breeze_user_settings_kickIgnored'] = 'Do not show my wall to users in my ignore list';
 $txt['Breeze_user_settings_kickIgnored_desc'] = 'If this is enable, users on your ignore list will not be able to
  see your wall or to post on it';
-$txt['Breeze_user_permissions_name'] = 'Validate';
-$txt['Breeze_user_modules_visitors_none'] = 'There are no recent visitors';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
-$txt['Breeze_noti_none'] = 'You don\'t have any alerts yet';
 
 // Likes
 $txt['Breeze_error_likesLike'] = 'You aren\'t allowed to use the like feature';
@@ -83,7 +73,6 @@ $txt['Breeze_time_ago'] = 'ago';
 $txt['Breeze_time_minute'] = 'minute';
 $txt['Breeze_time_hour'] = 'hour';
 $txt['Breeze_time_day'] = 'day';
-$txt['Breeze_time_week'] = 'week';
 $txt['Breeze_time_month'] = 'month';
 $txt['Breeze_time_year'] = 'year';
 
@@ -106,8 +95,6 @@ $txt['Breeze_error_malformed_data'] = 'Malformed data';
 $txt['Breeze_error_incomplete_data'] = 'Incomplete data';
 $txt['Breeze_error_invalid_users'] = 'Invalid user Ids';
 $txt['Breeze_success_deleted_status'] = 'Your status has been deleted';
-$txt['Breeze_success_buddy_add'] = 'The invitation has been sent';
-$txt['Breeze_success_buddy_remove'] = 'Buddy removed successfully';
 $txt['Breeze_error_no_status'] = 'The status doesn\'t exists anymore';
 $txt['Breeze_error_no_comment'] = 'The comment doesn\'t exists anymore';
 $txt['Breeze_error_save_comment'] = 'The comment couldn\'t be inserted';
@@ -119,8 +106,6 @@ $txt['Breeze_error_already_marked_noti'] = 'This notification was marked as read
 $txt['Breeze_error_no_validator'] = 'There isn\'t a validator registered for this call';
 $txt['Breeze_error_postStatus'] = 'You aren\'t allowed to post status';
 $txt['Breeze_error_postComments'] = 'You aren\'t allowed to post comments';
-$txt['Breeze_error_deleteStatus'] = 'I\'m sorry,  you aren\'t allowed to delete status';
-$txt['Breeze_error_deleteComments'] = 'I\'m sorry,  you aren\'t allowed to delete comments';
 $txt['Breeze_error_no_valid_action'] = 'This is not a valid action';
 $txt['Breeze_error_no_property'] = '%s isn\'t a valid call';
 $txt['Breeze_error_no_access'] = 'I\'m sorry, you don\'t have access to this section';
@@ -131,53 +116,11 @@ $txt['Breeze_info_loading_end'] = 'There are no more status to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display'; // This will be replaced by conditional logic
 $txt['Breeze_info_empty_data'] = 'There are no status to display'; // This will be replaced by conditional logic
 
-// New empty wall messages
-$txt['Breeze_success_empty_data_own_wall'] = 'Welcome to your wall! Share your first status update.';
-$txt['Breeze_success_empty_data_other_wall'] = 'This user hasn\'t posted any status updates yet.';
-
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Wall';
-$txt['Breeze_error_wall_none'] = 'This user doesn\'t have any status yet!';
-$txt['Breeze_tabs_post'] = 'Leave a message';
 $txt['Breeze_tabs_about'] = 'About me';
 $txt['Breeze_tabs_activity'] = 'Recent activity';
 $txt['Breeze_tabs_buddies'] = 'Buddies';
-$txt['Breeze_tabs_views'] = 'Profile Visitors';
-$txt['Breeze_tabs_pinfo'] = 'Profile Info';
-$txt['Breeze_tabs_activity'] = 'Recent activity';
-$txt['Breeze_tabs_activity_none'] = 'This user doesn\'t have any activities recorded';
-$txt['Breeze_tabs_activity_buddies_none'] = 'Your buddies doesn\'t have any activities recorded';
-$txt['Breeze_tabs_about'] = 'About me';
-$txt['Breeze_goTop'] = 'Go to top';
-
-// Buddy request.
-$txt['Breeze_buddy_title'] = 'Buddy request';
-$txt['Breeze_buddy_confirm'] = 'The invitation has been sent, {receiver} will soon receive an alert';
-$txt['Breeze_buddy_sender_message_title'] = '{sender} sent the following message';
-$txt['Breeze_buddy_chose_title'] = '{sender} wants to be your buddy!';
-$txt['Breeze_buddy_chose'] = 'Please <a href="{href_confirm}"><i class="fa fa-user-plus fa-2x"></i> confirm</a> or
- <a href="{href_decline}"><i class="fa fa-user-times fa-2x"></i> decline</a> the invitation';
-$txt['Breeze_buddy_already_buddy'] = 'You and {receiver} are already buddies';
-$txt['Breeze_buddy_blocked'] = 'You cannot send an invitation to this user';
-$txt['Breeze_buddy_already_blocked'] = 'You already added this user to your block list';
-$txt['Breeze_buddy_decline'] = 'You have declined the invitation.<br>
-Do you want to block this person from sending you more invites? this WILL NOT put this person on your ignore list,
- it will merely prevent this user from sending you a buddy invite<br><a href="{href}">yes, block this user</a>';
-$txt['Breeze_buddy_blocked_done'] = 'You have successfully blocked this user';
-$txt['Breeze_buddy_delete_done'] = 'You and {receiver} are no longer buddies';
-$txt['Breeze_buddy_confirmed_done'] = 'You have successfully confirmed the buddy request';
-$txt['Breeze_buddy_already_sent'] = 'You already sent an invitation, please wait for {receiver} to respond';
-$txt['Breeze_buddy_error'] = 'There was an error, please try again';
-$txt['Breeze_buddy_message'] = 'Buddy message';
-$txt['Breeze_buddy_message_desc'] = 'You can send {receiver} a message along with your buddy invite. <br>
- no HTML or BBC is allowed. Leave the field empty if you do not want to send a message';
-$txt['Breeze_invitation_pending'] = 'Invitation pending';
-
-// Buddy Requests page
-$txt['Breeze_user_buddy_requests_title'] = 'Buddy Requests';
-$txt['Breeze_user_accept'] = 'Accept';
-$txt['Breeze_user_decline'] = 'Decline';
-$txt['Breeze_user_buddy_requests_empty'] = 'You have no pending buddy requests.';
 
 // Errors
 $txt['cannot_breeze_postStatus'] = $txt['Breeze_error_postStatus'];
