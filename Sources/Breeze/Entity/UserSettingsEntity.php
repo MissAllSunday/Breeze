@@ -18,7 +18,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public const string ENABLE_BUDDIES_TAB = 'enableBuddiesTab';
 	public const string BUDDIES = 'buddies';
 	public const string ABOUT_ME = 'aboutMe';
-	public const string AUTO_FOLLOW_BACK = 'autoFollowBack';
 	public const string BLOCK_BUDDY_REQUESTS = 'blockBuddyRequests';
 	public const string USER_ID = 'userId';
 
@@ -35,8 +34,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	protected int $blockBuddyRequests = 0;
 
 	protected string $aboutMe = '';
-
-	protected int $autoFollowBack = 0;
 
 	protected array $buddies = [];
 
@@ -58,7 +55,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::KICK_IGNORED => SettingsEntity::TYPE_CHECK,
 			self::ENABLE_BUDDIES_TAB => SettingsEntity::TYPE_CHECK,
 			self::BLOCK_BUDDY_REQUESTS => SettingsEntity::TYPE_CHECK,
-			self::AUTO_FOLLOW_BACK => SettingsEntity::TYPE_CHECK,
 			self::ABOUT_ME => SettingsEntity::TYPE_TEXTAREA,
 		];
 	}
@@ -72,7 +68,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::KICK_IGNORED => 0,
 			self::ENABLE_BUDDIES_TAB => 0,
 			self::BLOCK_BUDDY_REQUESTS => 0,
-			self::AUTO_FOLLOW_BACK => 0,
 			self::ABOUT_ME => '',
 		];
 	}
@@ -146,16 +141,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 		$this->blockBuddyRequests = $blockBuddyRequests;
 	}
 
-	public function getAutoFollowBack(): int
-	{
-		return $this->autoFollowBack;
-	}
-
-	public function setAutoFollowBack(int $autoFollowBack): void
-	{
-		$this->autoFollowBack = $autoFollowBack;
-	}
-
 	public function getAboutMe(): string
 	{
 		return $this->aboutMe;
@@ -210,7 +195,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::KICK_IGNORED,
 			self::ENABLE_BUDDIES_TAB,
 			self::BLOCK_BUDDY_REQUESTS,
-			self::AUTO_FOLLOW_BACK,
 			self::PAGINATION_NUM,
 			MemberEntity::ID => (int) $value,
 			self::BLOCK_LIST, self::BUDDIES => explode(',', $value),
@@ -227,7 +211,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			'kickIgnored' => $this->getKickIgnored(),
 			'aboutMe' => $this->getAboutMe(),
 			'enableBuddiesTab' => $this->getEnableBuddiesTab(),
-			'autoFollowBack' => $this->getAutoFollowBack(),
 		];
 	}
 }

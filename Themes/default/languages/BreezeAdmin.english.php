@@ -43,10 +43,6 @@ $txt['Breeze_maxFloodNum_sub'] = 'The amount of total messages, including status
 $txt['Breeze_maxFloodMinutes'] = 'The time frame for the amount of messages an user can make';
 $txt['Breeze_maxFloodMinutes_sub'] = 'Defaults to 5 minutes. If you leave both options empty it will mean
  an user cannot make more than 10 messages in 5 minutes across all walls';
-$txt['Breeze_allowAutoFollowBack'] = 'Allow users to enable auto follow back';
-$txt['Breeze_allowAutoFollowBack_sub'] = 'If enabled, users will have the option in their wall settings
- to automatically follow back a buddy when they accept a buddy request';
-
 $txt['Breeze_version'] = 'Breeze version';
 $txt['Breeze_react_version'] = 'React version';
 $txt['Breeze_live'] = 'Live from the support forum...';

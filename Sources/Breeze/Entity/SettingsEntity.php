@@ -12,7 +12,6 @@ class SettingsEntity
 	public const string ABOUT_ME_MAX_LENGTH = 'aboutMeMaxLength';
 	public const string MAX_FLOOD_NUM = 'maxFloodNum';
 	public const string MAX_FLOOD_MINUTES = 'maxFloodMinutes';
-	public const string ALLOW_AUTO_FOLLOW_BACK = 'allowAutoFollowBack';
 	public const string TYPE_CHECK = 'check';
 	public const string TYPE_INT = 'int';
 	public const string TYPE_TEXT = 'text';
@@ -34,7 +33,6 @@ class SettingsEntity
 			self::FORCE_WALL => self::TYPE_CHECK,
 			self::MAX_FLOOD_NUM => self::TYPE_INT,
 			self::MAX_FLOOD_MINUTES => self::TYPE_INT,
-			self::ALLOW_AUTO_FOLLOW_BACK => self::TYPE_CHECK,
 		];
 	}
 
