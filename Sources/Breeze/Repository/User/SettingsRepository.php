@@ -31,7 +31,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 			FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
 				LEFT JOIN {db_prefix}' . MemberEntity::TABLE . '
 				AS mem ON (mem.' . MemberEntity::ID . ' = {int:userId})
-			WHERE ' . MemberEntity::ID . ' = {int:userId}',
+			WHERE op.' . OptionsEntity::MEMBER_ID . ' = {int:userId}',
 				[
 					'userId' => $id,
 				]
