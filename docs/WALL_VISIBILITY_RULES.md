@@ -220,6 +220,3 @@ that should have access to the general wall.
 | Accessing the general wall page and feed | `viewGeneralWall` | Breeze |
 
 ---
-
-*The engineering plan that turns these rules into code is tracked separately
-and is intentionally not part of this document.*

@@ -289,22 +289,22 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	public function deleteOrphans(): void
 	{
 		$this->dbClient->query(
-			'
-			DELETE l
-			FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
-			LEFT JOIN {db_prefix}' . StatusEntity::TABLE . ' AS s ON (s.id = l.content_id AND l.content_type = {string:status_type})
-			WHERE s.id IS NULL AND l.content_type = {string:status_type}',
+			'DELETE FROM {db_prefix}' . LikeEntity::TABLE . '
+			WHERE ' . LikeEntity::TYPE . ' = {string:status_type}
+				AND ' . LikeEntity::ID . ' NOT IN (
+					SELECT id FROM {db_prefix}' . StatusEntity::TABLE . '
+				)',
 			[
 				'status_type' => LikesEnum::Status->value,
 			]
 		);
 
 		$this->dbClient->query(
-			'
-			DELETE l
-			FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
-			LEFT JOIN {db_prefix}' . CommentEntity::TABLE . ' AS c ON (c.id = l.content_id AND l.content_type = {string:comment_type})
-			WHERE c.id IS NULL AND l.content_type = {string:comment_type}',
+			'DELETE FROM {db_prefix}' . LikeEntity::TABLE . '
+			WHERE ' . LikeEntity::TYPE . ' = {string:comment_type}
+				AND ' . LikeEntity::ID . ' NOT IN (
+					SELECT id FROM {db_prefix}' . CommentEntity::TABLE . '
+				)',
 			[
 				'comment_type' => LikesEnum::Comments->value,
 			]

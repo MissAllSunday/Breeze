@@ -241,11 +241,10 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	public function deleteOrphans(): void
 	{
 		$this->dbClient->query(
-			'
-			DELETE c
-			FROM {db_prefix}' . CommentEntity::TABLE . ' AS c
-			LEFT JOIN {db_prefix}' . StatusEntity::TABLE . ' AS s ON (s.id = c.status_id)
-			WHERE s.id IS NULL',
+			'DELETE FROM {db_prefix}' . CommentEntity::TABLE . '
+			WHERE ' . CommentEntity::STATUS_ID . ' NOT IN (
+				SELECT id FROM {db_prefix}' . StatusEntity::TABLE . '
+			)',
 			[]
 		);
 	}
