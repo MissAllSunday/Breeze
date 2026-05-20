@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Enums\PermissionsEnum;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -327,6 +328,27 @@ class PermissionsServiceTest extends TestCase
 				],
 			],
 		];
+	}
+
+	public function testCanViewActivityReturnsFalseWithoutPermission(): void
+	{
+		// In the test environment viewGeneralWall is not granted → must return false.
+		$result = $this->permissionsService->canViewActivity(0);
+
+		$this->assertFalse($result);
+	}
+
+	public function testCanViewActivityReturnsTrueWhenPermissionGranted(): void
+	{
+		$mock = $this->getMockBuilder(PermissionsService::class)
+			->onlyMethods(['isAllowedTo'])
+			->getMock();
+
+		$mock->method('isAllowedTo')
+			->with(PermissionsEnum::VIEW_GENERAL_WALL)
+			->willReturn(true);
+
+		$this->assertTrue($mock->canViewActivity(1));
 	}
 
 	public function testIsFeatureEnable(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service\Actions;
 
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\StatusServiceInterface;
@@ -25,6 +26,8 @@ class AdminServiceTest extends TestCase
 
 	private MockObject|LikeServiceInterface $likeService;
 
+	private MockObject|SettingsRepositoryInterface $userSettingsRepository;
+
 	/**
 	 * @throws Exception
 	 */
@@ -34,6 +37,7 @@ class AdminServiceTest extends TestCase
 		$this->statusService = $this->createMock(StatusServiceInterface::class);
 		$this->commentService = $this->createMock(CommentServiceInterface::class);
 		$this->likeService = $this->createMock(LikeServiceInterface::class);
+		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
 
 		$this->adminService = $this->getMockBuilder(AdminService::class)
 			->onlyMethods([
@@ -53,6 +57,7 @@ class AdminServiceTest extends TestCase
 				$this->statusService,
 				$this->commentService,
 				$this->likeService,
+				$this->userSettingsRepository,
 			])
 			->getMock();
 	}
@@ -224,7 +229,7 @@ class AdminServiceTest extends TestCase
 	}
 
 	#[DataProvider('maintenanceProvider')]
-	public function testMaintenance(bool $fix, string $type, bool $expectCommentsFix, bool $expectLikesFix): void
+	public function testMaintenance(bool $fix, string $type, bool $expectCommentsFix, bool $expectLikesFix, bool $expectWallsFix): void
 	{
 		$context = ['session_var' => 'sesc', 'session_id' => 'abc123'];
 		$scriptUrl = 'http://example.com/index.php';
@@ -259,6 +264,12 @@ class AdminServiceTest extends TestCase
 				$this->statusService->expects($this->never())->method('recountLikes');
 				$this->commentService->expects($this->never())->method('recountLikes');
 			}
+
+			if ($expectWallsFix) {
+				$this->userSettingsRepository->expects($this->once())->method('enableAllWalls');
+			} else {
+				$this->userSettingsRepository->expects($this->never())->method('enableAllWalls');
+			}
 		} else {
 			$this->adminService->expects($this->never())->method('getRequest');
 		}
@@ -274,10 +285,11 @@ class AdminServiceTest extends TestCase
 	public static function maintenanceProvider(): array
 	{
 		return [
-			'no fix' => [false, '', false, false],
-			'fix all' => [true, 'all', true, true],
-			'fix comments' => [true, 'comments', true, false],
-			'fix likes' => [true, 'likes', false, true],
+			'no fix'       => [false, '',        false, false, false],
+			'fix all'      => [true,  'all',     true,  true,  false],
+			'fix comments' => [true,  'comments', true,  false, false],
+			'fix likes'    => [true,  'likes',   false, true,  false],
+			'fix walls'    => [true,  'walls',   false, false, true],
 		];
 	}
 }

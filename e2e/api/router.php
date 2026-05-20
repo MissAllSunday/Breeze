@@ -2,6 +2,46 @@
 
 declare(strict_types=1);
 
+// Path to the per-test permission state file. Written by setup actions,
+// cleared by handleReset(). Default (file absent) = all permissions granted.
+define('PERM_STATE_FILE', '/tmp/breeze_e2e_perm_state.json');
+
+// ── Permission state helpers ──────────────────────────────────────────
+
+function loadPermState(): array
+{
+    if (!file_exists(PERM_STATE_FILE)) {
+        return ['viewGeneralWall' => true, 'profileView' => true, 'isAdmin' => false];
+    }
+
+    $data = json_decode((string) file_get_contents(PERM_STATE_FILE), true) ?? [];
+
+    return array_merge(['viewGeneralWall' => true, 'profileView' => true, 'isAdmin' => false], $data);
+}
+
+function isAdminE2E(): bool
+{
+    return loadPermState()['isAdmin'] === true;
+}
+
+function canViewGeneralWall(): bool
+{
+    if (isAdminE2E()) {
+        return true;
+    }
+
+    return loadPermState()['viewGeneralWall'] === true;
+}
+
+function canViewProfile(): bool
+{
+    if (isAdminE2E()) {
+        return true;
+    }
+
+    return loadPermState()['profileView'] === true;
+}
+
 // ── Response helpers ──────────────────────────────────────────────────
 
 function respond(array $content, string $message = '', int $code = 200): void
@@ -109,15 +149,47 @@ function fetchCommentsForStatus(int $statusId, PDO $pdo): array
     return $comments;
 }
 
+/**
+ * Return the list of member IDs that the given viewer has blocked.
+ * Reads the comma-separated `pm_ignore_list` column from smf_members.
+ * Viewer defaults to 1 (the only authenticated user in E2E tests).
+ */
+function getViewerBlockList(PDO $pdo, int $viewerId = 1): array
+{
+    $stmt = $pdo->prepare('SELECT pm_ignore_list FROM smf_members WHERE id_member = ?');
+    $stmt->execute([$viewerId]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$row || $row['pm_ignore_list'] === '') {
+        return [];
+    }
+
+    return array_map('intval', explode(',', $row['pm_ignore_list']));
+}
+
 function fetchStatuses(PDO $pdo, ?int $statusId = null): array
 {
     global $userData;
 
-    $sql = 'SELECT * FROM smf_breeze_status';
+    $blockedIds = getViewerBlockList($pdo);
+
+    $conditions = [];
     $params = [];
+
     if ($statusId !== null) {
-        $sql .= ' WHERE id = ?';
+        $conditions[] = 'id = ?';
         $params[] = $statusId;
+    }
+
+    if ($blockedIds !== []) {
+        $placeholders = implode(',', array_fill(0, count($blockedIds), '?'));
+        $conditions[] = "user_id NOT IN ({$placeholders})";
+        $params = array_merge($params, $blockedIds);
+    }
+
+    $sql = 'SELECT * FROM smf_breeze_status';
+    if ($conditions !== []) {
+        $sql .= ' WHERE ' . implode(' AND ', $conditions);
     }
     $sql .= ' ORDER BY created_at DESC';
 
@@ -151,6 +223,10 @@ match ($action) {
     'breezeComment' => handleComment($subAction),
     'breezeLike' => handleLike($subAction),
     'reset' => handleReset(),
+    'blockScenario' => handleBlockScenario(),
+    'noViewGeneralWall' => handleNoViewGeneralWall(),
+    'noProfileView' => handleNoProfileView(),
+    'adminScenario' => handleAdminScenario(),
     default => respond([], 'Unknown action', 404),
 };
 
@@ -161,15 +237,30 @@ function handleStatus(string $subAction): void
     global $pdo, $permissions;
 
     match ($subAction) {
-        'profile', 'wall' => respond([
-            'data' => fetchStatuses($pdo),
-            'permissions' => $permissions,
-            'pagination' => [
-                'nextCursor' => null,
-                'hasMore' => false,
-            ],
-            'total' => count(fetchStatuses($pdo)),
-        ]),
+        'wall' => (function () use ($pdo, $permissions) {
+            if (!canViewGeneralWall()) {
+                respond([], 'Access denied: viewGeneralWall permission required', 403);
+            }
+            $statuses = fetchStatuses($pdo);
+            respond([
+                'data' => $statuses,
+                'permissions' => $permissions,
+                'pagination' => ['nextCursor' => null, 'hasMore' => false],
+                'total' => count($statuses),
+            ]);
+        })(),
+        'profile' => (function () use ($pdo, $permissions) {
+            if (!canViewProfile()) {
+                respond([], 'Access denied: profile_view permission required', 403);
+            }
+            $statuses = fetchStatuses($pdo);
+            respond([
+                'data' => $statuses,
+                'permissions' => $permissions,
+                'pagination' => ['nextCursor' => null, 'hasMore' => false],
+                'total' => count($statuses),
+            ]);
+        })(),
         'single' => (function () use ($pdo, $permissions) {
             $id = (int) ($_GET['id'] ?? 0);
             if ($id === 0) {
@@ -320,6 +411,11 @@ function handleReset(): void
 {
     global $pdo;
 
+    // Clear any per-test permission overrides so the next test starts clean.
+    if (file_exists(PERM_STATE_FILE)) {
+        unlink(PERM_STATE_FILE);
+    }
+
     $pdo->exec('TRUNCATE TABLE smf_breeze_status');
     $pdo->exec('TRUNCATE TABLE smf_breeze_comments');
     $pdo->exec('TRUNCATE TABLE smf_user_likes');
@@ -338,4 +434,82 @@ function handleReset(): void
     $insertComment->execute([300, 3, 1, 0, 'A comment on status #3', date('M d, Y h:i A', $now - 10800)]);
 
     respond(['reset' => true], 'Database reset', 200);
+}
+
+/**
+ * Set up the block-visibility scenario:
+ *   - User 1 (viewer/testuser) has user 2 in their block list.
+ *   - User 2 (blockeduser) has one status in the DB.
+ *   - Users 1-3 standard fixture statuses are present.
+ * The wall should therefore show only 3 statuses (from user 1), not 4.
+ */
+function handleBlockScenario(): void
+{
+    global $pdo;
+
+    $pdo->exec('TRUNCATE TABLE smf_breeze_status');
+    $pdo->exec('TRUNCATE TABLE smf_breeze_comments');
+    $pdo->exec('TRUNCATE TABLE smf_user_likes');
+    $pdo->exec('TRUNCATE TABLE smf_members');
+
+    // Viewer (user 1) blocks user 2 via pm_ignore_list
+    $pdo->exec("INSERT INTO smf_members (id_member, member_name, real_name, pm_ignore_list) VALUES (1, 'testuser', 'Test User', '2')");
+    // Blocked user (user 2)
+    $pdo->exec("INSERT INTO smf_members (id_member, member_name, real_name) VALUES (2, 'blockeduser', 'Blocked User')");
+
+    $now = time();
+    $insertStatus = $pdo->prepare('INSERT INTO smf_breeze_status (id, wall_id, user_id, created_at, body, likes) VALUES (?, ?, ?, ?, ?, ?)');
+    $insertStatus->execute([1, 1, 1, $now - 3600, 'This is mock status #1 for E2E testing.', 0]);
+    $insertStatus->execute([2, 1, 1, $now - 7200, 'This is mock status #2 for E2E testing.', 0]);
+    $insertStatus->execute([3, 1, 1, $now - 10800, 'This is mock status #3 for E2E testing.', 0]);
+    // Blocked user's post — must not appear in the viewer's feed
+    $insertStatus->execute([10, 1, 2, $now - 1800, 'This post is from a blocked user and should not be visible.', 0]);
+
+    $insertComment = $pdo->prepare('INSERT INTO smf_breeze_comments (id, status_id, user_id, likes, body, created_at) VALUES (?, ?, ?, ?, ?, ?)');
+    $insertComment->execute([100, 1, 1, 0, 'A comment on status #1', date('M d, Y h:i A', $now - 3600)]);
+    $insertComment->execute([200, 2, 1, 0, 'A comment on status #2', date('M d, Y h:i A', $now - 7200)]);
+    $insertComment->execute([300, 3, 1, 0, 'A comment on status #3', date('M d, Y h:i A', $now - 10800)]);
+
+    respond(['blockScenario' => true], 'Block scenario ready', 200);
+}
+
+
+/**
+ * Revoke the viewGeneralWall permission for the current test.
+ * Subsequent ?action=breezeStatus&sa=wall requests will return 403.
+ * Cleared automatically by handleReset().
+ */
+function handleNoViewGeneralWall(): void
+{
+    $state = loadPermState();
+    $state['viewGeneralWall'] = false;
+    file_put_contents(PERM_STATE_FILE, json_encode($state));
+    respond(['viewGeneralWall' => false], 'viewGeneralWall permission revoked', 200);
+}
+
+/**
+ * Revoke the profile_view permission for the current test.
+ * Subsequent ?action=breezeStatus&sa=profile requests will return 403.
+ * Cleared automatically by handleReset().
+ */
+function handleNoProfileView(): void
+{
+    $state = loadPermState();
+    $state['profileView'] = false;
+    file_put_contents(PERM_STATE_FILE, json_encode($state));
+    respond(['profileView' => false], 'profileView permission revoked', 200);
+}
+
+/**
+ * Activate the admin bypass for the current test.
+ * All permission checks are skipped when isAdmin is true, regardless of
+ * other state flags — mirroring SMF's behaviour for the admin member group.
+ * Cleared automatically by handleReset().
+ */
+function handleAdminScenario(): void
+{
+    $state = loadPermState();
+    $state['isAdmin'] = true;
+    file_put_contents(PERM_STATE_FILE, json_encode($state));
+    respond(['isAdmin' => true], 'Admin scenario active', 200);
 }

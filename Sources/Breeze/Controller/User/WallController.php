@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\User;
 
 use Breeze\Controller\BaseController;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Error;
 use Breeze\Util\Response;
@@ -26,6 +27,10 @@ class WallController extends BaseController
 
 	public function wall(): void
 	{
+		if (!$this->isAllowedTo(PermissionsEnum::VIEW_GENERAL_WALL)) {
+			Error::show('error_no_access');
+		}
+
 		$currentUserInfo = $this->global('user_info');
 		$this->profileService->setEditor();
 

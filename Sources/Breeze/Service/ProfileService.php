@@ -169,8 +169,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$currentUserInfo = $this->global('user_info');
 		$currentUserSettings = $this->getCurrentUserSettings();
 
-		if ($currentUserSettings->getWall() !== 0 ||
-			$this->isEnable(SettingsEntity::FORCE_WALL)) {
+		if ($currentUserSettings->getWall() !== 0) {
 			foreach ($profile_items as &$profileItem) {
 				if ($profileItem['area'] === 'summary') {
 					$profileItem['area'] = self::LEGACY_AREA;
@@ -223,13 +222,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 
 	public function isAllowedToSeePage(UserSettingsEntity $profileSettings, int $profileId = 0, int $userId = 0): bool
 	{
-		$forceWall = $this->getSetting(SettingsEntity::FORCE_WALL);
 		$isWallEnable = $profileSettings->getWall() !== 0;
 		$blockList = $profileSettings->getBlockList();
-
-		if (!$isWallEnable && !empty($forceWall)) {
-			return true;
-		}
 
 		if (!$isWallEnable) {
 			return false;

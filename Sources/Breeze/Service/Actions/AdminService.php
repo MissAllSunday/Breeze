@@ -7,6 +7,7 @@ namespace Breeze\Service\Actions;
 
 use Breeze\Breeze;
 use Breeze\Enums\PermissionsEnum;
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\PermissionsServiceInterface;
@@ -26,7 +27,8 @@ class AdminService implements AdminServiceInterface
 		protected SettingsBuilderInterface $settingsBuilder,
 		protected StatusServiceInterface $statusService,
 		protected CommentServiceInterface $commentService,
-		protected LikeServiceInterface $likeService
+		protected LikeServiceInterface $likeService,
+		protected SettingsRepositoryInterface $userSettingsRepository,
 	) {
 	}
 
@@ -159,6 +161,10 @@ class AdminService implements AdminServiceInterface
 				$this->likeService->deleteOrphans();
 				$this->statusService->recountLikes();
 				$this->commentService->recountLikes();
+			}
+
+			if ($fixType === 'walls') {
+				$this->userSettingsRepository->enableAllWalls();
 			}
 		}
 

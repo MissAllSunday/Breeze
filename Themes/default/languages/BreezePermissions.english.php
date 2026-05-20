@@ -32,3 +32,7 @@ $txt['permissionname_breeze_postStatus'] = 'Post new Status on any wall<br />
 <span class="smalltext">  By default, the profile owner always has the ability to post on their own wall.</span>';
 $txt['permissionname_breeze_postComments'] = 'Post new Comments on any wall<br />
 <span class="smalltext">  By default, the profile owner always has the ability to post on their own wall.</span>';
+$txt['permissionname_breeze_viewGeneralWall'] = 'Access the general wall feed<br />
+<span class="smalltext">  Controls which member groups can visit the general wall page and have activity surfaced in their feed.
+  Grant this permission to every group that should be able to see the general wall.
+  Members who are not granted this permission will not see the general wall menu entry and will receive an access-denied error if they navigate to it directly.</span>';

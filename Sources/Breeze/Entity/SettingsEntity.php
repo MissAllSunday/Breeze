@@ -8,7 +8,6 @@ namespace Breeze\Entity;
 class SettingsEntity
 {
 	public const string MASTER = 'master';
-	public const string FORCE_WALL = 'forceWall';
 	public const string ABOUT_ME_MAX_LENGTH = 'aboutMeMaxLength';
 	public const string MAX_FLOOD_NUM = 'maxFloodNum';
 	public const string MAX_FLOOD_MINUTES = 'maxFloodMinutes';
@@ -30,7 +29,6 @@ class SettingsEntity
 	{
 		return [
 			self::MASTER => self::TYPE_CHECK,
-			self::FORCE_WALL => self::TYPE_CHECK,
 			self::MAX_FLOOD_NUM => self::TYPE_INT,
 			self::MAX_FLOOD_MINUTES => self::TYPE_INT,
 		];

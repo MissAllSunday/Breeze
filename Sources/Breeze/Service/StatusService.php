@@ -119,7 +119,8 @@ class StatusService extends BaseService implements StatusServiceInterface
 			$currentUserBuddies,
 			$currentUserPagination,
 			$cursor,
-			$excludeIds
+			$excludeIds,
+			$viewerId
 		);
 
 		// Generate next cursor from the repo result before filtering so

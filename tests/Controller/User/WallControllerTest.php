@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller\User;
 
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Response;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -15,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[AllowMockObjectsWithoutExpectations]
 class WallControllerTest extends TestCase
 {
-	private WallController $wallController;
+	private WallController | MockObject $wallController;
 
 	private Response | MockObject $response;
 
@@ -31,10 +32,13 @@ class WallControllerTest extends TestCase
 		$this->response = $this->createMock(Response::class);
 		$this->profileService = $this->createMock(ProfileServiceInterface::class);
 
-		$this->wallController = new WallController(
-			$this->response,
-			$this->profileService
-		);
+		$this->wallController = $this->getMockBuilder(WallController::class)
+			->setConstructorArgs([$this->response, $this->profileService])
+			->onlyMethods(['isAllowedTo'])
+			->getMock();
+
+		// Default: permission granted — individual tests override when needed.
+		$this->wallController->method('isAllowedTo')->willReturn(true);
 	}
 
 	protected function tearDown(): void
@@ -138,6 +142,23 @@ class WallControllerTest extends TestCase
 
 		// Clean up
 		unset($_REQUEST['id']);
+	}
+
+	public function testWallDeniesAccessWithoutPermission(): void
+	{
+		$this->wallController = $this->getMockBuilder(WallController::class)
+			->setConstructorArgs([$this->response, $this->profileService])
+			->onlyMethods(['isAllowedTo'])
+			->getMock();
+
+		$this->wallController->method('isAllowedTo')
+			->with(PermissionsEnum::VIEW_GENERAL_WALL)
+			->willReturn(false);
+
+		$this->expectException(\Error::class);
+		$this->expectExceptionMessage('Breeze_error_error_no_access');
+
+		$this->wallController->wall();
 	}
 
 	public function testProfileWithValidUser(): void

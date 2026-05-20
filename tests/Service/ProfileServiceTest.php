@@ -59,7 +59,6 @@ class ProfileServiceTest extends TestCase
 	#[DataProvider('isAllowedToSeePageProvider')]
 	public function testIsAllowedToSeePage(
 		UserSettingsEntity $profileSettings,
-		bool $forceWall,
 		bool $isAllowedTo,
 		bool $expected,
 		int $profileId = 0,
@@ -72,10 +71,9 @@ class ProfileServiceTest extends TestCase
 				$this->components,
 				$this->permissionsService,
 			])
-			->onlyMethods(['getSetting', 'isAllowedTo'])
+			->onlyMethods(['isAllowedTo'])
 			->getMock();
 
-		$this->profileService->method('getSetting')->willReturn($forceWall);
 		$this->profileService->method('isAllowedTo')->willReturn($isAllowedTo);
 
 		if ($viewerSettings !== null) {
@@ -92,19 +90,11 @@ class ProfileServiceTest extends TestCase
 		return [
 			'wall enabled and allowed' => [
 				'profileSettings' => UserSettingsEntity::from(['wall' => true]),
-				'forceWall' => false,
 				'isAllowedTo' => true,
 				'expected' => true,
 			],
-			'wall disabled but force wall enabled' => [
+			'wall disabled' => [
 				'profileSettings' => UserSettingsEntity::from(['wall' => false]),
-				'forceWall' => true,
-				'isAllowedTo' => true,
-				'expected' => true,
-			],
-			'wall disabled and no force wall' => [
-				'profileSettings' => UserSettingsEntity::from(['wall' => false]),
-				'forceWall' => false,
 				'isAllowedTo' => true,
 				'expected' => false,
 			],
@@ -113,7 +103,6 @@ class ProfileServiceTest extends TestCase
 					'wall' => true,
 					UserSettingsEntity::BLOCK_LIST => '123',
 				]),
-				'forceWall' => false,
 				'isAllowedTo' => true,
 				'expected' => false,
 				'profileId' => 0,
@@ -124,7 +113,6 @@ class ProfileServiceTest extends TestCase
 					'wall' => true,
 					UserSettingsEntity::BLOCK_LIST => '456, 789',
 				]),
-				'forceWall' => false,
 				'isAllowedTo' => true,
 				'expected' => true,
 				'profileId' => 0,
@@ -132,7 +120,6 @@ class ProfileServiceTest extends TestCase
 			],
 			'viewer has wall owner in own block list → denied (symmetric)' => [
 				'profileSettings' => UserSettingsEntity::from(['wall' => true]),
-				'forceWall' => false,
 				'isAllowedTo' => true,
 				'expected' => false,
 				'profileId' => 300,
@@ -141,7 +128,6 @@ class ProfileServiceTest extends TestCase
 			],
 			'viewer does not have wall owner in block list → allowed (symmetric direction clear)' => [
 				'profileSettings' => UserSettingsEntity::from(['wall' => true]),
-				'forceWall' => false,
 				'isAllowedTo' => true,
 				'expected' => true,
 				'profileId' => 300,

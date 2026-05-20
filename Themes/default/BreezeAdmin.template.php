@@ -152,7 +152,7 @@ function template_maintenance(): void
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_comments'] ,'
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_comments'] > 0 ? '
 						<form action="' . $context['post_url'] . ';type=comments" method="post" style="display:inline;">
-							<input type="submit" value="' . $txt['Breeze_maintenance_fix_comments'] . '" class="button_submit" />
+							<input type="submit" value="' . $txt['Breeze_maintenance_fix_comments'] . '" class="button" />
 							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
 						</form>' : '', '
 					</dd>
@@ -161,7 +161,7 @@ function template_maintenance(): void
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_likes'] ,'
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_likes'] > 0 ? '
 						<form action="' . $context['post_url'] . ';type=likes" method="post" style="display:inline;">
-							<input type="submit" value="' . $txt['Breeze_maintenance_fix_likes'] . '" class="button_submit" />
+							<input type="submit" value="' . $txt['Breeze_maintenance_fix_likes'] . '" class="button" />
 							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
 						</form>' : '', '
 					</dd>
@@ -171,7 +171,7 @@ function template_maintenance(): void
 		echo '
 				<div class="righttext">
 					<form action="', $context['post_url'] ,';type=all" method="post">
-						<input type="submit" value="', $txt['Breeze_maintenance_fix_all'] ,'" class="button_submit" />
+						<input type="submit" value="', $txt['Breeze_maintenance_fix_all'] ,'" class="button" />
 						<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 					</form>
 				</div>';
@@ -183,6 +183,21 @@ function template_maintenance(): void
 	}
 
 	echo '
+			</div>
+		</div>
+		<br />
+		<div class="cat_bar">
+			<h3 class="catbg">', $txt['Breeze_maintenance_enable_all_walls'] ,'</h3>
+		</div>
+		<div class="information">
+			<div class="content">
+				<p>', $txt['Breeze_maintenance_enable_all_walls_desc'] ,'</p>
+				<div class="righttext">
+					<form action="', $context['post_url'] ,';type=walls" method="post">
+						<input type="submit" value="', $txt['Breeze_maintenance_enable_all_walls'] ,'" class="button" />
+						<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+					</form>
+				</div>
 			</div>
 		</div>
 		<br />';

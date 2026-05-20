@@ -13,11 +13,13 @@ use Breeze\Controller\User\Settings\UserSettingsController;
 use Breeze\Controller\User\WallController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Service\AlertService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
+use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -32,6 +34,7 @@ class Breeze
 {
 	use TextTrait;
 	use RequestTrait;
+	use PermissionsTrait;
 
 	public const string NAME = 'Breeze';
 	public const string VERSION = '2.0';
@@ -91,7 +94,7 @@ class Breeze
 		$userInfo = $this->global('user_info');
 		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($userInfo['id']);
 
-		if (!empty($currentUserSettings->getWall()) || $this->isEnable(SettingsEntity::FORCE_WALL)) {
+		if (!empty($currentUserSettings->getWall())) {
 			/** @var WallController $wallController */
 			$wallController = $this->container->get(WallController::class);
 
@@ -176,7 +179,8 @@ class Breeze
 					'href' => $scriptUrl . '?action=' . self::ACTION_WALL,
 					'show' =>
 						!$currentUserInfo['is_guest'] &&
-						!empty($currentUserSettings->getGeneralWall()),
+						!empty($currentUserSettings->getGeneralWall()) &&
+						$this->isAllowedTo(PermissionsEnum::VIEW_GENERAL_WALL),
 					'sub_buttons' => [
 						'noti' => [
 							'title' => $this->getText('user_noti_settings_name'),

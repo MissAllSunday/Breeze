@@ -14,6 +14,51 @@ async function resetDatabase(request: APIRequestContext) {
   }
 }
 
+/**
+ * Set up the block-visibility scenario: the DB contains 4 statuses but user 2
+ * is in user 1's block list, so only 3 statuses should appear in the feed.
+ */
+async function setupBlockScenario(request: APIRequestContext) {
+  const response = await request.get('http://api:8000/?action=blockScenario');
+  if (!response.ok()) {
+    console.error('Block scenario setup failed:', await response.text());
+    throw new Error('Block scenario setup failed');
+  }
+}
+
+/**
+ * Revoke the viewGeneralWall permission. Subsequent wall feed requests
+ * from the mock API will return 403 until the next reset.
+ */
+async function setupNoViewGeneralWall(request: APIRequestContext) {
+  const response = await request.get('http://api:8000/?action=noViewGeneralWall');
+  if (!response.ok()) {
+    throw new Error('noViewGeneralWall setup failed: ' + (await response.text()));
+  }
+}
+
+/**
+ * Revoke the profile_view permission. Subsequent profile feed requests
+ * from the mock API will return 403 until the next reset.
+ */
+async function setupNoProfileView(request: APIRequestContext) {
+  const response = await request.get('http://api:8000/?action=noProfileView');
+  if (!response.ok()) {
+    throw new Error('noProfileView setup failed: ' + (await response.text()));
+  }
+}
+
+/**
+ * Activate the admin bypass. All permission checks are skipped, mirroring
+ * SMF's behaviour for the admin member group.
+ */
+async function setupAdminScenario(request: APIRequestContext) {
+  const response = await request.get('http://api:8000/?action=adminScenario');
+  if (!response.ok()) {
+    throw new Error('adminScenario setup failed: ' + (await response.text()));
+  }
+}
+
 test.beforeAll(async ({ request }) => {
   await resetDatabase(request);
 });
@@ -460,5 +505,127 @@ test.describe('Wall - Delete Status', () => {
 
     // The first status should still exist
     await expect(page.locator('#status-1')).toBeVisible();
+  });
+});
+
+
+test.describe('Wall - Block Visibility', () => {
+  test.beforeEach(async ({ request, page }) => {
+    // Sets up 4 DB statuses (3 from user 1, 1 from blocked user 2).
+    // The mock API filters out blocked users before returning the feed.
+    await setupBlockScenario(request);
+    await page.goto('/');
+    await waitForStatuses(page, 3);
+  });
+
+  test('posts from a blocked user do not appear in the feed', async ({ page }) => {
+    // The DB has 4 statuses but user 2 is blocked, so only 3 should render.
+    await expect(page.locator('li.status')).toHaveCount(3, { timeout: 10_000 });
+
+    // The blocked user's post body must not appear anywhere on the page.
+    await expect(page.locator('body')).not.toContainText(
+      'This post is from a blocked user and should not be visible.',
+    );
+  });
+
+  test('own posts remain visible when a block is active', async ({ page }) => {
+    // User 1's own 3 fixture posts must all still be present.
+    for (let i = 1; i <= 3; i++) {
+      await expect(page.locator(`#status-${i}`)).toContainText(
+        `This is mock status #${i} for E2E testing.`,
+      );
+    }
+  });
+});
+
+
+// ── Permission: viewGeneralWall ───────────────────────────────────────────────
+//
+// Three scenarios: permission denied, permission granted (default), and admin
+// bypass. The mock API returns 403 for ?sa=wall when the permission is absent,
+// so the React app receives no data and must render zero statuses.
+
+test.describe('Wall - viewGeneralWall Permission', () => {
+  test('access denied: no statuses rendered when permission is not granted', async ({
+    request,
+    page,
+  }) => {
+    await setupNoViewGeneralWall(request);
+    await page.goto('/');
+
+    // Give the app time to finish its fetch attempt; it should end up empty.
+    await page.waitForTimeout(3_000);
+
+    await expect(page.locator('li.status')).toHaveCount(0);
+  });
+
+  test('access granted: feed loads normally when permission is present', async ({ page }) => {
+    // Default state — permission is granted, no extra setup required.
+    await page.goto('/');
+    await waitForStatuses(page, 3);
+
+    await expect(page.locator('li.status')).toHaveCount(3);
+  });
+
+  test('admin bypass: feed loads even when viewGeneralWall is revoked for non-admins', async ({
+    request,
+    page,
+  }) => {
+    // Revoke the permission first, then activate admin mode.
+    await setupNoViewGeneralWall(request);
+    await setupAdminScenario(request);
+    await page.goto('/');
+    await waitForStatuses(page, 3);
+
+    // Admin users bypass the permission check — all 3 statuses must appear.
+    await expect(page.locator('li.status')).toHaveCount(3);
+  });
+});
+
+
+// ── Permission: profile_view ──────────────────────────────────────────────────
+//
+// The E2E test suite has no browser page for profile walls, so these scenarios
+// exercise the mock API directly via APIRequestContext. They verify that the
+// server enforces the gate at the HTTP level: 403 when denied, 200 when allowed.
+
+test.describe('Wall - profile_view Permission', () => {
+  const profileUrl = 'http://api:8000/?action=breezeStatus&sa=profile';
+
+  test('access denied: profile endpoint returns 403 when permission is not granted', async ({
+    request,
+  }) => {
+    await setupNoProfileView(request);
+
+    const response = await request.get(profileUrl);
+
+    expect(response.status()).toBe(403);
+  });
+
+  test('access granted: profile endpoint returns 200 when permission is present', async ({
+    request,
+  }) => {
+    // Default state — permission is granted, no extra setup required.
+    const response = await request.get(profileUrl);
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body.content.data).toBeDefined();
+  });
+
+  test('admin bypass: profile endpoint returns 200 even when profile_view is revoked for non-admins', async ({
+    request,
+  }) => {
+    // Revoke the permission first, then activate admin mode.
+    await setupNoProfileView(request);
+    await setupAdminScenario(request);
+
+    const response = await request.get(profileUrl);
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    expect(body.content.data).toBeDefined();
   });
 });

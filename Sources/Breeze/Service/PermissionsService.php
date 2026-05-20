@@ -101,7 +101,7 @@ class PermissionsService implements PermissionsServiceInterface
 
 	public function canViewActivity(int $viewerId): bool
 	{
-		return $this->isAllowedTo(PermissionsEnum::PROFILE_VIEW);
+		return $this->isAllowedTo(PermissionsEnum::VIEW_GENERAL_WALL);
 	}
 
 	protected function handleDelete(string $type, bool $isPosterOwner, $isProfileOwner) : bool

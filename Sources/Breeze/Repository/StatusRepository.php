@@ -19,6 +19,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 {
 	public const string CACHE_BY_PROFILE = 'getByProfile';
 	public const string CACHE_BY_ID = 'getById';
+	public const string CACHE_BY_BUDDY_ACTIVITY = 'getByBuddyActivity';
 
 	public function __construct(
 		ClientInterface $dbClient,
@@ -150,10 +151,20 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		return $this->prepareData($request, $comments);
 	}
 
-	public function getByBuddyActivity(array $buddyIds = [], int $maxIndex = 0, ?string $cursor = null, array $excludeIds = []): array
+	public function getByBuddyActivity(array $buddyIds = [], int $maxIndex = 0, ?string $cursor = null, array $excludeIds = [], int $viewerId = 0): array
 	{
 		if ($buddyIds === []) {
 			return [];
+		}
+
+		// Cache the initial page per viewer (cursor pages are ephemeral).
+		$cacheKey = null;
+		if ($cursor === null && $viewerId > 0) {
+			$cacheKey = sprintf('%s_viewer_%d', self::CACHE_BY_BUDDY_ACTIVITY, $viewerId);
+			$cached = $this->getCache($cacheKey);
+			if ($cached !== []) {
+				return $cached;
+			}
 		}
 
 		$queryParams = array_merge(
@@ -205,7 +216,13 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$comments = $this->commentRepository->getByProfile($buddyIds);
 
-		return $this->prepareData($request, $comments);
+		$result = $this->prepareData($request, $comments);
+
+		if ($cacheKey !== null) {
+			$this->setCache($cacheKey, $result);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -463,6 +480,16 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$lastStatus->getId(),
 			$createdAt->getTimestamp()
 		);
+	}
+
+	/**
+	 * Invalidate the buddy-activity initial-page cache for a specific viewer.
+	 * Called by SettingsRepository (via the shared CacheTrait) whenever the
+	 * viewer's block list changes — keeping the per-viewer feed cache coherent.
+	 */
+	public function invalidateBuddyActivityCache(int $viewerId): void
+	{
+		$this->setCache(sprintf('%s_viewer_%d', self::CACHE_BY_BUDDY_ACTIVITY, $viewerId), null);
 	}
 
 	/**

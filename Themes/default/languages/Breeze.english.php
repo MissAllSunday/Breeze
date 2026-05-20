@@ -32,9 +32,8 @@ $txt['Breeze_user_single_status'] = 'Single Status';
 $txt['Breeze_user_settings_paginationNumber'] = 'How many status will be displayed per page';
 $txt['Breeze_user_settings_paginationNumber_desc'] = 'Enter the number of status you want
  to display per page on your wall. By default is 5';
-$txt['Breeze_user_settings_generalWall'] = 'Enable the general wall';
-$txt['Breeze_user_settings_generalWall_desc'] = 'The general wall is a unique page where you can see the status
- and updates from your buddies. This setting allows you to enable/disable it';
+$txt['Breeze_user_settings_generalWall'] = 'Show my posts on the general wall';
+$txt['Breeze_user_settings_generalWall_desc'] = 'When enabled, your posts can appear on other users\' general wall feeds. Uncheck this if you prefer your posts to only be visible when someone visits your wall directly.';
 $txt['Breeze_user_settings_submit'] = 'Submit';
 $txt['Breeze_user_settings_wall'] = 'Enable my wall';
 $txt['Breeze_user_settings_wall_desc'] = 'If you want to use your wall, you need to check this option,

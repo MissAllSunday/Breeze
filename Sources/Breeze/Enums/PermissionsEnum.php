@@ -19,6 +19,7 @@ enum PermissionsEnum
 	public const DELETE_PROFILE_STATUS = 'deleteProfileStatus';
 	public const POST_STATUS = 'postStatus';
 	public const POST_COMMENTS = 'postComments';
+	public const VIEW_GENERAL_WALL = 'viewGeneralWall';
 	public const LIKES_LIKE = 'likes_like';
 	public const PROFILE_VIEW = 'profile_view';
 
@@ -47,6 +48,7 @@ enum PermissionsEnum
 		self::DELETE_PROFILE_STATUS,
 		self::POST_STATUS,
 		self::POST_COMMENTS,
+		self::VIEW_GENERAL_WALL,
 	];
 
 	public static function isSMFPermission(string $permissionName): bool

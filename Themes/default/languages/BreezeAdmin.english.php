@@ -32,11 +32,8 @@ $txt['Breeze_page_credits_decs'] = 'Breeze is brought to you by the following pe
 // SettingsTrait
 $txt['Breeze_master'] = 'Enable Breeze mod';
 $txt['Breeze_master_sub'] = 'The master setting, this must be enable for the mod to work properly.';
-$txt['Breeze_forceWall'] = 'Check to force enable user\'s walls.';
-$txt['Breeze_forceWall_sub'] = 'By default, the wall is disabled and users needs to enable it manually,
- if you check this option their wall will be enabled, keep in mind this option will enable everyone\'s wall
-  including inactive members and bots.<br /> They can still manually disable their wall if they want it,
-   this option only enables it but does not really force the wall to be always enable.';
+$txt['Breeze_maintenance_enable_all_walls'] = 'Enable all user walls';
+$txt['Breeze_maintenance_enable_all_walls_desc'] = 'Sets the personal wall to enabled for every member who currently has it disabled or has never configured it. Members can still turn their own wall off afterwards. This action is safe to re-run at any time.';
 $txt['Breeze_maxFloodNum'] = 'How many messages can an user make';
 $txt['Breeze_maxFloodNum_sub'] = 'The amount of total messages, including status and messages across all walls
  an user can make. Defaults to 10';

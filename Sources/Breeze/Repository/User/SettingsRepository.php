@@ -162,10 +162,58 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 		);
 
 		if ($result !== 0) {
-			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);
+			$this->invalidateBlockListCaches($userId);
 		}
 
 		return $result !== 0;
+	}
+
+	/**
+	 * Invalidate all caches that become stale when a user's block list changes:
+	 *   1. The user's own settings cache (so the new block list is loaded fresh).
+	 *   2. The user's buddy-activity initial-page cache (so the next feed load
+	 *      re-runs the query with the updated mutual-block exclusion set).
+	 *
+	 * The buddy-activity key pattern mirrors StatusRepository::CACHE_BY_BUDDY_ACTIVITY.
+	 * Both repositories share the same underlying CacheTrait storage, so the key
+	 * constructed here resolves to the same cache slot.
+	 */
+	public function invalidateBlockListCaches(int $userId): void
+	{
+		$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);
+		$this->setCache(sprintf('getByBuddyActivity_viewer_%d', $userId), null);
+	}
+
+	public function enableAllWalls(): void
+	{
+		// Update every existing options row that tracks the wall setting.
+		$this->dbClient->query(
+			'UPDATE {db_prefix}' . OptionsEntity::TABLE . '
+			SET ' . OptionsEntity::VALUE . ' = {string:one}
+			WHERE ' . OptionsEntity::VARIABLE . ' = {string:variable}',
+			[
+				'one' => '1',
+				'variable' => UserSettingsEntity::WALL,
+			]
+		);
+
+		// Insert a wall = '1' row for members who have no options row yet.
+		$this->dbClient->query(
+			'INSERT INTO {db_prefix}' . OptionsEntity::TABLE . '
+				(' . OptionsEntity::MEMBER_ID . ', ' . OptionsEntity::VARIABLE . ', ' . OptionsEntity::VALUE . ')
+			SELECT mem.' . MemberEntity::ID . ', {string:variable}, {string:one}
+			FROM {db_prefix}' . MemberEntity::TABLE . ' AS mem
+			WHERE NOT EXISTS (
+				SELECT 1
+				FROM {db_prefix}' . OptionsEntity::TABLE . ' AS op
+				WHERE op.' . OptionsEntity::MEMBER_ID . ' = mem.' . MemberEntity::ID . '
+				AND op.' . OptionsEntity::VARIABLE . ' = {string:variable}
+			)',
+			[
+				'variable' => UserSettingsEntity::WALL,
+				'one' => '1',
+			]
+		);
 	}
 
 	public function getTableName(): string

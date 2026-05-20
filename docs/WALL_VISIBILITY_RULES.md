@@ -19,6 +19,7 @@ concrete example, and ends with the full checklist Breeze runs for every post.
 3. [Why blocks are mutual](#3-why-blocks-are-mutual)
 4. [A worked example](#4-a-worked-example)
 5. [The full checklist](#5-the-full-checklist)
+6. [Permission tiers](#6-permission-tiers)
 
 ---
 
@@ -100,22 +101,26 @@ when you are visiting somewhere on purpose.
 ### Accessing a profile wall page
 
 Before any posts are considered, Breeze checks whether you are even allowed to
-open the wall. The answer is *no* — and you see a not-allowed page — if either
-of the following is true:
+open the wall. You are denied access if any of the following is true:
 
+- Your SMF member group does not have the `profile_view` permission.
 - The wall owner has you in their block list.
 - You have the wall owner in your block list.
 
-Both directions are checked. This is the same symmetric rule that applies to
-individual posts; it just happens earlier, at the page level.
+The block checks run in both directions. This is the same symmetric rule that
+applies to individual posts; it just happens earlier, at the page level.
 
-Guests (not logged in) are subject only to the first check — Breeze cannot
+Guests (not logged in) are subject only to the first two checks — Breeze cannot
 look up a guest's block list.
 
 ### When a post might appear in your general feed
 
-For every post Breeze considers surfacing in your general wall feed, it runs
-through these five questions. The post is shown only if the answer to all
+Before the general wall page loads at all, Breeze checks that your member group
+has the `viewGeneralWall` Breeze permission. Without it you cannot open the page
+and no feed is built.
+
+For every post Breeze considers surfacing in your general wall feed, it then
+runs through these five questions. The post is shown only if the answer to all
 five is *yes*:
 
 1. **Is this post connected to one of your buddies?** Either the person who
@@ -126,8 +131,10 @@ five is *yes*:
 3. **Is there no block between you and the author**, in either direction?
 4. **Is there no block between you and the owner of the wall**, in either
    direction?
-5. **Do your forum-wide permissions let you see other people's activity at
-   all?**
+5. **Does your member group have the `viewGeneralWall` Breeze permission?**
+   This is the forum-level gate that controls access to the general wall
+   feature as a whole. It is separate from `profile_view`, which only governs
+   access to individual profile wall pages.
 
 ### Your own posts
 
@@ -148,14 +155,16 @@ in general feeds" is a feed opt-out, not a wall opt-out.
 
 The safety and permission questions still apply, every time:
 
+- **Does your member group have the `profile_view` SMF permission?** This
+  governs access to profile pages and is checked at the page gate, before
+  any posts are considered. The `viewGeneralWall` Breeze permission does not
+  apply here — that permission is specific to the general wall feed.
 - **Is there no block between you and the author**, in either direction?
 - **Is there no block between you and the owner of the wall**, in either
   direction?
-- **Do your forum-wide permissions let you see other people's activity at
-  all?**
 
-If a post on the wall fails any of these three, it is hidden from you even
-when the rest of the wall is visible.
+If a post on the wall fails any of these, it is hidden from you even when
+the rest of the wall is visible.
 
 ### Comments
 
@@ -169,6 +178,46 @@ If any answer is *no*, the post — along with any of its comments that you'd
 otherwise have seen — is hidden from you. Other people whose answers are all
 *yes* will still see the same post normally; visibility is decided per
 viewer, never globally.
+
+---
+
+## 6. Permission tiers
+
+Breeze uses two separate permission tiers to control who can see what. They
+are independent of each other and serve different purposes.
+
+### SMF `profile_view`
+
+This is a standard SMF permission. It controls whether a member group can open
+any profile page on the forum. Breeze checks it before allowing a visitor to
+view a personal profile wall page. It is not specific to Breeze and is managed
+through the normal SMF permissions panel alongside all other profile-related
+permissions.
+
+### Breeze `viewGeneralWall`
+
+This is a Breeze-owned permission registered under the Breeze permission group
+in the SMF permissions panel. It controls whether a member group can access the
+general wall feature — the `?action=wall` page and the buddy-activity feed it
+displays.
+
+When a member group does not have this permission:
+
+- The general wall menu entry is hidden from members of that group.
+- Navigating to `?action=wall` directly results in an access-denied error.
+- No activity is surfaced in the feed for that viewer (gate 5 of the feed
+  checklist fails before any post is evaluated).
+
+**This permission defaults to not granted**, consistent with how SMF handles
+all permissions. An administrator must explicitly grant it to each member group
+that should have access to the general wall.
+
+### At a glance
+
+| Context | Permission checked | Owned by |
+|---|---|---|
+| Opening a profile wall page | `profile_view` | SMF |
+| Accessing the general wall page and feed | `viewGeneralWall` | Breeze |
 
 ---
 

@@ -244,6 +244,25 @@ protected const array DEPENDENCIES = [
 3. Permissions context passed to React frontend
 4. User-specific settings override global settings
 
+### 5.6 Visibility & Block System
+
+Content visibility is governed by a five-gate rule set documented in full in
+**[`docs/WALL_VISIBILITY_RULES.md`](WALL_VISIBILITY_RULES.md)**. Key properties:
+
+- **Symmetric blocking** — if A blocks B, neither sees the other's content on
+  any surface (feed, profile wall, single-status view, comments).
+- **Block always beats buddy** — block-list membership overrides buddy status.
+- **Self-post exception** — a user always sees their own posts in their own
+  feed (safety gates still apply).
+- **`WallVisibilityService`** is the single authoritative gate-keeper; no
+  other layer re-implements these rules.
+- **SQL-level pre-exclusion** — mutual block sets are pushed into the
+  `getByBuddyActivity` query via `NOT IN` so the database `LIMIT` is accurate
+  before PHP filtering.
+- **Cache coherence** — `SettingsRepository::invalidateBlockListCaches()` is
+  called on every settings save, clearing both the user settings cache and the
+  viewer's buddy-activity initial-page cache.
+
 ---
 
 ## 6. Strengths of Current Implementation
