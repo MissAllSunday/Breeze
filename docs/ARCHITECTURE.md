@@ -133,6 +133,15 @@ protected const array DEPENDENCIES = [
   - `CommentCreatedEvent`
   - `CommentDeletedEvent`
   - `LikeCreatedEvent`
+- **Folder structure — co-location by domain:** Events and their handlers live
+  together under a shared domain folder (e.g. `Event/Comment/`,
+  `Event/Status/`, `Event/Like/`) rather than in separate `Events/` and
+  `Handlers/` trees. This was a deliberate choice: in event-driven systems the
+  mapping between an event and the code that reacts to it is often non-obvious,
+  especially for new contributors. Co-locating them makes the relationship
+  self-evident without having to cross-reference two directory trees. The
+  naming convention (`StatusCreatedEvent` / `StatusCreatedHandler`) reinforces
+  the pairing within each folder.
 
 #### 6. Strategy Pattern
 - **Implementation:** Validators with different strategies
