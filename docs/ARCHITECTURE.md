@@ -24,10 +24,10 @@
 
 ### Technology Stack
 - **Backend:** PHP 8.3+ with SMF 2.1.x integration
-- **Frontend:** React 19.1.0 (TypeScript)
+- **Frontend:** React 19.1.0 (TypeScript), react-hot-toast (toast notifications)
 - **Build Tools:** Vite, Vitest, Biome
-- **Database:** MySQL (via SMF's database layer)
-- **Dependencies:** League Container (DI), League Event (Event System)
+- **Database:** MySQL 5.0.3+ and PostgreSQL 8.0+ (via SMF's database abstraction layer; these are SMF 2.1's minimum requirements)
+- **PHP Dependencies:** League Container (DI), League Event (Event System)
 
 ---
 
@@ -43,8 +43,10 @@ The backend follows a **layered architecture** with clear separation of concerns
 3. **Service Layer** - Business logic
 4. **Repository Layer** - Data access
 5. **Entity Layer** - Data models
-6. **Validation Layer** - Input validation
-7. **Event Layer** - Event-driven notifications
+6. **Enums Layer** - Type-safe constants (`LikesEnum`, `PermissionsEnum`)
+7. **Validation Layer** - Input validation
+8. **Event Layer** - Event-driven notifications
+9. **Database Abstraction Layer** - `DatabaseClient` / `ClientInterface` wrapping SMF's DB calls
 
 #### Integration with SMF:
 - Uses SMF's hook system for integration
@@ -111,6 +113,8 @@ protected const array DEPENDENCIES = [
   - `CommentService`
   - `AlertService`
   - `PermissionsService`
+  - `WallVisibilityService` - content visibility gate-keeper
+  - `AdminService` - admin panel actions and settings
 
 #### 4. Entity Pattern (Active Record-like)
 - **Purpose:** Represents database tables as objects
@@ -149,6 +153,17 @@ protected const array DEPENDENCIES = [
 
 #### 9. Template Method Pattern
 
+#### 10. Specification + Strategy Pattern (Visibility Filtering)
+- **Implementation:** `WallVisibilityService`
+- **Purpose:** Enforces the five-gate content visibility rule set without
+  duplicating logic across call sites
+- **Specification aspect:** each gate is an ordered predicate evaluated in
+  sequence; the first failing gate short-circuits the result (see
+  `passesSafetyGates`, `passesAllGates`)
+- **Strategy aspect:** `filterStatuses()` accepts a `callable $predicate`
+  parameter so callers (`filterStatusesForFeed`, `filterStatusesForWall`) can
+  swap which combination of gates to apply without duplicating the loop
+- **Reference:** [`docs/VISIBILITY_FILTERING.md`](VISIBILITY_FILTERING.md)
 
 ### 3.2 Frontend Patterns
 
@@ -435,6 +450,6 @@ AlertEntity::from([
 
 ---
 
-**Document Version:** 2.0
-**Last Updated:** 2026-02-25
+**Document Version:** 2.1
+**Last Updated:** 2026-05-20
 **Status:** Current Architecture Documentation
