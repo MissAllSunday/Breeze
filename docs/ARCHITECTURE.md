@@ -246,8 +246,17 @@ protected const array DEPENDENCIES = [
 
 ### 5.6 Visibility & Block System
 
-Content visibility is governed by a five-gate rule set documented in full in
-**[`docs/WALL_VISIBILITY_RULES.md`](WALL_VISIBILITY_RULES.md)**. Key properties:
+Content visibility is governed by a five-gate rule set. Two documents cover
+this system from different angles:
+
+- **[`docs/WALL_VISIBILITY_RULES.md`](WALL_VISIBILITY_RULES.md)** — the
+  business rules and user-facing reasoning (symmetric blocking, block always
+  beats buddy, gate checklist per surface).
+- **[`docs/VISIBILITY_FILTERING.md`](VISIBILITY_FILTERING.md)** — the
+  implementation reference (two-layer architecture, `WallVisibilityService`
+  API, SQL pre-exclusion, call sites, cache coherence).
+
+Key properties at a glance:
 
 - **Symmetric blocking** — if A blocks B, neither sees the other's content on
   any surface (feed, profile wall, single-status view, comments).
