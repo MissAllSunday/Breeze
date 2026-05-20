@@ -38,6 +38,7 @@ use Breeze\Service\LikeService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\StatusService;
+use Breeze\Service\WallVisibilityService;
 use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilder;
 use Breeze\Util\Form\UserSettingsBuilder;
@@ -151,9 +152,10 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class], 'shared' => true],
 		PermissionsService::class => ['arguments' => [], 'shared' => true],
 		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class], 'shared' => true],
-		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, EventServiceProvider::class], 'shared' => true],
+		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, WallVisibilityService::class, EventServiceProvider::class], 'shared' => true],
 		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
 		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class], 'shared' => true],
+		WallVisibilityService::class => ['arguments' => [UserSettingsRepository::class, PermissionsService::class], 'shared' => true],
 	];
 
 	public function provides(string $id): bool

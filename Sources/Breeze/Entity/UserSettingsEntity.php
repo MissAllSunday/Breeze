@@ -13,7 +13,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public const string WALL = 'wall';
 	public const string GENERAL_WALL = 'generalWall';
 	public const string PAGINATION_NUM = 'paginationNumber';
-	public const string KICK_IGNORED = 'kickIgnored';
 	public const string BLOCK_LIST = 'blockList';
 	public const string ENABLE_BUDDIES_TAB = 'enableBuddiesTab';
 	public const string BUDDIES = 'buddies';
@@ -26,8 +25,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	protected int $generalWall = 0;
 
 	protected int $paginationNumber = 5;
-
-	protected int $kickIgnored = 0;
 
 	protected int $enableBuddiesTab = 0;
 
@@ -52,7 +49,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::WALL => SettingsEntity::TYPE_CHECK,
 			self::GENERAL_WALL => SettingsEntity::TYPE_CHECK,
 			self::PAGINATION_NUM => SettingsEntity::TYPE_TEXT,
-			self::KICK_IGNORED => SettingsEntity::TYPE_CHECK,
 			self::ENABLE_BUDDIES_TAB => SettingsEntity::TYPE_CHECK,
 			self::BLOCK_BUDDY_REQUESTS => SettingsEntity::TYPE_CHECK,
 			self::ABOUT_ME => SettingsEntity::TYPE_TEXTAREA,
@@ -65,7 +61,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::WALL => 0,
 			self::GENERAL_WALL => 0,
 			self::PAGINATION_NUM => 5,
-			self::KICK_IGNORED => 0,
 			self::ENABLE_BUDDIES_TAB => 0,
 			self::BLOCK_BUDDY_REQUESTS => 0,
 			self::ABOUT_ME => '',
@@ -109,16 +104,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public function setGeneralWall(int $generalWall): void
 	{
 		$this->generalWall = $generalWall;
-	}
-
-	public function getKickIgnored(): int
-	{
-		return $this->kickIgnored;
-	}
-
-	public function setKickIgnored(int $kickIgnored): void
-	{
-		$this->kickIgnored = $kickIgnored;
 	}
 
 	public function getEnableBuddiesTab(): int
@@ -192,7 +177,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 		return match ($columnName) {
 			self::WALL,
 			self::GENERAL_WALL,
-			self::KICK_IGNORED,
 			self::ENABLE_BUDDIES_TAB,
 			self::BLOCK_BUDDY_REQUESTS,
 			self::PAGINATION_NUM,
@@ -208,7 +192,6 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			'wall' => $this->getWall(),
 			'generalWall' => $this->getGeneralWall(),
 			'paginationNumber' => $this->getPaginationNumber(),
-			'kickIgnored' => $this->getKickIgnored(),
 			'aboutMe' => $this->getAboutMe(),
 			'enableBuddiesTab' => $this->getEnableBuddiesTab(),
 		];

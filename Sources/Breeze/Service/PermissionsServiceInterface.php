@@ -14,4 +14,6 @@ interface PermissionsServiceInterface
 	public function permissions(int $profileOwner = 0, int $userPoster = 0): array;
 
 	public function isFeatureEnable(): array;
+
+	public function canViewActivity(int $viewerId): bool;
 }

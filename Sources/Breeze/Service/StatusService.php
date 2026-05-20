@@ -24,6 +24,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		protected StatusRepositoryInterface   $statusRepository,
 		protected SettingsRepositoryInterface $userRepository,
 		protected PermissionsServiceInterface $permissionsService,
+		protected WallVisibilityServiceInterface $wallVisibilityService,
 		protected ?EventServiceProvider $eventServiceProvider = null
 	) {
 		parent::__construct($statusRepository);
@@ -39,6 +40,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$wallUserSettings = $this->userRepository->getById($wallId);
 		$wallUserPagination = $wallUserSettings->getPaginationNumber();
 		$currentUserInfo = $this->currentUserInfo();
+		$viewerId = (int) ($currentUserInfo['id'] ?? 0);
 
 		$statusByProfile = $this->statusRepository->getByProfile(
 			[$wallId],
@@ -46,7 +48,8 @@ class StatusService extends BaseService implements StatusServiceInterface
 			$cursor
 		);
 
-		// Generate next cursor
+		// Generate next cursor from the repo result before filtering so
+		// pagination stays consistent with the repo's view.
 		$nextCursor = null;
 		$hasMore = false;
 		if ($statusByProfile !== []) {
@@ -54,9 +57,12 @@ class StatusService extends BaseService implements StatusServiceInterface
 			$hasMore = count($statusByProfile) === $wallUserPagination;
 		}
 
+		$visibleStatuses = $this->wallVisibilityService->filterStatusesForWall($statusByProfile, $viewerId);
+		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
+
 		return [
-			'data' => $statusByProfile,
-			'permissions' => $this->permissionsService->permissions($wallId, $currentUserInfo['id']),
+			'data' => $visibleStatuses,
+			'permissions' => $this->permissionsService->permissions($wallId, $viewerId),
 			'pagination' => [
 				'nextCursor' => $hasMore ? $nextCursor : null,
 				'hasMore' => $hasMore,
@@ -96,7 +102,8 @@ class StatusService extends BaseService implements StatusServiceInterface
 	public function getByBuddies(?string $cursor = null): array
 	{
 		$currentUserInfo = $this->currentUserInfo();
-		$currentUserSettings = $this->userRepository->getById($currentUserInfo['id']);
+		$viewerId = (int) ($currentUserInfo['id'] ?? 0);
+		$currentUserSettings = $this->userRepository->getById($viewerId);
 		$currentUserBuddies = $currentUserSettings->getBuddies();
 		$currentUserPagination = $currentUserSettings->getPaginationNumber();
 
@@ -104,14 +111,19 @@ class StatusService extends BaseService implements StatusServiceInterface
 			return [];
 		}
 
-		$statusByBuddies = $this->statusRepository->getBy(
-			StatusEntity::USER_ID,
+		// Pre-compute the mutual block set so the repo can exclude those rows
+		// at the SQL level, reducing rows fetched and improving pagination density.
+		$excludeIds = $this->wallVisibilityService->getMutualBlockIds($viewerId, $currentUserBuddies);
+
+		$statusByBuddies = $this->statusRepository->getByBuddyActivity(
 			$currentUserBuddies,
 			$currentUserPagination,
-			$cursor
+			$cursor,
+			$excludeIds
 		);
 
-		// Generate next cursor
+		// Generate next cursor from the repo result before filtering so
+		// pagination stays consistent with the repo's view.
 		$nextCursor = null;
 		$hasMore = false;
 		if ($statusByBuddies !== []) {
@@ -119,9 +131,12 @@ class StatusService extends BaseService implements StatusServiceInterface
 			$hasMore = count($statusByBuddies) === $currentUserPagination;
 		}
 
+		$visibleStatuses = $this->wallVisibilityService->filterStatusesForFeed($statusByBuddies, $viewerId);
+		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
+
 		return [
-			'data' => $statusByBuddies,
-			'permissions' => $this->permissionsService->permissions(0, $currentUserInfo['id']),
+			'data' => $visibleStatuses,
+			'permissions' => $this->permissionsService->permissions(0, $viewerId),
 			'pagination' => [
 				'nextCursor' => $hasMore ? $nextCursor : null,
 				'hasMore' => $hasMore,
@@ -136,18 +151,42 @@ class StatusService extends BaseService implements StatusServiceInterface
 	public function getById(int $statusId): array
 	{
 		$currentUserInfo = $this->currentUserInfo();
+		$viewerId = (int) ($currentUserInfo['id'] ?? 0);
 		$statusEntity = $this->statusRepository->getById($statusId);
 		$wallId = $statusEntity->getWallId();
 
+		$visibleStatuses = $this->wallVisibilityService->filterStatusesForWall(
+			[$statusEntity->getId() => $statusEntity],
+			$viewerId,
+		);
+
+		if ($visibleStatuses === []) {
+			throw new DataNotFoundException('error_no_status');
+		}
+
+		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
+
 		return [
-			'data' => [$statusEntity],
-			'permissions' => $this->permissionsService->permissions($wallId, $currentUserInfo['id']),
+			'data' => array_values($visibleStatuses),
+			'permissions' => $this->permissionsService->permissions($wallId, $viewerId),
 			'pagination' => [
 				'nextCursor' => null,
 				'hasMore' => false,
 			],
-			'total' => 1,
+			'total' => count($visibleStatuses),
 		];
+	}
+
+	/**
+	 * @param array<int, StatusEntity> $statuses
+	 */
+	private function filterCommentsOnStatuses(array $statuses, int $viewerId): void
+	{
+		foreach ($statuses as $status) {
+			$status->setComments(
+				$this->wallVisibilityService->filterVisibleComments($status->getComments(), $viewerId)
+			);
+		}
 	}
 
 	/**

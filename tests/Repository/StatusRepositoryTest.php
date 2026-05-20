@@ -492,4 +492,100 @@ class StatusRepositoryTest extends TestCase
 
 		$this->assertIsArray($result);
 	}
+
+	public function testGetByBuddyActivityReturnsEmptyWhenNoBuddies(): void
+	{
+		$this->dbClient->expects($this->never())->method('query');
+
+		$result = $this->statusRepository->getByBuddyActivity([], 10);
+
+		$this->assertSame([], $result);
+	}
+
+	public function testGetByBuddyActivityCallsCorrectQueryParams(): void
+	{
+		$buddyIds = [1, 2, 3];
+		$maxIndex = 20;
+
+		$expectedParams = [
+			'columns' => 'parent.id, parent.wall_id, parent.user_id, parent.created_at, parent.body, parent.likes',
+			'from' => 'breeze_status AS parent',
+			'buddy_ids' => $buddyIds,
+			'limit' => $maxIndex,
+			'tableName' => 'breeze_status',
+		];
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->with(
+				$this->logicalAnd(
+					$this->stringContains('parent.user_id IN ({array_int:buddy_ids})'),
+					$this->stringContains('OR parent.wall_id IN ({array_int:buddy_ids})'),
+					$this->logicalNot($this->stringContains('NOT IN'))
+				),
+				$expectedParams
+			)
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->statusRepository->method('prepareData')->willReturn([]);
+
+		$this->statusRepository->getByBuddyActivity($buddyIds, $maxIndex);
+	}
+
+	public function testGetByBuddyActivityExcludesBlockedUsersInSql(): void
+	{
+		$buddyIds = [1, 2, 3];
+		$excludeIds = [10, 20];
+		$maxIndex = 10;
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->with(
+				$this->logicalAnd(
+					$this->stringContains('NOT IN ({array_int:exclude_ids})'),
+					$this->stringContains('parent.user_id NOT IN'),
+					$this->stringContains('parent.wall_id NOT IN')
+				),
+				$this->callback(
+					static fn (array $params): bool =>
+					$params['buddy_ids'] === $buddyIds &&
+					$params['exclude_ids'] === $excludeIds &&
+					$params['limit'] === $maxIndex
+				)
+			)
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->statusRepository->method('prepareData')->willReturn([]);
+
+		$this->statusRepository->getByBuddyActivity($buddyIds, $maxIndex, null, $excludeIds);
+	}
+
+	public function testGetByBuddyActivityWithCursor(): void
+	{
+		$buddyIds = [1, 2, 3];
+		$maxIndex = 10;
+		$cursor = $this->statusRepository->encodeCursor(100, 1234567890);
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->with(
+				$this->stringContains('ORDER BY parent.created_at DESC, parent.id DESC'),
+				$this->callback(function ($params) use ($buddyIds, $maxIndex) {
+					return $params['buddy_ids'] === $buddyIds
+						&& $params['limit'] === $maxIndex
+						&& isset($params['cursor_id'])
+						&& isset($params['cursor_created_at'])
+						&& $params['cursor_id'] === 100
+						&& $params['cursor_created_at'] === 1234567890;
+				})
+			)
+			->willReturn($this->queryObject);
+
+		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->statusRepository->method('prepareData')->willReturn([]);
+
+		$this->statusRepository->getByBuddyActivity($buddyIds, $maxIndex, $cursor);
+	}
 }

@@ -67,7 +67,6 @@ class UserSettingsTest extends TestCase
 					'wall' => 0,
 					'generalWall' => 0,
 					'paginationNumber' => 5,
-					'kickIgnored' => 0,
 					'aboutMe' => '',
 				],
 				'isExpectedException' => false,

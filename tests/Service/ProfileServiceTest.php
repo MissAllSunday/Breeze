@@ -61,7 +61,10 @@ class ProfileServiceTest extends TestCase
 		UserSettingsEntity $profileSettings,
 		bool $forceWall,
 		bool $isAllowedTo,
-		bool $expected
+		bool $expected,
+		int $profileId = 0,
+		int $userId = 0,
+		?UserSettingsEntity $viewerSettings = null
 	): void {
 		$this->profileService = $this->getMockBuilder(ProfileService::class)
 			->setConstructorArgs([
@@ -75,7 +78,11 @@ class ProfileServiceTest extends TestCase
 		$this->profileService->method('getSetting')->willReturn($forceWall);
 		$this->profileService->method('isAllowedTo')->willReturn($isAllowedTo);
 
-		$result = $this->profileService->isAllowedToSeePage($profileSettings);
+		if ($viewerSettings !== null) {
+			$this->userSettingsRepository->method('getById')->willReturn($viewerSettings);
+		}
+
+		$result = $this->profileService->isAllowedToSeePage($profileSettings, $profileId, $userId);
 
 		$this->assertEquals($expected, $result);
 	}
@@ -101,46 +108,45 @@ class ProfileServiceTest extends TestCase
 				'isAllowedTo' => true,
 				'expected' => false,
 			],
-		];
-	}
-
-	#[DataProvider('stalkingCheckProvider')]
-	public function testStalkingCheck(array $userInfo, UserSettingsEntity $stalkedSettings, bool $expected): void
-	{
-		$this->profileService = $this->getMockBuilder(ProfileService::class)
-			->setConstructorArgs([
-				$this->userSettingsRepository,
-				$this->components,
-				$this->permissionsService,
-			])
-			->onlyMethods(['global'])
-			->getMock();
-
-		$this->profileService->method('global')->willReturn($userInfo);
-		$this->userSettingsRepository->method('getById')->willReturn($stalkedSettings);
-
-		$result = $this->profileService->stalkingCheck(456);
-
-		$this->assertEquals($expected, $result);
-	}
-
-	public static function stalkingCheckProvider(): array
-	{
-		return [
-			'user is blocked' => [
-				'userInfo' => ['id' => 123],
-				'stalkedSettings' => UserSettingsEntity::from([
-					UserSettingsEntity::KICK_IGNORED => true,
-					UserSettingsEntity::BLOCK_LIST => '123']),
-				'expected' => true,
+			'wall enabled but viewer is in block list' => [
+				'profileSettings' => UserSettingsEntity::from([
+					'wall' => true,
+					UserSettingsEntity::BLOCK_LIST => '123',
+				]),
+				'forceWall' => false,
+				'isAllowedTo' => true,
+				'expected' => false,
+				'profileId' => 0,
+				'userId' => 123,
 			],
-			'user is not blocked' => [
-				'userInfo' => ['id' => 123],
-				'stalkedSettings' => UserSettingsEntity::from([
-					UserSettingsEntity::KICK_IGNORED => true,
+			'wall enabled and viewer is not in block list' => [
+				'profileSettings' => UserSettingsEntity::from([
+					'wall' => true,
 					UserSettingsEntity::BLOCK_LIST => '456, 789',
 				]),
+				'forceWall' => false,
+				'isAllowedTo' => true,
+				'expected' => true,
+				'profileId' => 0,
+				'userId' => 123,
+			],
+			'viewer has wall owner in own block list → denied (symmetric)' => [
+				'profileSettings' => UserSettingsEntity::from(['wall' => true]),
+				'forceWall' => false,
+				'isAllowedTo' => true,
 				'expected' => false,
+				'profileId' => 300,
+				'userId' => 123,
+				'viewerSettings' => UserSettingsEntity::from([UserSettingsEntity::BLOCK_LIST => '300']),
+			],
+			'viewer does not have wall owner in block list → allowed (symmetric direction clear)' => [
+				'profileSettings' => UserSettingsEntity::from(['wall' => true]),
+				'forceWall' => false,
+				'isAllowedTo' => true,
+				'expected' => true,
+				'profileId' => 300,
+				'userId' => 123,
+				'viewerSettings' => UserSettingsEntity::from([UserSettingsEntity::BLOCK_LIST => '456']),
 			],
 		];
 	}

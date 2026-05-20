@@ -239,27 +239,21 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return false;
 		}
 
-  return !($profileSettings->getKickIgnored() !== 0 &&
-			$blockList !== [] &&
-			in_array($userId, $blockList, true));
-	}
-
-	public function stalkingCheck(int $userStalkedId = 0): bool
-	{
-		$user_info = $this->global('user_info');
-
-		if (empty($user_info['id'])) {
-			return true;
+		// One-way: wall owner has blocked the viewer.
+		if (in_array($userId, $blockList, true)) {
+			return false;
 		}
 
-		$userStalkedSettings = $this->userSettingsRepository->getById($userStalkedId);
-		$blockedList = $userStalkedSettings->getBlockList();
-		$kickIgnored = $userStalkedSettings->getKickIgnored();
+		// Symmetric: viewer has blocked the wall owner.
+		// Skip for guests (userId = 0) and when profileId is unknown.
+		if ($userId !== 0 && $profileId !== 0) {
+			$viewerBlockList = $this->userSettingsRepository->getById($userId)->getBlockList();
 
-		if ($kickIgnored !== 0 && $blockedList !== []) {
-			return in_array((int) $user_info['id'], $blockedList, true);
+			if (in_array($profileId, $viewerBlockList, true)) {
+				return false;
+			}
 		}
 
-		return false;
+		return true;
 	}
 }

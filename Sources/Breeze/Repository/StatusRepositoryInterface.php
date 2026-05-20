@@ -21,6 +21,15 @@ interface StatusRepositoryInterface extends BaseRepositoryInterface
 	public function getBy(string $columnName, array $data = [], int $maxIndex = 0, ?string $cursor = null): array;
 
 	/**
+	 * @param int[] $buddyIds
+	 * @param int[] $excludeIds User IDs to exclude at the SQL level (authors and
+	 *   wall owners). Pre-computed by WallVisibilityService::getMutualBlockIds()
+	 *   to avoid fetching rows that will be discarded by the PHP-level filter.
+	 *   Defaults to [] (no exclusion), so existing callers are unaffected.
+	 */
+	public function getByBuddyActivity(array $buddyIds = [], int $maxIndex = 0, ?string $cursor = null, array $excludeIds = []): array;
+
+	/**
 	 * Encode a cursor for pagination
 	 */
 	public function encodeCursor(int $id, int $createdAt): string;

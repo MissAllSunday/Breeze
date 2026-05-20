@@ -8,6 +8,7 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -24,6 +25,8 @@ class StatusServiceTest extends TestCase
 
 	private PermissionsServiceInterface | MockObject $permissionsService;
 
+	private WallVisibilityServiceInterface | MockObject $wallVisibilityService;
+
 	private MockObject|StatusService $statusService;
 
 	/**
@@ -34,10 +37,12 @@ class StatusServiceTest extends TestCase
 		$this->statusRepository = $this->createStub(StatusRepositoryInterface::class);
 		$this->userRepository = $this->createStub(SettingsRepositoryInterface::class);
 		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$this->wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([$this->statusRepository,
 				$this->userRepository,
 				$this->permissionsService,
+				$this->wallVisibilityService,
 				null])
 			->onlyMethods(['getCount'])
 			->getMock();
@@ -61,6 +66,17 @@ class StatusServiceTest extends TestCase
 		]);
 		$this->statusRepository->method('getNextCursor')->willReturn('test_cursor');
 		$this->statusService->method('getCount')->willReturn(1);
+
+		// Wall surface uses the 3-gate safety+platform filter, never the
+		// 5-gate feed filter.
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterStatusesForWall')
+			->willReturnArgument(0);
+		$this->wallVisibilityService->expects($this->never())
+			->method('filterStatusesForFeed');
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterVisibleComments')
+			->willReturnArgument(0);
 
 		$result = $this->statusService->getByProfile($wallId);
 
@@ -107,6 +123,7 @@ class StatusServiceTest extends TestCase
 			$this->statusRepository,
 			$this->userRepository,
 			$this->permissionsService,
+			$this->wallVisibilityService,
 			null
 		);
 
@@ -123,6 +140,7 @@ class StatusServiceTest extends TestCase
 			$this->statusRepository,
 			$this->userRepository,
 			$this->permissionsService,
+			$this->wallVisibilityService,
 			null
 		);
 
@@ -134,6 +152,7 @@ class StatusServiceTest extends TestCase
 
 	/**
 	 * @throws EmptyDataException
+	 * @throws DataNotFoundException
 	 */
 	public function testGetById(): void
 	{
@@ -164,21 +183,27 @@ class StatusServiceTest extends TestCase
 			'total' => 1,
 		];
 
-		// Mock the repository to return the status entity
 		$this->statusRepository->method('getById')->willReturn($statusEntity);
 
-		// Mock permissions service
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
 		$this->permissionsService->method('permissions')
 			->with($wallId, $currentUserId)
 			->willReturn($expectedPermissions);
 
-		// Mock currentUserInfo
+		// Single-status surface uses the 3-gate safety+platform filter.
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterStatusesForWall')
+			->willReturnArgument(0);
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterVisibleComments')
+			->willReturnArgument(0);
+
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([
 				$this->statusRepository,
 				$this->userRepository,
 				$this->permissionsService,
+				$this->wallVisibilityService,
 				null,
 			])
 			->onlyMethods(['currentUserInfo'])
@@ -189,5 +214,126 @@ class StatusServiceTest extends TestCase
 		$result = $this->statusService->getById($statusId);
 
 		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * When the visibility filter hides the requested status, the service
+	 * raises DataNotFoundException so the controller surfaces a 404 rather
+	 * than leaking that the row exists.
+	 */
+	public function testGetByIdThrowsWhenStatusIsFilteredOut(): void
+	{
+		$statusId = 123;
+		$statusEntity = StatusEntity::from([
+			'id' => $statusId,
+			'wall_id' => 1,
+			'user_id' => 2,
+			'body' => 'blocked content',
+		]);
+
+		$this->statusRepository->method('getById')->willReturn($statusEntity);
+
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterStatusesForWall')
+			->willReturn([]);
+		$this->wallVisibilityService->expects($this->never())
+			->method('filterVisibleComments');
+
+		$this->statusService = $this->getMockBuilder(StatusService::class)
+			->setConstructorArgs([
+				$this->statusRepository,
+				$this->userRepository,
+				$this->permissionsService,
+				$this->wallVisibilityService,
+				null,
+			])
+			->onlyMethods(['currentUserInfo'])
+			->getMock();
+		$this->statusService->method('currentUserInfo')->willReturn(['id' => 1]);
+
+		$this->expectException(DataNotFoundException::class);
+		$this->expectExceptionMessage('error_no_status');
+
+		$this->statusService->getById($statusId);
+	}
+
+	/**
+	 * @throws EmptyDataException
+	 */
+	public function testGetByBuddiesReturnsEmptyArrayWhenViewerHasNoBuddies(): void
+	{
+		$this->userRepository->method('getById')->willReturn(
+			UserSettingsEntity::from(['buddies' => '', 'paginationNumber' => 5])
+		);
+
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$this->statusRepository->expects($this->never())->method('getByBuddyActivity');
+		$this->wallVisibilityService->expects($this->never())->method('filterStatusesForFeed');
+
+		$this->statusService = $this->getMockBuilder(StatusService::class)
+			->setConstructorArgs([
+				$this->statusRepository,
+				$this->userRepository,
+				$this->permissionsService,
+				$this->wallVisibilityService,
+				null,
+			])
+			->onlyMethods(['currentUserInfo'])
+			->getMock();
+		$this->statusService->method('currentUserInfo')->willReturn(['id' => 1]);
+
+		$this->assertSame([], $this->statusService->getByBuddies());
+	}
+
+	/**
+	 * @throws EmptyDataException
+	 */
+	public function testGetByBuddiesQueriesByBuddyActivityAndAppliesFeedFilter(): void
+	{
+		$this->userRepository->method('getById')->willReturn(
+			UserSettingsEntity::from(['buddies' => '2,3', 'paginationNumber' => 5])
+		);
+		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$this->permissionsService->method('permissions')->willReturn([
+			'delete' => true, 'edit' => false, 'post' => true, 'postComments' => true,
+		]);
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$this->statusRepository->expects($this->once())
+			->method('getByBuddyActivity')
+			->with([2, 3], 5, null, [])
+			->willReturn([self::getStatusEntity()]);
+		$this->statusRepository->method('getNextCursor')->willReturn('test_cursor');
+
+		// Feed surface uses the 5-gate filter, never the 3-gate wall filter.
+		$this->wallVisibilityService->expects($this->once())
+			->method('getMutualBlockIds')
+			->with(1, [2, 3])
+			->willReturn([]);
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterStatusesForFeed')
+			->willReturnArgument(0);
+		$this->wallVisibilityService->expects($this->never())
+			->method('filterStatusesForWall');
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterVisibleComments')
+			->willReturnArgument(0);
+
+		$this->statusService = $this->getMockBuilder(StatusService::class)
+			->setConstructorArgs([
+				$this->statusRepository,
+				$this->userRepository,
+				$this->permissionsService,
+				$this->wallVisibilityService,
+				null,
+			])
+			->onlyMethods(['currentUserInfo', 'getCount'])
+			->getMock();
+		$this->statusService->method('currentUserInfo')->willReturn(['id' => 1]);
+		$this->statusService->method('getCount')->willReturn(1);
+
+		$result = $this->statusService->getByBuddies();
+
+		$this->assertSame(self::getStatusEntity()->getId(), $result['data'][0]->getId());
+		$this->assertSame(1, $result['total']);
 	}
 }

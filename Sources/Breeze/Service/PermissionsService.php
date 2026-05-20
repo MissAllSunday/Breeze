@@ -99,6 +99,11 @@ class PermissionsService implements PermissionsServiceInterface
 		return $isEnable;
 	}
 
+	public function canViewActivity(int $viewerId): bool
+	{
+		return $this->isAllowedTo(PermissionsEnum::PROFILE_VIEW);
+	}
+
 	protected function handleDelete(string $type, bool $isPosterOwner, $isProfileOwner) : bool
 	{
 		// It all starts with an empty vessel...

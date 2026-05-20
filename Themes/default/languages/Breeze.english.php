@@ -45,9 +45,6 @@ $txt['Breeze_user_settings_enableBuddiesTab'] = 'Enable the "Buddies" tab';
 $txt['Breeze_user_settings_enableBuddiesTab_desc'] = 'This will show a tab showing all your buddies';
 $txt['Breeze_user_settings_blockBuddyRequests'] = 'Block buddy requests from users in my ignore list';
 $txt['Breeze_user_settings_blockBuddyRequests_desc'] = 'If enabled, users on your ignore list will not be able to send you buddy requests';
-$txt['Breeze_user_settings_kickIgnored'] = 'Do not show my wall to users in my ignore list';
-$txt['Breeze_user_settings_kickIgnored_desc'] = 'If this is enable, users on your ignore list will not be able to
- see your wall or to post on it';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 
 // Likes

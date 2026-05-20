@@ -150,6 +150,64 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		return $this->prepareData($request, $comments);
 	}
 
+	public function getByBuddyActivity(array $buddyIds = [], int $maxIndex = 0, ?string $cursor = null, array $excludeIds = []): array
+	{
+		if ($buddyIds === []) {
+			return [];
+		}
+
+		$queryParams = array_merge(
+			$this->getDefaultQueryParams(),
+			[
+				'buddy_ids' => $buddyIds,
+			]
+		);
+
+		$cursorClause = '';
+		if ($cursor !== null) {
+			$decodedCursor = $this->decodeCursor($cursor);
+			if ($decodedCursor !== null) {
+				$cursorClause = '
+					AND (
+						parent.created_at < {int:cursor_created_at}
+						OR (parent.created_at = {int:cursor_created_at} AND parent.id < {int:cursor_id})
+					)';
+				$queryParams['cursor_created_at'] = $decodedCursor['created_at'];
+				$queryParams['cursor_id'] = $decodedCursor['id'];
+			}
+		}
+
+		// Pre-exclude mutually-blocked users at the SQL level to avoid
+		// fetching rows the PHP visibility filter would discard anyway.
+		$excludeClause = '';
+		if ($excludeIds !== []) {
+			$excludeClause = '
+				AND parent.' . StatusEntity::USER_ID . ' NOT IN ({array_int:exclude_ids})
+				AND parent.' . StatusEntity::WALL_ID . ' NOT IN ({array_int:exclude_ids})';
+			$queryParams['exclude_ids'] = $excludeIds;
+		}
+
+		$queryParams['limit'] = $maxIndex;
+
+		$request = $this->dbClient->query(
+			'
+			SELECT {raw:columns}
+			FROM {db_prefix}{raw:from}
+			WHERE (
+				parent.' . StatusEntity::USER_ID . ' IN ({array_int:buddy_ids})
+				OR parent.' . StatusEntity::WALL_ID . ' IN ({array_int:buddy_ids})
+			)
+			' . $cursorClause . $excludeClause . '
+			ORDER BY parent.created_at DESC, parent.id DESC
+			LIMIT {int:limit}',
+			$queryParams
+		);
+
+		$comments = $this->commentRepository->getByProfile($buddyIds);
+
+		return $this->prepareData($request, $comments);
+	}
+
 	/**
 	 * @throws DataNotFoundException
 	 */

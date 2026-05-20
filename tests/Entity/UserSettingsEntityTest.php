@@ -15,7 +15,6 @@ class UserSettingsEntityTest extends TestCase
 			'wall' => 'check',
 			'generalWall' => 'check',
 			'paginationNumber' => 'text',
-			'kickIgnored' => 'check',
 			'aboutMe' => 'textArea',
 			'enableBuddiesTab' => 'check',
 			'blockBuddyRequests' => 'check',
@@ -28,7 +27,6 @@ class UserSettingsEntityTest extends TestCase
 			'wall' => 0,
 			'generalWall' => 0,
 			'paginationNumber' => 5,
-			'kickIgnored' => 0,
 			'aboutMe' => '',
 			'enableBuddiesTab' => 0,
 			'blockBuddyRequests' => 0,
@@ -41,7 +39,6 @@ class UserSettingsEntityTest extends TestCase
 			'wall' => 0,
 			'generalWall' => 0,
 			'paginationNumber' => 5,
-			'kickIgnored' => 0,
 			'enableBuddiesTab' => 0,
 			'blockBuddyRequests' => 0,
 		], UserSettingsEntity::getInts());
@@ -67,7 +64,6 @@ class UserSettingsEntityTest extends TestCase
 		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::WALL, '1'));
 		$this->assertEquals(0, $entity->castValue(UserSettingsEntity::WALL, '0'));
 		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::GENERAL_WALL, '1'));
-		$this->assertEquals(0, $entity->castValue(UserSettingsEntity::KICK_IGNORED, '0'));
 		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::ENABLE_BUDDIES_TAB, '1'));
 		$this->assertEquals(10, $entity->castValue(UserSettingsEntity::PAGINATION_NUM, '10'));
 
