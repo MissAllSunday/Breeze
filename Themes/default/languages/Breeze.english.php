@@ -42,8 +42,6 @@ $txt['Breeze_user_settings_aboutMe'] = 'Enable the About me tab';
 $txt['Breeze_user_settings_aboutMe_desc'] = 'Leave empty to disable it. You can use BBC';
 $txt['Breeze_user_settings_enableBuddiesTab'] = 'Enable the "Buddies" tab';
 $txt['Breeze_user_settings_enableBuddiesTab_desc'] = 'This will show a tab showing all your buddies';
-$txt['Breeze_user_settings_blockBuddyRequests'] = 'Block buddy requests from users in my ignore list';
-$txt['Breeze_user_settings_blockBuddyRequests_desc'] = 'If enabled, users on your ignore list will not be able to send you buddy requests';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 
 // Likes

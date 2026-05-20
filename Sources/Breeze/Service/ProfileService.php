@@ -87,16 +87,14 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			return false;
 		}
 
-		// Check 3 & 4: Not in the user's wall ignore list or blocked from sending buddy requests
+		// Check 3: Blocked — block always beats buddy (unconditional)
 		if ($wallUserSettings === null) {
 			$wallUserSettings = $this->userSettingsRepository->getById($profileId);
 		}
 
 		$blockList = $wallUserSettings->getBlockList();
-		$isInBlockList = !empty($blockList) && in_array($userId, $blockList, true);
 
-		// If in block list and wall owner has enabled "block buddy requests from ignored users"
-		if ($isInBlockList && $wallUserSettings->getBlockBuddyRequests() !== 0) {
+		if (!empty($blockList) && in_array($userId, $blockList, true)) {
 			return false;
 		}
 
@@ -151,7 +149,6 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		foreach ($usersInfo as $userId => &$userData) {
 			$settings = $settingsById[(int) $userId] ?? null;
 			$userData['blockList'] = $settings?->getBlockList() ?? [];
-			$userData['blockBuddyRequests'] = $settings?->getBlockBuddyRequests() ?? 0;
 		}
 
 		return $usersInfo;

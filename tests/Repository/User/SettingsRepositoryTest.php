@@ -90,7 +90,7 @@ class SettingsRepositoryTest extends TestCase
 			->method('query')
 			->willReturn($mockResult);
 
-		$this->dbClient->expects($this->exactly(4))
+		$this->dbClient->expects($this->exactly(3))
 			->method('fetchAssoc')
 			->willReturnOnConsecutiveCalls(
 				[
@@ -111,15 +111,6 @@ class SettingsRepositoryTest extends TestCase
 					'variable' => 'wall',
 					'value' => '1',
 				],
-				[
-					'id_member' => 2,
-					'member_name' => 'User2',
-					'real_name' => 'User Two',
-					'pm_ignore_list' => '1,5',
-					'buddy_list' => '3,4',
-					'variable' => 'blockBuddyRequests',
-					'value' => '1',
-				],
 				null,
 			);
 
@@ -138,7 +129,6 @@ class SettingsRepositoryTest extends TestCase
 		$this->assertEquals([], $result[1]->getBuddies());
 
 		$this->assertEquals(1, $result[2]->getWall());
-		$this->assertEquals(1, $result[2]->getBlockBuddyRequests());
 		$this->assertEquals([1, 5], $result[2]->getBlockList());
 		$this->assertEquals([3, 4], $result[2]->getBuddies());
 	}

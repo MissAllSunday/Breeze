@@ -59,4 +59,24 @@ describe("canShowAddBuddyButton", () => {
 		const user = makeUser({ id: 2, is_buddy: false });
 		expect(canShowAddBuddyButton(user, 1)).toBe(true);
 	});
+
+	it("returns false when the displayed user has blocked the current user", () => {
+		const user = makeUser({ id: 2, blockList: [1, 5, 10] });
+		expect(canShowAddBuddyButton(user, 1)).toBe(false);
+	});
+
+	it("returns true when current user is not in the displayed user's block list", () => {
+		const user = makeUser({ id: 2, blockList: [5, 10] });
+		expect(canShowAddBuddyButton(user, 1)).toBe(true);
+	});
+
+	it("returns true when the block list is empty", () => {
+		const user = makeUser({ id: 2, blockList: [] });
+		expect(canShowAddBuddyButton(user, 1)).toBe(true);
+	});
+
+	it("returns true when blockList is undefined (legacy API responses)", () => {
+		const user = makeUser({ id: 2 });
+		expect(canShowAddBuddyButton(user, 1)).toBe(true);
+	});
 });

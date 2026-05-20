@@ -192,43 +192,29 @@ class ProfileServiceTest extends TestCase
 				'wallUserSettings' => UserSettingsEntity::from([]),
 				'expected' => false,
 			],
-			'in ignore list with block enabled - hide button' => [
+			'in block list - hide button unconditionally' => [
 				'profileId' => 2,
 				'userId' => 1,
 				'userBuddies' => [],
 				'wallUserSettings' => UserSettingsEntity::from([
 					UserSettingsEntity::BLOCK_LIST => '1,5,10',
-					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
 				]),
 				'expected' => false,
 			],
-			'in ignore list with block disabled - show button' => [
-				'profileId' => 2,
-				'userId' => 1,
-				'userBuddies' => [],
-				'wallUserSettings' => UserSettingsEntity::from([
-					UserSettingsEntity::BLOCK_LIST => '1,5,10',
-					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 0,
-				]),
-				'expected' => true,
-			],
-			'not in ignore list - show button' => [
+			'not in block list - show button' => [
 				'profileId' => 2,
 				'userId' => 1,
 				'userBuddies' => [],
 				'wallUserSettings' => UserSettingsEntity::from([
 					UserSettingsEntity::BLOCK_LIST => '5,10',
-					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
 				]),
 				'expected' => true,
 			],
-			'empty ignore list with block enabled - show button' => [
+			'empty block list - show button' => [
 				'profileId' => 2,
 				'userId' => 1,
 				'userBuddies' => [],
-				'wallUserSettings' => UserSettingsEntity::from([
-					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
-				]),
+				'wallUserSettings' => UserSettingsEntity::from([]),
 				'expected' => true,
 			],
 			'valid buddy request candidate - show button' => [
@@ -237,7 +223,6 @@ class ProfileServiceTest extends TestCase
 				'userBuddies' => [3, 4, 5],
 				'wallUserSettings' => UserSettingsEntity::from([
 					UserSettingsEntity::BLOCK_LIST => '10,20',
-					UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
 				]),
 				'expected' => true,
 			],
@@ -258,7 +243,6 @@ class ProfileServiceTest extends TestCase
 
 		$settings = UserSettingsEntity::from([
 			UserSettingsEntity::BLOCK_LIST => '1,5',
-			UserSettingsEntity::BLOCK_BUDDY_REQUESTS => 1,
 		]);
 
 		$this->userSettingsRepository
@@ -269,7 +253,6 @@ class ProfileServiceTest extends TestCase
 		$result = $this->profileService->loadUsersInfo([2]);
 
 		$this->assertEquals([1, 5], $result[2]['blockList']);
-		$this->assertEquals(1, $result[2]['blockBuddyRequests']);
 	}
 
 	public function testLoadUsersInfoHandlesMissingSettingsGracefully(): void
@@ -292,6 +275,5 @@ class ProfileServiceTest extends TestCase
 		$result = $this->profileService->loadUsersInfo([3]);
 
 		$this->assertEquals([], $result[3]['blockList']);
-		$this->assertEquals(0, $result[3]['blockBuddyRequests']);
 	}
 }
