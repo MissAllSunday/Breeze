@@ -16,14 +16,28 @@ Comes with the following features:
 
 - No file edits, works with all themes.
 - Users individual settings, each user defines her/his own settings.
+- Likes for status and comments.
 - Mentions for status and comments.
 - Notifications for several features.
 - General wall page for displaying your buddies latest activity.
 
-The mod uses the following scripts:
+The mod uses the following scripts and libraries:
 
+**Frontend (bundled in the package):**
 - [React](https://reactjs.org)
 - [React Hot Toast](https://react-hot-toast.com)
+
+**PHP (bundled in the package):**
+- [league/container](https://container.thephpleague.com)
+- [league/event](https://event.thephpleague.com)
+
+##### Development
+
+```bash
+# Install all dependencies (Composer + Node)
+make install     # PHP dependencies
+make ui-install  # Node dependencies
+```
 
 ##### Tests
 
@@ -37,11 +51,13 @@ make lint       # Auto-fix PHP (PHP-CS-Fixer) + UI (Biome) code style
 make coverage   # Generate HTML coverage report
 make ui-test    # UI components (Vitest)
 make e2e        # E2E (Playwright + Docker)
+make sync       # Lint then sync build output to a local SMF install
 ```
 
-##### Generate an optimized SMF package
+##### Generate an SMF package
+
 ```bash
-chmod +x generate_zip.sh && ./generate_zip.sh
+make package    # Lints, builds, updates REACT_HASH and produces Breeze.zip
 ```
 
 ###### Documentation:

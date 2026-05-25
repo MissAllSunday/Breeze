@@ -8,8 +8,9 @@ export DB_PREFIX := smf_
 
 VENDOR_DIR := breezeVendor
 SYNC_SCRIPT := ./brp.sh
+PACKAGE_SCRIPT := ./generate_zip.sh
 
-.PHONY: all install test setup-test-database lint coverage ui-install ui-test e2e-up e2e-test e2e-down e2e clean sync
+.PHONY: all install test setup-test-database lint coverage ui-install ui-test e2e-up e2e-test e2e-down e2e clean sync package
 
 all: install test ui-test e2e
 
@@ -62,6 +63,11 @@ e2e-down:
 	@docker compose -f docker-compose.e2e.yml down -v
 
 e2e: e2e-test e2e-down
+
+package: lint
+	@echo "Generating SMF package..."
+	@chmod +x $(PACKAGE_SCRIPT)
+	@$(PACKAGE_SCRIPT)
 
 clean:
 	@echo "Cleaning up $(VENDOR_DIR) and node_modules..."

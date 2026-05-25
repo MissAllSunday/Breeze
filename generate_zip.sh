@@ -6,11 +6,9 @@ COMPONENTS_DIR="Themes/default/scripts/breezeComponents"
 BREEZE_PHP="Sources/Breeze/Breeze.php"
 ZIP_NAME="Breeze.zip"
 
-# ── 1. Lint & build ─────────────────────────────────────────────────────────
-echo "==> Linting & building..."
-npm run lint
+# ── 1. Build ────────────────────────────────────────────────────────────────
+echo "==> Building..."
 npm run build
-composer lint
 
 # ── 2. Copy built JS to SMF theme ───────────────────────────────────────────
 rm -rf "${COMPONENTS_DIR:?}"/*
