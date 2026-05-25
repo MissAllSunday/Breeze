@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Breeze\Breeze;
+use Breeze\Service\Actions\AdminServiceInterface;
 
 function template_main(): void
 {
@@ -111,6 +112,7 @@ function template_maintenance(): void
 						<form action="' . $context['post_url'] . ';type=comments" method="post" class="breeze-inline-form">
 							<input type="submit" value="' . $txt['Breeze_maintenance_fix_comments'] . '" class="button" />
 							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
+							<input type="hidden" name="' . $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token_var'] . '" value="' . $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token'] . '" />
 						</form>' : '', '
 					</dd>
 					<dt>', $txt['Breeze_maintenance_orphan_likes'] ,'</dt>
@@ -120,6 +122,7 @@ function template_maintenance(): void
 						<form action="' . $context['post_url'] . ';type=likes" method="post" class="breeze-inline-form">
 							<input type="submit" value="' . $txt['Breeze_maintenance_fix_likes'] . '" class="button" />
 							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
+							<input type="hidden" name="' . $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token_var'] . '" value="' . $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token'] . '" />
 						</form>' : '', '
 					</dd>
 				</dl>';
@@ -130,6 +133,7 @@ function template_maintenance(): void
 					<form action="', $context['post_url'] ,';type=all" method="post">
 						<input type="submit" value="', $txt['Breeze_maintenance_fix_all'] ,'" class="button" />
 						<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+						<input type="hidden" name="', $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token_var'], '" value="', $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token'], '" />
 					</form>
 				</div>';
 	} else {
@@ -152,6 +156,7 @@ function template_maintenance(): void
 					<form action="', $context['post_url'] ,';type=walls" method="post">
 						<input type="submit" value="', $txt['Breeze_maintenance_enable_all_walls'] ,'" class="button" />
 						<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+						<input type="hidden" name="', $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token_var'], '" value="', $context[AdminServiceInterface::MAINTENANCE_TOKEN . '_token'], '" />
 					</form>
 				</div>
 			</div>

@@ -150,6 +150,7 @@ class AdminService implements AdminServiceInterface
 
 		if ($fix) {
 			checkSession();
+			validateToken(AdminServiceInterface::MAINTENANCE_TOKEN);
 
 			$fixType = $this->getRequest('type', 'all');
 
@@ -168,6 +169,9 @@ class AdminService implements AdminServiceInterface
 				$this->userSettingsRepository->enableAllWalls();
 			}
 		}
+
+		$tokenData = createToken(AdminServiceInterface::MAINTENANCE_TOKEN);
+		$context = array_merge($context, $tokenData);
 
 		$orphanComments = $this->commentService->countOrphans();
 		$orphanLikes = $this->likeService->countOrphans();
