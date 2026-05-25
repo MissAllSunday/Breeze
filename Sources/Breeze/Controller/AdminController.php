@@ -62,7 +62,7 @@ class AdminController extends BaseController
 		$this->adminService->configVars($saving);
 
 		if ($saving) {
-			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
+			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__ . ';saved');
 		}
 	}
 
@@ -75,7 +75,7 @@ class AdminController extends BaseController
 		$this->adminService->permissionsConfigVars($saving);
 
 		if ($saving) {
-			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
+			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__ . ';saved');
 		}
 	}
 
@@ -88,7 +88,7 @@ class AdminController extends BaseController
 		$this->adminService->maintenance($fixing);
 
 		if ($fixing) {
-			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__);
+			$this->response->redirect(AdminServiceInterface::POST_URL . __FUNCTION__ . ';saved');
 		}
 	}
 

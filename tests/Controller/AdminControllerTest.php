@@ -120,7 +120,7 @@ class AdminControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('redirect')
-			->with(AdminServiceInterface::POST_URL . 'settings');
+			->with(AdminServiceInterface::POST_URL . 'settings' . ';saved');
 
 		$this->adminController->settings();
 
@@ -159,7 +159,7 @@ class AdminControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('redirect')
-			->with(AdminServiceInterface::POST_URL . 'permissions');
+			->with(AdminServiceInterface::POST_URL . 'permissions' . ';saved');
 
 		$this->adminController->permissions();
 

@@ -98,6 +98,13 @@ function template_maintenance(): void
 {
 	global $context, $txt;
 
+	if (!empty($context['settings_message'])) {
+		echo '
+		<', $context['settings_message']['tag'], ' class="', $context['settings_message']['class'], '">',
+			$context['settings_message']['label'],
+		'</', $context['settings_message']['tag'], '>';
+	}
+
 	echo '
 		<div class="cat_bar">
 			<h3 class="catbg">', $context['page_title'] ,'</h3>

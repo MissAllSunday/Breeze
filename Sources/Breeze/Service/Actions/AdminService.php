@@ -113,6 +113,7 @@ class AdminService implements AdminServiceInterface
 		}
 
 		prepareDBSettingContext($this->configVars);
+		$this->setSettingsSavedMessage();
 	}
 
 	public function permissionsConfigVars(bool $save = false): void
@@ -137,6 +138,7 @@ class AdminService implements AdminServiceInterface
 		}
 
 		prepareDBSettingContext($this->configVars);
+		$this->setSettingsSavedMessage();
 	}
 
 	public function maintenance(bool $fix = false): void
@@ -181,6 +183,34 @@ class AdminService implements AdminServiceInterface
 			'orphan_likes' => $orphanLikes,
 		];
 
+		if ($this->isRequestSet('saved')) {
+			$context['settings_message'] = [
+				'label' => $this->getSmfText('settings_saved'),
+				'tag' => 'div',
+				'class' => 'infobox',
+			];
+		}
+
+		$this->setGlobal('context', $context);
+	}
+
+	protected function setSettingsSavedMessage(): void
+	{
+		if (!$this->isRequestSet('saved')) {
+			return;
+		}
+
+		$context = $this->global('context');
+
+		if (!is_array($context)) {
+			return;
+		}
+
+		$context['settings_message'] = [
+			'label' => $this->getSmfText('settings_saved'),
+			'tag' => 'div',
+			'class' => 'infobox',
+		];
 		$this->setGlobal('context', $context);
 	}
 
