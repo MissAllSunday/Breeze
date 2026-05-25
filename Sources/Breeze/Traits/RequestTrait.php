@@ -13,7 +13,7 @@ trait RequestTrait
 {
 	private mixed $request;
 
-	public function init(): void
+	private function initRequest(): void
 	{
 		$this->request = $_REQUEST;
 	}
@@ -34,7 +34,7 @@ trait RequestTrait
 
 	public function getRequest(string $variableName, mixed $defaultValue = false): mixed
 	{
-		$this->init();
+		$this->initRequest();
 
 		return empty($this->request[$variableName]) ?
 			$defaultValue : $this->sanitize($this->request[$variableName]);
@@ -52,7 +52,7 @@ trait RequestTrait
 
 	public function isRequestSet(string $variableName): bool
 	{
-		$this->init();
+		$this->initRequest();
 
 		return isset($this->request[$variableName]);
 	}
