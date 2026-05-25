@@ -183,8 +183,8 @@ class Breeze
 						$this->isAllowedTo(PermissionsEnum::VIEW_GENERAL_WALL),
 					'sub_buttons' => [
 						'noti' => [
-							'title' => $this->getText('user_noti_settings_name'),
-							'href' => $scriptUrl . '?action=profile;area=alerts;sa=edit;u=' . $currentUserInfo['id'],
+							'title' => $this->getText('general_my_wall_settings'),
+							'href' => $scriptUrl . '?action=profile;area=breezeSettings;u=' . $currentUserInfo['id'],
 							'show' => !$currentUserInfo['is_guest'],
 							'sub_buttons' => [],
 						],
@@ -281,6 +281,22 @@ class Breeze
 					'React' => [
 						'name' => 'React',
 						'site' => 'https://reactjs.org',
+					],
+					'ReactDOM' => [
+						'name' => 'ReactDOM',
+						'site' => 'https://reactjs.org',
+					],
+					'ReactHotToast' => [
+						'name' => 'React Hot Toast',
+						'site' => 'https://react-hot-toast.com',
+					],
+					'LeagueContainer' => [
+						'name' => 'League Container',
+						'site' => 'https://container.thephpleague.com',
+					],
+					'LeagueEvent' => [
+						'name' => 'League Event',
+						'site' => 'https://event.thephpleague.com',
 					],
 				],
 			],

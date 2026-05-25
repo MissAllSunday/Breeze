@@ -8,7 +8,6 @@ namespace Breeze\Entity;
 class SettingsEntity
 {
 	public const string MASTER = 'master';
-	public const string ABOUT_ME_MAX_LENGTH = 'aboutMeMaxLength';
 	public const string MAX_FLOOD_NUM = 'maxFloodNum';
 	public const string MAX_FLOOD_MINUTES = 'maxFloodMinutes';
 	public const string TYPE_CHECK = 'check';

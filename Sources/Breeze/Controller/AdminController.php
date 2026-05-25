@@ -23,8 +23,8 @@ class AdminController extends BaseController
 		self::ACTION_MAIN,
 		self::ACTION_SETTINGS,
 		self::ACTION_PERMISSIONS,
-		self::ACTION_DONATE,
 		self::ACTION_MAINTENANCE,
+		self::ACTION_DONATE,
 	];
 
 	public function __construct(
