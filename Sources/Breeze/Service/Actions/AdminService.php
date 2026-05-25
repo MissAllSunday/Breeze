@@ -15,6 +15,7 @@ use Breeze\Service\StatusServiceInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Form\SettingsBuilderInterface;
+use Breeze\Util\Json;
 
 class AdminService implements AdminServiceInterface
 {
@@ -192,5 +193,19 @@ class AdminService implements AdminServiceInterface
 
 	public function loadComponents(array $components = []): void
 	{
+		addJavaScriptVar(
+			strtolower(Breeze::NAME) . 'FeedUrl',
+			Json::encode(Breeze::FEED)
+		);
+
+		addJavaScriptVar(
+			strtolower(Breeze::NAME) . 'FeedError',
+			Json::encode($this->getText('feed_error_message'))
+		);
+
+		loadJavaScriptFile('breeze-admin-feed.js', [
+			'default_theme' => true,
+			'defer' => true,
+		], strtolower(Breeze::PATTERN . 'admin_feed'));
 	}
 }

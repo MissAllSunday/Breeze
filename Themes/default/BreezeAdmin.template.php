@@ -25,9 +25,7 @@ function template_main(): void
 						', $txt['Breeze_live'] , '
 					</h3>
 				</div>
-				<div id="smfAnnouncements" class="information">
-
-				</div>
+				<div id="smfAnnouncements" class="information"></div>
 			</div>';
 
 	// Show the Breeze version.
@@ -53,14 +51,12 @@ function template_main(): void
 								', $context[Breeze::NAME]['react'] , '
 							</em>';
 
-	// Some more stuff will be here... eventually
-
 	echo '
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="clear" />
+			<div class="clear"></div>
 			<div class="cat_bar">
 				<h3 class="catbg">
 					', $txt['Breeze_page_credits'] , '
@@ -70,7 +66,6 @@ function template_main(): void
 				<div class="content" id="breezelive">
 					<p>', $txt['Breeze_page_credits_decs'] ,'</p>';
 
-	// Print the credits array
 	if (!empty($context[Breeze::NAME]['credits'])) {
 		foreach ($context[Breeze::NAME]['credits'] as $credit) {
 			echo '
@@ -95,45 +90,7 @@ function template_main(): void
 				</div>
 			</div>
 		</div>
-	</div>
-	<br />';
-
-	echo '
-	<script defer="defer">
-      let feedURL = "' . Breeze::FEED . '";
-      let releasesNotFound = "' . $txt['Breeze_feed_error_message'] . '";
-      let app = document.querySelector("#smfAnnouncements");
-      app.append(releasesNotFound);
-
-      fetch(feedURL).then(function (response) {
-		return response.json();
-	  }).then(function (data) {
-		addReleases(data, app);
-	  });
-
-    function addReleases(releases, app)
-    {
-	  let dl = document.createElement("dl");
-	  app.innerHTML = ""
-
-	  for (const [key, release] of Object.entries(releases).slice(0, 5)) {
- 			let dt = document.createElement("dt");
- 			let dd = document.createElement("dd");
- 			let anchor = document.createElement("a");
- 			let date = new Date(release.published_at)
-
- 			anchor.innerText = 	release.name;
-            anchor.href = release.html_url;
-            dt.append(anchor)
-            dt.append(" " + date.toLocaleString("en-US"))
-            dd.innerText = release.body;
- 			dl.append(dt);
- 			dl.append(dd);
-		}
-
-      app.append(dl);
-    }
-    </script>';
+	</div>';
 }
 
 function template_maintenance(): void
@@ -151,7 +108,7 @@ function template_maintenance(): void
 					<dd>
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_comments'] ,'
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_comments'] > 0 ? '
-						<form action="' . $context['post_url'] . ';type=comments" method="post" style="display:inline;">
+						<form action="' . $context['post_url'] . ';type=comments" method="post" class="breeze-inline-form">
 							<input type="submit" value="' . $txt['Breeze_maintenance_fix_comments'] . '" class="button" />
 							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
 						</form>' : '', '
@@ -160,7 +117,7 @@ function template_maintenance(): void
 					<dd>
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_likes'] ,'
 						', $context[Breeze::NAME]['maintenance_stats']['orphan_likes'] > 0 ? '
-						<form action="' . $context['post_url'] . ';type=likes" method="post" style="display:inline;">
+						<form action="' . $context['post_url'] . ';type=likes" method="post" class="breeze-inline-form">
 							<input type="submit" value="' . $txt['Breeze_maintenance_fix_likes'] . '" class="button" />
 							<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '" />
 						</form>' : '', '
@@ -185,7 +142,6 @@ function template_maintenance(): void
 	echo '
 			</div>
 		</div>
-		<br />
 		<div class="cat_bar">
 			<h3 class="catbg">', $txt['Breeze_maintenance_enable_all_walls'] ,'</h3>
 		</div>
@@ -199,8 +155,7 @@ function template_maintenance(): void
 					</form>
 				</div>
 			</div>
-		</div>
-		<br />';
+		</div>';
 }
 
 // Boring stuff you will never see...
@@ -215,6 +170,5 @@ function template_donate(): void
 		<div class="information">
 			', $txt['Breeze_page_donate_exp'] ,'
 			<a href="', Breeze::SUPPORT_URL ,'">', $txt['Breeze_page_donate_link'] ,'</a>.
-		</div>
-		<br />';
+		</div>';
 }

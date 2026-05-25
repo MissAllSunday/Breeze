@@ -16,6 +16,10 @@
     text-decoration: none;
 }
 
+.breeze-inline-form {
+    display: inline-block;
+}
+
 ul.status {
 	display: flex;
 	flex-direction: column;
