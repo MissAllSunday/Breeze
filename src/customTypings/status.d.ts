@@ -22,7 +22,7 @@ declare module "breezeTypesStatus" {
 		total: number;
 	}
 
-	type StatusListType = Map<StatusType>;
+	type StatusListType = StatusType[];
 
 	interface StatusListProps {
 		statusList: StatusListType;

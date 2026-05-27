@@ -313,7 +313,7 @@ function handlePostStatus(): void
         'isNew' => true,
     ];
 
-    respond([$newId => $newStatus], 'Status posted', 201);
+    respond([$newStatus], 'Status posted', 201);
 }
 
 function handleDeleteStatus(): void
@@ -358,7 +358,7 @@ function handleComment(string $subAction): void
                 'isNew' => true,
             ];
 
-            respond([$newId => $newComment], 'Comment posted', 201);
+            respond([$newComment], 'Comment posted', 201);
         })(),
         'deleteComment' => (function () use ($pdo) {
             $data = getPostData();

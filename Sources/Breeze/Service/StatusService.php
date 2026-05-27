@@ -61,7 +61,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
 
 		return [
-			'data' => $visibleStatuses,
+			'data' => array_values($visibleStatuses),
 			'permissions' => $this->permissionsService->permissions($wallId, $viewerId),
 			'pagination' => [
 				'nextCursor' => $hasMore ? $nextCursor : null,
@@ -136,7 +136,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
 
 		return [
-			'data' => $visibleStatuses,
+			'data' => array_values($visibleStatuses),
 			'permissions' => $this->permissionsService->permissions(0, $viewerId),
 			'pagination' => [
 				'nextCursor' => $hasMore ? $nextCursor : null,

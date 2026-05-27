@@ -11,7 +11,7 @@ declare module "breezeTypesComments" {
 		isNew: boolean;
 	}
 
-	type CommentListType = Map<CommentType>;
+	type CommentListType = CommentType[];
 
 	interface CommentReducerData {
 		type: string;

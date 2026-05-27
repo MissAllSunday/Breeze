@@ -52,9 +52,7 @@ function WallFeed(props: WallProps): React.JSX.Element {
 					return;
 				}
 
-				const fetchedStatusList: StatusListType = Object.values(
-					statusListResponse.data,
-				);
+				const fetchedStatusList: StatusListType = statusListResponse.data;
 				setStatusList(fetchedStatusList);
 				setPermissions(statusListResponse.permissions);
 				setNextCursor(statusListResponse.pagination.nextCursor);
@@ -80,7 +78,7 @@ function WallFeed(props: WallProps): React.JSX.Element {
 				}
 
 				setStatusList((prevStatusList: StatusListType) =>
-					prevStatusList.concat(Object.values(statusListResponse.data)),
+					prevStatusList.concat(statusListResponse.data),
 				);
 				setNextCursor(statusListResponse.pagination.nextCursor);
 				setHasMore(statusListResponse.pagination.hasMore);
@@ -101,7 +99,7 @@ function WallFeed(props: WallProps): React.JSX.Element {
 
 				setStatusList((prevStatusList: StatusListType) => [
 					...prevStatusList,
-					...Object.values(newStatus),
+					...newStatus,
 				]);
 			})
 			.finally(() => {

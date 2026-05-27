@@ -20,7 +20,7 @@ function Status(props: StatusProps): React.ReactElement {
 	const timeStamp = props.status.created_at;
 
 	const [commentsList, setCommentsList] = useState<CommentListType>(
-		Object.values(props.status.comments),
+		props.status.comments,
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const permissions = useContext(PermissionsContext);
@@ -62,7 +62,7 @@ function Status(props: StatusProps): React.ReactElement {
 
 					setCommentsList((prevCommentsList: CommentListType) => [
 						...prevCommentsList,
-						...Object.values(newComments),
+						...newComments,
 					]);
 				})
 				.finally(() => {
