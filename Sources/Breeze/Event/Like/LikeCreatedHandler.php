@@ -7,10 +7,11 @@ namespace Breeze\Event\Like;
 use Breeze\Breeze;
 use Breeze\Enums\LikesEnum;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Service\ProfileService;
 
 class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 {
-	public const string TARGET_HREF = '{scriptUrl}?action={action};id={contentId}';
+	public const string TARGET_HREF = '{scriptUrl}?action={action};area={area};u={wallOwnerId}{anchor}';
 
 	public function resolve(): array
 	{
@@ -37,12 +38,22 @@ class LikeCreatedHandler extends BaseHandler implements EventHandlerInterface
 
 	protected function buildTargetHref(): void
 	{
+		$wallOwnerId = $this->extra['wall_id'] ?? 0;
+		$contentType = $this->extra['content_type'] ?? '';
 		$contentId = $this->extra['content_id'] ?? 0;
+
+		$anchor = match ($contentType) {
+			LikesEnum::Status->value => '#status-' . $contentId,
+			LikesEnum::Comments->value => '#comment-' . $contentId,
+			default => '',
+		};
 
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-			'action' => Breeze::ACTION_WALL,
-			'contentId' => $contentId,
+			'action' => Breeze::ACTION_PROFILE,
+			'area' => ProfileService::AREA,
+			'wallOwnerId' => $wallOwnerId,
+			'anchor' => $anchor,
 		]));
 	}
 }

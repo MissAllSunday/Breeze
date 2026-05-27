@@ -58,7 +58,7 @@ class LikeCreatedHandlerTest extends TestCase
 
 		$this->alertEntity->expects($this->once())
 			->method('getExtra')
-			->willReturn(['content_type' => $contentType, 'content_id' => $contentId]);
+			->willReturn(['content_type' => $contentType, 'content_id' => $contentId, 'wall_id' => 0]);
 
 		// getText is called twice: once for 'alert_like', once for 'alert_' . $contentType
 		$this->handler->expects($this->exactly(2))
@@ -79,7 +79,7 @@ class LikeCreatedHandlerTest extends TestCase
 				],
 				[
 					LikeCreatedHandler::TARGET_HREF,
-					['scriptUrl' => $scriptUrl, 'action' => 'wall', 'contentId' => $contentId],
+					['scriptUrl' => $scriptUrl, 'action' => 'profile', 'area' => 'summary', 'wallOwnerId' => 0, 'anchor' => '#status-' . $contentId],
 					$parsedTargetHref,
 				],
 			]);
@@ -217,13 +217,18 @@ class LikeCreatedHandlerTest extends TestCase
 	{
 		$contentType = LikesEnum::Status->value;
 		$contentId = 456;
+		$wallOwnerId = 1;
 		$scriptUrl = 'http://example.com';
-		$parsedTargetHref = 'http://example.com?action=wall;id=456';
+		$parsedTargetHref = 'http://example.com?action=profile;area=summary;u=1#status-456';
 
 		$reflection = new \ReflectionClass($this->handler);
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['content_type' => $contentType, 'content_id' => $contentId]);
+		$extraProperty->setValue($this->handler, [
+			'content_type' => $contentType,
+			'content_id' => $contentId,
+			'wall_id' => $wallOwnerId,
+		]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -233,8 +238,12 @@ class LikeCreatedHandlerTest extends TestCase
 			->method('parserText')
 			->with(
 				LikeCreatedHandler::TARGET_HREF,
-				$this->callback(function ($params) use ($scriptUrl, $contentId) {
-					return $params['scriptUrl'] === $scriptUrl && $params['action'] === 'wall' && $params['contentId'] === $contentId;
+				$this->callback(function ($params) use ($scriptUrl, $wallOwnerId) {
+					return $params['scriptUrl'] === $scriptUrl
+						&& $params['action'] === 'profile'
+						&& $params['area'] === 'summary'
+						&& $params['wallOwnerId'] === $wallOwnerId
+						&& $params['anchor'] === '#status-456';
 				})
 			)
 			->willReturn($parsedTargetHref);
@@ -252,13 +261,18 @@ class LikeCreatedHandlerTest extends TestCase
 	{
 		$contentType = LikesEnum::Comments->value;
 		$contentId = 789;
+		$wallOwnerId = 1;
 		$scriptUrl = 'http://example.com';
-		$parsedTargetHref = 'http://example.com?action=wall;id=789';
+		$parsedTargetHref = 'http://example.com?action=profile;area=summary;u=1#comment-789';
 
 		$reflection = new \ReflectionClass($this->handler);
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['content_type' => $contentType, 'content_id' => $contentId]);
+		$extraProperty->setValue($this->handler, [
+			'content_type' => $contentType,
+			'content_id' => $contentId,
+			'wall_id' => $wallOwnerId,
+		]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -268,8 +282,12 @@ class LikeCreatedHandlerTest extends TestCase
 			->method('parserText')
 			->with(
 				LikeCreatedHandler::TARGET_HREF,
-				$this->callback(function ($params) use ($scriptUrl, $contentId) {
-					return $params['scriptUrl'] === $scriptUrl && $params['action'] === 'wall' && $params['contentId'] === $contentId;
+				$this->callback(function ($params) use ($scriptUrl, $wallOwnerId) {
+					return $params['scriptUrl'] === $scriptUrl
+						&& $params['action'] === 'profile'
+						&& $params['area'] === 'summary'
+						&& $params['wallOwnerId'] === $wallOwnerId
+						&& $params['anchor'] === '#comment-789';
 				})
 			)
 			->willReturn($parsedTargetHref);

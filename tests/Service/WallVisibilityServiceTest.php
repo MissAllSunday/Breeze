@@ -38,6 +38,7 @@ class WallVisibilityServiceTest extends TestCase
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
 		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
 		$this->permissionsService->method('canViewActivity')->willReturn(true);
+		$this->permissionsService->method('canViewProfileWall')->willReturn(true);
 
 		$this->wallVisibilityService = new WallVisibilityService(
 			$this->userSettingsRepository,
@@ -401,7 +402,29 @@ class WallVisibilityServiceTest extends TestCase
 				'viewerId' => 100,
 				'expectedVisibleIds' => [],
 			],
+			'wall owner viewing their own wall, no blocks → all visible' => [
+				'settingsById' => [2 => $open, 1 => $open],
+				'statusRows' => [
+					['id' => 22, 'user_id' => 1, 'wall_id' => 2],
+					['id' => 23, 'user_id' => 2, 'wall_id' => 2],
+				],
+				'viewerId' => 2,
+				'expectedVisibleIds' => [22, 23],
+			],
 		];
+	}
+
+	public function testFilterStatusesForWallHidesAllWhenCanViewProfileWallFails(): void
+	{
+		$mock = $this->createStub(PermissionsServiceInterface::class);
+		$mock->method('canViewProfileWall')->willReturn(false);
+		$mock->method('canViewActivity')->willReturn(true);
+
+		$service = new WallVisibilityService($this->userSettingsRepository, $mock);
+
+		$statuses = [22 => StatusEntity::from(['id' => 22, 'user_id' => 1, 'wall_id' => 2])];
+
+		$this->assertSame([], $service->filterStatusesForWall($statuses, 2));
 	}
 
 	/**

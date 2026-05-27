@@ -51,7 +51,7 @@ class CommentDeletedHandlerTest extends TestCase
 
 		$this->alertEntity->expects($this->once())
 			->method('getExtra')
-			->willReturn(['status_id' => 123]);
+			->willReturn(['wall_id' => 1]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -59,7 +59,7 @@ class CommentDeletedHandlerTest extends TestCase
 
 		$this->handler->expects($this->once())
 			->method('parserText')
-			->willReturn('http://example.com?action=wall;id=123');
+			->willReturn('http://example.com?action=profile;area=summary;u=1');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref');
@@ -142,29 +142,32 @@ class CommentDeletedHandlerTest extends TestCase
 		$method->invoke($this->handler);
 	}
 
-	public function testBuildTargetHrefWithStatusId(): void
+	public function testBuildTargetHrefWithWallId(): void
 	{
 		$reflection = new \ReflectionClass($this->handler);
 
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['status_id' => 456]);
+		$extraProperty->setValue($this->handler, ['wall_id' => 1]);
 
 		$this->handler->expects($this->once())
 			->method('global')
 			->willReturn('http://example.com');
 
+		$expectedUrl = 'http://example.com?action=profile;area=summary;u=1';
+
 		$this->handler->expects($this->once())
 			->method('parserText')
 			->with($this->anything(), $this->callback(function ($params) {
-				return isset($params['statusId']) && $params['statusId'] === 456
-					&& isset($params['anchor']) && $params['anchor'] === '';
+				return isset($params['wallOwnerId']) && $params['wallOwnerId'] === 1
+					&& isset($params['area']) && $params['area'] === 'summary'
+					&& isset($params['action']) && $params['action'] === 'profile';
 			}))
-			->willReturn('http://example.com?action=wall;id=456');
+			->willReturn($expectedUrl);
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;id=456');
+			->with($expectedUrl);
 
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);

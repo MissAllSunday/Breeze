@@ -154,7 +154,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class], 'shared' => true],
 		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, WallVisibilityService::class, EventServiceProvider::class], 'shared' => true],
 		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
-		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class], 'shared' => true],
+		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class, UserSettingsRepository::class], 'shared' => true],
 		WallVisibilityService::class => ['arguments' => [UserSettingsRepository::class, PermissionsService::class], 'shared' => true],
 	];
 

@@ -351,6 +351,27 @@ class PermissionsServiceTest extends TestCase
 		$this->assertTrue($mock->canViewActivity(1));
 	}
 
+	public function testCanViewProfileWallReturnsFalseWithoutPermission(): void
+	{
+		// In the test environment profile_view is not granted → must return false.
+		$result = $this->permissionsService->canViewProfileWall(0);
+
+		$this->assertFalse($result);
+	}
+
+	public function testCanViewProfileWallReturnsTrueWhenPermissionGranted(): void
+	{
+		$mock = $this->getMockBuilder(PermissionsService::class)
+			->onlyMethods(['isAllowedTo'])
+			->getMock();
+
+		$mock->method('isAllowedTo')
+			->with(PermissionsEnum::PROFILE_VIEW)
+			->willReturn(true);
+
+		$this->assertTrue($mock->canViewProfileWall(1));
+	}
+
 	public function testIsFeatureEnable(): void
 	{
 		$result = $this->permissionsService->isFeatureEnable();

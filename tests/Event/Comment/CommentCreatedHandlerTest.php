@@ -175,23 +175,27 @@ class CommentCreatedHandlerTest extends TestCase
 
 		$extraProperty = $reflection->getProperty('extra');
 		$extraProperty->setAccessible(true);
-		$extraProperty->setValue($this->handler, ['status_id' => 456, 'comment_id' => 789]);
+		$extraProperty->setValue($this->handler, ['wall_id' => 1, 'comment_id' => 789]);
 
 		$this->handler->expects($this->once())
 			->method('global')
 			->willReturn('http://example.com');
 
+		$expectedUrl = 'http://example.com?action=profile;area=summary;u=1#comment-789';
+
 		$this->handler->expects($this->once())
 			->method('parserText')
 			->with($this->anything(), $this->callback(function ($params) {
-				return isset($params['statusId']) && $params['statusId'] === 456
-					&& isset($params['anchor']) && $params['anchor'] === '#comment-789';
+				return isset($params['wallOwnerId']) && $params['wallOwnerId'] === 1
+					&& isset($params['commentId']) && $params['commentId'] === 789
+					&& isset($params['area']) && $params['area'] === 'summary'
+					&& isset($params['action']) && $params['action'] === 'profile';
 			}))
-			->willReturn('http://example.com?action=wall;id=456#comment-789');
+			->willReturn($expectedUrl);
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;id=456#comment-789');
+			->with($expectedUrl);
 
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);

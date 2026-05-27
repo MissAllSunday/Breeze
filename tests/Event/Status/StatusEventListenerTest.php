@@ -90,6 +90,30 @@ class StatusEventListenerTest extends TestCase
 	/**
 	 * @throws Exception
 	 */
+	public function testOnStatusCreatedStoresWallIdInExtra(): void
+	{
+		$statusEntity = $this->createStub(StatusEntity::class);
+		$statusEntity->method('getId')->willReturn(32);
+		$statusEntity->method('getUserId')->willReturn(1);
+		$statusEntity->method('getWallId')->willReturn(2);
+
+		$event = new StatusCreatedEvent([$statusEntity]);
+
+		$this->alertService->expects($this->once())
+			->method('send')
+			->with($this->callback(function ($alert) {
+				$extra = $alert->getExtra();
+
+				return isset($extra['wall_id']) && $extra['wall_id'] === 2
+					&& isset($extra['status_id']) && $extra['status_id'] === 32;
+			}));
+
+		$this->listener->onStatusCreated($event);
+	}
+
+	/**
+	 * @throws Exception
+	 */
 	public function testOnStatusCreatedUsesCorrectContentType(): void
 	{
 		$statusEntity = $this->createStub(StatusEntity::class);

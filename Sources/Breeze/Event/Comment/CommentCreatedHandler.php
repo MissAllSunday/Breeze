@@ -7,10 +7,11 @@ namespace Breeze\Event\Comment;
 use Breeze\Breeze;
 use Breeze\Event\EventAbstract;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Service\ProfileService;
 
 class CommentCreatedHandler extends BaseHandler implements EventHandlerInterface
 {
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};id={statusId}{anchor}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};area={area};u={wallOwnerId}#comment-{commentId}';
 
 	public function resolve(): array
 	{
@@ -36,15 +37,15 @@ class CommentCreatedHandler extends BaseHandler implements EventHandlerInterface
 
 	protected function buildTargetHref(): void
 	{
-		$statusId = $this->extra['status_id'] ?? 0;
+		$wallOwnerId = $this->extra['wall_id'] ?? 0;
 		$commentId = $this->extra['comment_id'] ?? 0;
-		$anchor = $commentId !== 0 ? '#comment-' . $commentId : '';
 
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-			'action' => Breeze::ACTION_WALL,
-			'statusId' => $statusId,
-			'anchor' => $anchor,
+			'action' => Breeze::ACTION_PROFILE,
+			'area' => ProfileService::AREA,
+			'wallOwnerId' => $wallOwnerId,
+			'commentId' => $commentId,
 		]));
 	}
 }

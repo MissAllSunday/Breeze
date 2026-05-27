@@ -6,6 +6,7 @@ namespace Breeze\Event\Like;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
+use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntityInterface;
 use Breeze\Enums\LikesEnum;
@@ -55,8 +56,25 @@ class LikeEventListener
 			AlertEntity::EXTRA => [
 				'content_id' => $contentId,
 				'content_type' => $contentType,
+				'wall_id' => $this->resolveWallId($likeEntity, $content),
 			],
 		]));
+	}
+
+	protected function resolveWallId(LikeEntity $likeEntity, SharedEntityInterface $content): int
+	{
+		if ($likeEntity->getContentType() === LikesEnum::Status) {
+			return $content->getWallId();
+		}
+
+		if ($content instanceof CommentEntity) {
+			/** @var StatusRepositoryInterface $statusRepository */
+			$statusRepository = $this->container->get(StatusRepository::class);
+
+			return $statusRepository->getBasicInfoById($content->getStatusId())->getWallId();
+		}
+
+		return 0;
 	}
 
 	protected function getContent(LikeEntity $likeEntity): SharedEntityInterface

@@ -8,6 +8,7 @@ use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
 use Breeze\Service\AlertServiceInterface;
 use Breeze\Traits\TextTrait;
+use Breeze\Util\Json;
 
 class StatusEventListener
 {
@@ -40,6 +41,10 @@ class StatusEventListener
 			AlertEntity::CONTENT_TYPE => self::CONTENT_TYPE,
 			AlertEntity::CONTENT_ID => $statusId,
 			AlertEntity::CONTENT_ACTION => self::CONTENT_ACTION_CREATED,
+			AlertEntity::EXTRA => Json::encode([
+				'wall_id' => $wallId,
+				'status_id' => $statusId,
+			]),
 		]));
 	}
 

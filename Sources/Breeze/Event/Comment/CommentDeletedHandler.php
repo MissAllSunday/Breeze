@@ -7,10 +7,11 @@ namespace Breeze\Event\Comment;
 use Breeze\Breeze;
 use Breeze\Event\EventAbstract;
 use Breeze\Event\EventHandlerInterface;
+use Breeze\Service\ProfileService;
 
 class CommentDeletedHandler extends BaseHandler implements EventHandlerInterface
 {
-	protected const string TARGET_HREF = '{scriptUrl}?action={action};id={statusId}{anchor}';
+	protected const string TARGET_HREF = '{scriptUrl}?action={action};area={area};u={wallOwnerId}';
 
 	public function resolve(): array
 	{
@@ -36,16 +37,13 @@ class CommentDeletedHandler extends BaseHandler implements EventHandlerInterface
 
 	protected function buildTargetHref(): void
 	{
-		$statusId = $this->extra['status_id'] ?? 0;
+		$wallOwnerId = $this->extra['wall_id'] ?? 0;
 
-		// For a deleted comment, the target might still be the status where it was deleted from.
-		// If the status itself is deleted, this link might lead to a DataNotFoundException,
-		// which is handled by AlertService::handle().
 		$this->alertEntity->setTargetHref($this->parserText(self::TARGET_HREF, [
 			'scriptUrl' => $this->global(Breeze::SCRIPT_URL),
-			'action' => Breeze::ACTION_WALL,
-			'statusId' => $statusId,
-			'anchor' => '',
+			'action' => Breeze::ACTION_PROFILE,
+			'area' => ProfileService::AREA,
+			'wallOwnerId' => $wallOwnerId,
 		]));
 	}
 }

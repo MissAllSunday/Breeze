@@ -86,16 +86,30 @@ class LikeEventListenerTest extends TestCase
 		$commentEntity = $this->createMock(CommentEntity::class);
 		$commentEntity->method('getUserId')->willReturn(15);
 		$commentEntity->method('getId')->willReturn(456);
+		$commentEntity->method('getStatusId')->willReturn(10);
 
-		$this->container->expects($this->once())
+		$parentStatus = $this->createMock(StatusEntity::class);
+		$parentStatus->method('getWallId')->willReturn(0);
+
+		$this->container->expects($this->exactly(2))
 			->method('get')
-			->with(CommentRepository::class)
-			->willReturn($this->commentRepository);
+			->willReturnCallback(function (string $class) {
+				if ($class === StatusRepository::class) {
+					return $this->statusRepository;
+				}
+
+				return $this->commentRepository;
+			});
 
 		$this->commentRepository->expects($this->once())
 			->method('getById')
 			->with(456)
 			->willReturn($commentEntity);
+
+		$this->statusRepository->expects($this->once())
+			->method('getBasicInfoById')
+			->with(10)
+			->willReturn($parentStatus);
 
 		$this->alertService->expects($this->once())
 			->method('send');
@@ -150,6 +164,76 @@ class LikeEventListenerTest extends TestCase
 
 		$this->alertService->expects($this->never())
 			->method('send');
+
+		$event = new LikeCreatedEvent($likeEntity);
+		$this->listener->onLikeCreated($event);
+	}
+
+	public function testResolveWallIdForStatusLike(): void
+	{
+		$likeEntity = $this->createMock(LikeEntity::class);
+		$likeEntity->method('getContentId')->willReturn(10);
+		$likeEntity->method('getContentType')->willReturn(LikesEnum::Status);
+		$likeEntity->method('getIdMember')->willReturn(5);
+
+		$statusEntity = $this->createMock(StatusEntity::class);
+		$statusEntity->method('getUserId')->willReturn(20);
+		$statusEntity->method('getId')->willReturn(10);
+		$statusEntity->method('getWallId')->willReturn(99);
+
+		$this->container->method('get')
+			->with(StatusRepository::class)
+			->willReturn($this->statusRepository);
+
+		$this->statusRepository->method('getById')->willReturn($statusEntity);
+
+		$this->alertService->expects($this->once())
+			->method('send')
+			->with($this->callback(function ($alert) {
+				$extra = $alert->getExtra();
+
+				return isset($extra['wall_id']) && $extra['wall_id'] === 99;
+			}));
+
+		$event = new LikeCreatedEvent($likeEntity);
+		$this->listener->onLikeCreated($event);
+	}
+
+	public function testResolveWallIdForCommentLikeLoadsParentStatus(): void
+	{
+		$likeEntity = $this->createMock(LikeEntity::class);
+		$likeEntity->method('getContentId')->willReturn(55);
+		$likeEntity->method('getContentType')->willReturn(LikesEnum::Comments);
+		$likeEntity->method('getIdMember')->willReturn(5);
+
+		$commentEntity = $this->createMock(\Breeze\Entity\CommentEntity::class);
+		$commentEntity->method('getUserId')->willReturn(20);
+		$commentEntity->method('getId')->willReturn(55);
+		$commentEntity->method('getStatusId')->willReturn(10);
+
+		$parentStatus = $this->createMock(StatusEntity::class);
+		$parentStatus->method('getWallId')->willReturn(77);
+
+		$this->container->expects($this->exactly(2))
+			->method('get')
+			->willReturnCallback(function (string $class) use ($parentStatus) {
+				if ($class === StatusRepository::class) {
+					return $this->statusRepository;
+				}
+
+				return $this->commentRepository;
+			});
+
+		$this->commentRepository->method('getById')->with(55)->willReturn($commentEntity);
+		$this->statusRepository->method('getBasicInfoById')->with(10)->willReturn($parentStatus);
+
+		$this->alertService->expects($this->once())
+			->method('send')
+			->with($this->callback(function ($alert) {
+				$extra = $alert->getExtra();
+
+				return isset($extra['wall_id']) && $extra['wall_id'] === 77;
+			}));
 
 		$event = new LikeCreatedEvent($likeEntity);
 		$this->listener->onLikeCreated($event);

@@ -29,6 +29,10 @@ class WallVisibilityService implements WallVisibilityServiceInterface
 
 	public function filterStatusesForFeed(array $statuses, int $viewerId): array
 	{
+		if ($statuses === [] || !$this->permissionsService->canViewActivity($viewerId)) {
+			return [];
+		}
+
 		return $this->filterStatuses(
 			$statuses,
 			$viewerId,
@@ -43,6 +47,10 @@ class WallVisibilityService implements WallVisibilityServiceInterface
 
 	public function filterStatusesForWall(array $statuses, int $viewerId): array
 	{
+		if ($statuses === [] || !$this->permissionsService->canViewProfileWall($viewerId)) {
+			return [];
+		}
+
 		return $this->filterStatuses(
 			$statuses,
 			$viewerId,
@@ -62,10 +70,6 @@ class WallVisibilityService implements WallVisibilityServiceInterface
 	 */
 	private function filterStatuses(array $statuses, int $viewerId, callable $predicate): array
 	{
-		if ($statuses === [] || !$this->permissionsService->canViewActivity($viewerId)) {
-			return [];
-		}
-
 		$ids = [$viewerId];
 		foreach ($statuses as $status) {
 			$ids[] = $status->getUserId();
@@ -82,7 +86,7 @@ class WallVisibilityService implements WallVisibilityServiceInterface
 
 	public function filterVisibleComments(array $comments, int $viewerId): array
 	{
-		if ($comments === [] || !$this->permissionsService->canViewActivity($viewerId)) {
+		if ($comments === [] || !$this->permissionsService->canViewProfileWall($viewerId)) {
 			return [];
 		}
 

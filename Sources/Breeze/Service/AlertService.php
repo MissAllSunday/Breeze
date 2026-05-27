@@ -9,13 +9,15 @@ use Breeze\Entity\AlertEntity;
 use Breeze\Entity\EntityInterface;
 use Breeze\Event\HandlerServiceProvider;
 use Breeze\Repository\AlertRepositoryInterface;
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 
 class AlertService extends BaseService implements AlertServiceInterface
 {
 	public function __construct(
 		protected AlertRepositoryInterface $alertRepository,
-		protected HandlerServiceProvider $handlerServiceProvider
+		protected HandlerServiceProvider $handlerServiceProvider,
+		protected SettingsRepositoryInterface $userSettingsRepository,
 	) {
 		$this->setLanguage(Breeze::NAME . 'Alerts');
 		parent::__construct($alertRepository);
@@ -23,12 +25,32 @@ class AlertService extends BaseService implements AlertServiceInterface
 
 	public function send(AlertEntity $alertEntity): void
 	{
+		if ($this->isBlockedRelationship($alertEntity->getIdMemberStarted(), $alertEntity->getIdMember())) {
+			return;
+		}
+
 		if ($this->checkAlert($alertEntity)) {
 			return;
 		}
+
 		$this->alertRepository->insert($alertEntity);
 
 		updateMemberData($alertEntity->getIdMember(), ['alerts' => '+']);
+	}
+
+	private function isBlockedRelationship(int $senderId, int $recipientId): bool
+	{
+		if ($senderId === 0 || $recipientId === 0) {
+			return false;
+		}
+
+		$settings = $this->userSettingsRepository->getByIds([$senderId, $recipientId]);
+
+		$senderBlockList = ($settings[$senderId] ?? null)?->getBlockList() ?? [];
+		$recipientBlockList = ($settings[$recipientId] ?? null)?->getBlockList() ?? [];
+
+		return in_array($recipientId, $senderBlockList, true)
+			|| in_array($senderId, $recipientBlockList, true);
 	}
 
 	public function handle(array &$alerts): void

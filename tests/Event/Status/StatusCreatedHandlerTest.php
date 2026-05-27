@@ -154,9 +154,11 @@ class StatusCreatedHandlerTest extends TestCase
 
 	public function testBuildTargetHrefUsesContentId(): void
 	{
-		$this->alertEntity->expects($this->once())
-			->method('getContentId')
-			->willReturn(999);
+		$reflection = new \ReflectionClass($this->handler);
+
+		$extraProperty = $reflection->getProperty('extra');
+		$extraProperty->setAccessible(true);
+		$extraProperty->setValue($this->handler, ['wall_id' => 2, 'status_id' => 999]);
 
 		$this->handler->expects($this->once())
 			->method('global')
@@ -166,15 +168,14 @@ class StatusCreatedHandlerTest extends TestCase
 			->method('parserText')
 			->with($this->anything(), $this->callback(function ($params) {
 				return isset($params['statusId']) && $params['statusId'] === 999
-					&& isset($params['anchor']) && $params['anchor'] === '#status-999';
+					&& isset($params['wallOwnerId']) && $params['wallOwnerId'] === 2;
 			}))
-			->willReturn('http://example.com?action=wall;id=999#status-999');
+			->willReturn('http://example.com?action=profile;area=summary;u=2#status-999');
 
 		$this->alertEntity->expects($this->once())
 			->method('setTargetHref')
-			->with('http://example.com?action=wall;id=999#status-999');
+			->with('http://example.com?action=profile;area=summary;u=2#status-999');
 
-		$reflection = new \ReflectionClass($this->handler);
 		$method = $reflection->getMethod('buildTargetHref');
 		$method->setAccessible(true);
 		$method->invoke($this->handler);
