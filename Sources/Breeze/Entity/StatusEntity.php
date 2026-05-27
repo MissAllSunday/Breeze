@@ -90,7 +90,7 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 			'body' => $this->getBody(),
 			'created_at' => Time::from($this->getCreatedAt()),
 			'likesInfo' => $this->getLikesInfo(),
-			'comments' => $this->getComments(),
+			'comments' => array_values($this->getComments()),
 			'userData' => $this->getUsersInfo()[$userId] ?? [],
 			'isNew' => $this->isNew(),
 		];
