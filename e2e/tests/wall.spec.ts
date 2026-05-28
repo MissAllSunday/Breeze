@@ -212,9 +212,9 @@ test.describe('Wall - Post Status', () => {
     // A 4th status should appear in the list
     await expect(page.locator('li.status')).toHaveCount(4, { timeout: 10_000 });
 
-    // The new status should contain the posted text
+    // The new status should appear at the top (newest-first ordering)
     const allStatuses = page.locator('li.status');
-    await expect(allStatuses.last()).toContainText('My new E2E status post');
+    await expect(allStatuses.first()).toContainText('My new E2E status post');
   });
 
   test('editor clears after successful post', async ({ page }) => {

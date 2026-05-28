@@ -98,8 +98,8 @@ function WallFeed(props: WallProps): React.JSX.Element {
 				}
 
 				setStatusList((prevStatusList: StatusListType) => [
-					...prevStatusList,
 					...newStatus,
+					...prevStatusList,
 				]);
 			})
 			.finally(() => {
