@@ -48,6 +48,9 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		$userInfo = $this->getCurrentUserInfo();
 		$currentUserId = (int) ($userInfo['id'] ?? 0);
 		$wallUserSettings = $this->userSettingsRepository->getById($profileId);
+		$currentUserSettings = $currentUserId === $profileId
+			? $wallUserSettings
+			: $this->userSettingsRepository->getById($currentUserId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
 		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
 
@@ -62,6 +65,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'canShowAddBuddyButton' => $this->canShowAddBuddyButton($profileId, $currentUserId, $wallUserSettings),
 			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
+			UserSettingsEntity::CONFIRM_POST => $currentUserSettings->getConfirmPost(),
 			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
 			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
 		]);

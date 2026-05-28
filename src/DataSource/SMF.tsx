@@ -54,6 +54,8 @@ const editorIsRich = window.breezeEditorIsRich || false;
 // @ts-expect-error editor gets defined serverside
 const currentUserAvatar =
 	window.breezeCurrentUserAvatar || `${window.smf_avatars_url}/default.png`;
+// @ts-expect-error setting is loaded server side
+const confirmPost: number = window.breezeConfirmPost ?? 0;
 
 const csrfToken = {
 	// @ts-expect-error CSRF token var name set serverside
@@ -79,6 +81,7 @@ const smfVars = {
 	editorOptions,
 	editorIsRich,
 	currentUserAvatar,
+	confirmPost,
 	csrfToken,
 };
 

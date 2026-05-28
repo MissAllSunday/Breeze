@@ -15,8 +15,9 @@ class UserSettingsEntityTest extends TestCase
 			'wall' => 'check',
 			'generalWall' => 'check',
 			'paginationNumber' => 'text',
-			'aboutMe' => 'textArea',
 			'enableBuddiesTab' => 'check',
+			'confirmPost' => 'check',
+			'aboutMe' => 'textArea',
 		], UserSettingsEntity::getColumns());
 	}
 
@@ -26,8 +27,9 @@ class UserSettingsEntityTest extends TestCase
 			'wall' => 0,
 			'generalWall' => 0,
 			'paginationNumber' => 5,
-			'aboutMe' => '',
 			'enableBuddiesTab' => 0,
+			'confirmPost' => 0,
+			'aboutMe' => '',
 		], UserSettingsEntity::getDefaultValues());
 	}
 
@@ -38,6 +40,7 @@ class UserSettingsEntityTest extends TestCase
 			'generalWall' => 0,
 			'paginationNumber' => 5,
 			'enableBuddiesTab' => 0,
+			'confirmPost' => 0,
 		], UserSettingsEntity::getInts());
 	}
 
@@ -62,6 +65,8 @@ class UserSettingsEntityTest extends TestCase
 		$this->assertEquals(0, $entity->castValue(UserSettingsEntity::WALL, '0'));
 		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::GENERAL_WALL, '1'));
 		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::ENABLE_BUDDIES_TAB, '1'));
+		$this->assertEquals(1, $entity->castValue(UserSettingsEntity::CONFIRM_POST, '1'));
+		$this->assertEquals(0, $entity->castValue(UserSettingsEntity::CONFIRM_POST, '0'));
 		$this->assertEquals(10, $entity->castValue(UserSettingsEntity::PAGINATION_NUM, '10'));
 
 		// Test integer casting for member ID

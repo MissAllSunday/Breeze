@@ -42,6 +42,8 @@ $txt['Breeze_user_settings_aboutMe'] = 'Enable the About me tab';
 $txt['Breeze_user_settings_aboutMe_desc'] = 'Leave empty to disable it. You can use BBC';
 $txt['Breeze_user_settings_enableBuddiesTab'] = 'Enable the "Buddies" tab';
 $txt['Breeze_user_settings_enableBuddiesTab_desc'] = 'This will show a tab showing all your buddies';
+$txt['Breeze_user_settings_confirmPost'] = 'Ask for confirmation before posting';
+$txt['Breeze_user_settings_confirmPost_desc'] = 'Show a confirmation dialog each time you post a status or comment';
 $txt['Breeze_user_modules_buddies_none'] = 'This user doesn\'t have any buddies';
 
 // Likes

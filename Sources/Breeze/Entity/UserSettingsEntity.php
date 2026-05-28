@@ -18,6 +18,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public const string BUDDIES = 'buddies';
 	public const string ABOUT_ME = 'aboutMe';
 	public const string USER_ID = 'userId';
+	public const string CONFIRM_POST = 'confirmPost';
 
 	protected int $wall = 0;
 
@@ -26,6 +27,8 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	protected int $paginationNumber = 5;
 
 	protected int $enableBuddiesTab = 0;
+
+	protected int $confirmPost = 0;
 
 	protected string $aboutMe = '';
 
@@ -47,6 +50,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::GENERAL_WALL => SettingsEntity::TYPE_CHECK,
 			self::PAGINATION_NUM => SettingsEntity::TYPE_TEXT,
 			self::ENABLE_BUDDIES_TAB => SettingsEntity::TYPE_CHECK,
+			self::CONFIRM_POST => SettingsEntity::TYPE_CHECK,
 			self::ABOUT_ME => SettingsEntity::TYPE_TEXTAREA,
 		];
 	}
@@ -58,6 +62,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::GENERAL_WALL => 0,
 			self::PAGINATION_NUM => 5,
 			self::ENABLE_BUDDIES_TAB => 0,
+			self::CONFIRM_POST => 0,
 			self::ABOUT_ME => '',
 		];
 	}
@@ -109,6 +114,16 @@ class UserSettingsEntity extends Entity implements EntityInterface
 	public function setEnableBuddiesTab(int $enableBuddiesTab): void
 	{
 		$this->enableBuddiesTab = $enableBuddiesTab;
+	}
+
+	public function getConfirmPost(): int
+	{
+		return $this->confirmPost;
+	}
+
+	public function setConfirmPost(int $confirmPost): void
+	{
+		$this->confirmPost = $confirmPost;
 	}
 
 	public function getAboutMe(): string
@@ -163,6 +178,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			self::WALL,
 			self::GENERAL_WALL,
 			self::ENABLE_BUDDIES_TAB,
+			self::CONFIRM_POST,
 			self::PAGINATION_NUM,
 			MemberEntity::ID => (int) $value,
 			self::BLOCK_LIST, self::BUDDIES => explode(',', $value),
@@ -178,6 +194,7 @@ class UserSettingsEntity extends Entity implements EntityInterface
 			'paginationNumber' => $this->getPaginationNumber(),
 			'aboutMe' => $this->getAboutMe(),
 			'enableBuddiesTab' => $this->getEnableBuddiesTab(),
+			'confirmPost' => $this->getConfirmPost(),
 		];
 	}
 }

@@ -24,6 +24,7 @@ vi.mock("../DataSource/SMF", () => ({
 		},
 		editorIsRich: true,
 		youSure: "Are you sure?",
+		confirmPost: 1,
 	},
 }));
 vi.mock("../DataSource/Txt", () => ({
@@ -165,5 +166,23 @@ describe("Editor component", () => {
 	it("does not initialize SMF editor when isFull is false", () => {
 		render(<Editor saveContent={mockSaveContent} isFull={false} />);
 		expect(smfVars.smfEditorHandler.create).not.toHaveBeenCalled();
+	});
+
+	it("skips confirmation dialog when confirmPost is 0", async () => {
+		smfVars.confirmPost = 0;
+		render(<Editor saveContent={mockSaveContent} isFull={false} />);
+		const user: UserEvent = userEvent.setup();
+		const textarea = screen.getByTestId("content");
+		const sendButton = screen.getByTestId("send");
+
+		await user.type(textarea, "No confirm needed");
+		await user.click(sendButton);
+
+		await waitFor(() => {
+			expect(window.confirm).not.toHaveBeenCalled();
+			expect(mockSaveContent).toHaveBeenCalledWith("No confirm needed");
+		});
+
+		smfVars.confirmPost = 1;
 	});
 });

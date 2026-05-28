@@ -47,7 +47,7 @@ const Editor: React.FunctionComponent<EditorProps> = (props: EditorProps) => {
 			);
 		}
 
-		if (!window.confirm(smfVars.youSure)) {
+		if (smfVars.confirmPost && !window.confirm(smfVars.youSure)) {
 			return;
 		}
 
