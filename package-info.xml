@@ -53,7 +53,10 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
 		<remove-dir name="$boarddir/breezeVendor" />
 		<remove-file name="$themedir/Breeze.template.php" />
 		<remove-file name="$themedir/BreezeAdmin.template.php" />
+		<remove-file name="$themedir/BreezeForm.template.php" />
+		<remove-file name="$themedir/BreezeUserSettings.template.php" />
 		<remove-file name="$themedir/css/breeze.css" />
+		<remove-file name="$themedir/scripts/breeze-admin-feed.js" />
 		<remove-dir name="$themedir/scripts/breezeComponents" />
 		<remove-file name="$languagedir/Breeze.english.php" />
 		<remove-file name="$languagedir/BreezeAlerts.english.php" />
