@@ -54,6 +54,7 @@ zip -r "$ZIP_NAME" \
   installCheck.php \
   License \
   package-info.xml \
+  Readme.txt \
   README.md
 echo "==> Created ${ZIP_NAME}"
 

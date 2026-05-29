@@ -7,7 +7,7 @@
 	<type>modification</type>
 
 	<install for="2.1 - 2.1.99">
-		<readme>README.md</readme>
+		<readme>Readme.txt</readme>
 		<license type="inline" parsebbc="false">
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -32,11 +32,6 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
         <hook hook="integrate_fetch_alerts" function="\Breeze\Breeze::alertsWrapper#" />
 		<redirect url="$scripturl?action=admin;area=breezeAdmin;sa=general" timeout="3000">redirect.txt</redirect>
 	</install>
-
-	<upgrade from="1.0-1.9.99" for="2.1 - 2.1.99">
-		<readme>README.md</readme>
-		<database>upgrade_cursor_indexes.php</database>
-	</upgrade>
 
 	<uninstall for="2.1 - 2.1.99">
 		<hook hook="integrate_pre_include" file="$boarddir/breezeVendor/autoload.php"  reverse="true" />
