@@ -10,6 +10,7 @@ use Breeze\Repository\InvalidStatusException;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Response;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class StatusController extends ApiBaseController
@@ -124,6 +125,8 @@ class StatusController extends ApiBaseController
 			$this->response->success('', $singleStatus);
 		} catch (DataNotFoundException $dataNotFoundException) {
 			$this->response->error($dataNotFoundException->getMessage());
+		} catch (EmptyDataException $emptyDataException) {
+			$this->response->error($emptyDataException->getMessage());
 		}
 	}
 

@@ -12,6 +12,9 @@ use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
 class DeleteStatus extends BaseActions implements ValidateDataInterface
 {
@@ -21,6 +24,15 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 	];
 
 	protected const string SUCCESS_KEY = 'deleted_status';
+
+	public function __construct(
+		Data $validateData,
+		User $validateUser,
+		Allow $validateAllow,
+		protected StatusRepositoryInterface $statusRepository
+	) {
+		parent::__construct($validateData, $validateUser, $validateAllow, $statusRepository);
+	}
 
 	/**
 	 * @throws NotAllowedException
@@ -36,8 +48,7 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 			return;
 		}
 
-		assert($this->repository instanceof StatusRepositoryInterface);
-		$status = $this->repository->getById($this->data[StatusEntity::ID]);
+		$status = $this->statusRepository->getById($this->data[StatusEntity::ID]);
 
 		if ($status->getWallId() === $currentUserId) {
 			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_STATUS, 'deleteStatus');

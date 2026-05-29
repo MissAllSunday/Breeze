@@ -13,10 +13,6 @@ use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Error;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
 use Breeze\Util\Response;
-use Breeze\Util\Validate\Validations\ValidateData;
-use Breeze\Util\Validate\Validations\ValidateDataInterface;
-
-
 
 class UserSettingsController extends BaseController
 {
@@ -35,13 +31,6 @@ class UserSettingsController extends BaseController
 	];
 
 	protected string $subAction;
-
-	private array $validators = [
-		'save' => [
-			'validator' => 'UserSettings',
-			'dataName' => UserSettingsEntity::IDENTIFIER,
-		],
-	];
 
 	public function __construct(
 		protected SettingsRepositoryInterface  $userRepository,
@@ -109,13 +98,6 @@ class UserSettingsController extends BaseController
 	public function getMainAction(): string
 	{
 		return self::ACTION_MAIN;
-	}
-
-	protected function setValidator(): ValidateDataInterface
-	{
-		$validatorName = ValidateData::getNameSpace() . ucfirst($this->validators[$this->subAction]['validator']);
-
-		return new $validatorName();
 	}
 
 	public function getActionName(): string
