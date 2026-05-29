@@ -29,8 +29,7 @@ Works with any SMF theme, no file edits required.
   [ Status & Comments ]
 
     Members post short status updates on any wall. Other members can
-    reply with comments. The editor supports BBC and includes a
-    live preview before posting.
+    reply with comments. The editor supports BBC.
 
   [ Likes ]
 

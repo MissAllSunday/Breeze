@@ -13,7 +13,7 @@ class ComponentsTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->components = new Components();
-		
+
 		// Initialize global context
 		$GLOBALS['context'] = [
 			'session_var' => 'foo',
@@ -28,12 +28,9 @@ class ComponentsTest extends TestCase
 			'Breeze_success_deleted_comment' => 'Comment deleted',
 			'Breeze_general_save' => 'Save',
 			'Breeze_general_delete' => 'Delete',
-			'Breeze_general_editing' => 'Editing',
 			'Breeze_general_close' => 'Close',
 			'Breeze_general_cancel' => 'Cancel',
 			'Breeze_general_send' => 'Send',
-			'Breeze_general_preview' => 'Preview',
-			'Breeze_general_previewing' => 'Previewing',
 			'Breeze_info_loading_end' => 'End',
 			'Breeze_load_more' => 'Load more',
 			'Breeze_info_empty_data' => 'Empty data',
