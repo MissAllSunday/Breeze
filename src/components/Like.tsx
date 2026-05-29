@@ -15,7 +15,7 @@ export const Like: React.FunctionComponent<LikeProps> = (props: LikeProps) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleLike = useCallback(() => {
-		if (!window.confirm(smfVars.youSure)) {
+		if (smfVars.confirmPost && !window.confirm(smfVars.youSure)) {
 			return;
 		}
 		setIsLoading(true);
