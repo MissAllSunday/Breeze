@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 global $txt;
 
-use Breeze\LikesEnum;
+use Breeze\Enums\LikesEnum;
 
 
 // types

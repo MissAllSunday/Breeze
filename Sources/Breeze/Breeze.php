@@ -43,7 +43,7 @@ class Breeze
 	public const string SUPPORT_URL = 'https://missallsunday.com';
 	public const string REACT_DOM_VERSION = '19.1.2';
 	public const string REACT_VERSION = '19.1.2';
-	public const string REACT_HASH = 'index-hUWgcMYJ';
+	public const string REACT_HASH = 'index-wJ0skmG2';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';
@@ -226,6 +226,15 @@ class Breeze
 		} catch (NotFoundExceptionInterface|ContainerExceptionInterface $exception) {
 			log_error($exception->getMessage());
 		}
+	}
+
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function alertsPrefWrapper(array &$alertTypes): void
+	{
+		$this->container->get(ProfileService::class)->hookAlertsPref($alertTypes);
 	}
 
 	/**

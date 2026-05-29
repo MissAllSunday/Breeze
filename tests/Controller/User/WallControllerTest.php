@@ -121,13 +121,11 @@ class WallControllerTest extends TestCase
 		$this->wallController->wall();
 	}
 
-	public function testWallSetsPageTitleWhenIdIsPresent(): void
+	public function testWallSetsGeneralWallPageTitle(): void
 	{
-		$statusId = 24;
 		$userId = 123;
-		$_REQUEST['id'] = $statusId;
 		$GLOBALS['user_info'] = ['id' => $userId];
-		$GLOBALS['txt']['Breeze_user_single_status'] = 'Single Status';
+		$GLOBALS['txt']['Breeze_generalWall'] = 'Wall';
 
 		$this->profileService->expects($this->once())
 			->method('setEditor');
@@ -138,10 +136,7 @@ class WallControllerTest extends TestCase
 
 		$this->wallController->wall();
 
-		$this->assertEquals('Single Status', $GLOBALS['context']['page_title']);
-
-		// Clean up
-		unset($_REQUEST['id']);
+		$this->assertEquals('Wall', $GLOBALS['context']['page_title']);
 	}
 
 	public function testWallDeniesAccessWithoutPermission(): void
