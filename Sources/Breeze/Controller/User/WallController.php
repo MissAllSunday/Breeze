@@ -38,6 +38,10 @@ class WallController extends BaseController
 			$this->setContextVars([
 				'page_title' => $this->getText('user_single_status'),
 			]);
+		} else {
+			$this->setContextVars([
+				'page_title' => $this->getText('generalWall'),
+			]);
 		}
 
 		$this->render(__FUNCTION__);
