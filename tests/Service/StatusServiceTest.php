@@ -306,9 +306,14 @@ class StatusServiceTest extends TestCase
 			UserSettingsEntity::from(['buddies' => '2,3', 'paginationNumber' => 5])
 		);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
-		$this->permissionsService->method('permissions')->willReturn([
-			'delete' => true, 'edit' => false, 'post' => true, 'postComments' => true,
-		]);
+		// On the general wall both arguments must be the viewer's own ID so that
+		// PermissionsService does not short-circuit on a zero profileOwner.
+		$this->permissionsService->expects($this->once())
+			->method('permissions')
+			->with(1, 1)
+			->willReturn([
+				'delete' => true, 'edit' => false, 'post' => true, 'postComments' => true,
+			]);
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->statusRepository->expects($this->once())
 			->method('getByBuddyActivity')

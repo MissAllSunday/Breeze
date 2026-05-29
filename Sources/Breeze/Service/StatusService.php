@@ -137,7 +137,11 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		return [
 			'data' => array_values($visibleStatuses),
-			'permissions' => $this->permissionsService->permissions(0, $viewerId),
+			// On the general wall there is no single profile owner, so pass the
+			// viewer's own ID as profileOwner. This lets PermissionsService
+			// evaluate ownership correctly (e.g. delete own status) without
+			// short-circuiting on a zero profileOwner.
+			'permissions' => $this->permissionsService->permissions($viewerId, $viewerId),
 			'pagination' => [
 				'nextCursor' => $hasMore ? $nextCursor : null,
 				'hasMore' => $hasMore,
