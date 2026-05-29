@@ -15,6 +15,8 @@ abstract class BaseActions
 
 	protected const SUCCESS_KEY = '';
 
+	protected const string PERMISSION_MSG_DELETE_STATUS = 'deleteStatus';
+
 	public array $data;
 
 	public function __construct(

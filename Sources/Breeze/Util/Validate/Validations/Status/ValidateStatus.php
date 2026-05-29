@@ -11,9 +11,9 @@ use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 class ValidateStatus extends ValidateActions implements ValidateActionsInterface
 {
 	public function __construct(
-		public DeleteStatus $deleteStatus,
-		public PostStatus $postStatus,
-		public StatusByProfile $statusByProfile
+		protected DeleteStatus $deleteStatus,
+		protected PostStatus $postStatus,
+		protected StatusByProfile $statusByProfile
 	) {
 	}
 }

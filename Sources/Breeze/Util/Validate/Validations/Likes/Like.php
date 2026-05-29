@@ -15,9 +15,6 @@ use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
 class Like extends BaseActions implements ValidateDataInterface
 {
-	protected const CHECK_TYPE = 'checkType';
-	protected const VALIDATE = 'validate';
-
 	protected const PARAMS = [
 		LikeEntity::ID => 0,
 		LikeEntity::TYPE => '',

@@ -50,7 +50,7 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 		$commentUserId = $this->data[CommentEntity::USER_ID];
 
 		if ($currentUserId === $commentUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_COMMENTS, 'deleteStatus');
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_COMMENTS, self::PERMISSION_MSG_DELETE_STATUS);
 
 			return;
 		}
@@ -60,12 +60,12 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 		$status = $this->statusRepository->getBasicInfoById($comment->getStatusId());
 
 		if ($status->getWallId() === $currentUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_COMMENTS, 'deleteStatus');
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_COMMENTS, self::PERMISSION_MSG_DELETE_STATUS);
 
 			return;
 		}
 
-		$this->validateAllow->permissions(PermissionsEnum::DELETE_COMMENTS, 'deleteStatus');
+		$this->validateAllow->permissions(PermissionsEnum::DELETE_COMMENTS, self::PERMISSION_MSG_DELETE_STATUS);
 	}
 
 	/**

@@ -43,7 +43,7 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 		$statusUserId = $this->data[StatusEntity::USER_ID];
 
 		if ($currentUserId === $statusUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_STATUS, 'deleteStatus');
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_STATUS, self::PERMISSION_MSG_DELETE_STATUS);
 
 			return;
 		}
@@ -51,12 +51,12 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 		$status = $this->statusRepository->getById($this->data[StatusEntity::ID]);
 
 		if ($status->getWallId() === $currentUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_STATUS, 'deleteStatus');
+			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_STATUS, self::PERMISSION_MSG_DELETE_STATUS);
 
 			return;
 		}
 
-		$this->validateAllow->permissions(PermissionsEnum::DELETE_STATUS, 'deleteStatus');
+		$this->validateAllow->permissions(PermissionsEnum::DELETE_STATUS, self::PERMISSION_MSG_DELETE_STATUS);
 	}
 
 	/**

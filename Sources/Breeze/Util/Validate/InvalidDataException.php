@@ -6,7 +6,7 @@ namespace Breeze\Util\Validate;
 
 use Breeze\Exceptions\ValidateException;
 
-class EmptyDataException extends ValidateException
+class InvalidDataException extends ValidateException
 {
-	final public const int STATUS_CODE = 204;
+	final public const int STATUS_CODE = 400;
 }
