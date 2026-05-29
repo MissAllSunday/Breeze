@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Breeze\Util\Validate\User;
 
-use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\Validations\User\UserSettings;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;

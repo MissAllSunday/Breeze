@@ -21,16 +21,14 @@ abstract class ValidateActions
 		$this->setValidator($action);
 	}
 
-	public function setData(array &$data): void
+	public function setData(array $data): void
 	{
 		$this->data = $data;
 	}
 
 	public function setValidator(string $action): void
 	{
-		$properties = get_class_vars(static::class);
-
-		if (array_key_exists($action, $properties)) {
+		if (property_exists(static::class, $action)) {
 			$this->validator = $this->{$action};
 			$this->validator->setData($this->data);
 		}

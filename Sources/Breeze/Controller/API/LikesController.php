@@ -7,9 +7,9 @@ namespace Breeze\Controller\API;
 
 use Breeze\Entity\LikeEntity;
 use Breeze\Enums\LikesEnum;
-use Breeze\Repository\InvalidDataException;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Util\Response;
+use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
 class LikesController extends ApiBaseController

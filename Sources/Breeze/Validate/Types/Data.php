@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Breeze\Validate\Types;
 
 use Breeze\Repository\BaseRepositoryInterface;
-use Breeze\Repository\InvalidDataException;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\InvalidDataException;
 
 class Data
 {

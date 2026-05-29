@@ -6,9 +6,9 @@ namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Enums\PermissionsEnum;
-use Breeze\Repository\InvalidDataException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;

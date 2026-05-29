@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Util\Validate\Validations\User;
 
 use Breeze\Entity\UserSettingsEntity;
-use Breeze\Repository\InvalidDataException;
+use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 

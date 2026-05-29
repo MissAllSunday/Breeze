@@ -12,6 +12,7 @@ use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Enums\LikesEnum;
 use Breeze\Enums\PermissionsEnum;
+use Breeze\Util\Validate\InvalidDataException;
 
 class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 {

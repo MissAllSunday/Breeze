@@ -8,6 +8,7 @@ namespace Breeze\Repository;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\Enums\LikesEnum;
+use Breeze\Util\Validate\InvalidDataException;
 
 interface LikeRepositoryInterface extends BaseRepositoryInterface
 {
