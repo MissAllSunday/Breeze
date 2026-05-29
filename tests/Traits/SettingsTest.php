@@ -120,6 +120,51 @@ final class SettingsTest extends TestCase
 		];
 	}
 
+	public function testSetContextVarsMergesIntoExistingContext(): void
+	{
+		$this->setContextVars(['page_title' => 'My Wall']);
+
+		$context = $this->global('context');
+
+		$this->assertSame('My Wall', $context['page_title']);
+		// Pre-existing keys must not be wiped out.
+		$this->assertSame('foo', $context['session_var']);
+	}
+
+	public function testSetContextVarsDoesNotOverwriteLinktree(): void
+	{
+		$GLOBALS['context']['linktree'] = [['url' => 'http://example.com', 'name' => 'Home']];
+
+		$this->setContextVars(['page_title' => 'Test']);
+
+		$context = $this->global('context');
+		$this->assertCount(1, $context['linktree']);
+	}
+
+	public function testAppendLinktreeAddsEntry(): void
+	{
+		$this->appendLinktree('http://example.com/?action=wall', 'Wall');
+
+		$context = $this->global('context');
+
+		$this->assertCount(1, $context['linktree']);
+		$this->assertSame('http://example.com/?action=wall', $context['linktree'][0]['url']);
+		$this->assertSame('Wall', $context['linktree'][0]['name']);
+	}
+
+	public function testAppendLinktreePreservesExistingEntries(): void
+	{
+		$GLOBALS['context']['linktree'] = [['url' => 'http://example.com', 'name' => 'Home']];
+
+		$this->appendLinktree('http://example.com/?action=wall', 'Wall');
+
+		$context = $this->global('context');
+
+		$this->assertCount(2, $context['linktree']);
+		$this->assertSame('Home', $context['linktree'][0]['name']);
+		$this->assertSame('Wall', $context['linktree'][1]['name']);
+	}
+
 	#[DataProvider('globalProvider')]
 	public function testGlobal(string $globalName, $expected): void
 	{

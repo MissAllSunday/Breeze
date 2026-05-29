@@ -107,16 +107,16 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$currentUserBuddies = $currentUserSettings->getBuddies();
 		$currentUserPagination = $currentUserSettings->getPaginationNumber();
 
-		if ($currentUserBuddies === []) {
-			return [];
-		}
+		// Always include the viewer's own ID so their own posts appear on the
+		// general wall even when they have no buddies yet.
+		$feedIds = array_values(array_unique(array_merge([$viewerId], $currentUserBuddies)));
 
 		// Pre-compute the mutual block set so the repo can exclude those rows
 		// at the SQL level, reducing rows fetched and improving pagination density.
 		$excludeIds = $this->wallVisibilityService->getMutualBlockIds($viewerId, $currentUserBuddies);
 
 		$statusByBuddies = $this->statusRepository->getByBuddyActivity(
-			$currentUserBuddies,
+			$feedIds,
 			$currentUserPagination,
 			$cursor,
 			$excludeIds,
@@ -142,7 +142,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 				'nextCursor' => $hasMore ? $nextCursor : null,
 				'hasMore' => $hasMore,
 			],
-			'total' => $this->getCachedCount(StatusEntity::USER_ID, $currentUserBuddies),
+			'total' => $this->getCachedCount(StatusEntity::USER_ID, $feedIds),
 		];
 	}
 

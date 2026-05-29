@@ -59,13 +59,6 @@ abstract class BaseController implements ControllerInterface
 		$this->setGlobal('context', $context);
 	}
 
-	protected function setContextVars(array $contextVars): void
-	{
-		$context = $this->global('context');
-		$context = array_merge($context, $contextVars);
-		$this->setGlobal('context', $context);
-	}
-
 	/**
 	 * Recursively convert EntityInterface objects to arrays in template parameters
 	 */

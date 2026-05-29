@@ -267,8 +267,19 @@ class StatusServiceTest extends TestCase
 		);
 
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
-		$this->statusRepository->expects($this->never())->method('getByBuddyActivity');
-		$this->wallVisibilityService->expects($this->never())->method('filterStatusesForFeed');
+		// Even with no buddies the viewer's own ID is always included, so
+		// getByBuddyActivity must be called with just [viewerId].
+		$this->statusRepository->expects($this->once())
+			->method('getByBuddyActivity')
+			->with([1], 5, null, [], 1)
+			->willReturn([]);
+		$this->wallVisibilityService->expects($this->once())
+			->method('getMutualBlockIds')
+			->with(1, [])
+			->willReturn([]);
+		$this->wallVisibilityService->expects($this->once())
+			->method('filterStatusesForFeed')
+			->willReturn([]);
 
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([
@@ -282,7 +293,8 @@ class StatusServiceTest extends TestCase
 			->getMock();
 		$this->statusService->method('currentUserInfo')->willReturn(['id' => 1]);
 
-		$this->assertSame([], $this->statusService->getByBuddies());
+		$result = $this->statusService->getByBuddies();
+		$this->assertSame([], $result['data']);
 	}
 
 	/**
@@ -300,7 +312,7 @@ class StatusServiceTest extends TestCase
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->statusRepository->expects($this->once())
 			->method('getByBuddyActivity')
-			->with([2, 3], 5, null, [])
+			->with([1, 2, 3], 5, null, [], 1)
 			->willReturn([self::getStatusEntity()]);
 		$this->statusRepository->method('getNextCursor')->willReturn('test_cursor');
 

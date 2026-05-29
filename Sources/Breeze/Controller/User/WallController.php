@@ -34,9 +34,11 @@ class WallController extends BaseController
 		$currentUserInfo = $this->global('user_info');
 		$this->profileService->setEditor();
 
-		$this->setContextVars([
-			'page_title' => $this->getText('generalWall'),
-		]);
+		$this->setContextVars(['page_title' => $this->getText('generalWall')]);
+		$this->appendLinktree(
+			$this->global('scripturl') . '?action=' . self::ACTION_WALL,
+			$this->getText('generalWall'),
+		);
 
 		$this->render(__FUNCTION__);
 		$this->profileService->loadComponents($currentUserInfo['id']);

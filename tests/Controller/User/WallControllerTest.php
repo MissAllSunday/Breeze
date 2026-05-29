@@ -139,6 +139,23 @@ class WallControllerTest extends TestCase
 		$this->assertEquals('Wall', $GLOBALS['context']['page_title']);
 	}
 
+	public function testWallAppendsLinktreeEntry(): void
+	{
+		$userId = 123;
+		$GLOBALS['user_info'] = ['id' => $userId];
+		$GLOBALS['scripturl'] = 'http://example.com/index.php';
+		$GLOBALS['txt']['Breeze_generalWall'] = 'Wall';
+
+		$this->wallController->wall();
+
+		$linktree = $GLOBALS['context']['linktree'];
+		$this->assertIsArray($linktree);
+		$this->assertNotEmpty($linktree);
+		$last = end($linktree);
+		$this->assertSame('http://example.com/index.php?action=wall', $last['url']);
+		$this->assertSame('Wall', $last['name']);
+	}
+
 	public function testWallDeniesAccessWithoutPermission(): void
 	{
 		$this->wallController = $this->getMockBuilder(WallController::class)

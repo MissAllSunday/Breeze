@@ -48,6 +48,27 @@ trait SettingsTrait
 		$GLOBALS[$globalName] = $globalValue;
 	}
 
+	/**
+	 * Merge scalar context keys into $context without overwriting unrelated keys.
+	 */
+	public function setContextVars(array $contextVars): void
+	{
+		$context = $this->global('context');
+		$context = array_merge($context, $contextVars);
+		$this->setGlobal('context', $context);
+	}
+
+	/**
+	 * Append a single entry to $context['linktree'] without overwriting
+	 * existing breadcrumb entries set by SMF or other actions.
+	 */
+	public function appendLinktree(string $url, string $name): void
+	{
+		$context = $this->global('context');
+		$context['linktree'][] = ['url' => $url, 'name' => $name];
+		$this->setGlobal('context', $context);
+	}
+
 	public function requireOnce(string $fileName, string $dir = ''): void
 	{
 		if ($fileName === '' || $fileName === '0') {
