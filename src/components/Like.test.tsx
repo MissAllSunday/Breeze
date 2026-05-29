@@ -13,9 +13,11 @@ import { Like } from "./Like";
 const MOCK_LIKE_INFO_ITEM = likesInfo.basic;
 
 vi.mock("./LikeInfo", () => ({ LikeInfo: () => "mocked like info" }));
-vi.mock("../api/Like/Post", () =>
-	likesInfo.custom({ count: 1, alreadyLiked: true }),
-);
+vi.mock("../api/Like/Post", () => ({
+	postLike: vi.fn().mockResolvedValue(
+		likesInfo.custom({ count: 1, alreadyLiked: true }),
+	),
+}));
 
 function act(
 	setPermissionsTo: boolean,
@@ -47,8 +49,6 @@ function act(
 
 beforeAll(() => {
 	window.confirm = vi.fn();
-	vi.resetAllMocks();
-	vi.clearAllMocks();
 });
 
 describe("When like setting is disable and permissions are not granted", () => {
@@ -74,7 +74,7 @@ describe("When like setting is enable and permissions are granted", () => {
 	});
 
 	describe("When the user likes something", () => {
-		it("text changes to liked", async () => {
+		it("emoji changes to unlike after liking", async () => {
 			act(true);
 			const spanElement = screen.getByTitle("Like");
 
@@ -83,7 +83,7 @@ describe("When like setting is enable and permissions are granted", () => {
 			});
 
 			await waitFor(() =>
-				expect(spanElement).toHaveTextContent(String.fromCodePoint(128077)),
+				expect(spanElement).toHaveTextContent(String.fromCodePoint(128078)),
 			);
 		});
 	});
