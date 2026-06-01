@@ -168,7 +168,7 @@ class WallControllerTest extends TestCase
 			->willReturn(false);
 
 		$this->expectException(\Error::class);
-		$this->expectExceptionMessage('Breeze_error_error_no_access');
+		$this->expectExceptionMessage('Breeze_error_no_access');
 
 		$this->wallController->wall();
 	}

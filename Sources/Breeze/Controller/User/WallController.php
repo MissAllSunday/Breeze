@@ -28,7 +28,7 @@ class WallController extends BaseController
 	public function wall(): void
 	{
 		if (!$this->isAllowedTo(PermissionsEnum::VIEW_GENERAL_WALL)) {
-			Error::show('error_no_access');
+			Error::show('no_access');
 		}
 
 		$currentUserInfo = $this->global('user_info');
@@ -58,7 +58,7 @@ class WallController extends BaseController
 		$profileBuddies = $profileSettings->getBuddies();
 
 		if (!$this->profileService->isAllowedToSeePage($profileSettings, $profileId, $currentUserInfo['id'])) {
-			Error::show('error_no_access');
+			Error::show('no_access');
 		}
 
 		if ($profileSettings->getEnableBuddiesTab() !== 0 && $profileBuddies !== []) {
