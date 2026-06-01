@@ -149,7 +149,8 @@ test.describe('Wall - Display Statuses', () => {
 
 test.describe('Wall - Post Status', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    // Posting requires a profile wall — the general wall is a read-only feed.
+    await page.goto('/profile.html');
     await waitForStatuses(page);
   });
 
@@ -413,7 +414,10 @@ test.describe('Wall - Likes', () => {
   });
 
   test('posted status survives a page refresh', async ({ page }) => {
-    // Accept all confirmation dialogs
+    // The general wall has no editor, so navigate to the profile wall to post.
+    await page.goto('/profile.html');
+    await waitForStatuses(page);
+
     page.on('dialog', async (dialog) => {
       await dialog.accept();
     });
@@ -424,10 +428,10 @@ test.describe('Wall - Likes', () => {
     await editor.fill('Persistent status test');
     await sendButton.click();
 
-    // Wait for the new status to appear
+    // Wait for the new status to appear on the profile wall.
     await expect(page.locator('li.status')).toHaveCount(4, { timeout: 10_000 });
 
-    // Refresh the page
+    // Navigate back to the general wall and verify the status persisted.
     await page.goto('/');
     await waitForStatuses(page, 4);
 
