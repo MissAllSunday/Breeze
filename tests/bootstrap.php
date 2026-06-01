@@ -263,6 +263,34 @@ function obExit(bool $header = true): string {
 	return '';
 }
 
+// Stub for SMF's Mentions class (lives in Sources/Mentions.php at runtime)
+class Mentions
+{
+	public static function getMentionedMembers(string $body): array
+	{
+		return [];
+	}
+
+	public static function getBody(string $body, array $members): string
+	{
+		return $body;
+	}
+
+	public static function verifyMentionedMembers(string $body, array $members): array
+	{
+		return $members;
+	}
+
+	public static function insertMentions(string $contentType, int $contentId, array $members, int $idMember): void
+	{
+	}
+
+	public static function modifyMentions(string $contentType, int $contentId, array $members, int $idMember): array
+	{
+		return ['unchanged' => [], 'removed' => [], 'added' => []];
+	}
+}
+
 function fatal_lang_error(string $error, bool $log = true): void
 {
 	throw new \Error($error);

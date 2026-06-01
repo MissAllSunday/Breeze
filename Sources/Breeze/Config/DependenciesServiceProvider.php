@@ -15,7 +15,6 @@ use Breeze\Entity\AlertEntity;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\MemberEntity;
-use Breeze\Entity\MentionEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\StatusEntity;
@@ -35,6 +34,7 @@ use Breeze\Service\Actions\AdminService;
 use Breeze\Service\AlertService;
 use Breeze\Service\CommentService;
 use Breeze\Service\LikeService;
+use Breeze\Service\MentionService;
 use Breeze\Service\PermissionsService;
 use Breeze\Service\ProfileService;
 use Breeze\Service\StatusService;
@@ -119,7 +119,6 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		CommentEntity::class => ['arguments' => []],
 		LikeEntity::class => ['arguments' => []],
 		MemberEntity::class => ['arguments' => []],
-		MentionEntity::class => ['arguments' => []],
 		OptionsEntity::class => ['arguments' => []],
 		SettingsEntity::class => ['arguments' => []],
 		StatusEntity::class => ['arguments' => []],
@@ -151,6 +150,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		AdminService::class => ['arguments' => [SettingsBuilder::class, StatusService::class, CommentService::class, LikeService::class, UserSettingsRepository::class], 'shared' => true],
 		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class], 'shared' => true],
 		PermissionsService::class => ['arguments' => [], 'shared' => true],
+		MentionService::class => ['arguments' => [], 'shared' => true],
 		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class], 'shared' => true],
 		StatusService::class => ['arguments' => [StatusRepository::class, UserSettingsRepository::class, PermissionsService::class, WallVisibilityService::class, EventServiceProvider::class], 'shared' => true],
 		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
