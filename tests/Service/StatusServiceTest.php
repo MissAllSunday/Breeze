@@ -308,11 +308,14 @@ class StatusServiceTest extends TestCase
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
 		// On the general wall both arguments must be the viewer's own ID so that
 		// PermissionsService does not short-circuit on a zero profileOwner.
+		// Status.post is always forced false by feedPermissions() — the feed has
+		// no wall_id target so new status creation is not allowed here.
 		$this->permissionsService->expects($this->once())
 			->method('permissions')
 			->with(1, 1)
 			->willReturn([
-				'delete' => true, 'edit' => false, 'post' => true, 'postComments' => true,
+				'Status'   => ['delete' => true, 'edit' => false, 'post' => true],
+				'Comments' => ['delete' => true, 'edit' => false, 'post' => true],
 			]);
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->statusRepository->expects($this->once())
@@ -352,5 +355,8 @@ class StatusServiceTest extends TestCase
 
 		$this->assertSame(self::getStatusEntity()->getId(), $result['data'][0]->getId());
 		$this->assertSame(1, $result['total']);
+		// Ownership-based permissions must come through for the viewer's own content.
+		$this->assertTrue($result['permissions']['Status']['delete']);
+		$this->assertTrue($result['permissions']['Comments']['post']);
 	}
 }

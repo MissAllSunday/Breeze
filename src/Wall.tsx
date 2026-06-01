@@ -133,7 +133,7 @@ function WallFeed(props: WallProps): React.JSX.Element {
 
 	return (
 		<>
-			{permissions.Status.post ? (
+			{props.wallType !== "wall" && permissions.Status.post ? (
 				<Editor saveContent={createStatus} isFull={true} />
 			) : (
 				""
