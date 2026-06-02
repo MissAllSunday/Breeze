@@ -20,7 +20,10 @@ function Comment(props: CommentProps): React.ReactElement {
 	}, [props, permissions]);
 
 	return (
-		<div className={`${classType} comment`} id={`comment-${props.comment.id.toString()}`}>
+		<div
+			className={`${classType} comment`}
+			id={`comment-${props.comment.id.toString()}`}
+		>
 			<div className="avatar_compact">
 				<Avatar
 					href={props.comment.userData.avatar.url}
@@ -32,7 +35,10 @@ function Comment(props: CommentProps): React.ReactElement {
 					}}
 				/>
 			</div>
-			<div className="comment_compact content">{props.comment.body}</div>
+			<div
+				className="comment_compact content"
+				dangerouslySetInnerHTML={{ __html: props.comment.body }}
+			/>
 			<div className="half_content">
 				<Like likeInfo={props.comment.likesInfo} />
 			</div>
