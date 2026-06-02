@@ -88,10 +88,10 @@ function WallFeed(props: WallProps): React.JSX.Element {
 			});
 	}, [props.wallType, statusList.length, nextCursor, hasMore]);
 
-	const createStatus = useCallback((content: string) => {
+	const createStatus = useCallback((content: string, mentionIds?: number[]) => {
 		setIsLoading(true);
 
-		postStatus(content)
+		postStatus(content, mentionIds)
 			.then((newStatus: StatusListType | undefined) => {
 				if (!newStatus) {
 					return;

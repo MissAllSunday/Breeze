@@ -16,8 +16,9 @@ class CommentService extends BaseService implements CommentServiceInterface
 {
 	public function __construct(
 		protected CommentRepositoryInterface $commentRepository,
-		protected StatusRepositoryInterface $statusRepository,
-		protected EventServiceProvider $eventServiceProvider
+		protected StatusRepositoryInterface  $statusRepository,
+		protected EventServiceProvider       $eventServiceProvider,
+		protected ?MentionServiceInterface   $mentionService = null
 	) {
 		parent::__construct($commentRepository);
 	}
@@ -28,24 +29,51 @@ class CommentService extends BaseService implements CommentServiceInterface
 	 */
 	public function save(array $data): array
 	{
+		$processed = null;
+
+		if ($this->mentionService?->isEnabled()) {
+			$mentionIds = array_map('intval', (array) ($data['mention_ids'] ?? []));
+			$processed  = $this->mentionService->processBody($data[CommentEntity::BODY], $mentionIds);
+			$data[CommentEntity::BODY] = $processed['body'];
+		}
+
 		$commentEntity = CommentEntity::from($data);
 		$commentEntities = $this->commentRepository->insert($commentEntity);
 
-		if ($commentEntities !== []) {
-			try {
-				$statusEntity = $this->statusRepository->getBasicInfoById($commentEntity->getStatusId());
+		if ($commentEntities === []) {
+			return $commentEntities;
+		}
 
-				foreach ($commentEntities as $entity) {
-					$this->eventServiceProvider->getDispatcher()->dispatch(
-						new CommentCreatedEvent(
-							$entity,
-							$statusEntity
-						)
-					);
-				}
-			} catch (DataNotFoundException $e) {
-				// If status not found, skip event dispatching
-				// The comment was still created successfully
+		// Fetch the parent status now — we need wall_id for mention alerts
+		// and the entity itself for the CommentCreatedEvent.
+		$statusEntity = null;
+		$wallId = 0;
+
+		try {
+			$statusEntity = $this->statusRepository->getBasicInfoById($commentEntity->getStatusId());
+			$wallId = $statusEntity->getWallId();
+		} catch (DataNotFoundException) {
+			// Status not found; mention alerts will use wallId = 0,
+			// event dispatch is skipped below.
+		}
+
+		if ($processed !== null && !empty($processed['members'])) {
+			foreach ($commentEntities as $entity) {
+				$this->mentionService->save(
+					MentionServiceInterface::CONTENT_TYPE_COMMENT,
+					$entity->getId(),
+					$processed['members'],
+					$entity->getUserId(),
+					$wallId
+				);
+			}
+		}
+
+		if ($statusEntity !== null) {
+			foreach ($commentEntities as $entity) {
+				$this->eventServiceProvider->getDispatcher()->dispatch(
+					new CommentCreatedEvent($entity, $statusEntity)
+				);
 			}
 		}
 

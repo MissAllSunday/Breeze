@@ -70,6 +70,12 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
+
+		if (!empty($this->modSetting('enable_mentions'))) {
+			$this->components->loadJavaScriptFile('jquery.caret.min.js', ['defer' => true], 'smf_jquery_caret');
+			$this->components->loadJavaScriptFile('jquery.atwho.min.js', ['defer' => true], 'smf_jquery_atwho');
+		}
+
 		$this->components->loadComponents();
 	}
 

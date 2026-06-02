@@ -57,7 +57,7 @@ trait RequestTrait
 		return isset($this->request[$variableName]);
 	}
 
-	public function sanitize(mixed $variable, string $name = ''): mixed
+	public function sanitize(mixed $variable, string|int $name = ''): mixed
 	{
 		$smcFunc = $this->getSmcFunc();
 
@@ -76,7 +76,7 @@ trait RequestTrait
 
 		if (is_numeric($var)) {
 			// Should the param is required to be a string?
-			$stringRequired = in_array($name, [StatusEntity::BODY, CommentEntity::BODY], true);
+			$stringRequired = is_string($name) && in_array($name, [StatusEntity::BODY, CommentEntity::BODY], true);
 
 			$var = $stringRequired ? (string) $var : (int) $var;
 		}

@@ -52,6 +52,12 @@ Works with any SMF theme, no file edits required.
     An optional tab on the profile page that lists all buddies with
     quick add/remove buttons.
 
+  [ Mentions ]
+
+    Type @ in the editor to search for and mention other members.
+    A real-time suggestion dropdown appears as you type. Mentioned
+    members receive an SMF alert with a link back to the post.
+
   [ Alerts ]
 
     Breeze plugs into the standard SMF alert system. Each user can
@@ -61,6 +67,7 @@ Works with any SMF theme, no file edits required.
       - Someone commented on a status I made
       - Someone commented on a status posted on my wall
       - Someone liked one of my status or comments
+      - Someone mentioned me in a status or comment
 
 ----------------------------------------------------------------------
   ADMIN FEATURES

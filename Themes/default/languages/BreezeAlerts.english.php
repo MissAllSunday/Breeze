@@ -43,6 +43,11 @@ $txt['Breeze_alert_status_owner'] = '{poster} posted a new status on your wall';
 // Likes
 $txt['Breeze_alert_like'] = '{poster} liked your {type}';
 
+// Mentions
+$txt['Breeze_alert_mention'] = '{poster} mentioned you in a {type}';
+$txt['Breeze_alert_breeze_status'] = 'status';
+$txt['Breeze_alert_breeze_comment'] = 'comment';
+
 // Single Status
 $txt['Breeze_singleStatus_pageTitle'] = 'Single Status';
 

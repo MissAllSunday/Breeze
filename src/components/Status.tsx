@@ -44,7 +44,7 @@ function Status(props: StatusProps): React.ReactElement {
 	}, [permissions.Status.delete, props]);
 
 	const createComment = useCallback(
-		(content: string): boolean => {
+		(content: string, mentionIds?: number[]): boolean => {
 			if (!permissions.Comments.post) {
 				return false;
 			}
@@ -54,6 +54,7 @@ function Status(props: StatusProps): React.ReactElement {
 			postComment({
 				status_id: props.status.id,
 				body: content,
+				mention_ids: mentionIds ?? [],
 			})
 				.then((newComments: CommentListType | undefined) => {
 					if (!newComments) {

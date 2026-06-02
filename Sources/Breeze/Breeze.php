@@ -43,7 +43,7 @@ class Breeze
 	public const string SUPPORT_URL = 'https://missallsunday.com';
 	public const string REACT_DOM_VERSION = '19.1.2';
 	public const string REACT_VERSION = '19.1.2';
-	public const string REACT_HASH = 'index-B-ogxzQd';
+	public const string REACT_HASH = 'index-Wv8PDwWT';
 
 	public const string ACTION_STATUS = 'breezeStatus';
 	public const string ACTION_COMMENT = 'breezeComment';
@@ -92,9 +92,10 @@ class Breeze
 		$this->setLanguage(self::NAME);
 		$context = $this->global('context');
 		$userInfo = $this->global('user_info');
-		$currentUserSettings = $this->container->get(UserSettingsRepository::class)->getById($userInfo['id']);
+		$profileOwnerId = (int) ($context['id_member'] ?? $userInfo['id']);
+		$profileOwnerSettings = $this->container->get(UserSettingsRepository::class)->getById($profileOwnerId);
 
-		if (!empty($currentUserSettings->getWall())) {
+		if (!empty($profileOwnerSettings->getWall())) {
 			/** @var WallController $wallController */
 			$wallController = $this->container->get(WallController::class);
 

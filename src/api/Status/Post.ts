@@ -8,6 +8,7 @@ import { resolvePost } from "../Resolvers/Post";
 
 export const postStatus = async (
 	content: string,
+	mentionIds: number[] = [],
 ): Promise<StatusListType | undefined> => {
 	try {
 		const response = await fetch(baseUrl("breezeStatus", "postStatus"), {
@@ -17,6 +18,7 @@ export const postStatus = async (
 					wall_id: smfVars.wall_id,
 					user_id: smfVars.user_id,
 					body: content,
+					mention_ids: mentionIds,
 				}),
 			),
 		});

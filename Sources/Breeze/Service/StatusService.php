@@ -21,11 +21,12 @@ class StatusService extends BaseService implements StatusServiceInterface
 	use CacheTrait;
 
 	public function __construct(
-		protected StatusRepositoryInterface   $statusRepository,
-		protected SettingsRepositoryInterface $userRepository,
-		protected PermissionsServiceInterface $permissionsService,
+		protected StatusRepositoryInterface      $statusRepository,
+		protected SettingsRepositoryInterface    $userRepository,
+		protected PermissionsServiceInterface    $permissionsService,
 		protected WallVisibilityServiceInterface $wallVisibilityService,
-		protected ?EventServiceProvider $eventServiceProvider = null
+		protected ?EventServiceProvider          $eventServiceProvider = null,
+		protected ?MentionServiceInterface       $mentionService = null
 	) {
 		parent::__construct($statusRepository);
 	}
@@ -208,7 +209,27 @@ class StatusService extends BaseService implements StatusServiceInterface
 	 */
 	public function save(array $data): array
 	{
+		$processed = null;
+
+		if ($this->mentionService?->isEnabled()) {
+			$mentionIds = array_map('intval', (array) ($data['mention_ids'] ?? []));
+			$processed  = $this->mentionService->processBody($data[StatusEntity::BODY], $mentionIds);
+			$data[StatusEntity::BODY] = $processed['body'];
+		}
+
 		$statusEntities = $this->statusRepository->insert(StatusEntity::from($data));
+
+		if ($processed !== null && !empty($processed['members'])) {
+			foreach ($statusEntities as $entity) {
+				$this->mentionService->save(
+					MentionServiceInterface::CONTENT_TYPE_STATUS,
+					$entity->getId(),
+					$processed['members'],
+					$entity->getUserId(),
+					$entity->getWallId()
+				);
+			}
+		}
 
 		// Dispatch the status created event
 		if (isset($this->eventServiceProvider)) {

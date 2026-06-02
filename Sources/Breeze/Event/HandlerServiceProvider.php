@@ -9,6 +9,7 @@ use Breeze\Entity\AlertEntity;
 use Breeze\Event\Comment\CommentCreatedHandler;
 use Breeze\Event\Comment\CommentDeletedHandler;
 use Breeze\Event\Like\LikeCreatedHandler;
+use Breeze\Event\Mention\MentionCreatedHandler;
 use Breeze\Event\Status\StatusCreatedHandler;
 use Breeze\Repository\AlertRepository;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -58,10 +59,11 @@ class HandlerServiceProvider
 	protected function getHandlerClass(AlertEntity $alertEntity): string
 	{
 		return match ($this->buildHandlerName($alertEntity)) {
-			'StatusCreated' => StatusCreatedHandler::class,
+			'StatusCreated'  => StatusCreatedHandler::class,
 			'CommentCreated' => CommentCreatedHandler::class,
 			'CommentDeleted' => CommentDeletedHandler::class,
-			'LikeCreated' => LikeCreatedHandler::class,
+			'LikeCreated'    => LikeCreatedHandler::class,
+			'MentionCreated' => MentionCreatedHandler::class,
 			default => throw new DataNotFoundException('Handler not found'),
 		};
 	}

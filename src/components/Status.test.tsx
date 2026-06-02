@@ -132,6 +132,7 @@ describe("Status component", () => {
 			expect(postComment).toHaveBeenCalledWith({
 				status_id: status.basic.id,
 				body: "New comment",
+				mention_ids: [],
 			});
 		});
 	});

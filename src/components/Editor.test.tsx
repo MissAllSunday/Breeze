@@ -79,7 +79,7 @@ describe("Editor component", () => {
 		await user.click(sendButton);
 
 		await waitFor(() => {
-			expect(mockSaveContent).toHaveBeenCalledWith("Test content");
+			expect(mockSaveContent).toHaveBeenCalledWith("Test content", []);
 			expect(textarea).toHaveValue(""); // Content should be cleared
 		});
 	});
@@ -101,6 +101,7 @@ describe("Editor component", () => {
 		await waitFor(() => {
 			expect(mockSaveContent).toHaveBeenCalledWith(
 				"mocked full editor content",
+				[],
 			);
 			// For full editor, the val() method is called to clear the content
 			expect(smfVars.smfEditorHandler.instance().val).toHaveBeenCalledWith("");
@@ -147,7 +148,7 @@ describe("Editor component", () => {
 		await user.click(sendButton);
 
 		await waitFor(() => {
-			expect(mockSaveContent).toHaveBeenCalledWith("Test content");
+			expect(mockSaveContent).toHaveBeenCalledWith("Test content", []);
 			expect(textarea).toHaveValue("Test content"); // Content should not be cleared
 		});
 	});
@@ -180,7 +181,7 @@ describe("Editor component", () => {
 
 		await waitFor(() => {
 			expect(window.confirm).not.toHaveBeenCalled();
-			expect(mockSaveContent).toHaveBeenCalledWith("No confirm needed");
+			expect(mockSaveContent).toHaveBeenCalledWith("No confirm needed", []);
 		});
 
 		smfVars.confirmPost = 1;

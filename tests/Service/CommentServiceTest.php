@@ -157,4 +157,64 @@ class CommentServiceTest extends TestCase
 
 		$this->commentService->recountLikes();
 	}
+
+	public function testSaveCallsProcessBodyWithMentionIdsAndRewritesBody(): void
+	{
+		$mentionService = $this->createMock(MentionServiceInterface::class);
+		$commentService = new CommentService(
+			$this->commentRepository,
+			$this->statusRepository,
+			$this->eventServiceProvider,
+			$mentionService
+		);
+
+		$memberId       = 42;
+		$originalBody   = 'Hey @Alice!';
+		$rewrittenBody  = 'Hey [member=42]Alice[/member]!';
+		$commentData    = CommentFixtures::forInsertion();
+		$commentData[CommentEntity::BODY] = $originalBody;
+		$commentData['mention_ids']       = [$memberId];
+
+		$mentionService->expects($this->once())
+			->method('isEnabled')
+			->willReturn(true);
+
+		$mentionService->expects($this->once())
+			->method('processBody')
+			->with($originalBody, [$memberId])
+			->willReturn(['body' => $rewrittenBody, 'members' => []]);
+
+		// insert receives the rewritten body
+		$this->commentRepository->expects($this->once())
+			->method('insert')
+			->with($this->callback(static fn ($e) => $e->getBody() === $rewrittenBody))
+			->willReturn([]);
+
+		$commentService->save($commentData);
+	}
+
+	public function testSaveSkipsMentionProcessingWhenMentionServiceIsDisabled(): void
+	{
+		$mentionService = $this->createMock(MentionServiceInterface::class);
+		$commentService = new CommentService(
+			$this->commentRepository,
+			$this->statusRepository,
+			$this->eventServiceProvider,
+			$mentionService
+		);
+
+		$commentData                = CommentFixtures::forInsertion();
+		$commentData['mention_ids'] = [42];
+
+		$mentionService->expects($this->once())
+			->method('isEnabled')
+			->willReturn(false);
+
+		$mentionService->expects($this->never())
+			->method('processBody');
+
+		$this->commentRepository->method('insert')->willReturn([]);
+
+		$commentService->save($commentData);
+	}
 }

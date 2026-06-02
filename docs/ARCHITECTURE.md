@@ -18,6 +18,7 @@
 - Post status updates on their own or other users' walls
 - Comment on status updates
 - Like statuses and comments
+- Mention other members using `@name` with real-time autocomplete
 - Receive notifications for interactions
 - View a general activity feed from buddies
 - Customize individual user settings
@@ -112,6 +113,7 @@ protected const array DEPENDENCIES = [
   - `StatusService`
   - `CommentService`
   - `AlertService`
+  - `MentionService` - BBC rewriting and tamper-proof ID verification for @mentions
   - `PermissionsService`
   - `WallVisibilityService` - content visibility gate-keeper
   - `AdminService` - admin panel actions and settings
@@ -262,7 +264,16 @@ protected const array DEPENDENCIES = [
    - Status owner when someone comments
    - Comment/Status owner when someone likes
 
-### 5.5 Permissions System
+### 5.5 Mentions Workflow
+1. User types `@` in the Editor component
+2. At.js triggers a fetch to SMF's `?action=suggest` endpoint
+3. Matching member names are shown in a dropdown
+4. On selection, the member ID is captured client-side
+5. On submit, `mention_ids` is sent alongside the post body
+6. `MentionService::processBody()` verifies each ID against the body text and rewrites `@Name` to `[member=ID]Name[/member]` BBC
+7. `MentionService::save()` delegates to SMF's `\Mentions` class, creating an alert for each mentioned member
+
+### 5.6 Permissions System
 1. Granular permissions per action
 2. Checked at multiple layers (Controller, Service, Repository)
 3. Permissions context passed to React frontend
@@ -411,6 +422,11 @@ Breeze alert system is built on SMF's native alert infrastructure and uses an ev
    - Recipient: Content owner (status or comment)
    - Trigger: Someone likes content
    - Handler: `LikeCreatedHandler`
+
+4. **Mention Created** (`Breeze_mention`)
+   - Recipient: Each mentioned member
+   - Trigger: A status or comment containing a verified `@Name` is saved
+   - Handler: SMF's native `\Mentions` class (delegated via `MentionService`)
 
 #### Alert Flow
 
