@@ -10,13 +10,10 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntityInterface;
 use Breeze\Enums\LikesEnum;
-use Breeze\Repository\CommentRepository;
 use Breeze\Repository\CommentRepositoryInterface;
-use Breeze\Repository\StatusRepository;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\AlertServiceInterface;
 use Breeze\Traits\TextTrait;
-use Psr\Container\ContainerInterface;
 
 class LikeEventListener
 {
@@ -27,7 +24,8 @@ class LikeEventListener
 
 	public function __construct(
 		protected readonly AlertServiceInterface $alertService,
-		protected readonly ContainerInterface $container
+		protected readonly StatusRepositoryInterface $statusRepository,
+		protected readonly CommentRepositoryInterface $commentRepository
 	) {
 	}
 
@@ -68,10 +66,7 @@ class LikeEventListener
 		}
 
 		if ($content instanceof CommentEntity) {
-			/** @var StatusRepositoryInterface $statusRepository */
-			$statusRepository = $this->container->get(StatusRepository::class);
-
-			return $statusRepository->getBasicInfoById($content->getStatusId())->getWallId();
+			return $this->statusRepository->getBasicInfoById($content->getStatusId())->getWallId();
 		}
 
 		return 0;
@@ -79,10 +74,9 @@ class LikeEventListener
 
 	protected function getContent(LikeEntity $likeEntity): SharedEntityInterface
 	{
-		/** @var StatusRepositoryInterface|CommentRepositoryInterface $repository */
 		$repository = match ($likeEntity->getContentType()) {
-			LikesEnum::Status => $this->container->get(StatusRepository::class),
-			LikesEnum::Comments => $this->container->get(CommentRepository::class),
+			LikesEnum::Status   => $this->statusRepository,
+			LikesEnum::Comments => $this->commentRepository,
 		};
 
 		return $repository->getById($likeEntity->getContentId());

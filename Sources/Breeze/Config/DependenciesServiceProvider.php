@@ -133,7 +133,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		], 'shared' => true],
 		StatusEventListener::class => ['arguments' => [AlertService::class], 'shared' => true],
 		CommentEventListener::class => ['arguments' => [AlertService::class], 'shared' => true],
-		LikeEventListener::class => ['arguments' => [AlertService::class, ContainerInterface::class], 'shared' => true],
+		LikeEventListener::class => ['arguments' => [AlertService::class, StatusRepository::class, CommentRepository::class], 'shared' => true],
 		HandlerServiceProvider::class => ['arguments' => [AlertRepository::class], 'shared' => true],
 
 		// Event Handlers - New instances (Created per event)

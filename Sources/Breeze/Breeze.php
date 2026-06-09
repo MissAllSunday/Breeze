@@ -82,6 +82,7 @@ class Breeze
 	/**
 	 * @throws ContainerExceptionInterface
 	 * @throws NotFoundExceptionInterface
+	 * @throws DataNotFoundException
 	 */
 	public function profileMenuWrapper(array &$profileAreas): void
 	{

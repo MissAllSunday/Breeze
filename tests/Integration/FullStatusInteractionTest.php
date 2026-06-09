@@ -27,7 +27,6 @@ use Breeze\Service\LikeService;
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
 /**
  * Integration tests for a full user interaction flow.
@@ -83,15 +82,9 @@ class FullStatusInteractionTest extends TestCase
 		$userSettingsRepository = new UserSettingsRepository(self::$dbClient, null);
 		$alertService = new AlertService($alertRepository, $handlerServiceProvider, $userSettingsRepository);
 
-		$container = $this->createMock(ContainerInterface::class);
-		$container->method('get')->willReturnMap([
-			[StatusRepository::class, $this->statusRepository],
-			[CommentRepository::class, $this->commentRepository],
-		]);
-
 		$statusEventListener = new StatusEventListener($alertService);
 		$commentEventListener = new CommentEventListener($alertService);
-		$likeEventListener = new LikeEventListener($alertService, $container);
+		$likeEventListener = new LikeEventListener($alertService, $this->statusRepository, $this->commentRepository);
 		$eventDispatcher = new EventDispatcher();
 		$eventServiceProvider = new EventServiceProvider($eventDispatcher, $statusEventListener, $commentEventListener, $likeEventListener);
 

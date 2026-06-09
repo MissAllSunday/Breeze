@@ -1,3 +1,12 @@
+# Prepend the nvm-managed Node bin to PATH so every target works in
+# non-interactive shells (Make, CI) that never source .zshrc/.bashrc.
+# NVM_DIR falls back to ~/.nvm if the developer hasn't set it themselves.
+# The Node version is read from .nvmrc, keeping this in sync automatically.
+NVM_DIR     ?= $(HOME)/.nvm
+NVM_NODE_VERSION := $(shell cat .nvmrc 2>/dev/null | tr -d '[:space:]')
+NVM_BIN     := $(NVM_DIR)/versions/node/$(NVM_NODE_VERSION)/bin
+export PATH := $(NVM_BIN):$(PATH)
+
 # Environment variables for SMF / Breeze
 export DB_HOST := 127.0.0.1
 export DB_PORT := 3306
