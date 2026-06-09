@@ -7,9 +7,15 @@ namespace Breeze\Entity;
 
 class SettingsEntity
 {
+	// Breeze-managed settings (stored under the Breeze_ prefix in modSettings)
 	public const string MASTER = 'master';
 	public const string MAX_FLOOD_NUM = 'maxFloodNum';
 	public const string MAX_FLOOD_MINUTES = 'maxFloodMinutes';
+
+	// SMF-native settings (stored bare in modSettings, no Breeze_ prefix)
+	public const string ENABLE_LIKES = 'enable_likes';
+	public const string ENABLE_MENTIONS = 'enable_mentions';
+
 	public const string TYPE_CHECK = 'check';
 	public const string TYPE_INT = 'int';
 	public const string TYPE_TEXT = 'text';

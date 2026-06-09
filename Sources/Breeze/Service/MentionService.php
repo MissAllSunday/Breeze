@@ -6,6 +6,7 @@ namespace Breeze\Service;
 
 use Breeze\Breeze;
 use Breeze\Entity\AlertEntity;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Traits\SettingsTrait;
 
@@ -22,7 +23,7 @@ class MentionService implements MentionServiceInterface
 
 	public function isEnabled(): bool
 	{
-		return !empty($this->modSetting('enable_mentions')) && allowedTo('mention');
+		return !empty($this->modSetting(SettingsEntity::ENABLE_MENTIONS)) && allowedTo('mention');
 	}
 
 	/**

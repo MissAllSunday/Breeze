@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Breeze;
+use Breeze\Entity\SettingsEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
@@ -79,13 +80,9 @@ class PermissionsService implements PermissionsServiceInterface
 
 	public function isFeatureEnable(): array
 	{
-		$isEnable = [];
-
-		foreach (PermissionsEnum::ALL_FEATS as $featureName) {
-			$isEnable[$this->snakeToCamel($featureName)] = $this->modSetting($featureName);
-		}
-
-		return $isEnable;
+		return [
+			'enableLikes' => (bool) $this->modSetting(SettingsEntity::ENABLE_LIKES),
+		];
 	}
 
 	public function forumPermissions(): array

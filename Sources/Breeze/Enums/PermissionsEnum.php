@@ -29,12 +29,6 @@ enum PermissionsEnum
 	public const TYPE_STATUS = 'Status';
 	public const TYPE_COMMENTS = 'Comments';
 
-	public const FEAT_LIKES = 'enable_likes';
-
-	public const array ALL_FEATS = [
-		self::FEAT_LIKES,
-	];
-
 	public const ALL_FORUM = [
 		self::LIKES_LIKE, self::ADMIN_FORUM, self::PROFILE_VIEW,
 	];

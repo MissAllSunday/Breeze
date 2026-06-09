@@ -71,7 +71,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
 
-		if (!empty($this->modSetting('enable_mentions'))) {
+		if (!empty($this->modSetting(SettingsEntity::ENABLE_MENTIONS))) {
 			$this->components->loadJavaScriptFile('jquery.caret.min.js', ['defer' => true], 'smf_jquery_caret');
 			$this->components->loadJavaScriptFile('jquery.atwho.min.js', ['defer' => true], 'smf_jquery_atwho');
 		}
