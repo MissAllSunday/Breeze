@@ -5,6 +5,21 @@ async function waitForStatuses(page: Page, count: number = 3) {
   await expect(page.locator('li.status')).toHaveCount(count, { timeout: 10_000 });
 }
 
+/**
+ * The status-level action bar. Uses a direct-child chain so it never matches
+ * the action bars nested inside comment cards.
+ */
+function statusActionBar(page: Page, statusId: number) {
+  return page.locator(
+    `#status-${statusId} > .post_wrapper > .postarea > .windowbg > [data-testid="actionBar"]`,
+  );
+}
+
+/** The action bar rendered inside a specific comment card. */
+function commentActionBar(page: Page, commentId: number) {
+  return page.locator(`#comment-${commentId} [data-testid="actionBar"]`);
+}
+
 /** Reset the mock API database back to its initial fixture state. */
 async function resetDatabase(request: APIRequestContext) {
   const response = await request.get('http://api:8000/?action=reset');
@@ -113,13 +128,14 @@ test.describe('Wall - Display Statuses', () => {
     }
   });
 
-  test('each status has a comment section', async ({ page }) => {
-    const statusItems = page.locator('li.status');
-    await expect(statusItems).toHaveCount(3, { timeout: 10_000 });
+  test('each status has a Comment action in its action bar', async ({ page }) => {
+    await expect(page.locator('li.status')).toHaveCount(3, { timeout: 10_000 });
 
-    // The first status should show its comment
-    const firstStatusComments = statusItems.nth(0).locator('.comment_posting');
-    await expect(firstStatusComments).toBeVisible();
+    for (let i = 1; i <= 3; i++) {
+      await expect(
+        statusActionBar(page, i).locator('[data-action-id="comment"]'),
+      ).toBeVisible();
+    }
   });
 
   test('statuses display comments from the API', async ({ page }) => {
@@ -132,7 +148,9 @@ test.describe('Wall - Display Statuses', () => {
   });
 
   test('editor is visible for posting new statuses', async ({ page }) => {
-    // The editor should be visible since permissions.Status.post is true
+    // The status-post editor only exists on the profile wall, not the general wall.
+    await page.goto('/profile.html');
+    await waitForStatuses(page);
     const editor = page.locator('[data-testid="content"]').first();
     await expect(editor).toBeVisible({ timeout: 10_000 });
   });
@@ -267,23 +285,25 @@ test.describe('Wall - Likes', () => {
   });
 
   test('like button is visible on each status', async ({ page }) => {
-    // Each status has a Like component; comments also have likes nested inside,
-    // so we assert per-status to avoid counting comment likes.
+    // Use the status-level action bar helper so nested comment like buttons are
+    // never matched.
     for (let i = 1; i <= 3; i++) {
-      const statusLike = page.locator(`#status-${i} .breeze_anchor.pointer_cursor`).first();
-      await expect(statusLike).toBeVisible();
+      await expect(
+        statusActionBar(page, i).locator('[data-action-id="like"] button'),
+      ).toBeVisible();
     }
   });
 
   test('like button is visible on each comment', async ({ page }) => {
-    // Each comment has a Like component
-    const commentLikes = page.locator('.comment .breeze_anchor.pointer_cursor');
-    await expect(commentLikes).toHaveCount(3);
+    // Each comment has its own action bar with a like button.
+    const commentLikeBtns = page.locator(
+      '.comment [data-testid="actionBar"] [data-action-id="like"] button',
+    );
+    await expect(commentLikeBtns).toHaveCount(3);
   });
 
   test('clicking status like shows confirmation dialog', async ({ page }) => {
-    // .first() because the comment's like button is also nested inside #status-1
-    const likeButton = page.locator('#status-1 .breeze_anchor.pointer_cursor').first();
+    const likeBtn = statusActionBar(page, 1).locator('[data-action-id="like"] button');
 
     let dialogType = '';
     page.once('dialog', async (dialog) => {
@@ -291,126 +311,83 @@ test.describe('Wall - Likes', () => {
       await dialog.dismiss();
     });
 
-    await likeButton.click();
+    await likeBtn.click();
 
     expect(dialogType).toBe('confirm');
   });
 
-  test('confirming like on status changes emoji and shows like info', async ({ page }) => {
-    // Accept all confirmation dialogs
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+  test('confirming like on status changes label to Unlike and shows like info', async ({ page }) => {
+    page.on('dialog', async (dialog) => await dialog.accept());
 
     const firstStatus = page.locator('#status-1');
-    // .first() to avoid matching the nested comment like button
-    const likeButton = firstStatus.locator('.breeze_anchor.pointer_cursor').first();
+    const likeBtn = statusActionBar(page, 1).locator('[data-action-id="like"] button');
 
-    // Initial state: thumbs up (not yet liked)
-    await expect(likeButton).toContainText('👍');
-
-    // Like info should not be visible initially (count is 0)
+    // Initial state: not yet liked
+    await expect(likeBtn).toContainText('Like');
     await expect(firstStatus.locator('[data-testid="likesInfo"]')).toHaveCount(0);
 
-    await likeButton.click();
+    await likeBtn.click();
 
-    // After liking: emoji changes to thumbs down
-    await expect(likeButton).toContainText('👎');
-
-    // Like info link should appear showing the like count
-    const likesInfo = firstStatus.locator('[data-testid="likesInfo"]');
-    await expect(likesInfo).toBeVisible();
+    // After liking: label changes and like-info count appears
+    await expect(likeBtn).toContainText('Unlike');
+    await expect(firstStatus.locator('[data-testid="likesInfo"]')).toBeVisible();
   });
 
   test('clicking like info opens likers modal', async ({ page }) => {
-    // Accept all confirmation dialogs
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+    page.on('dialog', async (dialog) => await dialog.accept());
 
     const firstStatus = page.locator('#status-1');
-    const likeButton = firstStatus.locator('.breeze_anchor.pointer_cursor').first();
+    const likeBtn = statusActionBar(page, 1).locator('[data-action-id="like"] button');
 
-    // Like the status first
-    await likeButton.click();
+    // Like the status first so the info link appears
+    await likeBtn.click();
 
-    // Click the likes info link to open the modal
-    const likesInfo = firstStatus.locator('[data-testid="likesInfo"]');
-    await likesInfo.click();
+    await firstStatus.locator('[data-testid="likesInfo"]').click();
 
-    // Modal should be visible
     const modal = page.locator('#smf_popup.show');
     await expect(modal).toBeVisible();
-
-    // Modal header should contain the like emoji
+    // Modal heading still uses the 👍 emoji (rendered by LikeInfo component)
     await expect(modal.locator('.popup_heading')).toContainText('👍');
 
-    // Close the modal — the icon span is 0×0 in headless E2E because the SMF
-    // icon font never loads, so Playwright can't compute a click point even with
-    // force:true. We use a JS click instead.
+    // Close the modal — the SMF icon span is 0×0 in headless mode, so use JS.
     await modal.locator('.hide_popup').evaluate((el) => (el as HTMLElement).click());
     await expect(modal).toHaveCount(0);
   });
 
-  test('confirming like on comment changes emoji', async ({ page }) => {
-    // Accept all confirmation dialogs
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+  test('confirming like on comment changes label to Unlike', async ({ page }) => {
+    page.on('dialog', async (dialog) => await dialog.accept());
 
-    const firstComment = page.locator('#comment-100');
-    const likeButton = firstComment.locator('.breeze_anchor.pointer_cursor');
+    const likeBtn = commentActionBar(page, 100).locator('[data-action-id="like"] button');
 
-    // Initial state: thumbs up
-    await expect(likeButton).toContainText('👍');
-
-    await likeButton.click();
-
-    // After liking: emoji changes to thumbs down
-    await expect(likeButton).toContainText('👎');
+    await expect(likeBtn).toContainText('Like');
+    await likeBtn.click();
+    await expect(likeBtn).toContainText('Unlike');
   });
 
   test('clicking like again unlikes the status', async ({ page }) => {
-    // Accept all confirmation dialogs
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+    page.on('dialog', async (dialog) => await dialog.accept());
 
     const firstStatus = page.locator('#status-1');
-    const likeButton = firstStatus.locator('.breeze_anchor.pointer_cursor').first();
+    const likeBtn = statusActionBar(page, 1).locator('[data-action-id="like"] button');
 
-    // Like the status first
-    await likeButton.click();
-    await expect(likeButton).toContainText('👎');
+    await likeBtn.click();
+    await expect(likeBtn).toContainText('Unlike');
 
-    // Click again to unlike
-    await likeButton.click();
-
-    // Emoji changes back to thumbs up
-    await expect(likeButton).toContainText('👍');
-
-    // Like info should be gone again
+    await likeBtn.click();
+    await expect(likeBtn).toContainText('Like');
     await expect(firstStatus.locator('[data-testid="likesInfo"]')).toHaveCount(0);
   });
 
   test('clicking like again unlikes the comment', async ({ page }) => {
-    // Accept all confirmation dialogs
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+    page.on('dialog', async (dialog) => await dialog.accept());
 
-    const firstComment = page.locator('#comment-100');
-    const likeButton = firstComment.locator('.breeze_anchor.pointer_cursor');
+    const likeBtn = commentActionBar(page, 100).locator('[data-action-id="like"] button');
 
-    // Like the comment first
-    await likeButton.click();
-    await expect(likeButton).toContainText('👎');
+    await likeBtn.click();
+    await expect(likeBtn).toContainText('Unlike');
 
-    // Click again to unlike
-    await likeButton.click();
-
-    // Emoji changes back to thumbs up
-    await expect(likeButton).toContainText('👍');
+    await likeBtn.click();
+    await expect(likeBtn).toContainText('Like');
   });
 
   test('posted status survives a page refresh', async ({ page }) => {
@@ -631,5 +608,72 @@ test.describe('Wall - profile_view Permission', () => {
 
     const body = await response.json();
     expect(body.content.data).toBeDefined();
+  });
+});
+
+
+// ── Action Bar ────────────────────────────────────────────────────────────────
+//
+// Covers the structure and interactive behaviour introduced by the action bar
+// redesign: presence of the bar on each status and comment, the correct set of
+// actions per target, and the Comment panel open/close lifecycle.
+
+test.describe('Wall - Action Bar', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await waitForStatuses(page);
+  });
+
+  test('each status has an action bar', async ({ page }) => {
+    for (let i = 1; i <= 3; i++) {
+      await expect(statusActionBar(page, i)).toBeVisible();
+    }
+  });
+
+  test('status action bar contains Like, Comment and Delete', async ({ page }) => {
+    const bar = statusActionBar(page, 1);
+    await expect(bar.locator('[data-action-id="like"]')).toBeVisible();
+    await expect(bar.locator('[data-action-id="comment"]')).toBeVisible();
+    await expect(bar.locator('[data-action-id="delete"]')).toBeVisible();
+  });
+
+  test('comment action bar contains Like and Delete but no Comment', async ({ page }) => {
+    const bar = commentActionBar(page, 100);
+    await expect(bar.locator('[data-action-id="like"]')).toBeVisible();
+    await expect(bar.locator('[data-action-id="delete"]')).toBeVisible();
+    await expect(bar.locator('[data-action-id="comment"]')).toHaveCount(0);
+  });
+
+  test('clicking Comment opens the editor panel', async ({ page }) => {
+    await statusActionBar(page, 1).locator('[data-action-id="comment"] button').click();
+    await expect(page.locator('#status-1 [data-testid="commentPanel"]')).toBeVisible();
+  });
+
+  test('clicking Comment again toggles the panel closed', async ({ page }) => {
+    const commentBtn = statusActionBar(page, 1).locator('[data-action-id="comment"] button');
+    await commentBtn.click();
+    await expect(page.locator('#status-1 [data-testid="commentPanel"]')).toBeVisible();
+    await commentBtn.click();
+    await expect(page.locator('#status-1 [data-testid="commentPanel"]')).toHaveCount(0);
+  });
+
+  test('comment panel contains a textarea and send button', async ({ page }) => {
+    await statusActionBar(page, 1).locator('[data-action-id="comment"] button').click();
+    const panel = page.locator('#status-1 [data-testid="commentPanel"]');
+    await expect(panel.locator('[data-testid="content"]')).toBeVisible();
+    await expect(panel.locator('[data-testid="send"]')).toBeVisible();
+  });
+
+  test('panel closes automatically after a comment is submitted', async ({ page }) => {
+    // Editor always shows window.confirm before posting — accept it.
+    page.on('dialog', async (dialog) => await dialog.accept());
+
+    const firstStatus = page.locator('#status-1');
+    await statusActionBar(page, 1).locator('[data-action-id="comment"] button').click();
+    const panel = firstStatus.locator('[data-testid="commentPanel"]');
+    await panel.locator('[data-testid="content"]').fill('Panel auto-close test');
+    await panel.locator('[data-testid="send"]').click();
+    await expect(firstStatus.locator('.comment')).toHaveCount(2, { timeout: 10_000 });
+    await expect(firstStatus.locator('[data-testid="commentPanel"]')).toHaveCount(0);
   });
 });

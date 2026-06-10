@@ -5,6 +5,21 @@ async function waitForStatuses(page: Page, count: number = 3) {
   await expect(page.locator('li.status')).toHaveCount(count, { timeout: 10_000 });
 }
 
+/**
+ * The status-level action bar. Uses a direct-child chain so it never matches
+ * the action bars nested inside comment cards.
+ */
+function statusActionBar(page: Page, statusId: number) {
+  return page.locator(
+    `#status-${statusId} > .post_wrapper > .postarea > .windowbg > [data-testid="actionBar"]`,
+  );
+}
+
+/** Open the comment panel for a status by clicking its Comment action button. */
+async function openCommentPanel(page: Page, statusId: number) {
+  await statusActionBar(page, statusId).locator('[data-action-id="comment"] button').click();
+}
+
 /** Reset the mock API database back to its initial fixture state. */
 async function resetDatabase(request: APIRequestContext) {
   const response = await request.get('http://api:8000/?action=reset');
@@ -64,71 +79,76 @@ test.describe('Comments - Post Comment', () => {
     await waitForStatuses(page);
   });
 
-  test('comment editor is visible inside each status', async ({ page }) => {
+  test('comment editor is visible after opening the Comment panel', async ({ page }) => {
+    // The editor lives inside a panel that is closed by default; it only appears
+    // after clicking the Comment action button in the status action bar.
     for (let i = 1; i <= 3; i++) {
-      const status = page.locator(`#status-${i}`);
-      const commentEditor = status.locator('.comment_posting [data-testid="content"]');
-      await expect(commentEditor).toBeVisible();
+      await openCommentPanel(page, i);
+      await expect(
+        page.locator(`#status-${i} [data-testid="commentPanel"] [data-testid="content"]`),
+      ).toBeVisible();
+      // Close the panel before moving on to the next status
+      await statusActionBar(page, i).locator('[data-action-id="comment"] button').click();
     }
   });
 
   test('type content and submit adds a new comment', async ({ page }) => {
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+    // Editor always shows window.confirm before posting — accept it.
+    page.on('dialog', async (dialog) => await dialog.accept());
 
     const firstStatus = page.locator('#status-1');
-    const editor = firstStatus.locator('.comment_posting [data-testid="content"]');
-    const sendButton = firstStatus.locator('.comment_posting [data-testid="send"]');
 
-    await editor.fill('My new E2E comment');
-    await sendButton.click();
+    await openCommentPanel(page, 1);
+    const panel = firstStatus.locator('[data-testid="commentPanel"]');
+    await panel.locator('[data-testid="content"]').fill('My new E2E comment');
+    await panel.locator('[data-testid="send"]').click();
 
     // Should go from 1 to 2 comments on the first status
     await expect(firstStatus.locator('.comment')).toHaveCount(2, { timeout: 10_000 });
-
-    // The new comment should contain the posted text
     await expect(firstStatus.locator('.comment').last()).toContainText('My new E2E comment');
   });
 
-  test('comment editor clears after successful post', async ({ page }) => {
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+  test('panel closes and reopening shows an empty editor after successful post', async ({ page }) => {
+    // Editor always shows window.confirm before posting — accept it.
+    page.on('dialog', async (dialog) => await dialog.accept());
 
+    // The comment panel closes automatically on success (closePanel() is called).
+    // Reopening it should show a fresh, empty editor.
     const firstStatus = page.locator('#status-1');
-    const editor = firstStatus.locator('.comment_posting [data-testid="content"]');
-    const sendButton = firstStatus.locator('.comment_posting [data-testid="send"]');
 
-    await editor.fill('Comment that should clear');
-    await sendButton.click();
+    await openCommentPanel(page, 1);
+    const panel = firstStatus.locator('[data-testid="commentPanel"]');
+    await panel.locator('[data-testid="content"]').fill('Comment that should clear');
+    await panel.locator('[data-testid="send"]').click();
 
-    // Wait for the new comment to appear
+    // Wait for the new comment (confirms success)
     await expect(firstStatus.locator('.comment')).toHaveCount(2, { timeout: 10_000 });
-
-    // Editor should be empty
-    await expect(editor).toHaveValue('');
+    // Panel auto-closed
+    await expect(firstStatus.locator('[data-testid="commentPanel"]')).toHaveCount(0);
+    // Reopen — editor must be empty
+    await openCommentPanel(page, 1);
+    await expect(
+      firstStatus.locator('[data-testid="commentPanel"] [data-testid="content"]'),
+    ).toHaveValue('');
   });
 
   test('empty comment shows error and does not submit', async ({ page }) => {
-    page.on('dialog', async (dialog) => {
-      await dialog.accept();
-    });
+    // confirmPost check fires before the empty-content guard. The error toast only
+    // appears when the user *accepts* the dialog and content is still empty.
+    page.on('dialog', async (dialog) => await dialog.accept());
 
     const firstStatus = page.locator('#status-1');
-    const sendButton = firstStatus.locator('.comment_posting [data-testid="send"]');
 
-    // Click send without typing anything
-    await sendButton.click();
+    await openCommentPanel(page, 1);
+    const panel = firstStatus.locator('[data-testid="commentPanel"]');
+    await panel.locator('[data-testid="send"]').click();
 
     await page.waitForTimeout(1000);
 
-    // Comment count should remain at 1
+    // Comment count must remain at 1
     await expect(firstStatus.locator('.comment')).toHaveCount(1);
-
-    // Error toast should appear
-    const toast = page.locator('.errorbox');
-    await expect(toast).toContainText('You need to type something!');
+    // Error toast must appear
+    await expect(page.locator('.errorbox')).toContainText('You need to type something!');
   });
 });
 
