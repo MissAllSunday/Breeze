@@ -69,7 +69,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
 			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
 		]);
-		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs']);
+		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs', 'actions']);
 
 		if (!empty($this->modSetting(SettingsEntity::ENABLE_MENTIONS))) {
 			$this->components->loadJavaScriptFile('jquery.caret.min.js', ['defer' => true], 'smf_jquery_caret');

@@ -36,6 +36,12 @@ declare module "breezeTypesText" {
 		noStatus: string;
 		generic: string;
 	}
+
+	interface ActionsTextType {
+		like: string;
+		comment: string;
+		delete: string;
+	}
 }
 
 module.exports = {
@@ -43,4 +49,5 @@ module.exports = {
 	GeneralTextType,
 	LikeTextType,
 	ErrorTextType,
+	ActionsTextType,
 };

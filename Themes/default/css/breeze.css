@@ -35,7 +35,7 @@ ul.status {
 }
 
 .status li.status .postarea .windowbg {
-	margin-top: 0;
+	margin-top: 5px;
 }
 
 div.avatar_compact {
@@ -71,13 +71,24 @@ div.avatar_compact img {
 
 .comment {
 	margin-left: 4%;
-    margin-bottom: 1%;
+	margin-bottom: 8px;
 	width: 95%;
+}
+
+/* windowbg gives comments a theme-aware background, border, and radius.
+   Override windowbg's default margin with comment-specific positioning. */
+.comment.windowbg {
+	margin: 0 0 8px 4%;
+	width: 95%;
+	overflow: visible;
 }
 
 .comment_posting > .post_content {
     overflow: hidden;
     padding-left: 5px;
+    /* Fill the remaining width after the avatar inside the flex row */
+    flex: 1;
+    min-width: 0;
 }
 
 .comment_posting > .post_content textarea {
@@ -115,9 +126,77 @@ span[role="button"].pointer_cursor {
 	line-height: normal;
 }
 
-/* Poster area spacing within status items */
+/* Meta row: like-count on the left, timestamp pinned to the right */
+.breeze_meta_bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 4px 0;
+	min-height: 1.2em;
+}
+
+.time_stamp {
+	margin-left: auto;
+	font-size: 0.85em;
+	opacity: 0.75;
+	white-space: nowrap;
+}
+
+/* ──────────────────────────────────────────────────
+   Action bar — LinkedIn-style horizontal action row
+   ────────────────────────────────────────────────── */
+.breeze_action_bar {
+	margin-top: 4px;
+	border-top: 1px solid rgba(128, 128, 128, 0.25);
+	padding-top: 2px;
+}
+
+.breeze_action_bar__list {
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.breeze_action_bar__item {
+	flex: 1;
+}
+
+/* Specificity 0,2,0 — beats the button.pointer_cursor reset (0,1,1) */
+.breeze_action_bar__list .breeze_action_bar__button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 100%;
+	padding: 6px 4px;
+	border-radius: 2px;
+	transition: background-color 0.15s;
+	font-size: 0.9em;
+}
+
+.breeze_action_bar__list .breeze_action_bar__button:hover,
+.breeze_action_bar__item--active .breeze_action_bar__button {
+	background-color: rgba(128, 128, 128, 0.15);
+}
+
+.breeze_action_bar__panel {
+	padding: 8px 0 0;
+	border-top: 1px solid rgba(128, 128, 128, 0.2);
+	margin-top: 4px;
+}
+
+/* Comment panel layout (avatar + editor side-by-side) */
+.breeze_action_bar__panel .comment_posting {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+/* Poster area spacing within status items — keep avatar flush with
+   the top of the postarea so they start at the same horizontal level */
 .status .poster {
-	padding-top: 20px;
+	padding-top: 0;
 }
 
 /* Mini Profile popup — re-uses SMF's poster/postarea layout */
@@ -223,8 +302,9 @@ ul.buddyList {
     img.comment_avatar {
         display: none;
     }
-    .info_bar {
-        text-align: left;
+    .breeze_meta_bar {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .buddyList ul {

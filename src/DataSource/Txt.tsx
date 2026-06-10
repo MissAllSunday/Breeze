@@ -6,6 +6,7 @@ interface IBreezeWindowInterface extends Window {
 	breezeTxtLike: breezeTypesText.LikeTextType;
 	breezeTxtError: breezeTypesText.ErrorTextType;
 	breezeTxtTabs: breezeTypesText.TabsTextType;
+	breezeTxtActions: breezeTypesText.ActionsTextType;
 }
 
 interface ISmfTextVars {
@@ -13,6 +14,7 @@ interface ISmfTextVars {
 	like: breezeTypesText.LikeTextType;
 	error: breezeTypesText.ErrorTextType;
 	tabs: breezeTypesText.TabsTextType;
+	actions: breezeTypesText.ActionsTextType;
 }
 
 const breezeWindow = window as unknown as IBreezeWindowInterface;
@@ -33,12 +35,17 @@ const error: ErrorTextType =
 const tabs: TabsTextType =
 	breezeWindow.breezeTxtTabs ??
 	JSON.parse(import.meta.env.VITE_APP_DEV_TEXT_TABS);
+// @ts-expect-error Backend text variable
+const actions: ActionsTextType =
+	breezeWindow.breezeTxtActions ??
+	JSON.parse(import.meta.env.VITE_APP_DEV_TEXT_ACTIONS);
 
 const smfTextVars: ISmfTextVars = {
 	general,
 	like,
 	error,
 	tabs,
+	actions,
 };
 
 export default smfTextVars;

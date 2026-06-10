@@ -107,6 +107,11 @@ $txt['Breeze_info_loading_end'] = 'There are no more status to display';
 $txt['Breeze_page_no_status'] = 'There are no status to display'; // This will be replaced by conditional logic
 $txt['Breeze_info_empty_data'] = 'There are no status to display'; // This will be replaced by conditional logic
 
+// Action bar labels
+$txt['Breeze_action_like'] = 'Like';
+$txt['Breeze_action_comment'] = 'Comment';
+$txt['Breeze_action_delete'] = 'Delete';
+
 // Tabs
 $txt['Breeze_tabs_wall'] = 'Wall';
 $txt['Breeze_tabs_about'] = 'About me';

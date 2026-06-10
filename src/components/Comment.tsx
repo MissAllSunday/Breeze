@@ -2,26 +2,25 @@ import type { CommentProps } from "breezeTypesComments";
 import React, { useCallback, useContext, useState } from "react";
 
 import { PermissionsContext } from "../context/PermissionsContext";
-import smfVars from "../DataSource/SMF";
-import smfTextVars from "../DataSource/Txt";
-import { Like } from "./Like";
+import ActionBar from "./actions/ActionBar";
+import { commentActionRegistry } from "./actions/actionRegistry";
+import { LikeInfo } from "./LikeInfo";
 import Avatar from "./user/Avatar";
 
 function Comment(props: CommentProps): React.ReactElement {
 	const [classType] = useState(props.comment.isNew ? "fadeIn" : "");
+	const [likesInfo, setLikesInfo] = useState(props.comment.likesInfo);
 	const timeStamp = props.comment.created_at;
 	const permissions = useContext(PermissionsContext);
 
+	// confirm + permission gate live in comment/DeleteAction; this callback stays pure
 	const removeComment = useCallback(() => {
-		if (!window.confirm(smfVars.youSure) || !permissions.Comments.delete) {
-			return;
-		}
 		props.removeComment(props.comment);
-	}, [props, permissions]);
+	}, [props]);
 
 	return (
 		<div
-			className={`${classType} comment`}
+			className={`${classType} comment windowbg`}
 			id={`comment-${props.comment.id.toString()}`}
 		>
 			<div className="avatar_compact">
@@ -39,28 +38,24 @@ function Comment(props: CommentProps): React.ReactElement {
 				className="comment_compact content"
 				dangerouslySetInnerHTML={{ __html: props.comment.body }}
 			/>
-			<div className="half_content">
-				<Like likeInfo={props.comment.likesInfo} />
+			<div className="breeze_meta_bar">
+				{permissions.isEnable.enableLikes && permissions.Forum.likesLike && (
+					<LikeInfo likeInfo={likesInfo} />
+				)}
+				<span
+					dangerouslySetInnerHTML={{ __html: timeStamp }}
+					className={"time_stamp"}
+				/>
 			</div>
-			<div className="half_content">
-				<div className={"info_bar"}>
-					<span
-						dangerouslySetInnerHTML={{ __html: timeStamp }}
-						className={"time_stamp"}
-					/>
-					{permissions.Comments.delete && (
-						<span
-							role="button"
-							tabIndex={props.comment.id}
-							className="main_icons remove_button pointer_cursor"
-							title={smfTextVars.general.delete}
-							onClick={removeComment}
-							data-testid="deleteComment"
-						/>
-					)}
-				</div>
-			</div>
-			<hr />
+			<ActionBar
+				registry={commentActionRegistry}
+				baseContext={{
+					comment: { ...props.comment, likesInfo },
+					permissions,
+					removeComment,
+					updateLikesInfo: setLikesInfo,
+				}}
+			/>
 		</div>
 	);
 }

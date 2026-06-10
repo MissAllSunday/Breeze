@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import type { PermissionsContextType } from "breezeTypesPermissions";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent, { type UserEvent } from "@testing-library/user-event";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { comments } from "../__fixtures__/comments";
 import permissions from "../__fixtures__/permissions";
@@ -11,13 +11,28 @@ import { deleteComment } from "../api/Comment/Delete";
 import { postComment } from "../api/Comment/Post";
 import { PermissionsContext } from "../context/PermissionsContext";
 import smfVars from "../DataSource/SMF";
+import { commentActionRegistry, statusActionRegistry } from "./actions/actionRegistry";
+import CommentDeleteAction from "./actions/comment/DeleteAction";
+import CommentLikeAction from "./actions/comment/LikeAction";
+import CommentAction from "./actions/status/CommentAction";
+import DeleteAction from "./actions/status/DeleteAction";
+import LikeAction from "./actions/status/LikeAction";
 import Status from "./Status";
+
+// Prevent real HTTP calls from action descriptors
+vi.mock("../api/Like/Post", () => ({ postLike: vi.fn().mockResolvedValue({}) }));
 
 const mockRemoveStatus = vi.fn(() => true);
 
 // Mock the API calls
 vi.mock("../api/Comment/Post");
 vi.mock("../api/Comment/Delete");
+
+// Populate both shared registries once before any test runs
+beforeAll(() => {
+	statusActionRegistry.register(LikeAction, CommentAction, DeleteAction);
+	commentActionRegistry.register(CommentLikeAction, CommentDeleteAction);
+});
 
 const originalConfirm = window.confirm; // Store original function
 
@@ -104,8 +119,11 @@ describe("Status component", () => {
 		expect(mockRemoveStatus).not.toHaveBeenCalled();
 	});
 
-	it("shows comment form when user has permission to post comments", () => {
+	it("shows comment form when user has permission to post comments", async () => {
 		act({ Comments: { delete: true, edit: true, post: true } });
+
+		// Editor lives inside the CommentAction panel — open it first
+		await userEvent.click(screen.getByRole("button", { name: /comment/i }));
 
 		const commentForm = screen.getByTestId("content");
 		expect(commentForm).toBeInTheDocument();
@@ -122,6 +140,9 @@ describe("Status component", () => {
 			comments.custom({ id: 667 }),
 		]);
 		act({ Comments: { delete: true, edit: true, post: true } });
+
+		// Editor is in the CommentAction panel — open it first
+		await userEvent.click(screen.getByRole("button", { name: /comment/i }));
 
 		const editor = screen.getByTestId("content");
 		const sendButton = screen.getByTestId("send");
@@ -159,6 +180,9 @@ describe("Status component", () => {
 		});
 
 		act({ Comments: { delete: true, edit: true, post: true } });
+
+		// Editor is in the CommentAction panel — open it first
+		await userEvent.click(screen.getByRole("button", { name: /comment/i }));
 
 		// Trigger an async operation
 		const editor = screen.getByTestId("content");

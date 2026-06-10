@@ -7,6 +7,16 @@ import smfTextVars from "./DataSource/Txt";
 import Wall from "./Wall";
 import Button from "./components/Button";
 import React from "react";
+import { commentActionRegistry, statusActionRegistry } from "./components/actions/actionRegistry";
+import CommentDeleteAction from "./components/actions/comment/DeleteAction";
+import CommentLikeAction from "./components/actions/comment/LikeAction";
+import StatusCommentAction from "./components/actions/status/CommentAction";
+import StatusDeleteAction from "./components/actions/status/DeleteAction";
+import StatusLikeAction from "./components/actions/status/LikeAction";
+
+// Register default actions before the React tree mounts
+statusActionRegistry.register(StatusLikeAction, StatusCommentAction, StatusDeleteAction);
+commentActionRegistry.register(CommentLikeAction, CommentDeleteAction);
 
 const rootElement =
 	document.getElementById("root") ?? document.createElement("div");

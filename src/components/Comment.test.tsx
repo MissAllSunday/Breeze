@@ -7,8 +7,13 @@ import { describe, expect, it, vi } from "vitest";
 import { comments } from "../__fixtures__/comments";
 import permissions from "../__fixtures__/permissions";
 import { PermissionsContext } from "../context/PermissionsContext";
-import smfTextVars from "../DataSource/Txt";
+import { commentActionRegistry } from "./actions/actionRegistry";
+import CommentDeleteAction from "./actions/comment/DeleteAction";
+import CommentLikeAction from "./actions/comment/LikeAction";
 import Comment from "./Comment";
+
+// Prevent real HTTP calls from action descriptors
+vi.mock("../api/Like/Post", () => ({ postLike: vi.fn().mockResolvedValue({}) }));
 
 function act(
 	overwritePermissions?: Partial<PermissionsContextType>,
@@ -33,6 +38,7 @@ function act(
 
 beforeAll(() => {
 	window.confirm = vi.fn(() => true);
+	commentActionRegistry.register(CommentLikeAction, CommentDeleteAction);
 });
 
 describe("Rendering Comment component", () => {
@@ -53,12 +59,10 @@ describe("Rendering Comment component", () => {
 describe("Deleting a comment", () => {
 	it("does not show delete button when user does not have permissions", () => {
 		act();
-		const spanElement = screen.queryByTitle(smfTextVars.general.delete);
-		expect(spanElement).not.toBeInTheDocument();
+		expect(screen.queryByTestId("deleteComment")).not.toBeInTheDocument();
 	});
 	it("show delete button when user does have permissions", () => {
 		act({ Comments: { delete: true, edit: true, post: true } });
-		const spanElement = screen.queryByTitle(smfTextVars.general.delete);
-		expect(spanElement).toBeInTheDocument();
+		expect(screen.getByTestId("deleteComment")).toBeInTheDocument();
 	});
 });

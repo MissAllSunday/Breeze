@@ -103,6 +103,11 @@ class Components
 				'like' => $this->getSmfText('like'),
 				'unlike' => $this->getSmfText('unlike'),
 			],
+			'actions' => [
+				'like' => $this->getText('action_like'),
+				'comment' => $this->getText('action_comment'),
+				'delete' => $this->getText('action_delete'),
+			],
 		];
 
 		foreach ($components as $name) {

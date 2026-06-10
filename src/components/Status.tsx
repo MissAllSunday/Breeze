@@ -6,19 +6,18 @@ import { type Ref, useCallback, useContext, useState } from "react";
 import { deleteComment } from "../api/Comment/Delete";
 import { postComment } from "../api/Comment/Post";
 import { PermissionsContext } from "../context/PermissionsContext";
-import smfVars from "../DataSource/SMF";
-import smfTextVars from "../DataSource/Txt";
+import ActionBar from "./actions/ActionBar";
+import { statusActionRegistry } from "./actions/actionRegistry";
 import Comment from "./Comment";
-import Editor from "./Editor";
-import { Like } from "./Like";
+import { LikeInfo } from "./LikeInfo";
 import Loading from "./Loading";
-import Avatar from "./user/Avatar";
 import UserInfo from "./user/UserInfo";
 
 function Status(props: StatusProps): React.ReactElement {
 	const [classType] = useState(props.status.isNew ? "fadeIn" : "");
 	const timeStamp = props.status.created_at;
 
+	const [likesInfo, setLikesInfo] = useState(props.status.likesInfo);
 	const [commentsList, setCommentsList] = useState<CommentListType>(
 		props.status.comments,
 	);
@@ -35,13 +34,10 @@ function Status(props: StatusProps): React.ReactElement {
 		}
 	});
 
+	// confirm + permission gate live in DeleteAction; this callback stays pure
 	const removeStatus = useCallback(() => {
-		if (!window.confirm(smfVars.youSure) || !permissions.Status.delete) {
-			return;
-		}
-
 		props.removeStatus(props.status);
-	}, [permissions.Status.delete, props]);
+	}, [props]);
 
 	const createComment = useCallback(
 		(content: string, mentionIds?: number[]): boolean => {
@@ -110,28 +106,16 @@ function Status(props: StatusProps): React.ReactElement {
 							className="content"
 							dangerouslySetInnerHTML={{ __html: props.status.body }}
 						/>
-						<div className="half_content">
-							<Like likeInfo={props.status.likesInfo} />
-						</div>
-						<div className="half_content">
-							<div className={"info_bar"}>
-								<span
-									dangerouslySetInnerHTML={{ __html: timeStamp }}
-									className={"time_stamp"}
-								/>
-								{permissions.Status.delete && (
-									<span
-										role="button"
-										tabIndex={0}
-										className="main_icons remove_button pointer_cursor"
-										title={smfTextVars.general.delete}
-										onClick={removeStatus}
-										data-testid="deleteStatus"
-									/>
+						<div className="breeze_meta_bar">
+							{permissions.isEnable.enableLikes &&
+								permissions.Forum.likesLike && (
+									<LikeInfo likeInfo={likesInfo} />
 								)}
-							</div>
+							<span
+								dangerouslySetInnerHTML={{ __html: timeStamp }}
+								className={"time_stamp"}
+							/>
 						</div>
-						<hr />
 						<ul className="status">
 							{commentsList.map((comment: CommentType) => (
 								<Comment
@@ -141,20 +125,16 @@ function Status(props: StatusProps): React.ReactElement {
 								/>
 							))}
 						</ul>
-						<div className="comment_posting">
-							{permissions.Comments.post ? (
-								<>
-									<Avatar
-										href={smfVars.currentUserAvatar}
-										userName={""}
-										customClassName={"comment_avatar"}
-									/>
-									<Editor saveContent={createComment} isFull={false} />
-								</>
-							) : (
-								""
-							)}
-						</div>
+						<ActionBar
+							registry={statusActionRegistry}
+							baseContext={{
+								status: { ...props.status, likesInfo },
+								permissions,
+								createComment,
+								removeStatus,
+								updateLikesInfo: setLikesInfo,
+							}}
+						/>
 					</div>
 				</div>
 			</div>

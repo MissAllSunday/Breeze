@@ -41,6 +41,9 @@ class ComponentsTest extends TestCase
 			'go_up' => 'Go up',
 			'like' => 'Like',
 			'unlike' => 'Unlike',
+			'Breeze_action_like' => 'Like',
+			'Breeze_action_comment' => 'Comment',
+			'Breeze_action_delete' => 'Delete',
 		];
 	}
 
@@ -100,7 +103,14 @@ class ComponentsTest extends TestCase
 	public function testLoadTxtVarsForWithMultipleComponents(): void
 	{
 		// This should not throw any errors
-		$this->components->loadTxtVarsFor(['general', 'tabs', 'like']);
+		$this->components->loadTxtVarsFor(['general', 'tabs', 'like', 'actions']);
+		$this->assertTrue(true);
+	}
+
+	public function testLoadTxtVarsForWithActionsComponent(): void
+	{
+		// Should load action bar labels without errors
+		$this->components->loadTxtVarsFor(['actions']);
 		$this->assertTrue(true);
 	}
 
