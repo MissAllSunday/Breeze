@@ -329,16 +329,8 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 	public function recountComments(): void
 	{
-		$this->dbClient->query(
-			'
-			UPDATE {db_prefix}' . StatusEntity::TABLE . ' AS s
-			SET comments = (
-				SELECT COUNT(*)
-				FROM {db_prefix}' . CommentEntity::TABLE . ' AS c
-				WHERE c.status_id = s.id
-			)',
-			[]
-		);
+		// No-op: the status table has no comments counter column.
+		// Comment counts are always derived dynamically from the comments table.
 	}
 
 	public function recountLikes(): void
