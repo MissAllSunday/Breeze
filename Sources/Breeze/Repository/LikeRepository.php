@@ -156,7 +156,9 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		// Invalidate cache for this content
 		$this->invalidateContentCache($likeEntity->getContentType(), $likeEntity->getContentId());
 
-		return $this->buildLikeInfo([$likeEntity], $likeEntity->getContentType(), $likeEntity->getContentId());
+		$contentId = $likeEntity->getContentId();
+
+		return $this->getByContent($likeEntity->getContentType(), [$contentId])[$contentId];
 	}
 
 	public function count(LikeEntity $likeEntity): int
