@@ -54,7 +54,7 @@ if (wallType === "wall") {
 				buttons={
 					smfVars.canShowAddBuddyButton ? (
 						<Button
-							label={"Add buddy"}
+							label={smfTextVars.general.buddyAdd}
 							onClick={(): void => {
 								throw new Error("Function not implemented.");
 							}}
