@@ -7,7 +7,6 @@ declare module "breezeTypesText" {
 		close: string;
 		cancel: string;
 		send: string;
-		errorEmpty: string;
 		end: string;
 		loadMore: string;
 		goUp: string;
@@ -15,7 +14,6 @@ declare module "breezeTypesText" {
 		emptyData: string;
 		buddyAdd: string;
 		buddyRemove: string;
-		invitationPending: string;
 	}
 
 	interface LikeTextType {
