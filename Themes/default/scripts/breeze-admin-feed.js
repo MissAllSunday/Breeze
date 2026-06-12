@@ -29,7 +29,7 @@
 			const anchor = document.createElement('a');
 			const date = new Date(release.published_at);
 
-			anchor.textContent = release.name;
+			anchor.textContent = release.name || release.tag_name;
 			anchor.href = release.html_url;
 			dt.appendChild(anchor);
 			dt.appendChild(document.createTextNode(' ' + date.toLocaleString('en-US')));
