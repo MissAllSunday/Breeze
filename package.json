@@ -1,6 +1,6 @@
 {
   "name": "breeze",
-  "version": "2.0",
+  "version": "2.0.0-beta.1",
   "private": true,
   "dependencies": {
     "@testing-library/user-event": "^14.6.1",

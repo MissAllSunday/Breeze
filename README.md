@@ -20,6 +20,8 @@ Comes with the following features:
 - Mentions for status and comments.
 - Notifications for several features.
 - General wall page for displaying your buddies latest activity.
+- Per-user block list controlling wall visibility.
+- Optional post confirmation dialog before submitting status or comments.
 
 The mod uses the following scripts and libraries:
 
@@ -63,6 +65,8 @@ make package    # Lints, builds, updates REACT_HASH and produces Breeze.zip
 ###### Documentation:
 - [Architecture](docs/ARCHITECTURE.md)
 - [Testing Guide](docs/TESTING.md)
+- [Visibility Filtering](docs/VISIBILITY_FILTERING.md)
+- [Wall Visibility Rules](docs/WALL_VISIBILITY_RULES.md)
 
 ###### Notes:
 

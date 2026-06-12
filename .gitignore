@@ -12,6 +12,7 @@
 
 # production
 /build
+/Themes/default/scripts/breezeComponents
 
 # misc
 .DS_Store

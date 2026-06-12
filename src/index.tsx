@@ -56,7 +56,7 @@ if (wallType === "wall") {
 						<Button
 							label={smfTextVars.general.buddyAdd}
 							onClick={(): void => {
-								throw new Error("Function not implemented.");
+								window.location.href = `${smfVars.script_url}?action=buddy;u=${smfVars.wall_id};${smfVars.session.var}=${smfVars.session.id}`;
 							}}
 						/>
 					) : undefined

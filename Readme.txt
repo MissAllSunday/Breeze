@@ -1,5 +1,5 @@
 ======================================================================
-  BREEZE  -  Social Wall Mod for SMF 2.1
+  BREEZE 2.0.0-beta.1  -  Social Wall Mod for SMF 2.1
   https://missallsunday.com
   License: Mozilla Public License 2.0
 ======================================================================
@@ -51,6 +51,17 @@ Works with any SMF theme, no file edits required.
 
     An optional tab on the profile page that lists all buddies with
     quick add/remove buttons.
+
+  [ Block List ]
+
+    Each user can maintain a private block list. Blocked members
+    cannot view the wall owner's profile wall, and the wall owner
+    will not see blocked members' walls either (symmetric blocking).
+
+  [ Post Confirmation ]
+
+    Users can opt in to a confirmation dialog that appears before
+    every status or comment submission, preventing accidental posts.
 
   [ Mentions ]
 
