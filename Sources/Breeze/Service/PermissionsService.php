@@ -52,13 +52,15 @@ class PermissionsService implements PermissionsServiceInterface
 			PermissionsEnum::FORUM => $this->forumPermissions(),
 		];
 
-		// NO! you don't have permission to do nothing...
-		if ($user_info['is_guest'] || !$userPoster || !$profileOwner) {
+		// Guests and calls without a known poster get no permissions.
+		// profileOwner may legitimately be 0 on the general wall, so we do NOT
+		// short-circuit on it — we simply treat $isProfileOwner as false.
+		if ($user_info['is_guest'] || !$userPoster) {
 			return $perm;
 		}
 
-		// Profile owner?
-		$isProfileOwner = $profileOwner === (int) $user_info['id'];
+		// Profile owner? A zero profileOwner means "no single owner" (general wall).
+		$isProfileOwner = $profileOwner !== 0 && $profileOwner === (int) $user_info['id'];
 
 		// Status owner?
 		$isPosterOwner = $userPoster === (int) $user_info['id'];

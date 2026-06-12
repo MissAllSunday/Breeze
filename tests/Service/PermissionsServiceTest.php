@@ -154,6 +154,31 @@ class PermissionsServiceTest extends TestCase
 					],
 				],
 			],
+			'general wall: profileOwner=0 does not grant profile-owner rights' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'profileOwner' => 0,
+				'userPoster' => 1,
+				'expected' => [
+					'Status' => [
+						'edit' => false,
+						'delete' => false,
+						'post' => false,
+					],
+					'Comments' => [
+						'edit' => false,
+						'delete' => false,
+						'post' => false,
+					],
+					'isEnable' => [
+						'enableLikes' => false,
+					],
+					'Forum' => [
+						'likesLike' => false,
+						'adminForum' => false,
+						'profileView' => false,
+					],
+				],
+			],
 			'poster owner with different profile' => [
 				'user_info' => ['id' => 2, 'is_guest' => false],
 				'profileOwner' => 1,

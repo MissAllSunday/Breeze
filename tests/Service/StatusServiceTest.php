@@ -307,13 +307,11 @@ class StatusServiceTest extends TestCase
 			UserSettingsEntity::from(['buddies' => '2,3', 'paginationNumber' => 5])
 		);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
-		// On the general wall both arguments must be the viewer's own ID so that
-		// PermissionsService does not short-circuit on a zero profileOwner.
-		// Status.post is always forced false by feedPermissions() — the feed has
-		// no wall_id target so new status creation is not allowed here.
+		// On the general wall profileOwner is 0 (no single wall owner); the viewer's
+		// own ID is passed as userPoster so ownership-based delete still works.
 		$this->permissionsService->expects($this->once())
 			->method('permissions')
-			->with(1, 1)
+			->with(0, 1)
 			->willReturn([
 				'Status'   => ['delete' => true, 'edit' => false, 'post' => true],
 				'Comments' => ['delete' => true, 'edit' => false, 'post' => true],
