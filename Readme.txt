@@ -6,8 +6,7 @@
 
 Breeze adds a social wall to every member profile on your forum.
 Members can post status updates, leave comments, give likes, and
-mention each other - all without touching a single forum thread.
-Works with any SMF theme, no file edits required.
+mention each other. Works with any SMF theme, no file edits required.
 
 ----------------------------------------------------------------------
   REQUIREMENTS
@@ -73,7 +72,8 @@ Works with any SMF theme, no file edits required.
 
     Type @ in the editor to search for and mention other members.
     A real-time suggestion dropdown appears as you type. Mentioned
-    members receive an SMF alert with a link back to the post.
+    members receive an SMF alert linking directly to the status or
+    comment where they were mentioned.
 
   [ Alerts ]
 
