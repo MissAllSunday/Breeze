@@ -30,7 +30,7 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/.
         <hook hook="integrate_alert_types" function="\Breeze\Breeze::alertsPrefWrapper#"  />
 		<hook hook="integrate_pre_profile_areas" function="\Breeze\Breeze::profileMenuWrapper#"  />
         <hook hook="integrate_fetch_alerts" function="\Breeze\Breeze::alertsWrapper#" />
-		<redirect url="$scripturl?action=admin;area=breezeAdmin;sa=main" timeout="3000">redirect.txt</redirect>
+		<redirect url="$scripturl?action=admin;area=breezeAdmin;sa=main" timeout="3000" />
 	</install>
 
 	<uninstall for="2.1 - 2.1.99">

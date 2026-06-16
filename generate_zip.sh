@@ -52,10 +52,8 @@ zip -r "$ZIP_NAME" \
   Themes/ \
   install.php \
   installCheck.php \
-  License \
   package-info.xml \
-  Readme.txt \
-  README.md
+  Readme.txt
 echo "==> Created ${ZIP_NAME}"
 
 # ── 6. Restore dev dependencies ─────────────────────────────────────────────
