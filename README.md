@@ -16,6 +16,7 @@ Comes with the following features:
 
 - No file edits, works with all themes.
 - Users individual settings, each user defines her/his own settings.
+- Compact action bar with inline buttons for likes, comments, and delete on every status and comment.
 - Likes for status and comments.
 - Mentions for status and comments.
 - Notifications for several features.

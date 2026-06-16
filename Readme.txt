@@ -31,6 +31,12 @@ Works with any SMF theme, no file edits required.
     Members post short status updates on any wall. Other members can
     reply with comments. The editor supports BBC.
 
+  [ Action Bar ]
+
+    Every status and comment displays a compact action bar with inline
+    buttons for likes, toggling the comment section, and deleting the
+    post. Buttons are shown or hidden based on the member's permissions.
+
   [ Likes ]
 
     Any status or comment can be liked. Each member can only like a
