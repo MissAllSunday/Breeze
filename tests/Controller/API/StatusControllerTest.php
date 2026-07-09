@@ -85,7 +85,6 @@ class StatusControllerTest extends TestCase
 
 		$reflection = new \ReflectionClass($this->statusController);
 		$dataProperty = $reflection->getProperty('data');
-		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->statusController, [StatusEntity::WALL_ID => $wallId]);
 
 		$this->statusService->expects($this->once())
@@ -150,7 +149,6 @@ class StatusControllerTest extends TestCase
 
 		$reflection = new \ReflectionClass($this->statusController);
 		$dataProperty = $reflection->getProperty('data');
-		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->statusController, [StatusEntity::ID => $statusId]);
 
 		$this->statusService->expects($this->once())
@@ -171,7 +169,6 @@ class StatusControllerTest extends TestCase
 
 		$reflection = new \ReflectionClass($this->statusController);
 		$dataProperty = $reflection->getProperty('data');
-		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->statusController, [StatusEntity::ID => $statusId]);
 
 		$this->statusService->expects($this->once())
@@ -201,7 +198,6 @@ class StatusControllerTest extends TestCase
 
 		$reflection = new \ReflectionClass($this->statusController);
 		$dataProperty = $reflection->getProperty('data');
-		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->statusController, $statusData);
 
 		$this->statusService->expects($this->once())
