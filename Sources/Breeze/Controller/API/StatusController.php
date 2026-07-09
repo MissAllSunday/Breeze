@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
@@ -12,6 +11,7 @@ use Breeze\Util\Response;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
+use Exception;
 
 class StatusController extends ApiBaseController
 {
@@ -41,42 +41,52 @@ class StatusController extends ApiBaseController
 
 	public function profile(): void
 	{
-		$cursor = $this->getRequest('cursor', null);
-		$wallId = $this->data[StatusEntity::WALL_ID];
-		$message = '';
+		try {
+			$cursor = $this->getRequest('cursor', null);
 
-		$statusByProfile = $this->statusService->getByProfile(
-			$wallId,
-			$cursor
-		);
+			$wallId = $this->data[StatusEntity::WALL_ID];
+			$message = '';
 
-		if ($statusByProfile['data'] === [] && $cursor === null) {
-			$currentUserInfo = $this->statusService->currentUserInfo();
-			$message = $wallId === $currentUserInfo['id']
-				? 'empty_data_own_wall'
-				: 'empty_data_other_wall';
+			$statusByProfile = $this->statusService->getByProfile(
+				$wallId,
+				$cursor
+			);
+
+			if ($statusByProfile['data'] === [] && $cursor === null) {
+				$currentUserInfo = $this->statusService->currentUserInfo();
+				$message = $wallId === $currentUserInfo['id']
+					? 'empty_data_own_wall'
+					: 'empty_data_other_wall';
+			}
+
+			$this->response->success($message, $statusByProfile);
+		} catch (Exception $exception) {
+			$this->responseWithError($exception);
 		}
-
-		$this->response->success($message, $statusByProfile);
 	}
 
 	public function wall(): void
 	{
-		$buddiesStatus = $this->statusService->getByBuddies(
-			$this->getRequest('cursor', null)
-		);
+		try {
+			$buddiesStatus = $this->statusService->getByBuddies(
+				$this->getRequest('cursor', null)
+			);
 
-		$this->response->success('', $buddiesStatus);
+			$this->response->success('', $buddiesStatus);
+		} catch (Exception $exception) {
+			$this->responseWithError($exception);
+		}
 	}
 
 	public function deleteStatus(): void
 	{
 		try {
-			$this->statusService->deleteById($this->data[StatusEntity::ID]);
+			$statusId = $this->data[StatusEntity::ID];
 
+			$this->statusService->deleteById($statusId);
 			$this->response->success('deleted_status');
-		} catch (InvalidStatusException $exception) {
-			$this->response->error($exception->getMessage());
+		} catch (InvalidStatusException $invalidStatusException) {
+			$this->responseWithError($invalidStatusException, true);
 		}
 	}
 
@@ -90,22 +100,23 @@ class StatusController extends ApiBaseController
 				$statusEntities,
 				Response::CREATED
 			);
-		} catch (InvalidStatusException $invalidStatusException) {
-			$this->response->error($invalidStatusException->getMessage());
+		} catch (InvalidStatusException $exception) {
+			$this->responseWithError($exception, true);
 		}
 	}
 
 	public function total(): void
 	{
 		try {
+			$wallId = $this->data[StatusEntity::WALL_ID];
 			$statusByProfile = $this->statusService->getByProfile(
-				$this->data[StatusEntity::WALL_ID],
+				$wallId,
 				$this->getRequest('cursor', null)
 			);
 
 			$this->response->success('', $statusByProfile);
-		} catch (InvalidStatusException $invalidStatusException) {
-			$this->response->error($invalidStatusException->getMessage());
+		} catch (Exception $exception) {
+			$this->responseWithError($exception);
 		}
 	}
 
@@ -123,10 +134,8 @@ class StatusController extends ApiBaseController
 			$singleStatus = $this->statusService->getById($statusId);
 
 			$this->response->success('', $singleStatus);
-		} catch (DataNotFoundException $dataNotFoundException) {
-			$this->response->error($dataNotFoundException->getMessage());
-		} catch (EmptyDataException $emptyDataException) {
-			$this->response->error($emptyDataException->getMessage());
+		} catch (DataNotFoundException | EmptyDataException $exception) {
+			$this->responseWithError($exception, true);
 		}
 	}
 
@@ -141,5 +150,13 @@ class StatusController extends ApiBaseController
 			self::ACTION_POST,
 			self::ACTION_DELETE,
 		];
+	}
+
+	protected function responseWithError(Exception $exception, bool $useExceptionMessage = false): void
+	{
+		$errorResponse = $useExceptionMessage ? $exception->getMessage() : 'error_generic';
+
+		$this->logError($exception);
+		$this->response->error($errorResponse);
 	}
 }

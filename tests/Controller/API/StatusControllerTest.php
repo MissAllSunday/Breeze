@@ -343,7 +343,7 @@ class StatusControllerTest extends TestCase
 	public function testTotalThrowsInvalidStatusException(): void
 	{
 		$wallId = 456;
-		$errorMessage = 'Error getting total';
+		$errorMessage = 'error_generic';
 
 		$reflection = new \ReflectionClass($this->statusController);
 		$dataProperty = $reflection->getProperty('data');

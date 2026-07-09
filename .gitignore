@@ -93,3 +93,6 @@ phpunit.xml
 /breezeVendor
 brp.sh
 tests/database-config.local.php
+.aider*
+.env
+.env

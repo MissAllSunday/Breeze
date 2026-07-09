@@ -10,6 +10,7 @@ use Breeze\Breeze;
 trait TextTrait
 {
 	use SettingsTrait;
+	use LogTrait;
 
 	private static string $session_token = 'href';
 
