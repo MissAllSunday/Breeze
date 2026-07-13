@@ -10,9 +10,9 @@ class SecurityService implements SecurityServiceInterface
 {
 	use SettingsTrait;
 
-	public function validateToken(string $tokenName): void
+	public function validateToken(string $tokenName, string $type = 'post', bool $reset = true): bool
 	{
-		validateToken($tokenName);
+		return validateToken($tokenName, $type, $reset);
 	}
 
 	public function createToken(string $tokenName, string $type = 'post'): array

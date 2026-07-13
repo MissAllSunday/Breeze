@@ -9,10 +9,11 @@ use Breeze\Controller\BaseController;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\SettingsRepositoryInterface;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Util\Error;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 
 class UserSettingsController extends BaseController
 {
@@ -33,11 +34,11 @@ class UserSettingsController extends BaseController
 	protected string $subAction;
 
 	public function __construct(
-		protected SettingsRepositoryInterface  $userRepository,
-		protected Response                     $response,
-		protected UserSettingsBuilderInterface $userSettingsBuilder
-	) {
-	}
+		protected SettingsRepositoryInterface $userRepository,
+		protected ResponseInterface $response,
+		protected UserSettingsBuilderInterface $userSettingsBuilder,
+		protected SecurityServiceInterface $security
+	) {}
 
 	public function dispatch(): void
 	{
@@ -58,7 +59,7 @@ class UserSettingsController extends BaseController
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 		$userId = $this->getRequest('u', 0);
 
-		createToken(self::AREA);
+		$this->security->createToken(self::AREA);
 
 		$this->userSettingsBuilder->setForm([
 			'name' => UserSettingsEntity::IDENTIFIER,
@@ -74,7 +75,7 @@ class UserSettingsController extends BaseController
 
 	public function save(): void
 	{
-		validateToken(self::AREA);
+		$this->security->validateToken(self::AREA);
 
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 		$userId = $this->getRequest('u', 0);

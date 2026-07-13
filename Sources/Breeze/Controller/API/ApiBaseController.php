@@ -7,9 +7,10 @@ namespace Breeze\Controller\API;
 
 use Breeze\Breeze;
 use Breeze\Exceptions\ValidateException;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
 
@@ -28,7 +29,8 @@ abstract class ApiBaseController
 
 	public function __construct(
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response
+		protected ResponseInterface $response,
+		protected SecurityServiceInterface $security
 	) {
 		$this->subAction = $this->getRequest('sa', '');
 		$this->action = $this->getRequest('action', '');
@@ -41,7 +43,7 @@ abstract class ApiBaseController
 		if ($this->subAction !== '' && $this->subAction !== '0' && in_array($this->subAction, $subActions, true)) {
 			$this->{$this->subAction}();
 		} else {
-			$this->response->print([], Response::NOT_FOUND);
+			$this->response->print([], ResponseInterface::NOT_FOUND);
 		}
 	}
 
@@ -60,7 +62,7 @@ abstract class ApiBaseController
 		$this->validateActions->setUp($this->data, $this->subAction);
 
 		if ($this->subActionCheck()) {
-			$this->response->print([], Response::NOT_FOUND);
+			$this->response->print([], ResponseInterface::NOT_FOUND);
 		}
 
 		if ($this->isMutatingAction()) {
@@ -82,7 +84,7 @@ abstract class ApiBaseController
 
 	protected function validateCsrfToken(): void
 	{
-		validateToken(Response::CSRF_TOKEN_ACTION, 'get');
+		$this->security->validateToken(ResponseInterface::CSRF_TOKEN_ACTION, 'get');
 	}
 
 	abstract public function getSubActions(): array;

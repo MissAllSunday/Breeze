@@ -33,7 +33,7 @@ class AdminService implements AdminServiceInterface
 		protected LikeServiceInterface $likeService,
 		protected SettingsRepositoryInterface $userSettingsRepository,
 		protected ComponentsInterface $components,
-		protected SecurityServiceInterface $securityService
+		protected SecurityServiceInterface $security
 	) {
 	}
 
@@ -77,7 +77,7 @@ class AdminService implements AdminServiceInterface
 		$context = $this->global('context');
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 
-		$context['post_url'] = $this->securityService->urlWithSession($scriptUrl . '?' .
+		$context['post_url'] = $this->security->urlWithSession($scriptUrl . '?' .
 				AdminServiceInterface::POST_URL . $subActionName . ';save');
 
 		if (!isset($context[Breeze::NAME])) {
@@ -149,12 +149,12 @@ class AdminService implements AdminServiceInterface
 		$context = $this->global('context');
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 
-		$context['post_url'] = $this->securityService->urlWithSession($scriptUrl . '?' .
+		$context['post_url'] = $this->security->urlWithSession($scriptUrl . '?' .
 			AdminServiceInterface::POST_URL . 'maintenance;fix');
 
 		if ($fix) {
-			$this->securityService->checkSession();
-			$this->securityService->validateToken(AdminServiceInterface::MAINTENANCE_TOKEN);
+			$this->security->checkSession();
+			$this->security->validateToken(AdminServiceInterface::MAINTENANCE_TOKEN);
 
 			$fixType = $this->getRequest('type', 'all');
 
@@ -174,7 +174,7 @@ class AdminService implements AdminServiceInterface
 			}
 		}
 
-		$tokenData = $this->securityService->createToken(AdminServiceInterface::MAINTENANCE_TOKEN);
+		$tokenData = $this->security->createToken(AdminServiceInterface::MAINTENANCE_TOKEN);
 		$context = array_merge($context, $tokenData);
 
 		$orphanComments = $this->commentService->countOrphans();
@@ -218,7 +218,7 @@ class AdminService implements AdminServiceInterface
 
 	protected function saveConfigVars(): void
 	{
-		$this->securityService->checkSession();
+		$this->security->checkSession();
 		saveDBSettings($this->configVars);
 	}
 

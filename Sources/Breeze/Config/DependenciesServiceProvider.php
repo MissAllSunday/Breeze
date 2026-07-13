@@ -113,7 +113,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			ValidateLikes::class,
 			Response::class,
 		]],
-		UserSettingsController::class => ['arguments' => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class]],
+		UserSettingsController::class => ['arguments' => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class, SecurityService::class]],
 
 		// Entities - New instances (Data transfer objects)
 		AlertEntity::class => ['arguments' => []],
@@ -148,8 +148,9 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusRepository::class => ['arguments' => [DatabaseClient::class, CommentRepository::class, LikeRepository::class], 'shared' => true],
 
 		// Services - Shared (Stateless business logic)
+		SecurityService::class => ['arguments' => [], 'shared' => true],
 		AdminService::class => ['arguments' => [SettingsBuilder::class, StatusService::class, CommentService::class, LikeService::class, UserSettingsRepository::class, Components::class, SecurityService::class], 'shared' => true],
-		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class], 'shared' => true],
+		ProfileService::class => ['arguments' => [UserSettingsRepository::class, Components::class, PermissionsService::class, SecurityService::class], 'shared' => true],
 		PermissionsService::class => ['arguments' => [], 'shared' => true],
 		MentionService::class => ['arguments' => [UserSettingsRepository::class, AlertService::class], 'shared' => true],
 		CommentService::class => ['arguments' => [CommentRepository::class, StatusRepository::class, EventServiceProvider::class, MentionService::class], 'shared' => true],
@@ -157,7 +158,6 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		LikeService::class => ['arguments' => [LikeRepository::class, EventServiceProvider::class], 'shared' => true],
 		AlertService::class => ['arguments' => [AlertRepository::class, HandlerServiceProvider::class, UserSettingsRepository::class], 'shared' => true],
 		WallVisibilityService::class => ['arguments' => [UserSettingsRepository::class, PermissionsService::class], 'shared' => true],
-		SecurityService::class => ['arguments' => [], 'shared' => true],
 	];
 
 	public function provides(string $id): bool

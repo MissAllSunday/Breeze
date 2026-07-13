@@ -12,7 +12,7 @@ use Breeze\Repository\User\SettingsRepositoryInterface as UserSettingsRepository
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
-use Breeze\Util\Components;
+use Breeze\Util\ComponentsInterface;
 use Breeze\Util\Response;
 
 class ProfileService extends BaseService implements ProfileServiceInterface
@@ -36,8 +36,9 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 
 	public function __construct(
 		protected UserSettingsRepository $userSettingsRepository,
-		protected Components $components,
+		protected ComponentsInterface $components,
 		protected PermissionsServiceInterface $permissionsService,
+		protected SecurityServiceInterface $security
 	) {
 		parent::__construct($userSettingsRepository);
 	}
@@ -52,7 +53,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			? $wallUserSettings
 			: $this->userSettingsRepository->getById($currentUserId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
-		$token = createToken(Response::CSRF_TOKEN_ACTION, 'get');
+		$token = $this->security->createToken(Response::CSRF_TOKEN_ACTION, 'get');
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
