@@ -70,7 +70,6 @@ agents
 *.log
 *.sql
 *.sqlite
-*.session
 
 # OS generated files #
 ######################

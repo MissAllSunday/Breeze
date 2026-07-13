@@ -7,6 +7,7 @@ namespace Breeze\Service\Actions;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\LikeServiceInterface;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilderInterface;
@@ -29,6 +30,10 @@ class AdminServiceTest extends TestCase
 
 	private MockObject|SettingsRepositoryInterface $userSettingsRepository;
 
+	private MockObject|SecurityServiceInterface $securityService;
+
+	private MockObject|Components $components;
+
 	/**
 	 * @throws Exception
 	 */
@@ -39,6 +44,7 @@ class AdminServiceTest extends TestCase
 		$this->commentService = $this->createMock(CommentServiceInterface::class);
 		$this->likeService = $this->createMock(LikeServiceInterface::class);
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
+		$this->securityService = $this->createMock(SecurityServiceInterface::class);
 		$this->components = $this->createMock(Components::class);
 
 		$this->adminService = $this->getMockBuilder(AdminService::class)
@@ -61,6 +67,7 @@ class AdminServiceTest extends TestCase
 				$this->likeService,
 				$this->userSettingsRepository,
 				$this->components,
+				$this->securityService,
 			])
 			->getMock();
 	}
@@ -273,6 +280,10 @@ class AdminServiceTest extends TestCase
 			} else {
 				$this->userSettingsRepository->expects($this->never())->method('enableAllWalls');
 			}
+			
+			// Test that security service methods are called
+			$this->securityService->expects($this->once())->method('checkSession');
+			$this->securityService->expects($this->once())->method('validateToken');
 		} else {
 			$this->adminService->expects($this->never())->method('getRequest');
 		}

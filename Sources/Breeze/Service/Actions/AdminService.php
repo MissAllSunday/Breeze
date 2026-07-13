@@ -11,10 +11,12 @@ use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Service\StatusServiceInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\Components;
+use Breeze\Util\ComponentsInterface;
 use Breeze\Util\Form\SettingsBuilderInterface;
 
 class AdminService implements AdminServiceInterface
@@ -30,7 +32,8 @@ class AdminService implements AdminServiceInterface
 		protected CommentServiceInterface $commentService,
 		protected LikeServiceInterface $likeService,
 		protected SettingsRepositoryInterface $userSettingsRepository,
-		protected Components $components
+		protected ComponentsInterface $components,
+		protected SecurityServiceInterface $securityService
 	) {
 	}
 
@@ -74,9 +77,8 @@ class AdminService implements AdminServiceInterface
 		$context = $this->global('context');
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 
-		$context['post_url'] = $scriptUrl . '?' .
-			AdminServiceInterface::POST_URL . $subActionName . ';' .
-			$context['session_var'] . '=' . $context['session_id'] . ';save';
+		$context['post_url'] = $this->securityService->urlWithSession($scriptUrl . '?' .
+				AdminServiceInterface::POST_URL . $subActionName . ';save');
 
 		if (!isset($context[Breeze::NAME])) {
 			$context[Breeze::NAME] = [];
@@ -147,13 +149,12 @@ class AdminService implements AdminServiceInterface
 		$context = $this->global('context');
 		$scriptUrl = $this->global(Breeze::SCRIPT_URL);
 
-		$context['post_url'] = $scriptUrl . '?' .
-			AdminServiceInterface::POST_URL . 'maintenance;' .
-			$context['session_var'] . '=' . $context['session_id'] . ';fix';
+		$context['post_url'] = $this->securityService->urlWithSession($scriptUrl . '?' .
+			AdminServiceInterface::POST_URL . 'maintenance;fix');
 
 		if ($fix) {
-			checkSession();
-			validateToken(AdminServiceInterface::MAINTENANCE_TOKEN);
+			$this->securityService->checkSession();
+			$this->securityService->validateToken(AdminServiceInterface::MAINTENANCE_TOKEN);
 
 			$fixType = $this->getRequest('type', 'all');
 
@@ -173,7 +174,7 @@ class AdminService implements AdminServiceInterface
 			}
 		}
 
-		$tokenData = createToken(AdminServiceInterface::MAINTENANCE_TOKEN);
+		$tokenData = $this->securityService->createToken(AdminServiceInterface::MAINTENANCE_TOKEN);
 		$context = array_merge($context, $tokenData);
 
 		$orphanComments = $this->commentService->countOrphans();
@@ -217,7 +218,7 @@ class AdminService implements AdminServiceInterface
 
 	protected function saveConfigVars(): void
 	{
-		checkSession();
+		$this->securityService->checkSession();
 		saveDBSettings($this->configVars);
 	}
 
