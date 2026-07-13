@@ -26,7 +26,7 @@ function template_main(): void
 						', $txt['Breeze_live'] , '
 					</h3>
 				</div>
-				<div id="smfAnnouncements" class="information"></div>
+				<div id="smfAnnouncements" class="breezeAnnouncements information"></div>
 			</div>';
 
 	// Show the Breeze version.

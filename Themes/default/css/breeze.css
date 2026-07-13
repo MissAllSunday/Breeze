@@ -277,6 +277,9 @@ ul.buddyList {
     text-align: center;
 }
 
+.breezeAnnouncements {
+    white-space: pre-wrap;
+}
 
 @media screen and (max-width: 720px){
 	.status li.status .poster {

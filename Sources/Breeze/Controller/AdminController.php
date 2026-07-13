@@ -50,7 +50,7 @@ class AdminController extends BaseController
 			],
 		]);
 
-		$this->adminService->loadComponents(['adminMain', 'feed']);
+		$this->adminService->loadComponents();
 	}
 
 	public function settings(): void

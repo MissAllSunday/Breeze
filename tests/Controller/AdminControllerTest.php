@@ -83,8 +83,7 @@ class AdminControllerTest extends TestCase
 			);
 
 		$this->adminService->expects($this->once())
-			->method('loadComponents')
-			->with(['adminMain', 'feed']);
+			->method('loadComponents');
 
 		$this->adminController->main();
 	}

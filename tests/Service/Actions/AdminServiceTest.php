@@ -8,6 +8,7 @@ use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\StatusServiceInterface;
+use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilderInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -38,6 +39,7 @@ class AdminServiceTest extends TestCase
 		$this->commentService = $this->createMock(CommentServiceInterface::class);
 		$this->likeService = $this->createMock(LikeServiceInterface::class);
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
+		$this->components = $this->createMock(Components::class);
 
 		$this->adminService = $this->getMockBuilder(AdminService::class)
 			->onlyMethods([
@@ -58,6 +60,7 @@ class AdminServiceTest extends TestCase
 				$this->commentService,
 				$this->likeService,
 				$this->userSettingsRepository,
+				$this->components,
 			])
 			->getMock();
 	}

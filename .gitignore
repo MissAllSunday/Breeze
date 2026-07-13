@@ -94,5 +94,3 @@ phpunit.xml
 brp.sh
 tests/database-config.local.php
 .aider*
-.env
-.env
