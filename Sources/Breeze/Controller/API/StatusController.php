@@ -6,8 +6,9 @@ namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Service\StatusServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
@@ -34,9 +35,10 @@ class StatusController extends ApiBaseController
 	public function __construct(
 		protected StatusServiceInterface $statusService,
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response
+		protected ResponseInterface $response,
+		protected SecurityServiceInterface $security
 	) {
-		parent::__construct($validateActions, $response);
+		parent::__construct($validateActions, $response, $security);
 	}
 
 	public function profile(): void
@@ -98,7 +100,7 @@ class StatusController extends ApiBaseController
 			$this->response->success(
 				'published_status',
 				$statusEntities,
-				Response::CREATED
+				ResponseInterface::CREATED
 			);
 		} catch (InvalidStatusException $exception) {
 			$this->responseWithError($exception, true);
@@ -126,7 +128,7 @@ class StatusController extends ApiBaseController
 			$statusId = $this->getRequest('id', 0);
 
 			if (empty($statusId)) {
-				$this->response->error('error_no_status', Response::BAD_REQUEST);
+				$this->response->error('error_no_status', ResponseInterface::BAD_REQUEST);
 
 				return;
 			}

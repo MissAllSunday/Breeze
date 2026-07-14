@@ -6,8 +6,9 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\SettingsRepositoryInterface;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,9 +21,11 @@ class UserSettingsControllerTest extends TestCase
 
 	private SettingsRepositoryInterface | MockObject $userRepository;
 
-	private Response | MockObject $response;
+	private ResponseInterface | MockObject $response;
 
 	private UserSettingsBuilderInterface | MockObject $userSettingsBuilder;
+
+	private SecurityServiceInterface | MockObject $securityService;
 
 	/**
 	 * @throws Exception
@@ -32,13 +35,15 @@ class UserSettingsControllerTest extends TestCase
 		$GLOBALS['context'] = [];
 
 		$this->userRepository = $this->createMock(SettingsRepositoryInterface::class);
-		$this->response = $this->createMock(Response::class);
+		$this->response = $this->createMock(ResponseInterface::class);
 		$this->userSettingsBuilder = $this->createMock(UserSettingsBuilderInterface::class);
+		$this->securityService = $this->createMock(SecurityServiceInterface::class);
 
 		$this->userSettingsController = new UserSettingsController(
 			$this->userRepository,
 			$this->response,
-			$this->userSettingsBuilder
+			$this->userSettingsBuilder,
+			$this->securityService
 		);
 	}
 

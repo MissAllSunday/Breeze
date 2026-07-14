@@ -8,7 +8,7 @@ use Breeze\Controller\BaseController;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Service\ProfileServiceInterface;
 use Breeze\Util\Error;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 
 class WallController extends BaseController
 {
@@ -20,7 +20,7 @@ class WallController extends BaseController
 	];
 
 	public function __construct(
-		protected Response $response,
+		protected ResponseInterface $response,
 		protected ProfileServiceInterface $profileService
 	) {
 	}

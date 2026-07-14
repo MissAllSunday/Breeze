@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Controller;
 
 use Breeze\Service\Actions\AdminServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +18,7 @@ class AdminControllerTest extends TestCase
 
 	private AdminServiceInterface | MockObject $adminService;
 
-	private Response | MockObject $response;
+	private ResponseInterface | MockObject $response;
 
 	/**
 	 * @throws Exception
@@ -26,7 +26,7 @@ class AdminControllerTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->adminService = $this->createMock(AdminServiceInterface::class);
-		$this->response = $this->createMock(Response::class);
+		$this->response = $this->createMock(ResponseInterface::class);
 
 		$this->adminController = new AdminController(
 			$this->adminService,

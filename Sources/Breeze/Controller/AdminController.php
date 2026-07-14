@@ -7,7 +7,7 @@ namespace Breeze\Controller;
 use Breeze\Breeze;
 use Breeze\Service\Actions\AdminServiceInterface;
 use Breeze\Traits\PersistenceTrait;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 
 class AdminController extends BaseController
 {
@@ -29,7 +29,7 @@ class AdminController extends BaseController
 
 	public function __construct(
 		protected AdminServiceInterface $adminService,
-		protected Response $response
+		protected ResponseInterface $response
 	) {
 	}
 

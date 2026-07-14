@@ -21,11 +21,11 @@ class Response
 	public function success(
 		string $message = '',
 		EntityInterface | array $content = [],
-		int $responseCode = self::OK
+		int $responseCode = ResponseInterface::OK
 	): void
 	{
 		$this->print(array_merge($this->response, [
-			'message' => $this->getText(self::SUCCESS_TYPE . '_' . $message),
+			'message' => $this->getText(ResponseInterface::SUCCESS_TYPE . '_' . $message),
 			'content' => $content,
 		]), $responseCode);
 	}
@@ -44,7 +44,7 @@ class Response
 			ob_start();
 		}
 
-		header($type === '' || $type === '0' ? self::CONTENT_TYPE : $type);
+		header($type === '' || $type === '0' ? ResponseInterface::CONTENT_TYPE : $type);
 		http_response_code($responseCode);
 
 		echo Json::encode($responseData);
@@ -52,23 +52,23 @@ class Response
 		exit(obExit(false));
 	}
 
-	public function error(string $message = '', int $responseCode = self::NOT_FOUND): void
+	public function error(string $message = '', int $responseCode = ResponseInterface::NOT_FOUND): void
 	{
 		$this->print(array_merge($this->response, [
 			'message' => $message === '' || $message === '0' ? $message : sprintf(
-				$this->getText(self::DEFAULT_ERROR_KEY),
-				$this->getText(self::ERROR_TYPE . '_' . $message)
+				$this->getText(ResponseInterface::DEFAULT_ERROR_KEY),
+				$this->getText(ResponseInterface::ERROR_TYPE . '_' . $message)
 			),
 		]), $responseCode);
 	}
 
 	protected function appendToken(array $responseData): array
 	{
-		$token = createToken(self::CSRF_TOKEN_ACTION, 'get');
+		$token = createToken(ResponseInterface::CSRF_TOKEN_ACTION, 'get');
 
 		$responseData['token'] = [
-			'var' => $token[self::CSRF_TOKEN_ACTION . '_token_var'],
-			'value' => $token[self::CSRF_TOKEN_ACTION . '_token'],
+			'var' => $token[ResponseInterface::CSRF_TOKEN_ACTION . '_token_var'],
+			'value' => $token[ResponseInterface::CSRF_TOKEN_ACTION . '_token'],
 		];
 
 		return $responseData;

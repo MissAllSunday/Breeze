@@ -7,7 +7,8 @@ namespace Breeze\Controller\API;
 use Breeze\Entity\CommentEntity;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Service\CommentServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Service\SecurityServiceInterface;
+use Breeze\Util\ResponseInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -22,7 +23,9 @@ class CommentControllerTest extends TestCase
 
 	private CommentServiceInterface | MockObject $commentService;
 
-	private Response | MockObject $response;
+	private ResponseInterface | MockObject $response;
+
+	private SecurityServiceInterface | MockObject $security;
 
 	/**
 	 * @throws Exception
@@ -31,12 +34,14 @@ class CommentControllerTest extends TestCase
 	{
 		$this->commentService = $this->createMock(CommentServiceInterface::class);
 		$validateActions = $this->createMock(ValidateActionsInterface::class);
-		$this->response = $this->createMock(Response::class);
+		$this->response = $this->createMock(ResponseInterface::class);
+		$this->security = $this->createMock(SecurityServiceInterface::class);
 
 		$this->commentController = new CommentController(
 			$this->commentService,
 			$validateActions,
-			$this->response
+			$this->response,
+			$this->security
 		);
 	}
 
@@ -72,7 +77,7 @@ class CommentControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('published_comment', $expectedEntities, Response::CREATED);
+			->with('published_comment', $expectedEntities, ResponseInterface::CREATED);
 
 		$this->commentController->postComment();
 	}
@@ -108,7 +113,6 @@ class CommentControllerTest extends TestCase
 
 		$reflection = new \ReflectionClass($this->commentController);
 		$dataProperty = $reflection->getProperty('data');
-		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->commentController, [CommentEntity::ID => $commentId]);
 
 		$this->commentService->expects($this->once())
@@ -117,7 +121,7 @@ class CommentControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('deleted_comment', [], Response::OK);
+			->with('deleted_comment', [], ResponseInterface::OK);
 
 		$this->commentController->deleteComment();
 	}
@@ -129,7 +133,6 @@ class CommentControllerTest extends TestCase
 
 		$reflection = new \ReflectionClass($this->commentController);
 		$dataProperty = $reflection->getProperty('data');
-		$dataProperty->setAccessible(true);
 		$dataProperty->setValue($this->commentController, [CommentEntity::ID => $commentId]);
 
 		$this->commentService->expects($this->once())

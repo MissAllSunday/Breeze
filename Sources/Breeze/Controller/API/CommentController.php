@@ -7,7 +7,8 @@ namespace Breeze\Controller\API;
 use Breeze\Entity\CommentEntity;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Service\CommentServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Service\SecurityServiceInterface;
+use Breeze\Util\ResponseInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
@@ -24,9 +25,10 @@ class CommentController extends ApiBaseController
 	public function __construct(
 		protected CommentServiceInterface $commentService,
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response
+		protected ResponseInterface $response,
+		protected SecurityServiceInterface $security
 	) {
-		parent::__construct($validateActions, $response);
+		parent::__construct($validateActions, $response, $security);
 	}
 
 	public function getSubActions(): array
@@ -50,7 +52,7 @@ class CommentController extends ApiBaseController
 			$this->response->success(
 				'published_comment',
 				$commentEntities,
-				Response::CREATED
+				ResponseInterface::CREATED
 			);
 		} catch (InvalidCommentException $invalidCommentException) {
 			$this->response->error($invalidCommentException->getMessage(), $invalidCommentException->getResponseCode());

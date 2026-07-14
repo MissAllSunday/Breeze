@@ -8,7 +8,8 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\Enums\LikesEnum;
 use Breeze\Service\LikeServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Service\SecurityServiceInterface;
+use Breeze\Util\ResponseInterface;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -25,7 +26,9 @@ class LikesControllerTest extends TestCase
 
 	private ValidateActionsInterface | MockObject $validateActions;
 
-	private Response | MockObject $response;
+	private ResponseInterface | MockObject $response;
+
+	private SecurityServiceInterface | MockObject $securityService;
 
 	/**
 	 * @throws Exception
@@ -34,12 +37,14 @@ class LikesControllerTest extends TestCase
 	{
 		$this->likeService = $this->createMock(LikeServiceInterface::class);
 		$this->validateActions = $this->createMock(ValidateActionsInterface::class);
-		$this->response = $this->createMock(Response::class);
+		$this->response = $this->createMock(ResponseInterface::class);
+		$this->securityService = $this->createMock(SecurityServiceInterface::class);
 
 		$this->likesController = new LikesController(
 			$this->likeService,
 			$this->validateActions,
-			$this->response
+			$this->response,
+			$this->securityService
 		);
 	}
 
@@ -79,7 +84,7 @@ class LikesControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('likeSuccess', $expectedLikeInfo, Response::CREATED);
+			->with('likeSuccess', $expectedLikeInfo, ResponseInterface::CREATED);
 
 		$this->likesController->like();
 	}
@@ -115,7 +120,7 @@ class LikesControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('likeSuccess', $expectedLikeInfo, Response::CREATED);
+			->with('likeSuccess', $expectedLikeInfo, ResponseInterface::CREATED);
 
 		$this->likesController->like();
 	}

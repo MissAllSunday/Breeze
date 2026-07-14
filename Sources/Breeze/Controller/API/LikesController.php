@@ -8,7 +8,8 @@ namespace Breeze\Controller\API;
 use Breeze\Entity\LikeEntity;
 use Breeze\Enums\LikesEnum;
 use Breeze\Service\LikeServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Service\SecurityServiceInterface;
+use Breeze\Util\ResponseInterface;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 
@@ -25,9 +26,10 @@ class LikesController extends ApiBaseController
 	public function __construct(
 		protected readonly LikeServiceInterface $likeService,
 		protected ValidateActionsInterface $validateActions,
-		protected Response $response
+		protected ResponseInterface $response,
+		protected SecurityServiceInterface $security
 	) {
-		parent::__construct($validateActions, $response);
+		parent::__construct($validateActions, $response, $security);
 	}
 
 	public function like(): void
@@ -42,7 +44,7 @@ class LikesController extends ApiBaseController
 			$this->response->success(
 				'likeSuccess',
 				$likeInfo,
-				Response::CREATED
+				ResponseInterface::CREATED
 			);
 		} catch (InvalidDataException $invalidDataException) {
 			$this->response->error($invalidDataException->getMessage(), $invalidDataException->getResponseCode());

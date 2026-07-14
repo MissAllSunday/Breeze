@@ -6,8 +6,9 @@ namespace Breeze\Controller\API;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\InvalidStatusException;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Service\StatusServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -22,7 +23,7 @@ class StatusControllerTest extends TestCase
 
 	private StatusServiceInterface | MockObject $statusService;
 
-	private Response | MockObject $response;
+	private ResponseInterface | MockObject $response;
 
 	/**
 	 * @throws Exception
@@ -31,12 +32,14 @@ class StatusControllerTest extends TestCase
 	{
 		$this->statusService = $this->createMock(StatusServiceInterface::class);
 		$validateActions = $this->createMock(ValidateActionsInterface::class);
-		$this->response = $this->createMock(Response::class);
+		$this->response = $this->createMock(ResponseInterface::class);
+		$security = $this->createMock(SecurityServiceInterface::class);
 
 		$this->statusController = new StatusController(
 			$this->statusService,
 			$validateActions,
-			$this->response
+			$this->response,
+			$security
 		);
 	}
 
@@ -156,7 +159,7 @@ class StatusControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('deleted_status', [], Response::OK);
+			->with('deleted_status', [], ResponseInterface::OK);
 
 		$this->statusController->deleteStatus();
 	}
@@ -206,7 +209,7 @@ class StatusControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('success')
-			->with('published_status', $expectedEntities, Response::CREATED);
+			->with('published_status', $expectedEntities, ResponseInterface::CREATED);
 
 		$this->statusController->postStatus();
 	}
@@ -266,7 +269,7 @@ class StatusControllerTest extends TestCase
 	{
 		$this->response->expects($this->once())
 			->method('error')
-			->with('error_no_status', Response::BAD_REQUEST);
+			->with('error_no_status', ResponseInterface::BAD_REQUEST);
 
 		$this->statusController->single();
 	}
@@ -277,7 +280,7 @@ class StatusControllerTest extends TestCase
 
 		$this->response->expects($this->once())
 			->method('error')
-			->with('error_no_status', Response::BAD_REQUEST);
+			->with('error_no_status', ResponseInterface::BAD_REQUEST);
 
 		$this->statusController->single();
 

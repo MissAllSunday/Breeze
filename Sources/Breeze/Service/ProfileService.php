@@ -13,7 +13,7 @@ use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Traits\TextTrait;
 use Breeze\Util\ComponentsInterface;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 
 class ProfileService extends BaseService implements ProfileServiceInterface
 {
@@ -53,7 +53,7 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			? $wallUserSettings
 			: $this->userSettingsRepository->getById($currentUserId);
 		$editorContext = $context['controls']['richedit'][Breeze::NAME];
-		$token = $this->security->createToken(Response::CSRF_TOKEN_ACTION, 'get');
+		$token = $this->security->createToken(ResponseInterface::CSRF_TOKEN_ACTION, 'get');
 
 		$this->components->loadUIVars([
 			'profileId' => $profileId,
@@ -67,8 +67,8 @@ class ProfileService extends BaseService implements ProfileServiceInterface
 			UserSettingsEntity::ENABLE_BUDDIES_TAB => $wallUserSettings->getEnableBuddiesTab(),
 			UserSettingsEntity::ABOUT_ME => !in_array($wallUserSettings->getAboutMe(), ['', '0'], true),
 			UserSettingsEntity::CONFIRM_POST => $currentUserSettings->getConfirmPost(),
-			'csrfTokenVar' => $token[Response::CSRF_TOKEN_ACTION . '_token_var'],
-			'csrfTokenValue' => $token[Response::CSRF_TOKEN_ACTION . '_token'],
+			'csrfTokenVar' => $token[ResponseInterface::CSRF_TOKEN_ACTION . '_token_var'],
+			'csrfTokenValue' => $token[ResponseInterface::CSRF_TOKEN_ACTION . '_token'],
 		]);
 		$this->components->loadTxtVarsFor(['general', 'error', 'like', 'tabs', 'actions']);
 

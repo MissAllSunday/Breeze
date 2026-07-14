@@ -6,7 +6,7 @@ namespace Breeze\Service;
 
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Repository\User\SettingsRepositoryInterface;
-use Breeze\Util\Components;
+use Breeze\Util\ComponentsInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
@@ -18,11 +18,13 @@ class ProfileServiceTest extends TestCase
 {
 	private SettingsRepositoryInterface|MockObject $userSettingsRepository;
 
-	private Components|MockObject $components;
+	private ComponentsInterface|MockObject $components;
 
 	private PermissionsServiceInterface|MockObject $permissionsService;
 
 	private ProfileService $profileService;
+
+	private SecurityServiceInterface|MockObject $securityService;
 
 	/**
 	 * @throws Exception
@@ -30,13 +32,15 @@ class ProfileServiceTest extends TestCase
 	protected function setUp(): void
 	{
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
-		$this->components = $this->createStub(Components::class);
+		$this->components = $this->createStub(ComponentsInterface::class);
 		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$this->securityService = $this->createStub(SecurityServiceInterface::class);
 
 		$this->profileService = new ProfileService(
 			$this->userSettingsRepository,
 			$this->components,
 			$this->permissionsService,
+			$this->securityService
 		);
 	}
 
@@ -70,6 +74,7 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
+				$this->securityService,
 			])
 			->onlyMethods(['isAllowedTo'])
 			->getMock();
@@ -150,6 +155,7 @@ class ProfileServiceTest extends TestCase
 				$this->userSettingsRepository,
 				$this->components,
 				$this->permissionsService,
+				$this->securityService,
 			])
 			->onlyMethods(['getCurrentUserInfo'])
 			->getMock();

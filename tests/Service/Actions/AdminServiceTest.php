@@ -9,7 +9,7 @@ use Breeze\Service\CommentServiceInterface;
 use Breeze\Service\LikeServiceInterface;
 use Breeze\Service\SecurityServiceInterface;
 use Breeze\Service\StatusServiceInterface;
-use Breeze\Util\Components;
+use Breeze\Util\ComponentsInterface;
 use Breeze\Util\Form\SettingsBuilderInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -32,7 +32,7 @@ class AdminServiceTest extends TestCase
 
 	private MockObject|SecurityServiceInterface $securityService;
 
-	private MockObject|Components $components;
+	private MockObject|ComponentsInterface $components;
 
 	/**
 	 * @throws Exception
@@ -45,7 +45,8 @@ class AdminServiceTest extends TestCase
 		$this->likeService = $this->createMock(LikeServiceInterface::class);
 		$this->userSettingsRepository = $this->createMock(SettingsRepositoryInterface::class);
 		$this->securityService = $this->createMock(SecurityServiceInterface::class);
-		$this->components = $this->createMock(Components::class);
+		$this->components = $this->createMock(ComponentsInterface::class);
+		$this->securityService = $this->createMock(SecurityServiceInterface::class);
 
 		$this->adminService = $this->getMockBuilder(AdminService::class)
 			->onlyMethods([
@@ -280,7 +281,7 @@ class AdminServiceTest extends TestCase
 			} else {
 				$this->userSettingsRepository->expects($this->never())->method('enableAllWalls');
 			}
-			
+
 			// Test that security service methods are called
 			$this->securityService->expects($this->once())->method('checkSession');
 			$this->securityService->expects($this->once())->method('validateToken');

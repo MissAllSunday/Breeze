@@ -7,7 +7,7 @@ namespace Breeze\Controller\User;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Service\ProfileServiceInterface;
-use Breeze\Util\Response;
+use Breeze\Util\ResponseInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +18,7 @@ class WallControllerTest extends TestCase
 {
 	private WallController | MockObject $wallController;
 
-	private Response | MockObject $response;
+	private ResponseInterface | MockObject $response;
 
 	private ProfileServiceInterface | MockObject $profileService;
 
@@ -29,7 +29,7 @@ class WallControllerTest extends TestCase
 	{
 		$GLOBALS['context'] = [];
 
-		$this->response = $this->createMock(Response::class);
+		$this->response = $this->createMock(ResponseInterface::class);
 		$this->profileService = $this->createMock(ProfileServiceInterface::class);
 
 		$this->wallController = $this->getMockBuilder(WallController::class)
