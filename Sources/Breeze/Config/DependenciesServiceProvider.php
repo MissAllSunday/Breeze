@@ -44,6 +44,7 @@ use Breeze\Util\Components;
 use Breeze\Util\Form\SettingsBuilder;
 use Breeze\Util\Form\UserSettingsBuilder;
 use Breeze\Util\Response;
+use Breeze\Util\ResponseEmitter;
 use Breeze\Util\Validate\Validations\Comment\DeleteComment;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
 use Breeze\Util\Validate\Validations\Comment\ValidateComment;
@@ -74,7 +75,8 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		// Utilities - Shared
 		SettingsBuilder::class => ['arguments' => [], 'shared' => true],
 		UserSettingsBuilder::class => ['arguments' => [], 'shared' => true],
-		Response::class => ['arguments' => [], 'shared' => true],
+		ResponseEmitter::class => ['arguments' => [], 'shared' => true],
+		Response::class => ['arguments' => [SecurityService::class, ResponseEmitter::class], 'shared' => true],
 		Components::class => ['arguments' => [], 'shared' => true],
 
 		// Validation Types - Shared (Stateless validators)

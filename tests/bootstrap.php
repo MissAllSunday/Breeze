@@ -192,42 +192,42 @@ function cache_get_data($key, $timeToLive = 360): ?array
 					'avatar' => ['href' => 'avatar_url/default.png'],
 				],
 			],],
-//		'Breeze_StatusRepository_getByProfile1' => [
-//			'usersIds' => [1],
-//			'data' => [
-//				1 => [
-//					'id' => 666,
-//					'wallId' => 666,
-//					'userId' => 1,
-//					'createdAt' => 581299200,
-//					'body' => 'some body',
-//					'likes' => [],
-//				],],
-//		],
-//		'Breeze_StatusRepository_getByProfile2' => [
-//			'usersIds' => [],
-//			'data' => [],
-//		],
-//		'Breeze_CommentRepository_getByProfile1' => [
-//			'usersIds' => [1,2,3],
-//			'data' => [
-//				1 => [
-//					1 => [
-//						'id' => 1,
-//						'statusId' => 1,
-//						'userId' => 1,
-//						'createdAt' => 581299200,
-//						'body' => 'comment body',
-//						'likes' => 0,
-//						'likesInfo' => [],
-//						'userData' => [
-//							'link' => 'Guest',
-//							'name' => 'Guest',
-//							'avatar' => ['href' => 'avatar_url/default.png'],
-//						],
-//					],
-//				], ],
-//		],
+		'Breeze_StatusRepository_getByProfile1' => [
+			'usersIds' => [1],
+			'data' => [
+				1 => [
+					'id' => 666,
+					'wallId' => 666,
+					'userId' => 1,
+					'createdAt' => 581299200,
+					'body' => 'some body',
+					'likes' => [],
+				],],
+		],
+		'Breeze_StatusRepository_getByProfile2' => [
+			'usersIds' => [],
+			'data' => [],
+		],
+		'Breeze_CommentRepository_getByProfile1' => [
+			'usersIds' => [1,2,3],
+			'data' => [
+				1 => [
+					1 => [
+						'id' => 1,
+						'statusId' => 1,
+						'userId' => 1,
+						'createdAt' => 581299200,
+						'body' => 'comment body',
+						'likes' => 0,
+						'likesInfo' => [],
+						'userData' => [
+							'link' => 'Guest',
+							'name' => 'Guest',
+							'avatar' => ['href' => 'avatar_url/default.png'],
+						],
+					],
+				], ],
+		],
 		'user_settings_666' => [
 			'generalWall' => 1,
 		],
@@ -257,7 +257,11 @@ function template_breezeForm_Display(array $formOptions): string
 	return 'form_html';
 }
 
-function redirectexit(string $uri): void {}
+function redirectexit(string $setLocation = '', bool $refresh = false, bool $permanent = false): void
+{
+	// This is a mock implementation for testing purposes
+	// In real SMF, this would redirect the user
+}
 
 function obExit(bool $header = true): string {
 	return '';

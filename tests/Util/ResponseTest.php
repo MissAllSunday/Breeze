@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Breeze\Util;
 
+use Breeze\Service\SecurityServiceInterface;
 use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase
 {
-	private Response $response;
-
 	protected function setUp(): void
 	{
-		$this->response = new Response();
-
-		// Initialize globals
 		$GLOBALS['context'] = [
 			'session_var' => 'foo',
 			'session_id' => 'baz',
@@ -23,71 +19,158 @@ class ResponseTest extends TestCase
 			'Breeze_success_test' => 'Test success message',
 			'Breeze_error_test' => 'Test error message',
 			'Breeze_error_server' => 'Server error: %s',
+			'Breeze_error_default' => 'Default error message',
 		];
 	}
 
-	protected function tearDown(): void
+	public function testSuccessMethod(): void
 	{
-		// Restore global state
-		$GLOBALS['context'] = [
-			'session_var' => 'foo',
-			'session_id' => 'baz',
-			'cust_profile_fields_placement' => [
-				'standard',
-				'icons',
-				'above_signature',
-				'below_signature',
-				'below_avatar',
-				'above_member',
-				'bottom_poster',
-				'before_member',
-				'after_member',
-			],
-		];
+		$securityStub = $this->createStub(SecurityServiceInterface::class);
+		$securityStub->method('createToken')
+			->willReturn([
+				'breeze_token_var' => 'test_var',
+				'breeze_token' => 'test_value',
+			]);
+
+		$emitterMock = $this->createMock(ResponseEmitterInterface::class);
+		$emitterMock->expects($this->once())
+			->method('emit')
+			->with(
+				[
+					'message' => 'Test success message',
+					'content' => [],
+					'token' => [
+						'var' => 'test_var',
+						'value' => 'test_value',
+					],
+				],
+				ResponseInterface::OK,
+				ResponseInterface::CONTENT_TYPE
+			);
+
+		$response = new Response($securityStub, $emitterMock);
+		$response->success('test');
 	}
 
-	public function testResponsePropertyInitialization(): void
+	public function testSuccessMethodWithContent(): void
 	{
-		$reflection = new \ReflectionClass($this->response);
-		$property = $reflection->getProperty('response');
-		$value = $property->getValue($this->response);
+		$securityStub = $this->createStub(SecurityServiceInterface::class);
+		$securityStub->method('createToken')
+			->willReturn([
+				'breeze_token_var' => 'test_var',
+				'breeze_token' => 'test_value',
+			]);
 
-		$this->assertIsArray($value);
-		$this->assertArrayHasKey('message', $value);
-		$this->assertArrayHasKey('content', $value);
-		$this->assertEquals('', $value['message']);
-		$this->assertEquals([], $value['content']);
+		$emitterMock = $this->createMock(ResponseEmitterInterface::class);
+		$emitterMock->expects($this->once())
+			->method('emit')
+			->with(
+				[
+					'message' => 'Test success message',
+					'content' => ['foo' => 'bar'],
+					'token' => [
+						'var' => 'test_var',
+						'value' => 'test_value',
+					],
+				],
+				ResponseInterface::OK,
+				ResponseInterface::CONTENT_TYPE
+			);
+
+		$response = new Response($securityStub, $emitterMock);
+		$response->success('test', ['foo' => 'bar']);
 	}
 
-	public function testSuccessMethodExists(): void
+	public function testErrorMethod(): void
 	{
-		$this->assertTrue(method_exists($this->response, 'success'));
+		$securityStub = $this->createStub(SecurityServiceInterface::class);
+		$securityStub->method('createToken')
+			->willReturn([
+				'breeze_token_var' => 'err_var',
+				'breeze_token' => 'err_value',
+			]);
+
+		$emitterMock = $this->createMock(ResponseEmitterInterface::class);
+		$emitterMock->expects($this->once())
+			->method('emit')
+			->with(
+				[
+					'message' => sprintf($GLOBALS['txt']['Breeze_error_server'], 'Test error message'),
+					'content' => [],
+					'token' => [
+						'var' => 'err_var',
+						'value' => 'err_value',
+					],
+				],
+				ResponseInterface::NOT_FOUND,
+				ResponseInterface::CONTENT_TYPE
+			);
+
+		$response = new Response($securityStub, $emitterMock);
+		$response->error('test');
 	}
 
-	public function testErrorMethodExists(): void
+	public function testErrorMethodWithEmptyMessage(): void
 	{
-		$this->assertTrue(method_exists($this->response, 'error'));
+		$securityStub = $this->createStub(SecurityServiceInterface::class);
+		$securityStub->method('createToken')
+			->willReturn([
+				'breeze_token_var' => 'err_var',
+				'breeze_token' => 'err_value',
+			]);
+
+		$emitterMock = $this->createMock(ResponseEmitterInterface::class);
+		$emitterMock->expects($this->once())
+			->method('emit')
+			->with(
+				[
+					'message' => '',
+					'content' => [],
+					'token' => [
+						'var' => 'err_var',
+						'value' => 'err_value',
+					],
+				],
+				ResponseInterface::NOT_FOUND,
+				ResponseInterface::CONTENT_TYPE
+			);
+
+		$response = new Response($securityStub, $emitterMock);
+		$response->error('');
 	}
 
-	public function testPrintMethodExists(): void
+	public function testAppendToken(): void
 	{
-		$this->assertTrue(method_exists($this->response, 'print'));
+		$securityMock = $this->createMock(SecurityServiceInterface::class);
+		$securityMock->expects($this->once())
+			->method('createToken')
+			->with(ResponseInterface::CSRF_TOKEN_ACTION, 'get')
+			->willReturn([
+				'breeze_token_var' => 'token_key',
+				'breeze_token' => 'token_secret',
+			]);
+
+		$emitterStub = $this->createStub(ResponseEmitterInterface::class);
+
+		$response = new Response($securityMock, $emitterStub);
+		$result = $response->appendToken(['data' => 'sample']);
+
+		$this->assertArrayHasKey('token', $result);
+		$this->assertEquals('token_key', $result['token']['var']);
+		$this->assertEquals('token_secret', $result['token']['value']);
+		$this->assertEquals('sample', $result['data']);
 	}
 
-	public function testRedirectMethodExists(): void
+	public function testRedirectMethod(): void
 	{
-		$this->assertTrue(method_exists($this->response, 'redirect'));
-	}
+		$securityStub = $this->createStub(SecurityServiceInterface::class);
 
-	public function testResponseUsesRequestTrait(): void
-	{
-		$this->assertTrue(method_exists($this->response, 'getRequest'));
-		$this->assertTrue(method_exists($this->response, 'isRequestSet'));
-	}
+		$emitterMock = $this->createMock(ResponseEmitterInterface::class);
+		$emitterMock->expects($this->once())
+			->method('redirectExit')
+			->with('index.php?action=admin');
 
-	public function testResponseUsesTextTrait(): void
-	{
-		$this->assertTrue(method_exists($this->response, 'getText'));
-		$this->assertTrue(method_exists($this->response, 'getSmfText'));
+		$response = new Response($securityStub, $emitterMock);
+		$response->redirect('index.php?action=admin');
 	}
 }

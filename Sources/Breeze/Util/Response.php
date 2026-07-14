@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Util;
 
 use Breeze\Entity\EntityInterface;
+use Breeze\Service\SecurityServiceInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 
@@ -18,53 +19,47 @@ class Response
 		'content' => [],
 	];
 
+	public function __construct(
+		protected SecurityServiceInterface $security,
+		protected ResponseEmitterInterface $emitter
+	) {}
+
 	public function success(
 		string $message = '',
 		EntityInterface | array $content = [],
 		int $responseCode = ResponseInterface::OK
-	): void
-	{
-		$this->print(array_merge($this->response, [
+	): void {
+		$payload = array_merge($this->response, [
 			'message' => $this->getText(ResponseInterface::SUCCESS_TYPE . '_' . $message),
 			'content' => $content,
-		]), $responseCode);
+		]);
+
+		$this->print($payload, $responseCode);
 	}
 
 	public function print(array $responseData, int $responseCode = 200, string $type = ''): void
 	{
-		$this->setGlobal('db_show_debug', false);
-
 		$responseData = $this->appendToken($responseData);
+		$contentType = ($type === '' || $type === '0') ? ResponseInterface::CONTENT_TYPE : $type;
 
-		ob_end_clean();
-
-		if (!$this->global('enableCompressedOutput')) {
-			@ob_start('ob_gzhandler');
-		} else {
-			ob_start();
-		}
-
-		header($type === '' || $type === '0' ? ResponseInterface::CONTENT_TYPE : $type);
-		http_response_code($responseCode);
-
-		echo Json::encode($responseData);
-
-		exit(obExit(false));
+		$this->emitter->emit($responseData, $responseCode, $contentType);
 	}
 
 	public function error(string $message = '', int $responseCode = ResponseInterface::NOT_FOUND): void
 	{
-		$this->print(array_merge($this->response, [
+		$payload = array_merge($this->response, [
 			'message' => $message === '' || $message === '0' ? $message : sprintf(
 				$this->getText(ResponseInterface::DEFAULT_ERROR_KEY),
 				$this->getText(ResponseInterface::ERROR_TYPE . '_' . $message)
 			),
-		]), $responseCode);
+		]);
+
+		$this->print($payload, $responseCode);
 	}
 
-	protected function appendToken(array $responseData): array
+	public function appendToken(array $responseData): array
 	{
-		$token = createToken(ResponseInterface::CSRF_TOKEN_ACTION, 'get');
+		$token = $this->security->createToken(ResponseInterface::CSRF_TOKEN_ACTION, 'get');
 
 		$responseData['token'] = [
 			'var' => $token[ResponseInterface::CSRF_TOKEN_ACTION . '_token_var'],
@@ -76,6 +71,6 @@ class Response
 
 	public function redirect(string $uri): void
 	{
-		redirectexit($uri);
+		$this->emitter->redirectExit($uri);
 	}
 }
