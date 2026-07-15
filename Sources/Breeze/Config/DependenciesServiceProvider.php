@@ -104,16 +104,19 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			StatusService::class,
 			ValidateStatus::class,
 			Response::class,
+			SecurityService::class,
 		]],
 		CommentController::class => ['arguments' => [
 			CommentService::class,
 			ValidateComment::class,
 			Response::class,
+			SecurityService::class,
 		]],
 		LikesController::class => ['arguments' => [
 			LikeService::class,
 			ValidateLikes::class,
 			Response::class,
+			SecurityService::class,
 		]],
 		UserSettingsController::class => ['arguments' => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class, SecurityService::class]],
 
