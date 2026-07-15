@@ -9,7 +9,7 @@ use Breeze\Service\SecurityServiceInterface;
 use Breeze\Traits\RequestTrait;
 use Breeze\Traits\TextTrait;
 
-class Response
+class Response implements ResponseInterface
 {
 	use RequestTrait;
 	use TextTrait;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util;
 
-class Json
+class Json implements JsonInterface
 {
 	public static function decode(string $jsonString): array
 	{

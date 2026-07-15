@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util;
 
-class Parser
+class Parser implements ParserInterface
 {
 	public static function bbc(string $content): string
 	{

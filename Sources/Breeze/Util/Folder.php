@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Util;
 
-class Folder
+class Folder implements FolderInterface
 {
 	public static function getFilesInFolder(string $directoryPath): array
 	{

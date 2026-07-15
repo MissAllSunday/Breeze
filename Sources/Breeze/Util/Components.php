@@ -7,7 +7,7 @@ namespace Breeze\Util;
 use Breeze\Breeze;
 use Breeze\Traits\TextTrait;
 
-class Components
+class Components implements ComponentsInterface
 {
 	use TextTrait;
 

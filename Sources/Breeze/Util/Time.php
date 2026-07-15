@@ -6,7 +6,7 @@ namespace Breeze\Util;
 
 use DateTimeImmutable;
 
-class Time
+class Time implements TimeInterface
 {
 	public static function timeFormat(int $timeStamp): string
 	{
