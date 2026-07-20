@@ -49,10 +49,7 @@ class StatusController extends ApiBaseController
 			$wallId = $this->data[StatusEntity::WALL_ID];
 			$message = '';
 
-			$statusByProfile = $this->statusService->getByProfile(
-				$wallId,
-				$cursor
-			);
+			$statusByProfile = $this->getProfileStatuses($wallId, $cursor);
 
 			if ($statusByProfile['data'] === [] && $cursor === null) {
 				$currentUserInfo = $this->statusService->currentUserInfo();
@@ -111,10 +108,7 @@ class StatusController extends ApiBaseController
 	{
 		try {
 			$wallId = $this->data[StatusEntity::WALL_ID];
-			$statusByProfile = $this->statusService->getByProfile(
-				$wallId,
-				$this->getRequest('cursor', null)
-			);
+			$statusByProfile = $this->getProfileStatuses($wallId, $this->getRequest('cursor', null));
 
 			$this->response->success('', $statusByProfile);
 		} catch (Exception $exception) {
@@ -160,5 +154,13 @@ class StatusController extends ApiBaseController
 
 		$this->logError($exception);
 		$this->response->error($errorResponse);
+	}
+
+	/**
+	 * Get statuses for a specific profile
+	 */
+	private function getProfileStatuses(int|string $wallId, ?string $cursor): array
+	{
+		return $this->statusService->getByProfile($wallId, $cursor);
 	}
 }
