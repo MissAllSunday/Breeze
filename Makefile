@@ -29,7 +29,7 @@ sync: lint
 
 install:
 	@echo "Checking PHP version..."
-	@php -v | grep "PHP 8.3" || (echo "Error: PHP 8.3 is required" && exit 1)
+	@php -v | grep -E "^PHP 8\.(3|4|5|6|7|8|9)" > /dev/null || (echo "Error: PHP 8.3 or higher is required" && exit 1)
 	@echo "Installing composer dependencies into $(VENDOR_DIR)..."
 	@composer install --no-progress --prefer-dist
 

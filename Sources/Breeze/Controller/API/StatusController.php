@@ -159,7 +159,7 @@ class StatusController extends ApiBaseController
 	/**
 	 * Get statuses for a specific profile
 	 */
-	private function getProfileStatuses(int|string $wallId, ?string $cursor): array
+	private function getProfileStatuses(int $wallId, ?string $cursor): array
 	{
 		return $this->statusService->getByProfile($wallId, $cursor);
 	}
