@@ -12,7 +12,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm ci, build and test
+          cache: 'npm'
+      - name: Install dependencies
         run: |
-          make ui-install
-          make ui-test
+          if [ "${{ github.actor }}" = "dependabot[bot]" ]; then
+            npm install
+          else
+            make ui-install
+          fi
+      - name: Build and test
+        run: make ui-test
