@@ -43,7 +43,23 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 	public function doesContentExists(int $id): bool
 	{
-		return $this->getCount([$this->getColumnId() => $id]) > 0;
+		$result = $this->dbClient->query(
+			'
+			SELECT 1
+			FROM {db_prefix}{raw:from}
+			WHERE {raw:columnName} = {int:id}
+			LIMIT 1',
+			array_merge($this->getDefaultQueryParams(), [
+				'columnName' => $this->getColumnId(),
+				'id' => $id,
+			])
+		);
+
+		$exists = $this->dbClient->numRows($result) > 0;
+
+		$this->dbClient->freeResult($result);
+
+		return $exists;
 	}
 
 	public function handleLikes($type, $content): array
@@ -129,29 +145,61 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		];
 	}
 
+	/**
+	 * Count rows matching a column against a set of ids.
+	 *
+	 * The predicate is mandatory. It used to be conditional on the caller
+	 * passing a valid `columnName`, which meant a caller using the wrong array
+	 * shape silently got an unfiltered full-table count instead of an error.
+	 * Both `columnName` and `ids` are now required and validated up front.
+	 *
+	 * Uses COUNT(*) rather than selecting the id column and calling numRows():
+	 * the answer is a single integer, so materialising and transferring every
+	 * matching row just to count them is pure waste. CommentRepository::
+	 * countOrphans() is the in-repo precedent for this shape.
+	 *
+	 * @param array{columnName?: string, ids?: array<int, int>} $queryParams
+	 * @throws \InvalidArgumentException when the filter is missing, names an
+	 *                                   unknown column, or has no ids
+	 */
 	public function getCount(array $queryParams = []): int
 	{
-		$whereString = '';
+		$columnName = $queryParams['columnName'] ?? null;
 
-		if (isset($queryParams['columnName']) && $this->isValidColumn($queryParams['columnName'])) {
-			$whereString = 'WHERE {raw:columnName} IN ({array_int:ids})';
+		if (!is_string($columnName) || !$this->isValidColumn($columnName)) {
+			throw new \InvalidArgumentException(sprintf(
+				'%s::getCount() requires a valid "columnName", got %s. Known columns: %s',
+				static::class,
+				var_export($columnName, true),
+				implode(', ', $this->getColumns())
+			));
+		}
+
+		$ids = $queryParams['ids'] ?? [];
+
+		if ($ids === []) {
+			throw new \InvalidArgumentException(sprintf(
+				'%s::getCount() requires a non-empty "ids" array; an empty set would emit invalid SQL.',
+				static::class
+			));
 		}
 
 		$result = $this->dbClient->query(
 			'
-			SELECT {raw:columns}
+			SELECT COUNT(*)
 			FROM {db_prefix}{raw:from}
-			' . $whereString,
+			WHERE {raw:columnName} IN ({array_int:ids})',
 			array_merge($this->getDefaultQueryParams(), [
-				'columns' => $this->getColumnId(),
-			], $queryParams)
+				'columnName' => $columnName,
+				'ids' => array_map('intval', $ids),
+			])
 		);
 
-		$rowCount = $this->dbClient->numRows($result);
+		$row = $this->dbClient->fetchRow($result);
 
 		$this->dbClient->freeResult($result);
 
-		return $rowCount;
+		return (int) ($row[0] ?? 0);
 	}
 
 	public function isValidColumn(string $columnName): bool
