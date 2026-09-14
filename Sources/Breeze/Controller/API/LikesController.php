@@ -16,11 +16,9 @@ use Breeze\Util\Validate\Validations\ValidateActionsInterface;
 class LikesController extends ApiBaseController
 {
 	public const string ACTION_LIKE = 'like';
-	public const string ACTION_INFO = 'info';
 
 	public const array SUB_ACTIONS = [
 		self::ACTION_LIKE,
-		self::ACTION_INFO,
 	];
 
 	public function __construct(

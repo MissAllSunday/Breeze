@@ -50,7 +50,21 @@ class LikesControllerTest extends TestCase
 
 	public function testGetSubActions(): void
 	{
-		$this->assertEquals(LikesController::SUB_ACTIONS, $this->likesController->getSubActions());
+		$this->assertEquals([LikesController::ACTION_LIKE], $this->likesController->getSubActions());
+	}
+
+	public function testInfoActionReturns404(): void
+	{
+		$reflection = new \ReflectionClass($this->likesController);
+		$subActionProperty = $reflection->getProperty('subAction');
+		$subActionProperty->setAccessible(true);
+		$subActionProperty->setValue($this->likesController, 'info');
+
+		$this->response->expects($this->once())
+			->method('print')
+			->with([], \Breeze\Util\ResponseInterface::NOT_FOUND);
+
+		$this->likesController->subActionCall();
 	}
 
 	public function testLikeSuccess(): void
