@@ -63,6 +63,8 @@ abstract class ApiBaseController
 
 		if ($this->subActionCheck()) {
 			$this->response->print([], ResponseInterface::NOT_FOUND);
+
+			return;
 		}
 
 		if ($this->isMutatingAction()) {
