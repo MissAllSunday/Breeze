@@ -10,6 +10,17 @@ abstract class ValidateActions
 
 	public array $data = [];
 
+	/**
+	 * Explicit sub-action => validator map.
+	 *
+	 * A `null` value is a deliberate no-op: the sub-action is known and needs no
+	 * validation. An absent key means the sub-action is unknown to this composite
+	 * and no validator will be bound.
+	 *
+	 * @return array<string, ValidateDataInterface | null>
+	 */
+	abstract public function validators(): array;
+
 	public function isValid(): void
 	{
 		$this->validator?->isValid();
@@ -28,9 +39,7 @@ abstract class ValidateActions
 
 	public function setValidator(string $action): void
 	{
-		if (property_exists(static::class, $action)) {
-			$this->validator = $this->{$action};
-			$this->validator->setData($this->data);
-		}
+		$this->validator = $this->validators()[$action] ?? null;
+		$this->validator?->setData($this->data);
 	}
 }
