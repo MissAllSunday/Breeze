@@ -54,6 +54,8 @@ use Breeze\Util\Validate\Validations\Status\DeleteStatus;
 use Breeze\Util\Validate\Validations\Status\PostStatus;
 use Breeze\Util\Validate\Validations\Status\StatusByProfile;
 use Breeze\Util\Validate\Validations\Status\ValidateStatus;
+use Breeze\Util\Validate\Validations\User\UserSettings;
+use Breeze\Util\Validate\Validations\User\ValidateUser;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
@@ -91,11 +93,13 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		DeleteComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class]],
 		PostComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class]],
 		Like::class => ['arguments' => [Data::class, User::class, Allow::class, LikeRepository::class]],
+		UserSettings::class => ['arguments' => [Data::class, User::class, Allow::class, UserSettingsRepository::class]],
 
 		// Composite Validators - New instances (Hold request state)
 		ValidateStatus::class => ['arguments' => [DeleteStatus::class, PostStatus::class, StatusByProfile::class]],
 		ValidateComment::class => ['arguments' => [DeleteComment::class, PostComment::class]],
 		ValidateLikes::class => ['arguments' => [Like::class]],
+		ValidateUser::class => ['arguments' => [UserSettings::class]],
 
 		// Controllers - New instances (Handle per-request state)
 		AdminController::class => ['arguments' => [AdminService::class, Response::class]],
@@ -118,7 +122,13 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			Response::class,
 			SecurityService::class,
 		]],
-		UserSettingsController::class => ['arguments' => [UserSettingsRepository::class, Response::class, UserSettingsBuilder::class, SecurityService::class]],
+		UserSettingsController::class => ['arguments' => [
+			UserSettingsRepository::class,
+			Response::class,
+			UserSettingsBuilder::class,
+			SecurityService::class,
+			ValidateUser::class,
+		]],
 
 		// Entities - New instances (Data transfer objects)
 		AlertEntity::class => ['arguments' => []],
