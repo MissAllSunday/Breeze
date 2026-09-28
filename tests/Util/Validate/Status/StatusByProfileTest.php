@@ -7,6 +7,7 @@ namespace Breeze\Util\Validate\Status;
 use Breeze\Controller\API\StatusController;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\PermissionsServiceInterface;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
 use Breeze\Util\Validate\Validations\Status\PostStatus;
@@ -188,10 +189,11 @@ class StatusByProfileTest extends TestCase
 		$validateAllow = $this->createStub(Allow::class);
 		$validateUser = $this->createStub(User::class);
 		$validateData = new Data();
+		$permissionsService = $this->createStub(PermissionsServiceInterface::class);
 
 		return new ValidateStatus(
-			new DeleteStatus($validateData, $validateUser, $validateAllow, $repository),
-			new PostStatus($validateData, $validateUser, $validateAllow, $repository),
+			new DeleteStatus($validateData, $validateUser, $validateAllow, $repository, $permissionsService),
+			new PostStatus($validateData, $validateUser, $validateAllow, $repository, $permissionsService),
 			new StatusByProfile($validateData, $validateUser, $validateAllow, $repository)
 		);
 	}

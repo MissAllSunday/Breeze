@@ -6,11 +6,16 @@ namespace Breeze\Util\Validate\Validations\Status;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Enums\PermissionsEnum;
+use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\PermissionsServiceInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
 class PostStatus extends BaseActions implements ValidateDataInterface
 {
@@ -21,6 +26,16 @@ class PostStatus extends BaseActions implements ValidateDataInterface
 	];
 
 	protected const string SUCCESS_KEY = 'published_status';
+
+	public function __construct(
+		Data $validateData,
+		User $validateUser,
+		Allow $validateAllow,
+		StatusRepositoryInterface $repository,
+		protected PermissionsServiceInterface $permissionsService
+	) {
+		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
+	}
 
 	/**
 	 * @throws InvalidDataException
@@ -34,24 +49,35 @@ class PostStatus extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
+	 * Posting is authorized against the target wall owner, resolved through
+	 * PermissionsService so the profile-owner shortcut and the postStatus
+	 * permission stay in one place.
+	 *
 	 * @throws NotAllowedException
 	 */
 	public function checkAllow(): void
 	{
-		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
-
-		if ($currentUserId !== $this->data[StatusEntity::WALL_ID]) {
-			$this->validateAllow->permissions(PermissionsEnum::POST_STATUS, PermissionsEnum::POST_STATUS);
+		if (!$this->permissionsService->canPost(
+			PermissionsEnum::TYPE_STATUS,
+			(int) $this->data[StatusEntity::WALL_ID]
+		)) {
+			throw new NotAllowedException(PermissionsEnum::POST_STATUS);
 		}
 
 		$this->validateAllow->floodControl($this->data[StatusEntity::WALL_ID]);
 	}
 
 	/**
+	 * The poster must be the session user.
+	 *
+	 * Without this a member could submit any `user_id` and have the status
+	 * attributed to someone else.
+	 *
 	 * @throws DataNotFoundException
 	 */
 	public function checkUser(): void
 	{
+		$this->validateUser->isSameUser((int) $this->data[StatusEntity::USER_ID]);
 		$this->validateUser->areValidUsers([$this->data[StatusEntity::USER_ID], $this->data[StatusEntity::WALL_ID]]);
 	}
 

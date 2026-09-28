@@ -8,6 +8,7 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\PermissionsServiceInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
@@ -21,7 +22,6 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 {
 	protected const array PARAMS = [
 		CommentEntity::ID => 0,
-		CommentEntity::USER_ID => 0,
 	];
 
 	protected const string SUCCESS_KEY = 'deleted_comment';
@@ -31,7 +31,8 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 		User $validateUser,
 		Allow $validateAllow,
 		CommentRepositoryInterface $repository,
-		protected StatusRepositoryInterface $statusRepository
+		protected StatusRepositoryInterface $statusRepository,
+		protected PermissionsServiceInterface $permissionsService
 	) {
 		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
 	}
@@ -43,29 +44,22 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 
 	/**
 	 * @throws NotAllowedException
+	 * @throws DataNotFoundException
 	 */
 	public function checkAllow(): void
 	{
-		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
-		$commentUserId = $this->data[CommentEntity::USER_ID];
-
-		if ($currentUserId === $commentUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_COMMENTS, self::PERMISSION_MSG_DELETE_STATUS);
-
-			return;
-		}
-
 		$comment = $this->repository->getById($this->data[CommentEntity::ID]);
 		assert($comment instanceof CommentEntity);
+
 		$status = $this->statusRepository->getBasicInfoById($comment->getStatusId());
 
-		if ($status->getWallId() === $currentUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_COMMENTS, self::PERMISSION_MSG_DELETE_STATUS);
-
-			return;
+		if (!$this->permissionsService->canDelete(
+			PermissionsEnum::TYPE_COMMENTS,
+			$comment->getUserId(),
+			$status->getWallId()
+		)) {
+			throw new NotAllowedException(self::PERMISSION_MSG_DELETE_STATUS);
 		}
-
-		$this->validateAllow->permissions(PermissionsEnum::DELETE_COMMENTS, self::PERMISSION_MSG_DELETE_STATUS);
 	}
 
 	/**
@@ -73,15 +67,20 @@ class DeleteComment extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkUser(): void
 	{
-		$this->validateUser->areValidUsers([$this->data[CommentEntity::USER_ID]]);
+		$comment = $this->repository->getById($this->data[CommentEntity::ID]);
+		assert($comment instanceof CommentEntity);
+
+		$this->validateUser->areValidUsers([$comment->getUserId()]);
 	}
 
 	/**
 	 * @throws InvalidDataException
+	 * @throws DataNotFoundException
 	 */
 	public function checkData(): void
 	{
 		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateData->isInt([CommentEntity::ID], $this->data);
 		$this->validateData->dataExists($this->data[CommentEntity::ID], $this->repository);
 	}
 

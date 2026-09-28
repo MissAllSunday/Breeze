@@ -63,7 +63,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		return [
 			'data' => array_values($visibleStatuses),
-			'permissions' => $this->permissionsService->permissions($wallId, $viewerId),
+			'permissions' => $this->permissionsService->permissions($wallId),
 			'pagination' => [
 				'nextCursor' => $hasMore ? $nextCursor : null,
 				'hasMore' => $hasMore,
@@ -141,7 +141,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 			// On the general wall there is no single profile owner: pass 0 so
 			// PermissionsService evaluates actual permissions instead of granting
 			// post rights unconditionally via the profile-owner shortcut.
-			'permissions' => $this->permissionsService->permissions(0, $viewerId),
+			'permissions' => $this->permissionsService->permissions(0),
 			'pagination' => [
 				'nextCursor' => $hasMore ? $nextCursor : null,
 				'hasMore' => $hasMore,
@@ -173,7 +173,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		return [
 			'data' => array_values($visibleStatuses),
-			'permissions' => $this->permissionsService->permissions($wallId, $viewerId),
+			'permissions' => $this->permissionsService->permissions($wallId),
 			'pagination' => [
 				'nextCursor' => null,
 				'hasMore' => false,

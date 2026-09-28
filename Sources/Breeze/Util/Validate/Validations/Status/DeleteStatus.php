@@ -7,6 +7,7 @@ namespace Breeze\Util\Validate\Validations\Status;
 use Breeze\Entity\StatusEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\PermissionsServiceInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
@@ -20,7 +21,6 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 {
 	protected const array PARAMS = [
 		StatusEntity::ID => 0,
-		StatusEntity::USER_ID => 0,
 	];
 
 	protected const string SUCCESS_KEY = 'deleted_status';
@@ -29,34 +29,27 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 		Data $validateData,
 		User $validateUser,
 		Allow $validateAllow,
-		protected StatusRepositoryInterface $statusRepository
+		protected StatusRepositoryInterface $statusRepository,
+		protected PermissionsServiceInterface $permissionsService
 	) {
 		parent::__construct($validateData, $validateUser, $validateAllow, $statusRepository);
 	}
 
 	/**
 	 * @throws NotAllowedException
+	 * @throws DataNotFoundException
 	 */
 	public function checkAllow(): void
 	{
-		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
-		$statusUserId = $this->data[StatusEntity::USER_ID];
-
-		if ($currentUserId === $statusUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_OWN_STATUS, self::PERMISSION_MSG_DELETE_STATUS);
-
-			return;
-		}
-
 		$status = $this->statusRepository->getById($this->data[StatusEntity::ID]);
 
-		if ($status->getWallId() === $currentUserId) {
-			$this->validateAllow->permissions(PermissionsEnum::DELETE_PROFILE_STATUS, self::PERMISSION_MSG_DELETE_STATUS);
-
-			return;
+		if (!$this->permissionsService->canDelete(
+			PermissionsEnum::TYPE_STATUS,
+			$status->getUserId(),
+			$status->getWallId()
+		)) {
+			throw new NotAllowedException(self::PERMISSION_MSG_DELETE_STATUS);
 		}
-
-		$this->validateAllow->permissions(PermissionsEnum::DELETE_STATUS, self::PERMISSION_MSG_DELETE_STATUS);
 	}
 
 	/**
@@ -64,15 +57,19 @@ class DeleteStatus extends BaseActions implements ValidateDataInterface
 	 */
 	public function checkUser(): void
 	{
-		$this->validateUser->areValidUsers([$this->data[StatusEntity::USER_ID]]);
+		$status = $this->statusRepository->getById($this->data[StatusEntity::ID]);
+
+		$this->validateUser->areValidUsers([$status->getUserId()]);
 	}
 
 	/**
 	 * @throws InvalidDataException
+	 * @throws DataNotFoundException
 	 */
 	public function checkData(): void
 	{
 		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateData->isInt([StatusEntity::ID], $this->data);
 		$this->validateData->dataExists($this->data[StatusEntity::ID], $this->repository);
 	}
 

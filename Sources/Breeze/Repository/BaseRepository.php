@@ -15,6 +15,7 @@ use Breeze\Service\ProfileService;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\PermissionsTrait;
 use Breeze\Traits\TextTrait;
+use InvalidArgumentException;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
@@ -41,8 +42,23 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		return rtrim($set, ',');
 	}
 
+	/**
+	 * @throws InvalidArgumentException
+	 */
 	public function doesContentExists(int $id): bool
 	{
+		$columnName = $this->getColumnId();
+
+		if (!$this->isValidColumn($columnName)) {
+			$this->logMessage(sprintf(
+				'%s::doesContentExists() got an unknown id column %s',
+				static::class,
+				var_export($columnName, true)
+			));
+
+			throw new InvalidArgumentException($this->getText('error_internal'));
+		}
+
 		$result = $this->dbClient->query(
 			'
 			SELECT 1
@@ -50,7 +66,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 			WHERE {raw:columnName} = {int:id}
 			LIMIT 1',
 			array_merge($this->getDefaultQueryParams(), [
-				'columnName' => $this->getColumnId(),
+				'columnName' => self::PARENT_LIKE_IDENTIFIER . '.' . $columnName,
 				'id' => $id,
 			])
 		);
@@ -158,8 +174,11 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	 * matching row just to count them is pure waste. CommentRepository::
 	 * countOrphans() is the in-repo precedent for this shape.
 	 *
+	 * As in doesContentExists(), the exception message is a language string:
+	 * the column name is logged, never thrown.
+	 *
 	 * @param array{columnName?: string, ids?: array<int, int>} $queryParams
-	 * @throws \InvalidArgumentException when the filter is missing, names an
+	 * @throws InvalidArgumentException when the filter is missing, names an
 	 *                                   unknown column, or has no ids
 	 */
 	public function getCount(array $queryParams = []): int
@@ -167,21 +186,24 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		$columnName = $queryParams['columnName'] ?? null;
 
 		if (!is_string($columnName) || !$this->isValidColumn($columnName)) {
-			throw new \InvalidArgumentException(sprintf(
-				'%s::getCount() requires a valid "columnName", got %s. Known columns: %s',
+			$this->logMessage(sprintf(
+				'%s::getCount() got an invalid "columnName" %s',
 				static::class,
-				var_export($columnName, true),
-				implode(', ', $this->getColumns())
+				var_export($columnName, true)
 			));
+
+			throw new InvalidArgumentException($this->getText('error_internal'));
 		}
 
 		$ids = $queryParams['ids'] ?? [];
 
 		if ($ids === []) {
-			throw new \InvalidArgumentException(sprintf(
-				'%s::getCount() requires a non-empty "ids" array; an empty set would emit invalid SQL.',
+			$this->logMessage(sprintf(
+				'%s::getCount() got an empty "ids" array, which would emit invalid SQL.',
 				static::class
 			));
+
+			throw new InvalidArgumentException($this->getText('error_internal'));
 		}
 
 		$result = $this->dbClient->query(

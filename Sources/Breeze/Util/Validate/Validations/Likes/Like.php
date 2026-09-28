@@ -37,11 +37,19 @@ class Like extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
+	 * Note: no dataExists() here on purpose. The injected repository is
+	 * LikeRepository, whose id column is `content_id` on the likes table, so
+	 * dataExists() would answer "has this content already been liked?" rather
+	 * than "does this content exist?" and would reject the first like on any
+	 * item. Content existence is enforced by the owning repositories.
+	 *
 	 * @throws InvalidDataException
+	 * @throws DataNotFoundException
 	 */
 	public function checkData(): void
 	{
 		$this->validateData->compare(self::PARAMS, $this->data);
+		$this->validateData->isInt([LikeEntity::ID, LikeEntity::ID_MEMBER], $this->data);
 	}
 
 	/**
@@ -55,10 +63,16 @@ class Like extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
+	 * The liker must be the session user.
+	 *
+	 * Without this a member could submit any `id_member` and like or unlike
+	 * content on someone else's behalf.
+	 *
 	 * @throws DataNotFoundException
 	 */
 	public function checkUser(): void
 	{
+		$this->validateUser->isSameUser((int) $this->data[LikeEntity::ID_MEMBER]);
 		$this->validateUser->areValidUsers([$this->data[LikeEntity::ID_MEMBER]]);
 	}
 

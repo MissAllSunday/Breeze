@@ -6,79 +6,100 @@ namespace Breeze\Util\Validate\Comment;
 
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
 use Breeze\Validate\Types\Allow;
 use Breeze\Validate\Types\Data;
 use Breeze\Validate\Types\User;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class PostCommentTest extends TestCase
 {
+	private CommentRepositoryInterface | MockObject $commentRepository;
+
+	private StatusRepositoryInterface | MockObject $statusRepository;
+
+	private PermissionsServiceInterface | MockObject $permissionsService;
+
+	private User | MockObject $validateUser;
+
+	private Allow | MockObject $validateAllow;
+
+	private PostComment $postComment;
+
+	/**
+	 * @throws Exception
+	 */
+	public function setUp(): void
+	{
+		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$this->validateUser = $this->createMock(User::class);
+		$this->validateAllow = $this->createMock(Allow::class);
+
+		$this->postComment = new PostComment(
+			$this->createStub(Data::class),
+			$this->validateUser,
+			$this->validateAllow,
+			$this->commentRepository,
+			$this->statusRepository,
+			$this->permissionsService
+		);
+	}
+
 	public function testGetParams(): void
 	{
-		$commentRepository = $this->createStub(CommentRepositoryInterface::class);
-		$statusRepository = $this->createStub(StatusRepositoryInterface::class);
-		$validateAllow = $this->createStub(Allow::class);
-		$validateUser = $this->createStub(User::class);
-		$validateData = $this->createStub(Data::class);
-
-		$postComment = new PostComment(
-			$validateData,
-			$validateUser,
-			$validateAllow,
-			$commentRepository,
-			$statusRepository
-		);
-
 		$this->assertEquals([
 			'body' => '',
 			'status_id' => 0,
 			'user_id' => 0,
-		], $postComment->getParams());
+		], $this->postComment->getParams());
 	}
 
 	#[DataProvider('checkAllowProvider')]
-	public function testCheckAllow(array $data, int $currentUserId, int $wallId, bool $isExpectedException): void
+	public function testCheckAllow(array $data, int $wallId, bool $canPost, bool $isExpectedException): void
 	{
-		$commentRepository = $this->createStub(CommentRepositoryInterface::class);
-		$commentRepository->method('getCurrentUserInfo')->willReturn(['id' => $currentUserId]);
+		$this->postComment->setData($data);
 
-		$statusRepository = $this->createStub(StatusRepositoryInterface::class);
-		$statusRepository->method('getBasicInfoById')->willReturn(
-			StatusEntity::from([
+		// The wall owner is resolved from the parent status row, never from the
+		// request payload.
+		$this->statusRepository->expects($this->once())
+			->method('getBasicInfoById')
+			->with($data[CommentEntity::STATUS_ID])
+			->willReturn(StatusEntity::from([
 				StatusEntity::ID => $data[CommentEntity::STATUS_ID],
 				StatusEntity::WALL_ID => $wallId,
 				StatusEntity::USER_ID => 1,
-			])
-		);
+			]));
 
-		$validateAllow = $this->createMock(Allow::class);
+		$this->permissionsService->expects($this->once())
+			->method('canPost')
+			->with(PermissionsEnum::TYPE_COMMENTS, $wallId)
+			->willReturn($canPost);
 
-		if ($currentUserId === $wallId) {
-			$validateAllow->expects($this->never())->method('permissions');
-		} elseif ($isExpectedException) {
-			$validateAllow->expects($this->once())
-				->method('permissions')
-				->with('postComments', 'postComments')
-				->willThrowException(new NotAllowedException());
+		if ($isExpectedException) {
+			// Flood control must not run once authorization fails.
+			$this->validateAllow->expects($this->never())->method('floodControl');
+
 			$this->expectException(NotAllowedException::class);
 		} else {
-			$validateAllow->expects($this->once())
-				->method('permissions')
-				->with('postComments', 'postComments');
+			$this->validateAllow->expects($this->once())
+				->method('floodControl')
+				->with($data[CommentEntity::USER_ID]);
 		}
 
-		$validateUser = $this->createStub(User::class);
-		$validateData = $this->createStub(Data::class);
-
-		$postComment = new PostComment($validateData, $validateUser, $validateAllow, $commentRepository, $statusRepository);
-		$postComment->setData($data);
-
-		$postComment->checkAllow();
+		$this->postComment->checkAllow();
 	}
 
 	public static function checkAllowProvider(): array
@@ -90,8 +111,8 @@ class PostCommentTest extends TestCase
 					CommentEntity::USER_ID => 1,
 					CommentEntity::BODY => 'Test',
 				],
-				'currentUserId' => 1,
 				'wallId' => 1,
+				'canPost' => true,
 				'isExpectedException' => false,
 			],
 			'non-owner with post comment permission' => [
@@ -100,8 +121,8 @@ class PostCommentTest extends TestCase
 					CommentEntity::USER_ID => 1,
 					CommentEntity::BODY => 'Test',
 				],
-				'currentUserId' => 1,
 				'wallId' => 2,
+				'canPost' => true,
 				'isExpectedException' => false,
 			],
 			'non-owner without post comment permission' => [
@@ -110,10 +131,54 @@ class PostCommentTest extends TestCase
 					CommentEntity::USER_ID => 1,
 					CommentEntity::BODY => 'Test',
 				],
-				'currentUserId' => 1,
 				'wallId' => 2,
+				'canPost' => false,
 				'isExpectedException' => true,
 			],
 		];
+	}
+
+	/**
+	 * Regression: commenting must always assert the poster is the session user,
+	 * otherwise any member can attribute a comment to someone else.
+	 */
+	public function testCheckUserAssertsPosterIsSessionUser(): void
+	{
+		$this->postComment->setData([
+			CommentEntity::STATUS_ID => 5,
+			CommentEntity::USER_ID => 1,
+			CommentEntity::BODY => 'Test',
+		]);
+
+		$this->validateUser->expects($this->once())
+			->method('isSameUser')
+			->with(1);
+
+		$this->validateUser->expects($this->once())
+			->method('areValidUsers')
+			->with([1]);
+
+		$this->postComment->checkUser();
+	}
+
+	public function testCheckUserRejectsSpoofedPoster(): void
+	{
+		$this->postComment->setData([
+			CommentEntity::STATUS_ID => 5,
+			CommentEntity::USER_ID => 999,
+			CommentEntity::BODY => 'Test',
+		]);
+
+		$this->validateUser->expects($this->once())
+			->method('isSameUser')
+			->with(999)
+			->willThrowException(new DataNotFoundException('invalid_users'));
+
+		// Existence checks must never run for a spoofed poster.
+		$this->validateUser->expects($this->never())->method('areValidUsers');
+
+		$this->expectException(DataNotFoundException::class);
+
+		$this->postComment->checkUser();
 	}
 }

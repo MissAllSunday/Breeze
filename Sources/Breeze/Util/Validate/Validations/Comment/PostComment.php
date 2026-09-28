@@ -8,6 +8,7 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
+use Breeze\Service\PermissionsServiceInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
@@ -32,7 +33,8 @@ class PostComment extends BaseActions implements ValidateDataInterface
 		User $validateUser,
 		Allow $validateAllow,
 		BaseRepositoryInterface $repository,
-		protected StatusRepositoryInterface $statusRepository
+		protected StatusRepositoryInterface $statusRepository,
+		protected PermissionsServiceInterface $permissionsService
 	) {
 		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
 	}
@@ -49,31 +51,36 @@ class PostComment extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
+	 * The wall owner is resolved from the parent status row, never from the
+	 * request payload, so the profile-owner shortcut cannot be spoofed.
+	 *
 	 * @throws NotAllowedException
 	 * @throws DataNotFoundException
 	 */
 	public function checkAllow(): void
 	{
-		$currentUserId = (int) $this->repository->getCurrentUserInfo()['id'];
 		$wallOwnerId = $this->statusRepository
 			->getBasicInfoById($this->data[CommentEntity::STATUS_ID])
 			->getWallId();
 
-		if ($currentUserId !== $wallOwnerId) {
-			$this->validateAllow->permissions(
-				PermissionsEnum::POST_COMMENTS,
-				PermissionsEnum::POST_COMMENTS
-			);
+		if (!$this->permissionsService->canPost(PermissionsEnum::TYPE_COMMENTS, $wallOwnerId)) {
+			throw new NotAllowedException(PermissionsEnum::POST_COMMENTS);
 		}
 
 		$this->validateAllow->floodControl($this->data[CommentEntity::USER_ID]);
 	}
 
 	/**
+	 * The poster must be the session user.
+	 *
+	 * Without this a member could submit any `user_id` and have the comment
+	 * attributed to someone else.
+	 *
 	 * @throws DataNotFoundException
 	 */
 	public function checkUser(): void
 	{
+		$this->validateUser->isSameUser((int) $this->data[CommentEntity::USER_ID]);
 		$this->validateUser->areValidUsers([$this->data[CommentEntity::USER_ID]]);
 	}
 

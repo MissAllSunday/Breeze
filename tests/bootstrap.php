@@ -343,6 +343,7 @@ $txt = [
 	'Breeze_time_second' => 'second',
 	'Breeze_time_ago' => 'ago',
 	'Breeze_time_just_now' => 'just now',
+	'Breeze_error_internal' => 'The request could not be completed due to an internal error',
 	'Breeze_lol' => 'lol',
 	'guest_title' => 'Guest',
 	'number_format' => '1,234.00',

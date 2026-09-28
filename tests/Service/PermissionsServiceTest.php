@@ -42,11 +42,11 @@ class PermissionsServiceTest extends TestCase
 	}
 
 	#[DataProvider('permissionsProvider')]
-	public function testPermissions(array $user_info, int $profileOwner, int $userPoster, array $expected): void
+	public function testPermissions(array $user_info, int $profileOwner, array $expected): void
 	{
 		// Manually set the global user_info var
 		$GLOBALS['user_info'] = $user_info;
-		$result = $this->permissionsService->permissions($profileOwner, $userPoster);
+		$result = $this->permissionsService->permissions($profileOwner);
 
 		$this->assertEquals($expected, $result);
 	}
@@ -57,7 +57,6 @@ class PermissionsServiceTest extends TestCase
 			'guest user' => [
 				'user_info' => ['is_guest' => true],
 				'profileOwner' => 0,
-				'userPoster' => 0,
 				'expected' => [
 					'Status' => [
 						'edit' => false,
@@ -82,7 +81,6 @@ class PermissionsServiceTest extends TestCase
 			'profile owner can post' => [
 				'user_info' => ['id' => 1, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 1,
 				'expected' => [
 					'Status' => [
 						'edit' => false,
@@ -107,7 +105,6 @@ class PermissionsServiceTest extends TestCase
 			'different users' => [
 				'user_info' => ['id' => 2, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'expected' => [
 					'Status' => [
 						'edit' => false,
@@ -132,7 +129,6 @@ class PermissionsServiceTest extends TestCase
 			'profile owner with different poster' => [
 				'user_info' => ['id' => 1, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'expected' => [
 					'Status' => [
 						'edit' => false,
@@ -157,7 +153,6 @@ class PermissionsServiceTest extends TestCase
 			'general wall: profileOwner=0 does not grant profile-owner rights' => [
 				'user_info' => ['id' => 1, 'is_guest' => false],
 				'profileOwner' => 0,
-				'userPoster' => 1,
 				'expected' => [
 					'Status' => [
 						'edit' => false,
@@ -182,7 +177,6 @@ class PermissionsServiceTest extends TestCase
 			'poster owner with different profile' => [
 				'user_info' => ['id' => 2, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'expected' => [
 					'Status' => [
 						'edit' => false,
@@ -211,7 +205,6 @@ class PermissionsServiceTest extends TestCase
 	public function testPermissionsWithControlledPermissions(
 		array $user_info,
 		int $profileOwner,
-		int $userPoster,
 		array $permissionsMap,
 		array $expectedStatus,
 		array $expectedComments,
@@ -227,19 +220,25 @@ class PermissionsServiceTest extends TestCase
 				return $permissionsMap[$permission] ?? false;
 			});
 
-		$result = $mockService->permissions($profileOwner, $userPoster);
+		$result = $mockService->permissions($profileOwner);
 
 		$this->assertEquals($expectedStatus, $result['Status']);
 		$this->assertEquals($expectedComments, $result['Comments']);
 	}
 
+	/**
+	 * Wall-level snapshot. `delete` here means "may delete ANY item on this
+	 * wall" (profile-owner or blanket rights). Own-item rights are deliberately
+	 * excluded: they are answered per item by canDelete(), and leaking them
+	 * into the wall snapshot is what let every member delete everyone's
+	 * content.
+	 */
 	public static function permissionsWithMockProvider(): array
 	{
 		return [
 			'non-owner with general delete permissions' => [
 				'user_info' => ['id' => 3, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'permissionsMap' => [
 					'deleteStatus' => true,
 					'deleteComments' => true,
@@ -258,7 +257,6 @@ class PermissionsServiceTest extends TestCase
 			'non-owner with general post permissions' => [
 				'user_info' => ['id' => 3, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'permissionsMap' => [
 					'postStatus' => true,
 					'postComments' => true,
@@ -277,7 +275,6 @@ class PermissionsServiceTest extends TestCase
 			'profile owner with profile delete false' => [
 				'user_info' => ['id' => 1, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'permissionsMap' => [
 					'deleteProfileStatus' => false,
 					'deleteProfileComments' => false,
@@ -293,29 +290,46 @@ class PermissionsServiceTest extends TestCase
 					'post' => true,
 				],
 			],
-			'poster owner with own delete true' => [
+			'profile owner with profile delete true' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'profileOwner' => 1,
+				'permissionsMap' => [
+					'deleteProfileStatus' => true,
+					'deleteProfileComments' => true,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => true,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => true,
+					'post' => true,
+				],
+			],
+			// Regression: deleteOwn* must NOT surface as a wall-wide delete.
+			'own delete rights do not leak into wall level delete' => [
 				'user_info' => ['id' => 2, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'permissionsMap' => [
 					'deleteOwnStatus' => true,
 					'deleteOwnComments' => true,
 				],
 				'expectedStatus' => [
 					'edit' => false,
-					'delete' => true,
+					'delete' => false,
 					'post' => false,
 				],
 				'expectedComments' => [
 					'edit' => false,
-					'delete' => true,
+					'delete' => false,
 					'post' => false,
 				],
 			],
-			'poster owner with own delete false' => [
+			'non-owner without any delete permission' => [
 				'user_info' => ['id' => 2, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 2,
 				'permissionsMap' => [
 					'deleteOwnStatus' => false,
 					'deleteOwnComments' => false,
@@ -331,10 +345,11 @@ class PermissionsServiceTest extends TestCase
 					'post' => false,
 				],
 			],
-			'profile owner and poster with own true profile false' => [
+			// Regression: profile owner whose deleteProfile* is off keeps post
+			// rights but gets no wall-wide delete, even with deleteOwn* on.
+			'profile owner with own true and profile false' => [
 				'user_info' => ['id' => 1, 'is_guest' => false],
 				'profileOwner' => 1,
-				'userPoster' => 1,
 				'permissionsMap' => [
 					'deleteOwnStatus' => true,
 					'deleteProfileStatus' => false,
@@ -343,14 +358,249 @@ class PermissionsServiceTest extends TestCase
 				],
 				'expectedStatus' => [
 					'edit' => false,
-					'delete' => true,
+					'delete' => false,
 					'post' => true,
 				],
 				'expectedComments' => [
 					'edit' => false,
-					'delete' => true,
+					'delete' => false,
 					'post' => true,
 				],
+			],
+			// The general wall has no single owner: profile-owner shortcuts
+			// must never fire for profileOwner = 0.
+			'general wall grants nothing without explicit permissions' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'profileOwner' => 0,
+				'permissionsMap' => [
+					'deleteProfileStatus' => true,
+					'deleteProfileComments' => true,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => false,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => false,
+				],
+			],
+			// A member with id 0 (broken session) is treated as a guest.
+			'member with zero id is treated as guest' => [
+				'user_info' => ['id' => 0, 'is_guest' => false],
+				'profileOwner' => 0,
+				'permissionsMap' => [
+					'deleteStatus' => true,
+					'postStatus' => true,
+					'deleteComments' => true,
+					'postComments' => true,
+				],
+				'expectedStatus' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => false,
+				],
+				'expectedComments' => [
+					'edit' => false,
+					'delete' => false,
+					'post' => false,
+				],
+			],
+		];
+	}
+
+	#[DataProvider('canDeleteProvider')]
+	public function testCanDelete(
+		array $user_info,
+		string $type,
+		int $authorId,
+		int $wallOwnerId,
+		array $permissionsMap,
+		bool $expected,
+	): void {
+		$GLOBALS['user_info'] = $user_info;
+
+		$mockService = $this->getMockBuilder(PermissionsService::class)
+			->onlyMethods(['isAllowedTo'])
+			->getMock();
+
+		$mockService->method('isAllowedTo')
+			->willReturnCallback(function (string $permission) use ($permissionsMap): bool {
+				return $permissionsMap[$permission] ?? false;
+			});
+
+		$this->assertSame($expected, $mockService->canDelete($type, $authorId, $wallOwnerId));
+	}
+
+	/**
+	 * canDelete() is the single authorization point for item deletion. The
+	 * author and wall ids are always DB-derived, so a member holding only
+	 * deleteOwn* can never delete someone else's content.
+	 */
+	public static function canDeleteProvider(): array
+	{
+		return [
+			'author deletes own status' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'authorId' => 2,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['deleteOwnStatus' => true],
+				'expected' => true,
+			],
+			// The core regression: deleteOwn* + someone else's content = deny.
+			'author cannot delete another member status with own permission' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'authorId' => 5,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['deleteOwnStatus' => true],
+				'expected' => false,
+			],
+			'wall owner deletes foreign status on own wall' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'authorId' => 5,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['deleteProfileStatus' => true],
+				'expected' => true,
+			],
+			'wall owner without profile permission is denied' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'authorId' => 5,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['deleteOwnStatus' => true],
+				'expected' => false,
+			],
+			'moderator deletes anything' => [
+				'user_info' => ['id' => 9, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_COMMENTS,
+				'authorId' => 5,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['deleteComments' => true],
+				'expected' => true,
+			],
+			'author deletes own comment' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_COMMENTS,
+				'authorId' => 2,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['deleteOwnComments' => true],
+				'expected' => true,
+			],
+			'author cannot delete another member comment with own permission' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_COMMENTS,
+				'authorId' => 5,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['deleteOwnComments' => true],
+				'expected' => false,
+			],
+			'guest is always denied' => [
+				'user_info' => ['id' => 0, 'is_guest' => true],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'authorId' => 0,
+				'wallOwnerId' => 0,
+				'permissionsMap' => [
+					'deleteStatus' => true,
+					'deleteOwnStatus' => true,
+					'deleteProfileStatus' => true,
+				],
+				'expected' => false,
+			],
+			// Unknown ids (0) must never match the viewer, even when the viewer
+			// holds every own/profile permission.
+			'unknown author and wall ids are denied' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'authorId' => 0,
+				'wallOwnerId' => 0,
+				'permissionsMap' => [
+					'deleteOwnStatus' => true,
+					'deleteProfileStatus' => true,
+				],
+				'expected' => false,
+			],
+		];
+	}
+
+	#[DataProvider('canPostProvider')]
+	public function testCanPost(
+		array $user_info,
+		string $type,
+		int $wallOwnerId,
+		array $permissionsMap,
+		bool $expected,
+	): void {
+		$GLOBALS['user_info'] = $user_info;
+
+		$mockService = $this->getMockBuilder(PermissionsService::class)
+			->onlyMethods(['isAllowedTo'])
+			->getMock();
+
+		$mockService->method('isAllowedTo')
+			->willReturnCallback(function (string $permission) use ($permissionsMap): bool {
+				return $permissionsMap[$permission] ?? false;
+			});
+
+		$this->assertSame($expected, $mockService->canPost($type, $wallOwnerId));
+	}
+
+	public static function canPostProvider(): array
+	{
+		return [
+			'wall owner posts on own wall without postStatus' => [
+				'user_info' => ['id' => 1, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'wallOwnerId' => 1,
+				'permissionsMap' => [],
+				'expected' => true,
+			],
+			'visitor posts on foreign wall with postStatus' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['postStatus' => true],
+				'expected' => true,
+			],
+			'visitor cannot post on foreign wall without postStatus' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['postComments' => true],
+				'expected' => false,
+			],
+			'visitor comments on foreign wall with postComments' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_COMMENTS,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['postComments' => true],
+				'expected' => true,
+			],
+			'visitor cannot comment on foreign wall without postComments' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_COMMENTS,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['postStatus' => true],
+				'expected' => false,
+			],
+			// profileOwner = 0 is the general wall: no owner shortcut.
+			'general wall requires postStatus' => [
+				'user_info' => ['id' => 2, 'is_guest' => false],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'wallOwnerId' => 0,
+				'permissionsMap' => [],
+				'expected' => false,
+			],
+			'guest cannot post anywhere' => [
+				'user_info' => ['id' => 0, 'is_guest' => true],
+				'type' => PermissionsEnum::TYPE_STATUS,
+				'wallOwnerId' => 1,
+				'permissionsMap' => ['postStatus' => true],
+				'expected' => false,
 			],
 		];
 	}

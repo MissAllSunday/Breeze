@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Breeze\Service;
 
 use Breeze\Breeze;
@@ -33,10 +32,12 @@ class PermissionsService implements PermissionsServiceInterface
 		}
 	}
 
-	public function permissions(int $profileOwner = 0, int $userPoster = 0): array
+	/**
+	 * @param int $profileOwner wall owner id, 0 when there is no single owner
+	 *                          (the general wall / buddy feed)
+	 */
+	public function permissions(int $profileOwner = 0): array
 	{
-		$user_info = $this->global('user_info');
-
 		$perm = [
 			PermissionsEnum::TYPE_STATUS =>  [
 				'edit' => false,
@@ -52,32 +53,81 @@ class PermissionsService implements PermissionsServiceInterface
 			PermissionsEnum::FORUM => $this->forumPermissions(),
 		];
 
-		// Guests and calls without a known poster get no permissions.
-		// profileOwner may legitimately be 0 on the general wall, so we do NOT
-		// short-circuit on it — we simply treat $isProfileOwner as false.
-		if ($user_info['is_guest'] || !$userPoster) {
+		if ($this->isGuest()) {
 			return $perm;
 		}
 
-		// Profile owner? A zero profileOwner means "no single owner" (general wall).
-		$isProfileOwner = $profileOwner !== 0 && $profileOwner === (int) $user_info['id'];
+		$isProfileOwner = $this->isProfileOwner($profileOwner);
 
-		// Status owner?
-		$isPosterOwner = $userPoster === (int) $user_info['id'];
+		$perm[PermissionsEnum::TYPE_STATUS]['post'] = $this->canPost(PermissionsEnum::TYPE_STATUS, $profileOwner);
+		$perm[PermissionsEnum::TYPE_COMMENTS]['post'] = $this->canPost(PermissionsEnum::TYPE_COMMENTS, $profileOwner);
 
-		// Lets check the posing bit first. Profile owner can always post.
-		if ($isProfileOwner) {
-			$perm[PermissionsEnum::TYPE_STATUS]['post'] = true;
-			$perm[PermissionsEnum::TYPE_COMMENTS]['post'] = true;
-		} else {
-			$perm[PermissionsEnum::TYPE_STATUS]['post'] = $this->isAllowedTo(PermissionsEnum::POST_STATUS);
-			$perm[PermissionsEnum::TYPE_COMMENTS]['post'] =  $this->isAllowedTo(PermissionsEnum::POST_COMMENTS);
-		}
-
-		$perm[PermissionsEnum::TYPE_STATUS]['delete'] = $this->handleDelete(PermissionsEnum::TYPE_STATUS, $isPosterOwner, $isProfileOwner);
-		$perm[PermissionsEnum::TYPE_COMMENTS]['delete'] =  $this->handleDelete(PermissionsEnum::TYPE_COMMENTS, $isPosterOwner, $isProfileOwner);
+		$perm[PermissionsEnum::TYPE_STATUS]['delete'] = $this->canDeleteAny(PermissionsEnum::TYPE_STATUS, $isProfileOwner);
+		$perm[PermissionsEnum::TYPE_COMMENTS]['delete'] = $this->canDeleteAny(PermissionsEnum::TYPE_COMMENTS, $isProfileOwner);
 
 		return $perm;
+	}
+
+	/**
+	 * Authorize deletion of one concrete item.
+	 *
+	 * Both ids MUST come from persisted rows (status/comment `user_id` and the
+	 * parent status `wall_id`), never from the request payload: trusting a
+	 * client-supplied author id lets any member with `deleteOwn*` delete
+	 * anyone's content by echoing their own id back.
+	 *
+	 * @param string $type PermissionsEnum::TYPE_STATUS|TYPE_COMMENTS
+	 * @param int $authorId  item author, 0 when unknown
+	 * @param int $wallOwnerId owner of the wall the item lives on, 0 when unknown
+	 */
+	public function canDelete(string $type, int $authorId, int $wallOwnerId): bool
+	{
+		if ($this->isGuest()) {
+			return false;
+		}
+
+		$viewerId = $this->viewerId();
+
+		// The viewer authored the item.
+		if ($authorId !== 0
+			&& $authorId === $viewerId
+			&& $this->isAllowedTo(PermissionsEnum::getDeletePermission($type, PermissionsEnum::OWN))) {
+			return true;
+		}
+
+		// The item sits on the viewer's own wall.
+		if ($wallOwnerId !== 0
+			&& $wallOwnerId === $viewerId
+			&& $this->isAllowedTo(PermissionsEnum::getDeletePermission($type, PermissionsEnum::PROFILE))) {
+			return true;
+		}
+
+		// Neither: requires the blanket (mod/admin) permission.
+		return $this->isAllowedTo(PermissionsEnum::getDeletePermission($type));
+	}
+
+	/**
+	 * Authorize creating one concrete item on a given wall.
+	 *
+	 * @param string $type PermissionsEnum::TYPE_STATUS|TYPE_COMMENTS
+	 * @param int $wallOwnerId owner of the target wall, 0 for the general wall
+	 */
+	public function canPost(string $type, int $wallOwnerId): bool
+	{
+		if ($this->isGuest()) {
+			return false;
+		}
+
+		// Posting on your own wall is always allowed.
+		if ($this->isProfileOwner($wallOwnerId)) {
+			return true;
+		}
+
+		return $this->isAllowedTo(
+			$type === PermissionsEnum::TYPE_STATUS
+				? PermissionsEnum::POST_STATUS
+				: PermissionsEnum::POST_COMMENTS
+		);
 	}
 
 	public function isFeatureEnable(): array
@@ -108,26 +158,36 @@ class PermissionsService implements PermissionsServiceInterface
 		return $this->isAllowedTo(PermissionsEnum::PROFILE_VIEW);
 	}
 
-	protected function handleDelete(string $type, bool $isPosterOwner, $isProfileOwner) : bool
+	/**
+	 * Wall-level "may delete anything here" flag: profile-owner rights or the
+	 * blanket permission. Own-content rights are per item, see canDelete().
+	 */
+	protected function canDeleteAny(string $type, bool $isProfileOwner): bool
 	{
-		// It all starts with an empty vessel...
-		$allowed = [];
-
-		// Your own data?
-		if ($isPosterOwner && $this->isAllowedTo(PermissionsEnum::getDeletePermission($type, PermissionsEnum::OWN))) {
-			$allowed[] = 1;
-		}
-
-		// Nope? then is this your own profile?
 		if ($isProfileOwner && $this->isAllowedTo(PermissionsEnum::getDeletePermission($type, PermissionsEnum::PROFILE))) {
-			$allowed[] = 1;
+			return true;
 		}
 
-		// No poster and no profile owner, must be an admin/mod or something.
-		if ($this->isAllowedTo(PermissionsEnum::getDeletePermission($type))) {
-			$allowed[] = 1;
-		}
+		return $this->isAllowedTo(PermissionsEnum::getDeletePermission($type));
+	}
 
-		return in_array(1, $allowed, true);
+	protected function isProfileOwner(int $profileOwner): bool
+	{
+		// 0 means "no single owner" (general wall), never a match.
+		return $profileOwner !== 0 && $profileOwner === $this->viewerId();
+	}
+
+	protected function viewerId(): int
+	{
+		$user_info = $this->global('user_info');
+
+		return (int) ($user_info['id'] ?? 0);
+	}
+
+	protected function isGuest(): bool
+	{
+		$user_info = $this->global('user_info');
+
+		return !empty($user_info['is_guest']) || $this->viewerId() === 0;
 	}
 }

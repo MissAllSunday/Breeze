@@ -187,8 +187,10 @@ class StatusServiceTest extends TestCase
 		$this->statusRepository->method('getById')->willReturn($statusEntity);
 
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		// Wall-level snapshot only: the viewer is resolved from user_info
+		// inside PermissionsService, so no poster id is passed here.
 		$this->permissionsService->method('permissions')
-			->with($wallId, $currentUserId)
+			->with($wallId)
 			->willReturn($expectedPermissions);
 
 		// Single-status surface uses the 3-gate safety+platform filter.
@@ -307,14 +309,15 @@ class StatusServiceTest extends TestCase
 			UserSettingsEntity::from(['buddies' => '2,3', 'paginationNumber' => 5])
 		);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
-		// On the general wall profileOwner is 0 (no single wall owner); the viewer's
-		// own ID is passed as userPoster so ownership-based delete still works.
+		// On the general wall profileOwner is 0 (no single wall owner), so the
+		// profile-owner shortcuts never fire and wall-wide delete stays false.
+		// Per-item delete rights are answered by canDelete(), not here.
 		$this->permissionsService->expects($this->once())
 			->method('permissions')
-			->with(0, 1)
+			->with(0)
 			->willReturn([
-				'Status'   => ['delete' => true, 'edit' => false, 'post' => true],
-				'Comments' => ['delete' => true, 'edit' => false, 'post' => true],
+				'Status'   => ['delete' => false, 'edit' => false, 'post' => true],
+				'Comments' => ['delete' => false, 'edit' => false, 'post' => true],
 			]);
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->statusRepository->expects($this->once())
@@ -354,8 +357,12 @@ class StatusServiceTest extends TestCase
 
 		$this->assertSame(self::getStatusEntity()->getId(), $result['data'][0]->getId());
 		$this->assertSame(1, $result['total']);
-		// Ownership-based permissions must come through for the viewer's own content.
-		$this->assertTrue($result['permissions']['Status']['delete']);
+		// The general wall has no single owner, so the wall-level snapshot must
+		// NOT advertise a wall-wide delete right. Per-item delete is answered by
+		// PermissionsService::canDelete() from DB-derived author/wall ids;
+		// surfacing it here is what let every member delete everyone's content.
+		$this->assertFalse($result['permissions']['Status']['delete']);
+		$this->assertFalse($result['permissions']['Comments']['delete']);
 		$this->assertTrue($result['permissions']['Comments']['post']);
 	}
 

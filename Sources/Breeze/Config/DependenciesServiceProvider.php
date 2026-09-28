@@ -87,11 +87,11 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		Allow::class => ['arguments' => [], 'shared' => true],
 
 		// Validation Actions - New instances (Hold request-specific data)
-		DeleteStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
-		PostStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
+		DeleteStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class, PermissionsService::class]],
+		PostStatus::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class, PermissionsService::class]],
 		StatusByProfile::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class]],
-		DeleteComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class]],
-		PostComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class]],
+		DeleteComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class, PermissionsService::class]],
+		PostComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class, PermissionsService::class]],
 		Like::class => ['arguments' => [Data::class, User::class, Allow::class, LikeRepository::class]],
 		UserSettings::class => ['arguments' => [Data::class, User::class, Allow::class, UserSettingsRepository::class]],
 
