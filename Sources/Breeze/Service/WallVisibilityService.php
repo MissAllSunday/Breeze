@@ -27,6 +27,25 @@ class WallVisibilityService implements WallVisibilityServiceInterface
 		return $this->passesAllGates($authorId, $wallOwnerId, $viewerId, $settings);
 	}
 
+	public function canAccessWall(int $wallOwnerId, int $viewerId): bool
+	{
+		// The general wall has no single owner, so the wall-enabled feature
+		// gate does not apply. Block filtering there is already handled by
+		// getMutualBlockIds() / filterStatusesForFeed().
+		if ($wallOwnerId === 0) {
+			return true;
+		}
+
+		$settings = $this->loadSettings([$wallOwnerId, $viewerId]);
+
+		$wallOwnerSettings = $settings[$wallOwnerId] ?? UserSettingsEntity::from([]);
+		if ($wallOwnerSettings->getWall() === 0) {
+			return false;
+		}
+
+		return $this->passesSymmetricBlock($wallOwnerId, $viewerId, $settings);
+	}
+
 	public function filterStatusesForFeed(array $statuses, int $viewerId): array
 	{
 		if ($statuses === [] || !$this->permissionsService->canViewActivity($viewerId)) {

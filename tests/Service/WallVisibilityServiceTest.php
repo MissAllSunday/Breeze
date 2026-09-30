@@ -414,6 +414,82 @@ class WallVisibilityServiceTest extends TestCase
 		];
 	}
 
+	/**
+	 * canAccessWall is the JSON-API counterpart of
+	 * ProfileService::isAllowedToSeePage(): wall-enabled + symmetric block.
+	 */
+	#[DataProvider('canAccessWallProvider')]
+	public function testCanAccessWall(
+		array $settingsById,
+		int $wallOwnerId,
+		int $viewerId,
+		bool $expected
+	): void {
+		$this->stubSettings($settingsById);
+
+		$this->assertSame(
+			$expected,
+			$this->wallVisibilityService->canAccessWall($wallOwnerId, $viewerId)
+		);
+	}
+
+	public static function canAccessWallProvider(): array
+	{
+		$enabled = ['wall' => 1, 'generalWall' => 1];
+
+		return [
+			'wall enabled, no blocks → accessible' => [
+				'settingsById' => [100 => $enabled, 300 => $enabled],
+				'wallOwnerId' => 300, 'viewerId' => 100,
+				'expected' => true,
+			],
+			'wall disabled → not accessible' => [
+				'settingsById' => [100 => $enabled, 300 => ['wall' => 0, 'generalWall' => 1]],
+				'wallOwnerId' => 300, 'viewerId' => 100,
+				'expected' => false,
+			],
+			'wall owner blocked the viewer → not accessible' => [
+				'settingsById' => [
+					100 => $enabled,
+					300 => ['wall' => 1, 'blockList' => '100', 'generalWall' => 1],
+				],
+				'wallOwnerId' => 300, 'viewerId' => 100,
+				'expected' => false,
+			],
+			'viewer blocked the wall owner → not accessible' => [
+				'settingsById' => [
+					100 => ['wall' => 1, 'blockList' => '300', 'generalWall' => 1],
+					300 => $enabled,
+				],
+				'wallOwnerId' => 300, 'viewerId' => 100,
+				'expected' => false,
+			],
+			'owner viewing their own disabled wall → not accessible' => [
+				'settingsById' => [300 => ['wall' => 0, 'generalWall' => 1]],
+				'wallOwnerId' => 300, 'viewerId' => 300,
+				'expected' => false,
+			],
+			'general wall (no single owner) is exempt from the feature gate' => [
+				'settingsById' => [100 => ['wall' => 0, 'generalWall' => 1]],
+				'wallOwnerId' => 0, 'viewerId' => 100,
+				'expected' => true,
+			],
+		];
+	}
+
+	public function testCanAccessWallLoadsSettingsOnce(): void
+	{
+		$this->userSettingsRepository->expects($this->once())
+			->method('getByIds')
+			->with([300, 100])
+			->willReturn([
+				300 => UserSettingsEntity::from(['wall' => 1]),
+				100 => UserSettingsEntity::from(['wall' => 1]),
+			]);
+
+		$this->assertTrue($this->wallVisibilityService->canAccessWall(300, 100));
+	}
+
 	public function testFilterStatusesForWallHidesAllWhenCanViewProfileWallFails(): void
 	{
 		$mock = $this->createStub(PermissionsServiceInterface::class);

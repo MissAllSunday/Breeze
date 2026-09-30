@@ -9,6 +9,8 @@ use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\BaseRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Service\WallVisibilityServiceInterface;
+use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
@@ -20,6 +22,8 @@ use Breeze\Validate\Types\User;
 
 class PostComment extends BaseActions implements ValidateDataInterface
 {
+	use SettingsTrait;
+
 	protected const array PARAMS = [
 		CommentEntity::STATUS_ID => 0,
 		CommentEntity::USER_ID => 0,
@@ -34,7 +38,8 @@ class PostComment extends BaseActions implements ValidateDataInterface
 		Allow $validateAllow,
 		BaseRepositoryInterface $repository,
 		protected StatusRepositoryInterface $statusRepository,
-		protected PermissionsServiceInterface $permissionsService
+		protected PermissionsServiceInterface $permissionsService,
+		protected WallVisibilityServiceInterface $wallVisibilityService
 	) {
 		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
 	}
@@ -51,8 +56,9 @@ class PostComment extends BaseActions implements ValidateDataInterface
 	}
 
 	/**
-	 * The wall owner is resolved from the parent status row, never from the
-	 * request payload, so the profile-owner shortcut cannot be spoofed.
+	 * The wall-enabled / block-list gate runs before the permission check: a
+	 * member whose wall is disabled, or who blocked the viewer, must not be
+	 * writable through the JSON API.
 	 *
 	 * @throws NotAllowedException
 	 * @throws DataNotFoundException
@@ -63,11 +69,22 @@ class PostComment extends BaseActions implements ValidateDataInterface
 			->getBasicInfoById($this->data[CommentEntity::STATUS_ID])
 			->getWallId();
 
+		if (!$this->wallVisibilityService->canAccessWall($wallOwnerId, $this->viewerId())) {
+			throw new NotAllowedException(PermissionsEnum::POST_COMMENTS);
+		}
+
 		if (!$this->permissionsService->canPost(PermissionsEnum::TYPE_COMMENTS, $wallOwnerId)) {
 			throw new NotAllowedException(PermissionsEnum::POST_COMMENTS);
 		}
 
 		$this->validateAllow->floodControl($this->data[CommentEntity::USER_ID]);
+	}
+
+	protected function viewerId(): int
+	{
+		$userInfo = $this->global('user_info');
+
+		return (int) ($userInfo['id'] ?? 0);
 	}
 
 	/**

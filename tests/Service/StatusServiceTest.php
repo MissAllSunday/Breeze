@@ -39,6 +39,8 @@ class StatusServiceTest extends TestCase
 		$this->userRepository = $this->createStub(SettingsRepositoryInterface::class);
 		$this->permissionsService = $this->createStub(PermissionsServiceInterface::class);
 		$this->wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		// Default: the target wall is enabled and nobody blocked anybody.
+		$this->wallVisibilityService->method('canAccessWall')->willReturn(true);
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([$this->statusRepository,
 				$this->userRepository,
@@ -105,6 +107,78 @@ class StatusServiceTest extends TestCase
 				],
 			],
 		];
+	}
+
+	/**
+	 * A disabled wall (or a mutual block) must not be readable through the
+	 * JSON API. The service raises the same 404 used for filtered-out
+	 * statuses so the wall's existence is not leaked.
+	 */
+	public function testGetByProfileThrowsWhenWallIsInaccessible(): void
+	{
+		$this->userRepository->method('getById')->willReturn(UserSettingsEntity::from(['paginationNumber' => 5]));
+
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$statusRepository->expects($this->never())->method('getByProfile');
+
+		$wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->expects($this->once())
+			->method('canAccessWall')
+			->with(2, 1)
+			->willReturn(false);
+
+		$this->statusService = $this->getMockBuilder(StatusService::class)
+			->setConstructorArgs([
+				$statusRepository,
+				$this->userRepository,
+				$this->permissionsService,
+				$wallVisibilityService,
+				null,
+			])
+			->onlyMethods(['currentUserInfo'])
+			->getMock();
+		$this->statusService->method('currentUserInfo')->willReturn(['id' => 1]);
+
+		$this->expectException(DataNotFoundException::class);
+		$this->expectExceptionMessage('error_no_status');
+
+		$this->statusService->getByProfile(2);
+	}
+
+	public function testGetByIdThrowsWhenWallIsInaccessible(): void
+	{
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$statusRepository->method('getById')->willReturn(StatusEntity::from([
+			'id' => 123,
+			'wall_id' => 2,
+			'user_id' => 2,
+			'body' => 'hidden wall',
+		]));
+
+		$wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->expects($this->once())
+			->method('canAccessWall')
+			->with(2, 1)
+			->willReturn(false);
+		$wallVisibilityService->expects($this->never())
+			->method('filterStatusesForWall');
+
+		$this->statusService = $this->getMockBuilder(StatusService::class)
+			->setConstructorArgs([
+				$statusRepository,
+				$this->userRepository,
+				$this->permissionsService,
+				$wallVisibilityService,
+				null,
+			])
+			->onlyMethods(['currentUserInfo'])
+			->getMock();
+		$this->statusService->method('currentUserInfo')->willReturn(['id' => 1]);
+
+		$this->expectException(DataNotFoundException::class);
+		$this->expectExceptionMessage('error_no_status');
+
+		$this->statusService->getById(123);
 	}
 
 	protected static function getStatusEntity(): StatusEntity

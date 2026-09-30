@@ -10,6 +10,7 @@ use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Service\WallVisibilityServiceInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Comment\PostComment;
@@ -31,6 +32,8 @@ class PostCommentTest extends TestCase
 
 	private PermissionsServiceInterface | MockObject $permissionsService;
 
+	private WallVisibilityServiceInterface | MockObject $wallVisibilityService;
+
 	private User | MockObject $validateUser;
 
 	private Allow | MockObject $validateAllow;
@@ -42,9 +45,15 @@ class PostCommentTest extends TestCase
 	 */
 	public function setUp(): void
 	{
+		// The wall gate resolves the viewer from the session, pin it so the
+		// expectation does not depend on whichever test ran before.
+		$GLOBALS['user_info'] = ['id' => 666, 'is_guest' => false];
+
 		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$this->wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		$this->wallVisibilityService->method('canAccessWall')->willReturn(true);
 		$this->validateUser = $this->createMock(User::class);
 		$this->validateAllow = $this->createMock(Allow::class);
 
@@ -54,7 +63,8 @@ class PostCommentTest extends TestCase
 			$this->validateAllow,
 			$this->commentRepository,
 			$this->statusRepository,
-			$this->permissionsService
+			$this->permissionsService,
+			$this->wallVisibilityService
 		);
 	}
 
@@ -138,10 +148,50 @@ class PostCommentTest extends TestCase
 		];
 	}
 
-	/**
-	 * Regression: commenting must always assert the poster is the session user,
-	 * otherwise any member can attribute a comment to someone else.
-	 */
+	public function testCheckAllowRejectsInaccessibleWall(): void
+	{
+		$data = [
+			CommentEntity::STATUS_ID => 5,
+			CommentEntity::USER_ID => 1,
+			CommentEntity::BODY => 'Test',
+		];
+
+		$this->statusRepository->expects($this->once())
+			->method('getBasicInfoById')
+			->with(5)
+			->willReturn(StatusEntity::from([
+				StatusEntity::ID => 5,
+				StatusEntity::WALL_ID => 2,
+				StatusEntity::USER_ID => 1,
+			]));
+
+		$wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->expects($this->once())
+			->method('canAccessWall')
+			->with(2, 666)
+			->willReturn(false);
+
+		$this->postComment = new PostComment(
+			$this->createStub(Data::class),
+			$this->validateUser,
+			$this->validateAllow,
+			$this->commentRepository,
+			$this->statusRepository,
+			$this->permissionsService,
+			$wallVisibilityService
+		);
+		$this->postComment->setData($data);
+
+		// Permission resolution and flood control must not run once the wall
+		// gate fails.
+		$this->permissionsService->expects($this->never())->method('canPost');
+		$this->validateAllow->expects($this->never())->method('floodControl');
+
+		$this->expectException(NotAllowedException::class);
+
+		$this->postComment->checkAllow();
+	}
+
 	public function testCheckUserAssertsPosterIsSessionUser(): void
 	{
 		$this->postComment->setData([

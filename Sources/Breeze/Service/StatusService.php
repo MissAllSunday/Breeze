@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
-use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Event\EventServiceProvider;
@@ -38,12 +37,22 @@ class StatusService extends BaseService implements StatusServiceInterface
 		return $this->statusRepository;
 	}
 
+	/**
+	 * @throws DataNotFoundException when the target wall is disabled or
+	 *                               either side blocked the other
+	 */
 	public function getByProfile(int $wallId, ?string $cursor = null): array
 	{
 		$wallUserSettings = $this->userRepository->getById($wallId);
 		$wallUserPagination = $wallUserSettings->getPaginationNumber();
 		$currentUserInfo = $this->currentUserInfo();
 		$viewerId = (int) ($currentUserInfo['id'] ?? 0);
+
+		// Same 404 shape used for filtered-out statuses so a disabled or
+		// blocked wall does not leak that it exists.
+		if (!$this->wallVisibilityService->canAccessWall($wallId, $viewerId)) {
+			throw new DataNotFoundException('error_no_status');
+		}
 
 		$statusByProfile = $this->statusRepository->getByProfile(
 			[$wallId],
@@ -163,6 +172,10 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$viewerId = (int) ($currentUserInfo['id'] ?? 0);
 		$statusEntity = $this->statusRepository->getById($statusId);
 		$wallId = $statusEntity->getWallId();
+
+		if (!$this->wallVisibilityService->canAccessWall($wallId, $viewerId)) {
+			throw new DataNotFoundException('error_no_status');
+		}
 
 		$visibleStatuses = $this->wallVisibilityService->filterStatusesForWall(
 			[$statusEntity->getId() => $statusEntity],

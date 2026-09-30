@@ -15,6 +15,17 @@ interface WallVisibilityServiceInterface
 	public function isVisibleToViewer(int $authorId, int $wallOwnerId, int $viewerId): bool;
 
 	/**
+	 * Wall-level access gate for a single wall owner: false when the owner
+	 * disabled their wall (`getWall() === 0`) or when either side blocked the
+	 * other.
+	 *
+	 * The general wall (`$wallOwnerId === 0`) has no single owner, so the
+	 * feature gate does not apply; block filtering there is handled by
+	 * getMutualBlockIds() / filterStatusesForFeed().
+	 */
+	public function canAccessWall(int $wallOwnerId, int $viewerId): bool;
+
+	/**
 	 * Filter statuses for the general wall feed: enforces all five gates
 	 * from §5 of docs/WALL_VISIBILITY_RULES.md.
 	 *

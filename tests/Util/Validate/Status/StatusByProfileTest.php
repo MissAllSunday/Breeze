@@ -8,7 +8,9 @@ use Breeze\Controller\API\StatusController;
 use Breeze\Entity\StatusEntity;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Service\WallVisibilityServiceInterface;
 use Breeze\Util\Validate\InvalidDataException;
+use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
 use Breeze\Util\Validate\Validations\Status\PostStatus;
 use Breeze\Util\Validate\Validations\Status\StatusByProfile;
@@ -31,12 +33,14 @@ class StatusByProfileTest extends TestCase
 		$validateAllow = $this->createStub(Allow::class);
 		$validateUser = $this->createStub(User::class);
 		$validateData = $this->createStub(Data::class);
+		$wallVisibilityService = $this->createStub(WallVisibilityServiceInterface::class);
 
 		$statusByProfile = new StatusByProfile(
 			$validateData,
 			$validateUser,
 			$validateAllow,
-			$repository
+			$repository,
+			$wallVisibilityService
 		);
 
 		$this->assertEquals([
@@ -170,6 +174,34 @@ class StatusByProfileTest extends TestCase
 	}
 
 	/**
+	 * Closes the read path: `profile` / `total` must reject a disabled wall or
+	 * a mutual block instead of returning the statuses.
+	 *
+	 * @throws Exception
+	 */
+	public function testProfileValidationRejectsInaccessibleWall(): void
+	{
+		$wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->expects($this->once())
+			->method('canAccessWall')
+			->with(5, 666)
+			->willReturn(false);
+
+		$statusByProfile = new StatusByProfile(
+			new Data(),
+			$this->createStub(User::class),
+			$this->createStub(Allow::class),
+			$this->createStub(StatusRepositoryInterface::class),
+			$wallVisibilityService
+		);
+		$statusByProfile->setData([StatusEntity::WALL_ID => 5]);
+
+		$this->expectException(NotAllowedException::class);
+
+		$statusByProfile->isValid();
+	}
+
+	/**
 	 * @throws Exception
 	 */
 	public function testUnknownSubActionBindsNoValidator(): void
@@ -190,11 +222,13 @@ class StatusByProfileTest extends TestCase
 		$validateUser = $this->createStub(User::class);
 		$validateData = new Data();
 		$permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$wallVisibilityService = $this->createStub(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->method('canAccessWall')->willReturn(true);
 
 		return new ValidateStatus(
 			new DeleteStatus($validateData, $validateUser, $validateAllow, $repository, $permissionsService),
-			new PostStatus($validateData, $validateUser, $validateAllow, $repository, $permissionsService),
-			new StatusByProfile($validateData, $validateUser, $validateAllow, $repository)
+			new PostStatus($validateData, $validateUser, $validateAllow, $repository, $permissionsService, $wallVisibilityService),
+			new StatusByProfile($validateData, $validateUser, $validateAllow, $repository, $wallVisibilityService)
 		);
 	}
 }

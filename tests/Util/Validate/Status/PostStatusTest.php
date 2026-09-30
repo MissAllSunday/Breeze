@@ -8,6 +8,7 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Service\WallVisibilityServiceInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\Status\DeleteStatus;
@@ -30,6 +31,8 @@ class PostStatusTest extends TestCase
 
 	private PermissionsServiceInterface | MockObject $permissionsService;
 
+	private WallVisibilityServiceInterface | MockObject $wallVisibilityService;
+
 	private User | MockObject $validateUser;
 
 	private Allow | MockObject $validateAllow;
@@ -41,8 +44,14 @@ class PostStatusTest extends TestCase
 	 */
 	public function setUp(): void
 	{
+		// The wall gate resolves the viewer from the session, pin it so the
+		// expectation does not depend on whichever test ran before.
+		$GLOBALS['user_info'] = ['id' => 666, 'is_guest' => false];
+
 		$this->repository = $this->createMock(StatusRepositoryInterface::class);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$this->wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		$this->wallVisibilityService->method('canAccessWall')->willReturn(true);
 		$this->validateUser = $this->createMock(User::class);
 		$this->validateAllow = $this->createMock(Allow::class);
 
@@ -51,7 +60,8 @@ class PostStatusTest extends TestCase
 			$this->validateUser,
 			$this->validateAllow,
 			$this->repository,
-			$this->permissionsService
+			$this->permissionsService,
+			$this->wallVisibilityService
 		);
 	}
 
@@ -165,17 +175,63 @@ class PostStatusTest extends TestCase
 		$this->postStatus->checkUser();
 	}
 
+	/**
+	 * Regression: a disabled wall or a mutual block must stop the write even
+	 * when the viewer holds postStatus.
+	 */
+	public function testCheckAllowRejectsInaccessibleWall(): void
+	{
+		$previousUserInfo = $GLOBALS['user_info'] ?? null;
+		$GLOBALS['user_info'] = ['id' => 666, 'is_guest' => false];
+
+		$this->postStatus->setData([
+			StatusEntity::WALL_ID => 2,
+			StatusEntity::USER_ID => 1,
+			StatusEntity::BODY => 'Test',
+		]);
+
+		$this->wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+		$this->wallVisibilityService->expects($this->once())
+			->method('canAccessWall')
+			->with(2, 666)
+			->willReturn(false);
+
+		$this->postStatus = new PostStatus(
+			$this->createStub(Data::class),
+			$this->validateUser,
+			$this->validateAllow,
+			$this->repository,
+			$this->permissionsService,
+			$this->wallVisibilityService
+		);
+		$this->postStatus->setData([
+			StatusEntity::WALL_ID => 2,
+			StatusEntity::USER_ID => 1,
+			StatusEntity::BODY => 'Test',
+		]);
+
+		// Permission resolution and flood control must not run once the wall
+		// gate fails.
+		$this->permissionsService->expects($this->never())->method('canPost');
+		$this->validateAllow->expects($this->never())->method('floodControl');
+
+		$this->expectException(NotAllowedException::class);
+
+		$this->postStatus->checkAllow();
+	}
+
 	public function testSetValidatorWithUnknownActionDoesNotSetValidator(): void
 	{
 		$validateData = $this->createStub(Data::class);
 		$validateUser = $this->createStub(User::class);
 		$validateAllow = $this->createStub(Allow::class);
 		$permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$wallVisibilityService = $this->createStub(WallVisibilityServiceInterface::class);
 
 		$validateStatus = new ValidateStatus(
 			new DeleteStatus($validateData, $validateUser, $validateAllow, $this->repository, $permissionsService),
-			new PostStatus($validateData, $validateUser, $validateAllow, $this->repository, $permissionsService),
-			new StatusByProfile($validateData, $validateUser, $validateAllow, $this->repository)
+			new PostStatus($validateData, $validateUser, $validateAllow, $this->repository, $permissionsService, $wallVisibilityService),
+			new StatusByProfile($validateData, $validateUser, $validateAllow, $this->repository, $wallVisibilityService)
 		);
 
 		$validateStatus->setUp(['some' => 'data'], 'nonExistentAction');

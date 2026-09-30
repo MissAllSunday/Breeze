@@ -8,6 +8,8 @@ use Breeze\Entity\StatusEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Service\PermissionsServiceInterface;
+use Breeze\Service\WallVisibilityServiceInterface;
+use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
@@ -19,6 +21,8 @@ use Breeze\Validate\Types\User;
 
 class PostStatus extends BaseActions implements ValidateDataInterface
 {
+	use SettingsTrait;
+
 	protected const array PARAMS = [
 		StatusEntity::WALL_ID => 0,
 		StatusEntity::USER_ID => 0,
@@ -32,7 +36,8 @@ class PostStatus extends BaseActions implements ValidateDataInterface
 		User $validateUser,
 		Allow $validateAllow,
 		StatusRepositoryInterface $repository,
-		protected PermissionsServiceInterface $permissionsService
+		protected PermissionsServiceInterface $permissionsService,
+		protected WallVisibilityServiceInterface $wallVisibilityService
 	) {
 		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
 	}
@@ -53,18 +58,35 @@ class PostStatus extends BaseActions implements ValidateDataInterface
 	 * PermissionsService so the profile-owner shortcut and the postStatus
 	 * permission stay in one place.
 	 *
+	 * The wall-enabled / block-list gate runs first: a member whose wall is
+	 * disabled, or who blocked the viewer, must not be writable through the
+	 * JSON API even when the viewer holds postStatus.
+	 *
 	 * @throws NotAllowedException
 	 */
 	public function checkAllow(): void
 	{
+		$wallOwnerId = (int) $this->data[StatusEntity::WALL_ID];
+
+		if (!$this->wallVisibilityService->canAccessWall($wallOwnerId, $this->viewerId())) {
+			throw new NotAllowedException(PermissionsEnum::POST_STATUS);
+		}
+
 		if (!$this->permissionsService->canPost(
 			PermissionsEnum::TYPE_STATUS,
-			(int) $this->data[StatusEntity::WALL_ID]
+			$wallOwnerId
 		)) {
 			throw new NotAllowedException(PermissionsEnum::POST_STATUS);
 		}
 
 		$this->validateAllow->floodControl($this->data[StatusEntity::WALL_ID]);
+	}
+
+	protected function viewerId(): int
+	{
+		$userInfo = $this->global('user_info');
+
+		return (int) ($userInfo['id'] ?? 0);
 	}
 
 	/**
