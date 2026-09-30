@@ -40,7 +40,7 @@ yarn-error.log*
 .augment
 .continue
 agents
-
+AGENTS.md
 
 # Compiled source #
 ###################

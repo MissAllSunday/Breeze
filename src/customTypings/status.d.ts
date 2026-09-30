@@ -10,6 +10,7 @@ declare module "breezeTypesStatus" {
 		comments: CommentType[];
 		userData: UserDataType;
 		isNew: boolean;
+		canDelete: boolean;
 	}
 
 	interface IFetchStatus {

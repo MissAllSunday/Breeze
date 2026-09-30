@@ -9,6 +9,12 @@ declare module "breezeTypesComments" {
 		created_at: string;
 		userData: UserDataType;
 		isNew: boolean;
+		/**
+		 * Per-item delete right, resolved server-side from the persisted
+		 * `user_id` and the parent status `wall_id`. The wall-level
+		 * `permissions.Comments.delete` only means "may delete ANY item".
+		 */
+		canDelete: boolean;
 	}
 
 	type CommentListType = CommentType[];

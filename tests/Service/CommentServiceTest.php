@@ -31,6 +31,8 @@ class CommentServiceTest extends TestCase
 
 	private MockObject|EventDispatcher $eventDispatcher;
 
+	private MockObject|PermissionsServiceInterface $permissionsService;
+
 	private CommentService $commentService;
 
 	/**
@@ -42,11 +44,13 @@ class CommentServiceTest extends TestCase
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->eventServiceProvider = $this->createMock(EventServiceProvider::class);
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
+		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
 
 		$this->commentService = new CommentService(
 			$this->commentRepository,
 			$this->statusRepository,
-			$this->eventServiceProvider
+			$this->eventServiceProvider,
+			$this->permissionsService
 		);
 	}
 
@@ -165,6 +169,7 @@ class CommentServiceTest extends TestCase
 			$this->commentRepository,
 			$this->statusRepository,
 			$this->eventServiceProvider,
+			$this->permissionsService,
 			$mentionService
 		);
 
@@ -200,6 +205,7 @@ class CommentServiceTest extends TestCase
 			$this->commentRepository,
 			$this->statusRepository,
 			$this->eventServiceProvider,
+			$this->permissionsService,
 			$mentionService
 		);
 

@@ -13,6 +13,7 @@ const basic: CommentType = {
 	created_at: "some date",
 	userData: userData.basic,
 	isNew: true,
+	canDelete: false,
 };
 
 const custom = (replace: Partial<CommentType>) => {

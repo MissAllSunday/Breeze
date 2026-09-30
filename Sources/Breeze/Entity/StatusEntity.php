@@ -93,6 +93,7 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 			'comments' => array_values($this->getComments()),
 			'userData' => $this->getUsersInfo()[$userId] ?? [],
 			'isNew' => $this->isNew(),
+			'canDelete' => $this->canDelete(),
 		];
 	}
 }

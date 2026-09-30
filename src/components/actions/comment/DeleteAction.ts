@@ -9,8 +9,8 @@ const DeleteAction: CommentAction = {
 	icon: "remove_button",
 	order: 20,
 	testId: "deleteComment",
-	isVisible: ({ permissions }: CommentActionContext): boolean =>
-		permissions.Comments.delete,
+	isVisible: ({ comment, permissions }: CommentActionContext): boolean =>
+		comment.canDelete || permissions.Comments.delete,
 	onClick: ({ removeComment }: CommentActionContext): void => {
 		if (!window.confirm(smfVars.youSure)) {
 			return;

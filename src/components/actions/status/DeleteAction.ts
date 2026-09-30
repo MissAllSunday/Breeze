@@ -9,8 +9,8 @@ const DeleteAction: StatusAction = {
 	icon: "remove_button",
 	order: 30,
 	testId: "deleteStatus",
-	isVisible: ({ permissions }: StatusActionContext): boolean =>
-		permissions.Status.delete,
+	isVisible: ({ status, permissions }: StatusActionContext): boolean =>
+		status.canDelete || permissions.Status.delete,
 	onClick: ({ removeStatus }: StatusActionContext): void => {
 		if (!window.confirm(smfVars.youSure)) {
 			return;

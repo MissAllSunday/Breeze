@@ -79,6 +79,7 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 			'likes' => 0,  // @deprecated use likesInfo.count instead
 			'likesInfo' => $this->getLikesInfo(),
 			'userData' => $this->getUsersInfo()[$this->getUserId()] ?? [],
+			'canDelete' => $this->canDelete(),
 		];
 	}
 }

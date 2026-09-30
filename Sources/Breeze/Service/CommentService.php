@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Breeze\Service;
 
 use Breeze\Entity\CommentEntity;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Event\Comment\CommentCreatedEvent;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Repository\CommentRepositoryInterface;
@@ -18,6 +19,7 @@ class CommentService extends BaseService implements CommentServiceInterface
 		protected CommentRepositoryInterface $commentRepository,
 		protected StatusRepositoryInterface  $statusRepository,
 		protected EventServiceProvider       $eventServiceProvider,
+		protected PermissionsServiceInterface $permissionsService,
 		protected ?MentionServiceInterface   $mentionService = null
 	) {
 		parent::__construct($commentRepository);
@@ -55,6 +57,17 @@ class CommentService extends BaseService implements CommentServiceInterface
 		} catch (DataNotFoundException) {
 			// Status not found; mention alerts will use wallId = 0,
 			// event dispatch is skipped below.
+		}
+
+		// Per-item delete flag, resolved from the persisted author id and the
+		// parent status wall_id so the freshly posted comment renders its
+		// delete button without a page reload.
+		foreach ($commentEntities as $entity) {
+			$entity->setCanDelete($this->permissionsService->canDelete(
+				PermissionsEnum::TYPE_COMMENTS,
+				$entity->getUserId(),
+				$wallId
+			));
 		}
 
 		if ($processed !== null && !empty($processed['members'])) {

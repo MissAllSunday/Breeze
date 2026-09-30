@@ -16,6 +16,7 @@ const basic: StatusType = {
 	comments: [comments.basic],
 	userData: userData.basic,
 	isNew: true,
+	canDelete: false,
 };
 
 const custom = (replace: Partial<StatusType>) => {

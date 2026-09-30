@@ -5,7 +5,9 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Event\Status\StatusCreatedEvent;
 use Breeze\Repository\InvalidStatusException;
@@ -60,6 +62,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		$visibleStatuses = $this->wallVisibilityService->filterStatusesForWall($statusByProfile, $viewerId);
 		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
+		$this->setCanDeleteFlags($visibleStatuses);
 
 		return [
 			'data' => array_values($visibleStatuses),
@@ -135,6 +138,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		$visibleStatuses = $this->wallVisibilityService->filterStatusesForFeed($statusByBuddies, $viewerId);
 		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
+		$this->setCanDeleteFlags($visibleStatuses);
 
 		return [
 			'data' => array_values($visibleStatuses),
@@ -170,6 +174,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		}
 
 		$this->filterCommentsOnStatuses($visibleStatuses, $viewerId);
+		$this->setCanDeleteFlags($visibleStatuses);
 
 		return [
 			'data' => array_values($visibleStatuses),
@@ -191,6 +196,38 @@ class StatusService extends BaseService implements StatusServiceInterface
 			$status->setComments(
 				$this->wallVisibilityService->filterVisibleComments($status->getComments(), $viewerId)
 			);
+		}
+	}
+
+	/**
+	 * Resolve the per-item `canDelete` flag for every status and its visible
+	 * comments.
+	 *
+	 * The wall-level `permissions.*.delete` snapshot only answers "may delete
+	 * ANY item on this wall"; own-content rights live in canDelete(), so the
+	 * UI needs a per-item flag or members lose the delete button on their own
+	 * posts. Both ids come from the persisted entities, never from a payload.
+	 *
+	 * @param array<int, StatusEntity> $statuses
+	 */
+	private function setCanDeleteFlags(array $statuses): void
+	{
+		foreach ($statuses as $status) {
+			$wallId = $status->getWallId();
+
+			$status->setCanDelete($this->permissionsService->canDelete(
+				PermissionsEnum::TYPE_STATUS,
+				$status->getUserId(),
+				$wallId
+			));
+
+			foreach ($status->getComments() as $comment) {
+				$comment->setCanDelete($this->permissionsService->canDelete(
+					PermissionsEnum::TYPE_COMMENTS,
+					$comment->getUserId(),
+					$wallId
+				));
+			}
 		}
 	}
 
@@ -217,6 +254,17 @@ class StatusService extends BaseService implements StatusServiceInterface
 		}
 
 		$statusEntities = $this->statusRepository->insert(StatusEntity::from($data));
+
+		// Per-item delete flag, resolved from the persisted author id and
+		// wall_id so the freshly posted status renders its delete button
+		// without a page reload.
+		foreach ($statusEntities as $entity) {
+			$entity->setCanDelete($this->permissionsService->canDelete(
+				PermissionsEnum::TYPE_STATUS,
+				$entity->getUserId(),
+				$entity->getWallId()
+			));
+		}
 
 		if ($processed !== null && !empty($processed['members'])) {
 			foreach ($statusEntities as $entity) {
