@@ -1,4 +1,3 @@
-import smfVars from "../../DataSource/SMF";
 import smfTextVars from "../../DataSource/Txt";
 import { baseConfig, baseUrl } from "../Base";
 import { resolveDelete } from "../Resolvers/Delete";
@@ -11,7 +10,6 @@ export const deleteComment = async (commentId: number): Promise<boolean> => {
 			body: JSON.stringify(
 				baseConfig({
 					id: commentId,
-					user_id: smfVars.user_id,
 				}),
 			),
 		},
