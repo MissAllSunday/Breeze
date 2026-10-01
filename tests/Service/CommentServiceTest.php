@@ -6,6 +6,7 @@ namespace Breeze\Service;
 
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Event\Comment\CommentCreatedEvent;
 use Breeze\Event\EventServiceProvider;
 use Breeze\Fixtures\CommentFixtures;
@@ -14,6 +15,7 @@ use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
@@ -23,6 +25,8 @@ use PHPUnit\Framework\TestCase;
 #[AllowMockObjectsWithoutExpectations]
 class CommentServiceTest extends TestCase
 {
+	private const int SESSION_USER_ID = 666;
+
 	private MockObject|CommentRepositoryInterface $commentRepository;
 
 	private MockObject|StatusRepositoryInterface $statusRepository;
@@ -40,6 +44,8 @@ class CommentServiceTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
+		$GLOBALS['user_info'] = ['id' => self::SESSION_USER_ID, 'is_guest' => false];
+
 		$this->commentRepository = $this->createMock(CommentRepositoryInterface::class);
 		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 		$this->eventServiceProvider = $this->createMock(EventServiceProvider::class);
@@ -72,7 +78,7 @@ class CommentServiceTest extends TestCase
 			->method('insert')
 			->with($this->callback(function ($entity) use ($commentEntity) {
 				return $entity->getStatusId() === $commentEntity->getStatusId() &&
-					   $entity->getUserId() === $commentEntity->getUserId() &&
+					   $entity->getUserId() === self::SESSION_USER_ID &&
 					   $entity->getBody() === $commentEntity->getBody();
 			}))
 			->willReturn($commentEntities);
@@ -101,11 +107,20 @@ class CommentServiceTest extends TestCase
 
 	/**
 	 * @throws DataNotFoundException
+	 * @throws NotAllowedException
 	 */
 	public function testDeleteById(): void
 	{
 		$commentId = 123;
 
+		$this->commentRepository->method('getById')
+			->willReturn(CommentEntity::from(CommentFixtures::withCustomData([CommentEntity::ID => $commentId])));
+		$this->statusRepository->method('getBasicInfoById')
+			->willReturn(StatusEntity::from(StatusFixtures::basic()));
+		$this->permissionsService->expects($this->once())
+			->method('canDelete')
+			->with(PermissionsEnum::TYPE_COMMENTS, 2, 1)
+			->willReturn(true);
 		$this->commentRepository->expects($this->once())
 			->method('deleteById')
 			->with($commentId)
@@ -125,12 +140,50 @@ class CommentServiceTest extends TestCase
 
 		$commentId = 999;
 
-		$this->commentRepository->expects($this->once())
-			->method('deleteById')
-			->with($commentId)
+		$this->commentRepository->method('getById')
 			->willThrowException(new DataNotFoundException('error_no_comment'));
+		$this->commentRepository->expects($this->never())->method('deleteById');
 
 		$this->commentService->deleteById($commentId);
+	}
+
+	/**
+	 * The service is the last gate: a caller that skips the validator must
+	 * still be denied, and the ids it passes must never be trusted.
+	 */
+	public function testDeleteByIdThrowsWhenNotAllowed(): void
+	{
+		$this->commentRepository->method('getById')
+			->willReturn(CommentEntity::from(CommentFixtures::withCustomData([CommentEntity::USER_ID => 2])));
+		$this->statusRepository->method('getBasicInfoById')
+			->willReturn(StatusEntity::from(StatusFixtures::withCustomData([StatusEntity::WALL_ID => 2])));
+		$this->permissionsService->expects($this->once())
+			->method('canDelete')
+			->with(PermissionsEnum::TYPE_COMMENTS, 2, 2)
+			->willReturn(false);
+		$this->commentRepository->expects($this->never())->method('deleteById');
+
+		$this->expectException(NotAllowedException::class);
+		$this->expectExceptionMessage(PermissionsEnum::DELETE_COMMENTS);
+
+		$this->commentService->deleteById(123);
+	}
+
+	/**
+	 * Attribution is taken from the session, so a spoofed `user_id` in the
+	 * payload cannot create content owned by someone else.
+	 */
+	public function testSaveForcesSessionUserAsAuthor(): void
+	{
+		$commentData = CommentFixtures::forInsertion();
+		$commentData[CommentEntity::USER_ID] = 2;
+
+		$this->commentRepository->expects($this->once())
+			->method('insert')
+			->with($this->callback(static fn ($e) => $e->getUserId() === self::SESSION_USER_ID))
+			->willReturn([]);
+
+		$this->commentService->save($commentData);
 	}
 
 	public function testCountOrphans(): void

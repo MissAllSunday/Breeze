@@ -6,11 +6,13 @@ namespace Breeze\Service;
 
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\UserSettingsEntity;
+use Breeze\Enums\PermissionsEnum;
 use Breeze\Fixtures\StatusFixtures;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
+use Breeze\Util\Validate\NotAllowedException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
@@ -189,6 +191,102 @@ class StatusServiceTest extends TestCase
 			'user_id' => 1,
 			'body' => 'test status',
 		]);
+	}
+
+	/**
+	 * The service is the last gate: a caller that skips the validator must
+	 * still be denied, and the ids it passes must never be trusted.
+	 */
+	public function testDeleteByIdThrowsWhenNotAllowed(): void
+	{
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$statusRepository->method('getById')
+			->willReturn(StatusEntity::from([
+				'id' => 123,
+				'wall_id' => 2,
+				'user_id' => 2,
+				'body' => 'someone else status',
+			]));
+		$statusRepository->expects($this->never())->method('deleteById');
+
+		$permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$permissionsService->expects($this->once())
+			->method('canDelete')
+			->with(PermissionsEnum::TYPE_STATUS, 2, 2)
+			->willReturn(false);
+
+		$statusService = new StatusService(
+			$statusRepository,
+			$this->userRepository,
+			$permissionsService,
+			$this->wallVisibilityService,
+			null
+		);
+
+		$this->expectException(NotAllowedException::class);
+		$this->expectExceptionMessage(PermissionsEnum::DELETE_STATUS);
+
+		$statusService->deleteById(123);
+	}
+
+	public function testDeleteByIdAuthorizesFromThePersistedRow(): void
+	{
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$statusRepository->method('getById')
+			->willReturn(StatusEntity::from([
+				'id' => 123,
+				'wall_id' => 1,
+				'user_id' => 1,
+				'body' => 'own status',
+			]));
+		$statusRepository->expects($this->once())
+			->method('deleteById')
+			->with(123)
+			->willReturn(true);
+
+		$permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$permissionsService->expects($this->once())
+			->method('canDelete')
+			->with(PermissionsEnum::TYPE_STATUS, 1, 1)
+			->willReturn(true);
+
+		$statusService = new StatusService(
+			$statusRepository,
+			$this->userRepository,
+			$permissionsService,
+			$this->wallVisibilityService,
+			null
+		);
+
+		$statusService->deleteById(123);
+	}
+
+	/**
+	 * Attribution is taken from the session, so a spoofed `user_id` in the
+	 * payload cannot create content owned by someone else.
+	 */
+	public function testSaveForcesSessionUserAsAuthor(): void
+	{
+		$GLOBALS['user_info'] = ['id' => 666, 'is_guest' => false];
+
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$statusRepository->expects($this->once())
+			->method('insert')
+			->with($this->callback(static fn ($e) => $e->getUserId() === 666))
+			->willReturn([]);
+
+		$statusService = new StatusService(
+			$statusRepository,
+			$this->userRepository,
+			$this->permissionsService,
+			$this->wallVisibilityService,
+			null
+		);
+
+		$data = StatusFixtures::forInsertion();
+		$data[StatusEntity::USER_ID] = 2;
+
+		$statusService->save($data);
 	}
 
 	public function testRecountComments(): void

@@ -10,6 +10,7 @@ use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\EmptyDataException;
+use Breeze\Util\Validate\NotAllowedException;
 
 interface StatusServiceInterface
 {
@@ -34,11 +35,15 @@ interface StatusServiceInterface
 	public function getById(int $statusId): array;
 
 	/**
+	 * @throws DataNotFoundException when the status does not exist
+	 * @throws NotAllowedException when the session user may not delete it
 	 * @throws InvalidStatusException
 	 */
 	public function deleteById(int $statusId): void;
 
 	/**
+	 * The author is always the session user; any `user_id` in $data is ignored.
+	 *
 	 * @throws InvalidStatusException
 	 * @return array [StatusEntity]
 	 */

@@ -12,6 +12,7 @@ use Breeze\Repository\CommentRepositoryInterface;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 
 class CommentService extends BaseService implements CommentServiceInterface
 {
@@ -31,6 +32,9 @@ class CommentService extends BaseService implements CommentServiceInterface
 	 */
 	public function save(array $data): array
 	{
+		// Attribution comes from the session, never from the payload.
+		$data[CommentEntity::USER_ID] = $this->sessionUserId();
+
 		$processed = null;
 
 		if ($this->mentionService?->isEnabled()) {
@@ -93,8 +97,27 @@ class CommentService extends BaseService implements CommentServiceInterface
 		return $commentEntities;
 	}
 
+	/**
+	 * Authorizes from the persisted rows: the comment author and the parent
+	 * status wall owner are read back from the repositories so a caller
+	 * cannot supply its own ids.
+	 *
+	 * @throws DataNotFoundException when the comment or its status is missing
+	 * @throws NotAllowedException when the session user may not delete it
+	 */
 	public function deleteById(int $commentId): bool
 	{
+		$comment = $this->commentRepository->getById($commentId);
+		$status = $this->statusRepository->getBasicInfoById($comment->getStatusId());
+
+		if (!$this->permissionsService->canDelete(
+			PermissionsEnum::TYPE_COMMENTS,
+			$comment->getUserId(),
+			$status->getWallId()
+		)) {
+			throw new NotAllowedException(PermissionsEnum::DELETE_COMMENTS);
+		}
+
 		return $this->commentRepository->deleteById($commentId);
 	}
 

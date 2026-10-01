@@ -15,6 +15,7 @@ use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Traits\CacheTrait;
 use Breeze\Traits\SettingsTrait;
 use Breeze\Util\Validate\DataNotFoundException;
+use Breeze\Util\Validate\NotAllowedException;
 
 class StatusService extends BaseService implements StatusServiceInterface
 {
@@ -106,7 +107,6 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 		$count = $this->getCount($columnName, $ids);
 
-		// Cache for 5 minutes (300 seconds)
 		$this->setCache($cacheKey, $count, 300);
 
 		return $count;
@@ -245,10 +245,25 @@ class StatusService extends BaseService implements StatusServiceInterface
 	}
 
 	/**
+	 * Authorizes from the persisted row: the author and wall owner are read
+	 * back from the repository so a caller cannot supply its own ids.
+	 *
+	 * @throws DataNotFoundException when the status does not exist
+	 * @throws NotAllowedException when the session user may not delete it
 	 * @throws InvalidStatusException
 	 */
 	public function deleteById(int $statusId): void
 	{
+		$status = $this->statusRepository->getById($statusId);
+
+		if (!$this->permissionsService->canDelete(
+			PermissionsEnum::TYPE_STATUS,
+			$status->getUserId(),
+			$status->getWallId()
+		)) {
+			throw new NotAllowedException(PermissionsEnum::DELETE_STATUS);
+		}
+
 		$this->statusRepository->deleteById($statusId);
 	}
 
@@ -258,6 +273,9 @@ class StatusService extends BaseService implements StatusServiceInterface
 	 */
 	public function save(array $data): array
 	{
+		// Attribution comes from the session, never from the payload.
+		$data[StatusEntity::USER_ID] = $this->sessionUserId();
+
 		$processed = null;
 
 		if ($this->mentionService?->isEnabled()) {
