@@ -8,21 +8,44 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SettingsEntity;
 use Breeze\Enums\LikesEnum;
 use Breeze\Enums\PermissionsEnum;
+use Breeze\Repository\BaseRepositoryInterface;
+use Breeze\Repository\CommentRepositoryInterface;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use Breeze\Util\Validate\InvalidDataException;
 use Breeze\Util\Validate\NotAllowedException;
 use Breeze\Util\Validate\Validations\BaseActions;
 use Breeze\Util\Validate\Validations\ValidateDataInterface;
+use Breeze\Validate\Types\Allow;
+use Breeze\Validate\Types\Data;
+use Breeze\Validate\Types\User;
 
 class Like extends BaseActions implements ValidateDataInterface
 {
-	protected const PARAMS = [
+	private ?StatusRepositoryInterface $statusRepository;
+
+	private ?CommentRepositoryInterface $commentRepository;
+
+	public function __construct(
+		Data $validateData,
+		User $validateUser,
+		Allow $validateAllow,
+		BaseRepositoryInterface $repository,
+		?StatusRepositoryInterface $statusRepository = null,
+		?CommentRepositoryInterface $commentRepository = null
+	) {
+		parent::__construct($validateData, $validateUser, $validateAllow, $repository);
+		$this->statusRepository = $statusRepository;
+		$this->commentRepository = $commentRepository;
+	}
+
+	protected const array PARAMS = [
 		LikeEntity::ID => 0,
 		LikeEntity::TYPE => '',
 		LikeEntity::ID_MEMBER => 0,
 	];
 
-	protected const SUCCESS_KEY = 'likeSuccess';
+	protected const string SUCCESS_KEY = 'likeSuccess';
 
 	/**
 	 * @throws DataNotFoundException
@@ -50,6 +73,44 @@ class Like extends BaseActions implements ValidateDataInterface
 	{
 		$this->validateData->compare(self::PARAMS, $this->data);
 		$this->validateData->isInt([LikeEntity::ID, LikeEntity::ID_MEMBER], $this->data);
+	}
+
+	/**
+	 * @throws DataNotFoundException
+	 */
+	public function checkContentExists(): void
+	{
+		$type = $this->data[LikeEntity::TYPE];
+		$id = (int) $this->data[LikeEntity::ID];
+
+		switch ($type) {
+			case LikesEnum::Status->value:
+				if ($this->statusRepository === null) {
+					throw new DataNotFoundException('error_no_data');
+				}
+
+				try {
+					$this->statusRepository->getById($id);
+				} catch (DataNotFoundException $e) {
+					throw new DataNotFoundException('error_no_data');
+				}
+
+				break;
+			case LikesEnum::Comments->value:
+				if ($this->commentRepository === null) {
+					throw new DataNotFoundException('error_no_data');
+				}
+
+				try {
+					$this->commentRepository->getById($id);
+				} catch (DataNotFoundException $e) {
+					throw new DataNotFoundException('error_no_data');
+				}
+
+				break;
+			default:
+				throw new DataNotFoundException('error_no_data');
+		}
 	}
 
 	/**
@@ -86,6 +147,7 @@ class Like extends BaseActions implements ValidateDataInterface
 		$this->checkData();
 		$this->checkAllow();
 		$this->checkType();
+		$this->checkContentExists();
 		$this->checkUser();
 	}
 }
