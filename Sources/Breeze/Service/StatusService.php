@@ -269,12 +269,20 @@ class StatusService extends BaseService implements StatusServiceInterface
 
 	/**
 	 * @throws InvalidStatusException
+	 * @throws NotAllowedException when the session user may not post on the target wall
 	 * @return array [StatusEntity]
 	 */
 	public function save(array $data): array
 	{
 		// Attribution comes from the session, never from the payload.
 		$data[StatusEntity::USER_ID] = $this->sessionUserId();
+
+		$wallId = (int) ($data[StatusEntity::WALL_ID] ?? 0);
+
+		if (!$this->wallVisibilityService->canAccessWall($wallId, $data[StatusEntity::USER_ID])
+			|| !$this->permissionsService->canPost(PermissionsEnum::TYPE_STATUS, $wallId)) {
+			throw new NotAllowedException(PermissionsEnum::POST_STATUS);
+		}
 
 		$processed = null;
 

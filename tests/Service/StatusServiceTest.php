@@ -43,6 +43,8 @@ class StatusServiceTest extends TestCase
 		$this->wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
 		// Default: the target wall is enabled and nobody blocked anybody.
 		$this->wallVisibilityService->method('canAccessWall')->willReturn(true);
+		// Default: the session user may post. Denial cases build their own mocks.
+		$this->permissionsService->method('canPost')->willReturn(true);
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([$this->statusRepository,
 				$this->userRepository,
@@ -287,6 +289,58 @@ class StatusServiceTest extends TestCase
 		$data[StatusEntity::USER_ID] = 2;
 
 		$statusService->save($data);
+	}
+
+	public function testSaveThrowsWhenUserCannotPost(): void
+	{
+		$GLOBALS['user_info'] = ['id' => 666, 'is_guest' => false];
+
+		$permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$permissionsService->method('canPost')->willReturn(false);
+
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$statusRepository->expects($this->never())->method('insert');
+
+		$wallVisibilityService = $this->createStub(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->method('canAccessWall')->willReturn(true);
+
+		$statusService = new StatusService(
+			$statusRepository,
+			$this->userRepository,
+			$permissionsService,
+			$wallVisibilityService,
+			null
+		);
+
+		$this->expectException(NotAllowedException::class);
+
+		$statusService->save(StatusFixtures::forInsertion());
+	}
+
+	public function testSaveThrowsWhenWallIsNotAccessible(): void
+	{
+		$GLOBALS['user_info'] = ['id' => 666, 'is_guest' => false];
+
+		$permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$permissionsService->method('canPost')->willReturn(true);
+
+		$statusRepository = $this->createMock(StatusRepositoryInterface::class);
+		$statusRepository->expects($this->never())->method('insert');
+
+		$wallVisibilityService = $this->createStub(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->method('canAccessWall')->willReturn(false);
+
+		$statusService = new StatusService(
+			$statusRepository,
+			$this->userRepository,
+			$permissionsService,
+			$wallVisibilityService,
+			null
+		);
+
+		$this->expectException(NotAllowedException::class);
+
+		$statusService->save(StatusFixtures::forInsertion());
 	}
 
 	public function testRecountComments(): void
