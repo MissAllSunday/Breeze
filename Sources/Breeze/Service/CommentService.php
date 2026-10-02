@@ -21,6 +21,7 @@ class CommentService extends BaseService implements CommentServiceInterface
 		protected StatusRepositoryInterface  $statusRepository,
 		protected EventServiceProvider       $eventServiceProvider,
 		protected PermissionsServiceInterface $permissionsService,
+		protected WallVisibilityServiceInterface $wallVisibilityService,
 		protected ?MentionServiceInterface   $mentionService = null
 	) {
 		parent::__construct($commentRepository);
@@ -28,12 +29,22 @@ class CommentService extends BaseService implements CommentServiceInterface
 
 	/**
 	 * @throws InvalidCommentException
+	 * @throws DataNotFoundException when the parent status does not exist
+	 * @throws NotAllowedException when the session user may not comment on the target wall
 	 * @return array [CommentEntity]
 	 */
 	public function save(array $data): array
 	{
 		// Attribution comes from the session, never from the payload.
 		$data[CommentEntity::USER_ID] = $this->sessionUserId();
+
+		$statusEntity = $this->statusRepository->getBasicInfoById((int) ($data[CommentEntity::STATUS_ID] ?? 0));
+		$wallId = $statusEntity->getWallId();
+
+		if (!$this->wallVisibilityService->canAccessWall($wallId, $data[CommentEntity::USER_ID])
+			|| !$this->permissionsService->canPost(PermissionsEnum::TYPE_COMMENTS, $wallId)) {
+			throw new NotAllowedException(PermissionsEnum::POST_COMMENTS);
+		}
 
 		$processed = null;
 
@@ -48,19 +59,6 @@ class CommentService extends BaseService implements CommentServiceInterface
 
 		if ($commentEntities === []) {
 			return $commentEntities;
-		}
-
-		// Fetch the parent status now — we need wall_id for mention alerts
-		// and the entity itself for the CommentCreatedEvent.
-		$statusEntity = null;
-		$wallId = 0;
-
-		try {
-			$statusEntity = $this->statusRepository->getBasicInfoById($commentEntity->getStatusId());
-			$wallId = $statusEntity->getWallId();
-		} catch (DataNotFoundException) {
-			// Status not found; mention alerts will use wallId = 0,
-			// event dispatch is skipped below.
 		}
 
 		// Per-item delete flag, resolved from the persisted author id and the
@@ -86,12 +84,10 @@ class CommentService extends BaseService implements CommentServiceInterface
 			}
 		}
 
-		if ($statusEntity !== null) {
-			foreach ($commentEntities as $entity) {
-				$this->eventServiceProvider->getDispatcher()->dispatch(
-					new CommentCreatedEvent($entity, $statusEntity)
-				);
-			}
+		foreach ($commentEntities as $entity) {
+			$this->eventServiceProvider->getDispatcher()->dispatch(
+				new CommentCreatedEvent($entity, $statusEntity)
+			);
 		}
 
 		return $commentEntities;

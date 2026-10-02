@@ -37,6 +37,8 @@ class CommentServiceTest extends TestCase
 
 	private MockObject|PermissionsServiceInterface $permissionsService;
 
+	private MockObject|WallVisibilityServiceInterface $wallVisibilityService;
+
 	private CommentService $commentService;
 
 	/**
@@ -51,13 +53,25 @@ class CommentServiceTest extends TestCase
 		$this->eventServiceProvider = $this->createMock(EventServiceProvider::class);
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
 		$this->permissionsService = $this->createMock(PermissionsServiceInterface::class);
+		$this->wallVisibilityService = $this->createMock(WallVisibilityServiceInterface::class);
+
+		// Default: the wall is accessible and the session user may comment.
+		$this->wallVisibilityService->method('canAccessWall')->willReturn(true);
+		$this->permissionsService->method('canPost')->willReturn(true);
 
 		$this->commentService = new CommentService(
 			$this->commentRepository,
 			$this->statusRepository,
 			$this->eventServiceProvider,
-			$this->permissionsService
+			$this->permissionsService,
+			$this->wallVisibilityService
 		);
+	}
+
+	private function stubParentStatus(): void
+	{
+		$this->statusRepository->method('getBasicInfoById')
+			->willReturn(StatusEntity::from(StatusFixtures::basic()));
 	}
 
 	/**
@@ -186,6 +200,75 @@ class CommentServiceTest extends TestCase
 		$this->commentService->save($commentData);
 	}
 
+	public function testSaveThrowsWhenUserCannotPost(): void
+	{
+		$permissionsService = $this->createStub(PermissionsServiceInterface::class);
+		$permissionsService->method('canPost')->willReturn(false);
+
+		$commentService = new CommentService(
+			$this->commentRepository,
+			$this->statusRepository,
+			$this->eventServiceProvider,
+			$permissionsService,
+			$this->wallVisibilityService
+		);
+
+		$this->stubParentStatus();
+		$this->commentRepository->expects($this->never())->method('insert');
+
+		$this->expectException(NotAllowedException::class);
+		$this->expectExceptionMessage(PermissionsEnum::POST_COMMENTS);
+
+		$commentService->save(CommentFixtures::forInsertion());
+	}
+
+	public function testSaveThrowsWhenWallIsNotAccessible(): void
+	{
+		$wallVisibilityService = $this->createStub(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->method('canAccessWall')->willReturn(false);
+
+		$commentService = new CommentService(
+			$this->commentRepository,
+			$this->statusRepository,
+			$this->eventServiceProvider,
+			$this->permissionsService,
+			$wallVisibilityService
+		);
+
+		$this->stubParentStatus();
+		$this->commentRepository->expects($this->never())->method('insert');
+
+		$this->expectException(NotAllowedException::class);
+		$this->expectExceptionMessage(PermissionsEnum::POST_COMMENTS);
+
+		$commentService->save(CommentFixtures::forInsertion());
+	}
+
+	/**
+	 * A missing parent must fail before any insert instead of leaving an
+	 * orphan comment behind.
+	 */
+	public function testSaveThrowsBeforeInsertWhenParentStatusIsMissing(): void
+	{
+		$statusRepository = $this->createStub(StatusRepositoryInterface::class);
+		$statusRepository->method('getBasicInfoById')
+			->willThrowException(new DataNotFoundException('error_no_status'));
+
+		$commentService = new CommentService(
+			$this->commentRepository,
+			$statusRepository,
+			$this->eventServiceProvider,
+			$this->permissionsService,
+			$this->wallVisibilityService
+		);
+
+		$this->commentRepository->expects($this->never())->method('insert');
+
+		$this->expectException(DataNotFoundException::class);
+
+		$commentService->save(CommentFixtures::forInsertion());
+	}
+
 	public function testCountOrphans(): void
 	{
 		$expectedCount = 5;
@@ -223,9 +306,11 @@ class CommentServiceTest extends TestCase
 			$this->statusRepository,
 			$this->eventServiceProvider,
 			$this->permissionsService,
+			$this->wallVisibilityService,
 			$mentionService
 		);
 
+		$this->stubParentStatus();
 		$memberId       = 42;
 		$originalBody   = 'Hey @Alice!';
 		$rewrittenBody  = 'Hey [member=42]Alice[/member]!';
@@ -259,9 +344,11 @@ class CommentServiceTest extends TestCase
 			$this->statusRepository,
 			$this->eventServiceProvider,
 			$this->permissionsService,
+			$this->wallVisibilityService,
 			$mentionService
 		);
 
+		$this->stubParentStatus();
 		$commentData                = CommentFixtures::forInsertion();
 		$commentData['mention_ids'] = [42];
 
