@@ -24,6 +24,7 @@ use Breeze\Repository\StatusRepository;
 use Breeze\Repository\User\SettingsRepository as UserSettingsRepository;
 use Breeze\Service\AlertService;
 use Breeze\Service\LikeService;
+use Breeze\Service\WallVisibilityServiceInterface;
 use League\Event\EventDispatcher;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
@@ -88,7 +89,16 @@ class FullStatusInteractionTest extends TestCase
 		$eventDispatcher = new EventDispatcher();
 		$eventServiceProvider = new EventServiceProvider($eventDispatcher, $statusEventListener, $commentEventListener, $likeEventListener);
 
-		$this->likeService = new LikeService($this->likeRepository, $eventServiceProvider);
+		$wallVisibilityService = $this->createStub(WallVisibilityServiceInterface::class);
+		$wallVisibilityService->method('canAccessWall')->willReturn(true);
+
+		$this->likeService = new LikeService(
+			$this->likeRepository,
+			$eventServiceProvider,
+			$this->statusRepository,
+			$this->commentRepository,
+			$wallVisibilityService
+		);
 	}
 
 	#[AllowMockObjectsWithoutExpectations]
@@ -119,7 +129,8 @@ class FullStatusInteractionTest extends TestCase
 		$this->assertEquals('User B comment', $insertedComment->getBody());
 
 		// 3. User A (ID 100) likes User B's comment.
-		$this->likeService->likeContent(LikesEnum::Comments, $commentId, 100);
+		$GLOBALS['user_info'] = ['id' => 100, 'is_guest' => false];
+		$this->likeService->likeContent(LikesEnum::Comments, $commentId);
 
 		// 4. Verify that the status, comment, and like are all correctly stored.
 		$status = $this->statusRepository->getById($statusId);

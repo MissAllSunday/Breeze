@@ -35,8 +35,7 @@ class LikesController extends ApiBaseController
 		try {
 			$likeInfo = $this->likeService->likeContent(
 				LikesEnum::tryFrom($this->data[LikeEntity::TYPE]),
-				$this->data[LikeEntity::ID],
-				$this->data[LikeEntity::ID_MEMBER]
+				$this->data[LikeEntity::ID]
 			);
 
 			$this->response->success(

@@ -9,7 +9,7 @@ use Breeze\Enums\LikesEnum;
 
 interface LikeServiceInterface
 {
-	public function likeContent(LikesEnum $type, int $contentId, int $userId): ?LikeInfoEntity;
+	public function likeContent(LikesEnum $type, int $contentId): ?LikeInfoEntity;
 
 	public function countOrphans(): int;
 

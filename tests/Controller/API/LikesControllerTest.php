@@ -91,8 +91,7 @@ class LikesControllerTest extends TestCase
 			->method('likeContent')
 			->with(
 				LikesEnum::Status,
-				$likeData[LikeEntity::ID],
-				$likeData[LikeEntity::ID_MEMBER]
+				$likeData[LikeEntity::ID]
 			)
 			->willReturn($expectedLikeInfo);
 
@@ -127,8 +126,7 @@ class LikesControllerTest extends TestCase
 			->method('likeContent')
 			->with(
 				LikesEnum::Comments,
-				$likeData[LikeEntity::ID],
-				$likeData[LikeEntity::ID_MEMBER]
+				$likeData[LikeEntity::ID]
 			)
 			->willReturn($expectedLikeInfo);
 
