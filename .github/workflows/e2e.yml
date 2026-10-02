@@ -1,26 +1,45 @@
-# E2E Tests workflow is currently disabled while we investigate CI-specific
-# failures. Tests pass locally with `make e2e` but fail in GitHub Actions
-# due to Docker build cache / env-var inheritance issues inside the Vite
-# dev-server container. See git history for previous implementation.
-#
-# TODO: Re-enable once a stable CI strategy is chosen (see Makefile e2e target).
-#
-# Alternatives under consideration:
-#   1. Build static files (`vite build`) + serve with nginx, then run
-#      Playwright on the host (no Docker-in-Docker dev server).
-#   2. Use GitHub Actions `services:` block for DB/API and run app + tests
-#      directly on the ubuntu-latest runner.
-#   3. Switch to Playwright component tests (`@playwright/experimental-ct-react`)
-#      which mount components in isolated browsers without a full backend.
-
-name: E2E Tests (disabled)
+name: E2E Tests
 
 on:
+  push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - name: E2E disabled
-        run: echo "E2E workflow is disabled. Run make e2e locally instead."
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Start E2E services
+        run: make e2e-up
+
+      - name: Run E2E tests
+        run: make e2e-test
+
+      - name: Dump container logs
+        if: failure()
+        run: docker compose -f docker-compose.e2e.yml logs --no-color --timestamps
+
+      - name: Show container status
+        if: failure()
+        run: docker compose -f docker-compose.e2e.yml ps -a
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Tear down E2E services
+        if: always()
+        run: make e2e-down
