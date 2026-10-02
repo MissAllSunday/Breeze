@@ -18,6 +18,17 @@ jobs:
       - name: Start E2E services
         run: make e2e-up
 
+      - name: Smoke check API (diagnostics)
+        run: |
+          A=http://localhost:8080
+          curl -s "$A/?action=authScenario"; echo
+          curl -s "$A/?action=setViewer&id=1&granted=deleteOwnStatus,deleteOwnComments"; echo
+          curl -s -w '\nHTTP %{http_code}\n' -X POST "$A/?action=breezeStatus&sa=deleteStatus" \
+            -H 'Content-Type: application/json' -d '{"data":{"id":20,"user_id":1}}'
+          curl -s "$A/?action=inspect"; echo
+          docker exec breeze_e2e_api sh -c 'ls -la /tmp; cat /tmp/breeze_e2e_perm_state.json; echo; php -v | head -1'
+          curl -s -o /dev/null -w 'app HTTP %{http_code}\n' http://localhost:3001/
+
       - name: Run E2E tests
         run: make e2e-test
 
