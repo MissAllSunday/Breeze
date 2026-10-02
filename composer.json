@@ -30,10 +30,10 @@
     },
     "require-dev": {
       "roave/security-advisories": "dev-latest",
-      "friendsofphp/php-cs-fixer": "^3.50",
-      "phpstan/phpstan": "^1.10.0",
-      "phpunit/phpunit": "^12.2",
-      "rector/rector": "^1.2",
+      "friendsofphp/php-cs-fixer": "^3.95",
+      "phpstan/phpstan": "^2.2",
+      "phpunit/phpunit": "^12.5",
+      "rector/rector": "^2.0",
       "ext-pdo": "*"
     },
     "autoload": {

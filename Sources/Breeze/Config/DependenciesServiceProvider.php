@@ -188,7 +188,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 
 		foreach (self::DEPENDENCIES as $service => $config) {
 			// Determine if service should be shared (singleton) or new instance
-			$isShared = isset($config['shared']) && $config['shared'] === true;
+			$isShared = (bool) ($config['shared'] ?? false);
 			$method = $isShared ? 'addShared' : 'add';
 
 			$container->$method($service)

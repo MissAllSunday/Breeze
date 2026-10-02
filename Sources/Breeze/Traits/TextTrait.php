@@ -38,7 +38,7 @@ trait TextTrait
 			return '';
 		}
 
-		if ($replacements === [] || !is_array($replacements)) {
+		if ($replacements === []) {
 			return $text;
 		}
 

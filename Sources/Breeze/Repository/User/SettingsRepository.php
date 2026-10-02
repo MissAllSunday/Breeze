@@ -119,7 +119,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 				}
 			}
 
-			$firstRow = $rows[0] ?? [];
+			$firstRow = $rows[0];
 			$userData += [
 				UserSettingsEntity::BUDDIES => empty($firstRow[MemberEntity::BUDDY_LIST]) ? '' : $firstRow[MemberEntity::BUDDY_LIST],
 				UserSettingsEntity::BLOCK_LIST => empty($firstRow[MemberEntity::IGNORE_LIST]) ? '' : $firstRow[MemberEntity::IGNORE_LIST],
