@@ -680,6 +680,18 @@ function handleLike(string $subAction): void
 		respond([], 'error_no_data', 404);
 	}
 
+	// LikeService::likeContent() — the content's wall must be accessible.
+	$wallId = $type === 'br_sta'
+		? (int) $exists['wall_id']
+		: (static function (PDO $pdo, array $exists): int {
+			$status = fetchStatusRow($pdo, (int) $exists['status_id']);
+			return $status === null ? 0 : (int) $status['wall_id'];
+		})($pdo, $exists);
+
+	if (!canAccessWall($pdo, $wallId)) {
+		respond([], 'error_no_data', 404);
+	}
+
 	// User::isSameUser() — the liker must be the session user.
 	if ($ids['id_member'] !== viewerId()) {
 		respond([], 'error_wrong_values', 403);
