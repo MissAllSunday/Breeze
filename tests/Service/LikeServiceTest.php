@@ -160,6 +160,22 @@ class LikeServiceTest extends TestCase
 		$this->likeService->likeContent(LikesEnum::Status, 999);
 	}
 
+	/**
+	 * A missing comment is rejected before any like is written, mirroring the
+	 * status-not-found path.
+	 */
+	public function testLikeContentThrowsWhenCommentDoesNotExist(): void
+	{
+		$this->commentRepository->method('getById')
+			->willThrowException(new DataNotFoundException('error_no_comment'));
+
+		$this->likeRepository->expects($this->never())->method('likeContent');
+
+		$this->expectException(DataNotFoundException::class);
+
+		$this->likeService->likeContent(LikesEnum::Comments, 999);
+	}
+
 	public function testCountOrphans(): void
 	{
 		$expectedCount = 5;

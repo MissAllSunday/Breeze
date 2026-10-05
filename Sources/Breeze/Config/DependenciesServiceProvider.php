@@ -92,7 +92,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		StatusByProfile::class => ['arguments' => [Data::class, User::class, Allow::class, StatusRepository::class, WallVisibilityService::class]],
 		DeleteComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class, PermissionsService::class]],
 		PostComment::class => ['arguments' => [Data::class, User::class, Allow::class, CommentRepository::class, StatusRepository::class, PermissionsService::class, WallVisibilityService::class]],
-		Like::class => ['arguments' => [Data::class, User::class, Allow::class, LikeRepository::class, StatusRepository::class, CommentRepository::class]],
+		Like::class => ['arguments' => [Data::class, User::class, Allow::class, LikeRepository::class]],
 		UserSettings::class => ['arguments' => [Data::class, User::class, Allow::class, UserSettingsRepository::class]],
 
 		// Composite Validators - New instances (Hold request state)
