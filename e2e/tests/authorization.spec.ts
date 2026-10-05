@@ -174,6 +174,36 @@ test.describe('@authorization Authorization regressions', () => {
     });
   });
 
+  test.describe('Posting requires service-layer permission', () => {
+    test('member without postStatus cannot post on another wall', async ({ request }) => {
+      await setViewer(request, A, []);
+      const before = await snapshot(request);
+
+      const response = await post(request, 'breezeStatus', 'postStatus', {
+        wall_id: B,
+        user_id: A,
+        body: 'no permission',
+      });
+
+      expect(response.status()).toBe(403);
+      expect((await snapshot(request)).statuses).toEqual(before.statuses);
+    });
+
+    test('member without postComments cannot comment on another wall', async ({ request }) => {
+      await setViewer(request, A, []);
+      const before = await snapshot(request);
+
+      const response = await post(request, 'breezeComment', 'postComment', {
+        status_id: 20,
+        user_id: A,
+        body: 'no permission',
+      });
+
+      expect(response.status()).toBe(403);
+      expect((await snapshot(request)).comments).toEqual(before.comments);
+    });
+  });
+
   test.describe('Wall-enabled and block-list gates on the JSON API', () => {
     const readPaths = [
       'action=breezeStatus&sa=profile&wall_id=2',
