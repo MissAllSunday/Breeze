@@ -141,8 +141,7 @@ test.describe('@authorization Authorization regressions', () => {
         id_member: B,
       });
 
-      expect(response.status()).toBeGreaterThanOrEqual(400);
-      expect(response.status()).toBeLessThan(500);
+      expect(response.status()).toBe(403);
       expect((await snapshot(request)).likes).toEqual([]);
     });
 
@@ -258,6 +257,60 @@ test.describe('@authorization Authorization regressions', () => {
         const response = await request.get(`${API}/?${path}`);
         expect(response.status(), path).toBe(404);
       }
+    });
+
+    test('member blocked by wall owner cannot comment', async ({ request }) => {
+      await get(request, `action=blockMember&by=${B}&target=${A}`);
+      const before = await snapshot(request);
+
+      const response = await post(request, 'breezeComment', 'postComment', {
+        status_id: 20,
+        user_id: A,
+        body: 'blocked',
+      });
+
+      expect(response.status()).toBe(403);
+      expect((await snapshot(request)).comments).toEqual(before.comments);
+    });
+
+    test('member blocked by wall owner cannot post a status', async ({ request }) => {
+      await get(request, `action=blockMember&by=${B}&target=${A}`);
+      const before = await snapshot(request);
+
+      const response = await post(request, 'breezeStatus', 'postStatus', {
+        wall_id: B,
+        user_id: A,
+        body: 'blocked',
+      });
+
+      expect(response.status()).toBe(403);
+      expect((await snapshot(request)).statuses).toEqual(before.statuses);
+    });
+
+    test('member blocked by wall owner cannot like', async ({ request }) => {
+      await get(request, `action=blockMember&by=${B}&target=${A}`);
+
+      const response = await post(request, 'breezeLike', 'like', {
+        content_id: 20,
+        content_type: 'br_sta',
+        id_member: A,
+      });
+
+      expect(response.status()).toBe(404);
+      expect((await snapshot(request)).likes).toEqual([]);
+    });
+
+    test('like on a comment of a blocked wall is denied', async ({ request }) => {
+      await get(request, `action=blockMember&by=${B}&target=${A}`);
+
+      const response = await post(request, 'breezeLike', 'like', {
+        content_id: 400,
+        content_type: 'br_com',
+        id_member: A,
+      });
+
+      expect(response.status()).toBe(404);
+      expect((await snapshot(request)).likes).toEqual([]);
     });
 
     test('unaffected walls stay readable', async ({ request }) => {
