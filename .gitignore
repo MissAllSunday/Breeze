@@ -70,6 +70,7 @@ AGENTS.md
 ######################
 *.log
 *.sql
+!e2e/api/initdb.d/*.sql
 *.sqlite
 
 # OS generated files #
