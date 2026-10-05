@@ -2,16 +2,17 @@ import { resolve } from "node:path";
 import { readFileSync, existsSync } from "node:fs";
 import { defineConfig, loadEnv, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   setEnv(mode);
   return {
+    resolve: {
+      tsconfigPaths: true,
+    },
     plugins: [
       react(),
-      tsconfigPaths(),
       envPlugin(),
       devServerPlugin(),
       sourcemapPlugin(),
