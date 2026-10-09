@@ -1,5 +1,5 @@
 ======================================================================
-  BREEZE 2.0.0-beta.1  -  Social Wall Mod for SMF 2.1
+  BREEZE 2.0.0-beta.2  -  Social Wall Mod for SMF 2.1
   https://missallsunday.com
   License: Mozilla Public License 2.0
 ======================================================================
