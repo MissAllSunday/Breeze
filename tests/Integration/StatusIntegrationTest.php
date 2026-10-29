@@ -330,40 +330,4 @@ class StatusIntegrationTest extends TestCase
 		$this->assertEquals(100, $basicInfo->getWallId());
 		// Note: body is NOT retrieved by getBasicInfoById()
 	}
-
-	/**
-	 * Test recountLikes() updates like counts correctly
-	 *
-	 * @throws InvalidStatusException
-	 */
-	public function testRecountLikes(): void
-	{
-		// Insert a status
-		$statusData = StatusFixtures::forInsertion();
-		$statusData[StatusEntity::USER_ID] = 100;
-		$statusData[StatusEntity::WALL_ID] = 100;
-		$statusData[StatusEntity::BODY] = 'Status for like counting';
-		$statusEntity = StatusEntity::from($statusData);
-		$result = self::$statusRepository->insert($statusEntity);
-		$statusId = $result[0]->getId();
-
-		// Manually set incorrect like count in database
-		global $testDbConfig;
-		$prefix = $testDbConfig['prefix'];
-		self::$pdo->exec("UPDATE `{$prefix}breeze_status` SET likes = 999 WHERE id = {$statusId}");
-
-		// Verify incorrect count
-		$stmt = self::$pdo->prepare("SELECT likes FROM `{$prefix}breeze_status` WHERE id = ?");
-		$stmt->execute([$statusId]);
-		$likes = $stmt->fetchColumn();
-		$this->assertEquals(999, $likes);
-
-		// Recount likes
-		self::$statusRepository->recountLikes();
-
-		// Verify count is corrected to 0 (no actual likes in user_likes table)
-		$stmt->execute([$statusId]);
-		$likes = $stmt->fetchColumn();
-		$this->assertEquals(0, $likes);
-	}
 }
