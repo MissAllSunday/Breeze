@@ -23,8 +23,6 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 
 	protected ?DateTimeImmutable $created_at = null;
 
-	protected int $likes = 0;
-
 	protected array $usersInfo = [];
 
 	protected ?LikeInfoEntity $likesInfo = null;
@@ -114,22 +112,6 @@ abstract class SharedEntity extends Entity implements SharedEntityInterface
 	public function getLikesInfo(): ?LikeInfoEntity
 	{
 		return $this->likesInfo;
-	}
-
-	/**
-	 * @deprecated use LikeRepository instead
-	 */
-	public function getLikes(): int
-	{
-		return $this->likes;
-	}
-
-	/**
-	 * @deprecated use LikeRepository instead
-	 */
-	public function setLikes(int $likes): void
-	{
-		$this->likes = $likes;
 	}
 
 	public function toInsert(): array
