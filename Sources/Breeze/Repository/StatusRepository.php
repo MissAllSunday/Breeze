@@ -7,7 +7,6 @@ namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Enums\LikesEnum;
@@ -330,22 +329,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	{
 		// No-op: the status table has no comments counter column.
 		// Comment counts are always derived dynamically from the comments table.
-	}
-
-	public function recountLikes(): void
-	{
-		$this->dbClient->query(
-			'
-			UPDATE {db_prefix}' . StatusEntity::TABLE . ' AS s
-			SET likes = (
-				SELECT COUNT(*)
-				FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
-				WHERE l.content_id = s.id AND l.content_type = {string:status_type}
-			)',
-			[
-				'status_type' => LikesEnum::Status->value,
-			]
-		);
 	}
 
 	/**
