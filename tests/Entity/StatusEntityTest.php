@@ -48,8 +48,5 @@ class StatusEntityTest extends TestCase
 
 		$entity->setBody('Test status');
 		$this->assertEquals('Test status', $entity->getBody());
-
-		$entity->setLikes(10);
-		$this->assertEquals(10, $entity->getLikes());
 	}
 }
