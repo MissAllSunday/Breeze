@@ -26,15 +26,13 @@ function createTestTables(PDO $pdo, string $prefix): void
 {
 	$pdo->exec("
 		CREATE TABLE IF NOT EXISTS `{$prefix}breeze_status` (
-			`id` INT(4) NOT NULL AUTO_INCREMENT,
+			`id` BIGINT(8) NOT NULL AUTO_INCREMENT,
 			`wall_id` INT(4) NOT NULL,
 			`user_id` INT(4) NOT NULL,
-			`created_at` INT(11) NOT NULL,
+			`created_at` INT(11) NOT NULL DEFAULT 0,
 			`body` TEXT,
 			`likes` INT(4) NOT NULL DEFAULT 0,
-			PRIMARY KEY (`id`, `wall_id`),
-			KEY `user_id` (`user_id`),
-			KEY `wall_id` (`wall_id`),
+			PRIMARY KEY (`id`),
 			KEY `idx_wall_created_id` (`wall_id`, `created_at`, `id`),
 			KEY `idx_user_created_id` (`user_id`, `created_at`, `id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
@@ -42,14 +40,14 @@ function createTestTables(PDO $pdo, string $prefix): void
 
 	$pdo->exec("
 		CREATE TABLE IF NOT EXISTS `{$prefix}breeze_comments` (
-			`id` INT(4) NOT NULL AUTO_INCREMENT,
-			`status_id` INT(4) NOT NULL,
+			`id` BIGINT(8) NOT NULL AUTO_INCREMENT,
+			`status_id` BIGINT(8) NOT NULL,
 			`user_id` INT(4) NOT NULL,
 			`likes` INT(4) NOT NULL DEFAULT 0,
 			`body` TEXT,
-			`created_at` VARCHAR(255) DEFAULT '',
-			PRIMARY KEY (`id`, `status_id`),
-			KEY `status_id` (`status_id`),
+			`created_at` INT(11) NOT NULL DEFAULT 0,
+			PRIMARY KEY (`id`),
+			KEY `idx_status_created_id` (`status_id`, `created_at`, `id`),
 			KEY `user_id` (`user_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 	");

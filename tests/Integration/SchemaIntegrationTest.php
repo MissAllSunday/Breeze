@@ -26,33 +26,31 @@ class SchemaIntegrationTest extends TestCase
 	private const array EXPECTED_SCHEMA = [
 		'breeze_status' => [
 			'columns' => [
-				'id' => 'int',
+				'id' => 'bigint',
 				'wall_id' => 'int',
 				'user_id' => 'int',
 				'likes' => 'int',
 				'body' => 'text',
 				'created_at' => 'int',
 			],
-			'primary_key' => ['id', 'wall_id'],
+			'primary_key' => ['id'],
 			'indexes' => [
-				'user_id' => ['user_id'],
-				'wall_id' => ['wall_id'],
 				'idx_wall_created_id' => ['wall_id', 'created_at', 'id'],
 				'idx_user_created_id' => ['user_id', 'created_at', 'id'],
 			],
 		],
 		'breeze_comments' => [
 			'columns' => [
-				'id' => 'int',
-				'status_id' => 'int',
+				'id' => 'bigint',
+				'status_id' => 'bigint',
 				'user_id' => 'int',
 				'likes' => 'int',
 				'body' => 'text',
-				'created_at' => 'varchar',
+				'created_at' => 'int',
 			],
-			'primary_key' => ['id', 'status_id'],
+			'primary_key' => ['id'],
 			'indexes' => [
-				'status_id' => ['status_id'],
+				'idx_status_created_id' => ['status_id', 'created_at', 'id'],
 				'user_id' => ['user_id'],
 			],
 		],
