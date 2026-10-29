@@ -334,9 +334,4 @@ class StatusService extends BaseService implements StatusServiceInterface
 	{
 		$this->statusRepository->recountComments();
 	}
-
-	public function recountLikes(): void
-	{
-		$this->statusRepository->recountLikes();
-	}
 }
