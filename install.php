@@ -59,15 +59,15 @@ if (empty($context['uninstalling'])) {
 		'columns' => [
 			[
 				'name' => 'id',
-				'type' => 'int',
-				'size' => 4,
+				'type' => 'bigint',
+				'size' => 8,
 				'null' => false,
 				'auto' => true,
 			],
 			[
 				'name' => 'status_id',
-				'type' => 'int',
-				'size' => 4,
+				'type' => 'bigint',
+				'size' => 8,
 				'null' => false,
 			],
 			[
@@ -90,20 +90,21 @@ if (empty($context['uninstalling'])) {
 			],
 			[
 				'name' => 'created_at',
-				'type' => 'varchar',
-				'size' => 255,
-				'default' => '',
+				'type' => 'int',
+				'size' => 11,
+				'null' => false,
+				'default' => 0,
 			],
 		],
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id','status_id'],
+				'columns' => ['id'],
 			],
 			[
-				'name' => 'status_id',
+				'name' => 'idx_status_created_id',
 				'type' => 'index',
-				'columns' => ['status_id'],
+				'columns' => ['status_id', 'created_at', 'id'],
 			],
 			[
 				'name' => 'user_id',
@@ -122,8 +123,8 @@ if (empty($context['uninstalling'])) {
 		'columns' => [
 			[
 				'name' => 'id',
-				'type' => 'int',
-				'size' => 4,
+				'type' => 'bigint',
+				'size' => 8,
 				'null' => false,
 				'auto' => true,
 			],
@@ -163,17 +164,7 @@ if (empty($context['uninstalling'])) {
 		'indexes' => [
 			[
 				'type' => 'primary',
-				'columns' => ['id','wall_id'],
-			],
-			[
-				'name' => 'user_id',
-				'type' => 'index',
-				'columns' => ['user_id'],
-			],
-			[
-				'name' => 'wall_id',
-				'type' => 'index',
-				'columns' => ['wall_id'],
+				'columns' => ['id'],
 			],
 			[
 				'name' => 'idx_wall_created_id',
