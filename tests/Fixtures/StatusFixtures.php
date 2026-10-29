@@ -16,7 +16,6 @@ class StatusFixtures
 			StatusEntity::WALL_ID => 1,
 			StatusEntity::USER_ID => 2,
 			StatusEntity::BODY => 'This is a basic test status',
-			StatusEntity::LIKES => 0,
 			SharedEntity::CREATED_AT => time(),
 		];
 	}

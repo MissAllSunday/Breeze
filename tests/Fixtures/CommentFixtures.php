@@ -16,7 +16,6 @@ class CommentFixtures
 			CommentEntity::STATUS_ID => 1,
 			CommentEntity::USER_ID => 2,
 			CommentEntity::BODY => 'This is a basic test comment',
-			CommentEntity::LIKES => 0,
 			SharedEntity::CREATED_AT => time(),
 		];
 	}
