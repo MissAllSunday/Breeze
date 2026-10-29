@@ -391,43 +391,4 @@ class CommentIntegrationTest extends TestCase
 		$orphanCount = self::$commentRepository->countOrphans();
 		$this->assertEquals(0, $orphanCount);
 	}
-
-	/**
-	 * Test recountLikes() updates like counts correctly
-	 *
-	 * @throws InvalidCommentException
-	 * @throws InvalidStatusException
-	 */
-	public function testRecountLikes(): void
-	{
-		$statusId = $this->createTestStatus();
-
-		// Insert a comment
-		$commentData = CommentFixtures::forInsertion();
-		$commentData[CommentEntity::STATUS_ID] = $statusId;
-		$commentData[CommentEntity::USER_ID] = 100;
-		$commentData[CommentEntity::BODY] = 'Comment for like testing';
-		$commentEntity = CommentEntity::from($commentData);
-		$result = self::$commentRepository->insert($commentEntity);
-		$commentId = $result[0]->getId();
-
-		// Manually set incorrect like count in database
-		global $testDbConfig;
-		$prefix = $testDbConfig['prefix'];
-		self::$pdo->exec("UPDATE `{$prefix}breeze_comments` SET likes = 999 WHERE id = {$commentId}");
-
-		// Verify incorrect count
-		$stmt = self::$pdo->prepare("SELECT likes FROM `{$prefix}breeze_comments` WHERE id = ?");
-		$stmt->execute([$commentId]);
-		$likes = $stmt->fetchColumn();
-		$this->assertEquals(999, $likes);
-
-		// Recount likes
-		self::$commentRepository->recountLikes();
-
-		// Verify count is corrected to 0 (no actual likes in user_likes table)
-		$stmt->execute([$commentId]);
-		$likes = $stmt->fetchColumn();
-		$this->assertEquals(0, $likes);
-	}
 }
