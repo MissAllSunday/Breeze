@@ -48,8 +48,9 @@ function createTestTables(PDO $pdo, string $prefix): void
 			`likes` INT(4) NOT NULL DEFAULT 0,
 			`body` TEXT,
 			`created_at` VARCHAR(255) DEFAULT '',
-			PRIMARY KEY (`id`),
-			KEY `status_id` (`status_id`)
+			PRIMARY KEY (`id`, `status_id`),
+			KEY `status_id` (`status_id`),
+			KEY `user_id` (`user_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 	");
 
