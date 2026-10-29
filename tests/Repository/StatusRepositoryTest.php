@@ -9,7 +9,9 @@ use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Enums\LikesEnum;
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use DateMalformedStringException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -114,6 +116,49 @@ class StatusRepositoryTest extends TestCase
 		$this->assertInstanceOf(StatusEntity::class, $result[0]);
 		$this->assertEquals(5, $result[0]->getId());
 		$this->assertTrue($result[0]->isNew());
+	}
+
+	/**
+	 * The wall profile cache is written under a key that embeds the wall's own
+	 * pagination number, so invalidation must build the same key. Asserting
+	 * `_5` (the default) and not `_0` is what catches the mismatch.
+	 *
+	 * @throws InvalidStatusException|DateMalformedStringException
+	 */
+	public function testInsertInvalidatesTheProfileCacheKeyThatIsActuallyWritten(): void
+	{
+		$settingsRepository = $this->createMock(SettingsRepositoryInterface::class);
+		$settingsRepository->expects($this->once())
+			->method('getById')
+			->with(1)
+			->willReturn(UserSettingsEntity::from([
+				UserSettingsEntity::PAGINATION_NUM => 5,
+			]));
+
+		$statusRepository = $this->getMockBuilder(StatusRepository::class)
+			->setConstructorArgs([
+				$this->dbClient,
+				$this->commentRepository,
+				$this->likeRepository,
+				$settingsRepository,
+			])
+			->onlyMethods(['loadUsersInfo', 'setCache'])
+			->getMock();
+
+		$statusRepository->expects($this->once())
+			->method('setCache')
+			->with('getByProfile_1_cursor_initial_5', null);
+
+		$this->dbClient->method('insert');
+		$this->dbClient->method('getInsertedId')->willReturn(5);
+		$statusRepository->method('loadUsersInfo')->willReturn([2 => ['name' => 'Test User']]);
+
+		$statusRepository->insert(StatusEntity::from([
+			StatusEntity::WALL_ID => 1,
+			StatusEntity::USER_ID => 2,
+			StatusEntity::BODY => 'Test status',
+			SharedEntity::CREATED_AT => time(),
+		]));
 	}
 
 	public function testInsertThrowsExceptionWhenIdIsZero(): void
