@@ -159,39 +159,6 @@ function allowedTo($permissionName)
 function cache_get_data($key, $timeToLive = 360): ?array
 {
 	return match ($key) {
-		'Breeze_getByProfile1' => [],
-		'Breeze_getByProfile2' => [
-			1 => [
-				'id' => 1,
-				'wall_id' => 1,
-				'user_id' => 1,
-				'created_at' => 581299200,
-				'body' => 'status body',
-				'likes' => 0,
-				'comments' => [
-					1 => [
-						'id' => 1,
-						'status_id' => 1,
-						'user_id' => 1,
-						'created_at' => 581299200,
-						'body' => 'comment body',
-						'likes' => 0,
-					],
-				],
-				'likesInfo' => [
-					'contentId' => 1,
-					'count' => 0,
-					'alreadyLiked' => false,
-					'type' => 'type',
-					'canLike' => false,
-					'additionalInfo' => '',
-				],
-				'userData' => [
-					'link' => 'Guest',
-					'name' => 'Guest',
-					'avatar' => ['href' => 'avatar_url/default.png'],
-				],
-			],],
 		'Breeze_StatusRepository_getByProfile1' => [
 			'usersIds' => [1],
 			'data' => [
@@ -228,7 +195,7 @@ function cache_get_data($key, $timeToLive = 360): ?array
 					],
 				], ],
 		],
-		'user_settings_666' => [
+		'Breeze_SettingsRepository_user_settings_666' => [
 			'generalWall' => 1,
 		],
 		default => null,
