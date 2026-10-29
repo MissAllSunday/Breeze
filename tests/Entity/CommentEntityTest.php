@@ -19,7 +19,6 @@ class CommentEntityTest extends TestCase
 			'user_id',
 			'created_at',
 			'body',
-			'likes',
 		], CommentEntity::getColumns());
 	}
 
@@ -105,7 +104,6 @@ class CommentEntityTest extends TestCase
 		$this->assertEquals(123, $entity->castValue(CommentEntity::ID, '123'));
 		$this->assertEquals(456, $entity->castValue(CommentEntity::STATUS_ID, '456'));
 		$this->assertEquals(789, $entity->castValue(CommentEntity::USER_ID, '789'));
-		$this->assertEquals(5, $entity->castValue(CommentEntity::LIKES, '5'));
 
 		// Test DateTime casting for createdAt
 		$timestamp = time();
@@ -155,8 +153,5 @@ class CommentEntityTest extends TestCase
 
 		$entity->setBody('Test comment');
 		$this->assertEquals('Test comment', $entity->getBody());
-
-		$entity->setLikes(5);
-		$this->assertEquals(5, $entity->getLikes());
 	}
 }
