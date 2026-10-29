@@ -165,8 +165,6 @@ class AdminService implements AdminServiceInterface
 
 			if ($fixType === 'likes' || $fixType === 'all') {
 				$this->likeService->deleteOrphans();
-				$this->statusService->recountLikes();
-				$this->commentService->recountLikes();
 			}
 
 			if ($fixType === 'walls') {
