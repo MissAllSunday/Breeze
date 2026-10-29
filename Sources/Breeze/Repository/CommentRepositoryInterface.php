@@ -28,6 +28,4 @@ interface CommentRepositoryInterface extends BaseRepositoryInterface
 	public function countOrphans(): int;
 
 	public function deleteOrphans(): void;
-
-	public function recountLikes(): void;
 }

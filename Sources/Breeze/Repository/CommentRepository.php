@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Entity\CommentEntity;
-use Breeze\Entity\LikeEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Enums\LikesEnum;
@@ -245,22 +244,6 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 				SELECT id FROM {db_prefix}' . StatusEntity::TABLE . '
 			)',
 			[]
-		);
-	}
-
-	public function recountLikes(): void
-	{
-		$this->dbClient->query(
-			'
-			UPDATE {db_prefix}' . CommentEntity::TABLE . ' AS c
-			SET likes = (
-				SELECT COUNT(*)
-				FROM {db_prefix}' . LikeEntity::TABLE . ' AS l
-				WHERE l.content_id = c.id AND l.content_type = {string:comment_type}
-			)',
-			[
-				'comment_type' => LikesEnum::Comments->value,
-			]
 		);
 	}
 
