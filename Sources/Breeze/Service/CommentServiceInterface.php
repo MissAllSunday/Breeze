@@ -28,6 +28,4 @@ interface CommentServiceInterface
 	public function countOrphans(): int;
 
 	public function deleteOrphans(): void;
-
-	public function recountLikes(): void;
 }

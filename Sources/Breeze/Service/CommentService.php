@@ -126,9 +126,4 @@ class CommentService extends BaseService implements CommentServiceInterface
 	{
 		$this->commentRepository->deleteOrphans();
 	}
-
-	public function recountLikes(): void
-	{
-		$this->commentRepository->recountLikes();
-	}
 }
