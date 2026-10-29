@@ -15,7 +15,6 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 	public const string WALL_ID = 'wall_id';
 	public const string USER_ID = 'user_id';
 	public const string BODY = 'body';
-	public const string LIKES = 'likes';
 
 	/** @var CommentEntity[] */
 	protected array $comments = [];
@@ -37,7 +36,6 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 			self::USER_ID,
 			self::CREATED_AT,
 			self::BODY,
-			self::LIKES,
 		];
 	}
 
@@ -72,7 +70,7 @@ class StatusEntity extends SharedEntity implements SharedEntityInterface
 	public function castValue(string $columnName, mixed $value): string|int|DateTimeImmutable
 	{
 		return match ($columnName) {
-			self::ID, self::WALL_ID, self::USER_ID, self::LIKES => (int) $value,
+			self::ID, self::WALL_ID, self::USER_ID => (int) $value,
 			self::CREATED_AT => new DateTimeImmutable('@' . $value),
 			default => (string) $value,
 		};
