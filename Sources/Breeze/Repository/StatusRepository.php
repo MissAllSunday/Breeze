@@ -9,7 +9,9 @@ use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
+use Breeze\Entity\UserSettingsEntity;
 use Breeze\Enums\LikesEnum;
+use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Json;
 use Breeze\Util\Parser;
 use Breeze\Util\Validate\DataNotFoundException;
@@ -23,7 +25,8 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	public function __construct(
 		ClientInterface $dbClient,
 		protected readonly CommentRepositoryInterface $commentRepository,
-		LikeRepositoryInterface $likeRepository
+		LikeRepositoryInterface $likeRepository,
+		protected readonly ?SettingsRepositoryInterface $settingsRepository = null
 	) {
 		parent::__construct($dbClient, $likeRepository);
 	}
@@ -467,14 +470,45 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * Invalidate all cache entries for a specific wall profile
+	 * Invalidate the initial-page cache entry for a specific wall profile.
+	 *
+	 * The key must be built with the same `maxIndex` getByProfile() writes with
+	 * — the wall's own pagination setting — otherwise the invalidation never
+	 * matches and the wall only refreshes on TTL expiry.
+	 *
+	 * Note: Cursor-based pagination cache entries will naturally expire.
+	 * We only invalidate the initial page as it's the most commonly accessed.
 	 */
 	protected function invalidateProfileCache(int $wallId): void
 	{
-		// Invalidate initial page cache
-		$this->setCache(sprintf('%s_%d_cursor_initial_0', self::CACHE_BY_PROFILE, $wallId), null);
+		$this->setCache(
+			sprintf(
+				'%s_%d_cursor_initial_%d',
+				self::CACHE_BY_PROFILE,
+				$wallId,
+				$this->getWallPaginationNumber($wallId)
+			),
+			null
+		);
+	}
 
-		// Note: Cursor-based pagination cache entries will naturally expire
-		// We only invalidate the initial page as it's the most commonly accessed
+	/**
+	 * The wall's pagination setting, which is the `maxIndex` segment of its
+	 * profile cache key. Falls back to the entity default when the settings
+	 * repository is unavailable or the wall has no settings row.
+	 */
+	protected function getWallPaginationNumber(int $wallId): int
+	{
+		$default = (int) UserSettingsEntity::getDefaultValues()[UserSettingsEntity::PAGINATION_NUM];
+
+		if ($this->settingsRepository === null) {
+			return $default;
+		}
+
+		try {
+			return $this->settingsRepository->getById($wallId)->getPaginationNumber();
+		} catch (DataNotFoundException) {
+			return $default;
+		}
 	}
 }

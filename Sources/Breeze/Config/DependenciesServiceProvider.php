@@ -161,7 +161,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 		AlertRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
 		CommentRepository::class => ['arguments' => [DatabaseClient::class, LikeRepository::class], 'shared' => true],
 		LikeRepository::class => ['arguments' => [DatabaseClient::class], 'shared' => true],
-		StatusRepository::class => ['arguments' => [DatabaseClient::class, CommentRepository::class, LikeRepository::class], 'shared' => true],
+		StatusRepository::class => ['arguments' => [DatabaseClient::class, CommentRepository::class, LikeRepository::class, UserSettingsRepository::class], 'shared' => true],
 
 		// Services - Shared (Stateless business logic)
 		SecurityService::class => ['arguments' => [], 'shared' => true],
