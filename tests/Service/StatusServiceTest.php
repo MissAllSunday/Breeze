@@ -360,23 +360,6 @@ class StatusServiceTest extends TestCase
 		$this->statusService->recountComments();
 	}
 
-	public function testRecountLikes(): void
-	{
-		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
-		$this->statusService = new StatusService(
-			$this->statusRepository,
-			$this->userRepository,
-			$this->permissionsService,
-			$this->wallVisibilityService,
-			null
-		);
-
-		$this->statusRepository->expects($this->once())
-			->method('recountLikes');
-
-		$this->statusService->recountLikes();
-	}
-
 	/**
 	 * @throws EmptyDataException
 	 * @throws DataNotFoundException

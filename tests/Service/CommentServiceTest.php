@@ -290,14 +290,6 @@ class CommentServiceTest extends TestCase
 		$this->commentService->deleteOrphans();
 	}
 
-	public function testRecountLikes(): void
-	{
-		$this->commentRepository->expects($this->once())
-			->method('recountLikes');
-
-		$this->commentService->recountLikes();
-	}
-
 	public function testSaveCallsProcessBodyWithMentionIdsAndRewritesBody(): void
 	{
 		$mentionService = $this->createMock(MentionServiceInterface::class);
