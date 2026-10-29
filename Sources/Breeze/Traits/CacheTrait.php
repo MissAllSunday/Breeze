@@ -24,10 +24,21 @@ trait CacheTrait
 		cache_put_data($this->buildKey($key), $data, $timeToLive);
 	}
 
+	/**
+	 * Build a cache key namespaced by the using class, so two classes that
+	 * happen to share a key shape (e.g. `getById`) cannot poison each other.
+	 */
 	private function buildKey(string $key): string
 	{
-		$class_namespaces = explode('\\', $key);
+		static $shortNames = [];
 
-		return Breeze::PATTERN . str_replace('::', '_', end($class_namespaces));
+		$class = static::class;
+
+		if (!isset($shortNames[$class])) {
+			$namespaces = explode('\\', $class);
+			$shortNames[$class] = end($namespaces);
+		}
+
+		return Breeze::PATTERN . $shortNames[$class] . '_' . str_replace('::', '_', $key);
 	}
 }
