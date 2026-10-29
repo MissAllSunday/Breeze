@@ -19,6 +19,14 @@ BreezeCheck();
 db_extend('packages');
 
 if (empty($context['uninstalling'])) {
+	// No charset/collation is passed in 'parameters' below on purpose: SMF's
+	// smf_db_create_table() only honours $parameters['engine'] and emits no
+	// charset clause of its own, so these tables inherit the forum database
+	// default exactly like every core table does. Pinning a collation here
+	// would risk a mismatch against the tables Breeze joins to (smf_members),
+	// which forces a conversion and defeats index use on that side of the join.
+	// tests/setup-test-database.php deliberately does the same.
+
 	// Member options
 	$tables[] = [
 		'table_name' => '{db_prefix}breeze_options',

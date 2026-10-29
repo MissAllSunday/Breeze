@@ -19,6 +19,14 @@ require_once __DIR__ . '/database-config.php';
 /**
  * Create all test tables based on install.php schema.
  *
+ * No CHARSET/COLLATE is pinned on purpose. SMF's smf_db_create_table() only
+ * honours $parameters['engine'] and otherwise emits no charset clause (it
+ * appends utf8/utf8_general_ci solely when $db_character_set === 'utf8'), so
+ * installed Breeze tables inherit the forum database default. Pinning a
+ * collation here would make the tests validate a table definition production
+ * never gets, and a mismatch across joined tables forces a conversion that
+ * defeats index use on that side of the join.
+ *
  * @param PDO $pdo Active database connection
  * @param string $prefix Table prefix (e.g. 'smf_')
  */
@@ -35,7 +43,7 @@ function createTestTables(PDO $pdo, string $prefix): void
 			PRIMARY KEY (`id`),
 			KEY `idx_wall_created_id` (`wall_id`, `created_at`, `id`),
 			KEY `idx_user_created_id` (`user_id`, `created_at`, `id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+		) ENGINE=InnoDB
 	");
 
 	$pdo->exec("
@@ -49,7 +57,7 @@ function createTestTables(PDO $pdo, string $prefix): void
 			PRIMARY KEY (`id`),
 			KEY `idx_status_created_id` (`status_id`, `created_at`, `id`),
 			KEY `user_id` (`user_id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+		) ENGINE=InnoDB
 	");
 
 	$pdo->exec("
@@ -61,7 +69,7 @@ function createTestTables(PDO $pdo, string $prefix): void
 			PRIMARY KEY (`content_id`, `content_type`, `id_member`),
 			KEY `content_id` (`content_id`),
 			KEY `id_member` (`id_member`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+		) ENGINE=InnoDB
 	");
 
 	$pdo->exec("
@@ -79,7 +87,7 @@ function createTestTables(PDO $pdo, string $prefix): void
 			PRIMARY KEY (id_alert),
 			INDEX idx_id_member (id_member),
 			INDEX idx_alert_time (alert_time)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+		) ENGINE=InnoDB
 	");
 
 	$pdo->exec("
@@ -90,7 +98,7 @@ function createTestTables(PDO $pdo, string $prefix): void
 			`pm_ignore_list` VARCHAR(255) NOT NULL DEFAULT '',
 			`buddy_list` TEXT,
 			PRIMARY KEY (`id_member`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+		) ENGINE=InnoDB
 	");
 
 	$pdo->exec("
@@ -99,7 +107,7 @@ function createTestTables(PDO $pdo, string $prefix): void
 			`variable` VARCHAR(255) NOT NULL DEFAULT '',
 			`value` TEXT,
 			PRIMARY KEY (`member_id`, `variable`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+		) ENGINE=InnoDB
 	");
 
 }
