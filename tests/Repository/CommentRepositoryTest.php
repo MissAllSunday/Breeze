@@ -7,9 +7,11 @@ namespace Breeze\Repository;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeInfoEntity;
+use Breeze\Entity\StatusEntity;
 use Breeze\Enums\LikesEnum;
 use Breeze\Fixtures\CommentFixtures;
 use Breeze\Fixtures\LikeInfoFixtures;
+use Breeze\Fixtures\StatusFixtures;
 use Breeze\Util\Validate\DataNotFoundException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
@@ -123,6 +125,70 @@ class CommentRepositoryTest extends TestCase
 		$result = $this->commentRepository->getById(5);
 
 		$this->assertEquals($commentHandledEntities[5], $result);
+	}
+
+	/**
+	 * Regression test for the cache-key collision: StatusRepository and
+	 * CommentRepository both used the bare key `getById_<id>`, so whichever
+	 * wrote first could hand the other a type-confused entity.
+	 *
+	 * @throws DataNotFoundException
+	 */
+	public function testGetByIdDoesNotServeAStatusEntityFromItsCacheSlot(): void
+	{
+		$poisonedStatus = StatusEntity::from(
+			StatusFixtures::withCustomData([StatusEntity::ID => 5])
+		);
+
+		$commentHandledEntities = [
+			5 => CommentEntity::from(
+				CommentFixtures::withCustomData([CommentEntity::ID => 5])
+			),
+		];
+
+		// Simulate a poisoned slot: whatever the cache hands back is a status.
+		$repository = $this->getMockBuilder(CommentRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->likeRepository])
+			->onlyMethods(['prepareData', 'loadUsersInfo', 'getCache'])
+			->getMock();
+
+		$repository->expects($this->once())
+			->method('getCache')
+			->with('getById_5')
+			->willReturn($poisonedStatus);
+
+		// The read must fall through to the database instead of returning it.
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn($this->queryObject);
+
+		$repository->expects($this->once())
+			->method('prepareData')
+			->with($this->queryObject)
+			->willReturn($commentHandledEntities);
+
+		$result = $repository->getById(5);
+
+		$this->assertInstanceOf(CommentEntity::class, $result);
+		$this->assertEquals($commentHandledEntities[5], $result);
+
+		// And the two repositories no longer share a key space at all.
+		$buildKey = new \ReflectionMethod(CommentRepository::class, 'buildKey');
+		$commentRepository = new CommentRepository($this->dbClient, $this->likeRepository);
+		$statusRepository = new StatusRepository(
+			$this->dbClient,
+			$this->createMock(CommentRepositoryInterface::class),
+			$this->likeRepository
+		);
+
+		$this->assertEquals(
+			'Breeze_CommentRepository_getById_5',
+			$buildKey->invoke($commentRepository, 'getById_5')
+		);
+		$this->assertEquals(
+			'Breeze_StatusRepository_getById_5',
+			$buildKey->invoke($statusRepository, 'getById_5')
+		);
 	}
 
 	public function testGetIdThrowsExceptionWhenNotFound(): void
