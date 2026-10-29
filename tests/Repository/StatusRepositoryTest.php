@@ -73,7 +73,6 @@ class StatusRepositoryTest extends TestCase
 			'user_id',
 			'created_at',
 			'body',
-			'likes',
 		], $this->statusRepository->getColumns());
 	}
 
@@ -123,7 +122,6 @@ class StatusRepositoryTest extends TestCase
 			StatusEntity::WALL_ID => 1,
 			StatusEntity::USER_ID => 2,
 			StatusEntity::BODY => 'Test status',
-			StatusEntity::LIKES => 0,
 			SharedEntity::CREATED_AT => time(),
 		]);
 
@@ -317,7 +315,7 @@ class StatusRepositoryTest extends TestCase
 		$maxIndex = 20;
 
 		$expectedParams = [
-			'columns' => 'parent.id, parent.wall_id, parent.user_id, parent.created_at, parent.body, parent.likes',
+			'columns' => 'parent.id, parent.wall_id, parent.user_id, parent.created_at, parent.body',
 			'from' => 'breeze_status AS parent',
 			'columnName' => $columnName,
 			'limit' => $maxIndex,
@@ -508,7 +506,7 @@ class StatusRepositoryTest extends TestCase
 		$maxIndex = 20;
 
 		$expectedParams = [
-			'columns' => 'parent.id, parent.wall_id, parent.user_id, parent.created_at, parent.body, parent.likes',
+			'columns' => 'parent.id, parent.wall_id, parent.user_id, parent.created_at, parent.body',
 			'from' => 'breeze_status AS parent',
 			'buddy_ids' => $buddyIds,
 			'limit' => $maxIndex,
