@@ -128,6 +128,7 @@ class DependenciesServiceProvider extends AbstractServiceProvider
 			UserSettingsBuilder::class,
 			SecurityService::class,
 			ValidateUser::class,
+			StatusRepository::class,
 		]],
 
 		// Entities - New instances (Data transfer objects)

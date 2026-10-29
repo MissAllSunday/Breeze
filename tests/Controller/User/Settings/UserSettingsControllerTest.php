@@ -6,6 +6,7 @@ namespace Breeze\Controller\User\Settings;
 
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Enums\PermissionsEnum;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Service\SecurityServiceInterface;
 use Breeze\Util\Form\UserSettingsBuilderInterface;
@@ -36,6 +37,8 @@ class UserSettingsControllerTest extends TestCase
 
 	private ValidateActionsInterface | MockObject $validateActions;
 
+	private StatusRepositoryInterface | MockObject $statusRepository;
+
 	/**
 	 * @throws Exception
 	 */
@@ -49,6 +52,7 @@ class UserSettingsControllerTest extends TestCase
 		$this->userSettingsBuilder = $this->createMock(UserSettingsBuilderInterface::class);
 		$this->securityService = $this->createMock(SecurityServiceInterface::class);
 		$this->validateActions = $this->createMock(ValidateActionsInterface::class);
+		$this->statusRepository = $this->createMock(StatusRepositoryInterface::class);
 
 		$this->userSettingsController = $this->buildController(false);
 	}
@@ -116,6 +120,7 @@ class UserSettingsControllerTest extends TestCase
 				$this->userSettingsBuilder,
 				$this->securityService,
 				$this->validateActions,
+				$this->statusRepository,
 			])
 			->onlyMethods(['isAllowedTo'])
 			->getMock();

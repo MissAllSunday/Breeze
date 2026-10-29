@@ -10,6 +10,7 @@ use Breeze\Entity\SettingsEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Enums\PermissionsEnum;
 use Breeze\Exceptions\ValidateException;
+use Breeze\Repository\StatusRepositoryInterface;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Service\SecurityServiceInterface;
 use Breeze\Traits\PermissionsTrait;
@@ -41,7 +42,8 @@ class UserSettingsController extends BaseController
 		protected ResponseInterface $response,
 		protected UserSettingsBuilderInterface $userSettingsBuilder,
 		protected SecurityServiceInterface $security,
-		protected ValidateActionsInterface $validateActions
+		protected ValidateActionsInterface $validateActions,
+		protected StatusRepositoryInterface $statusRepository
 	) {}
 
 	public function dispatch(): void
@@ -104,6 +106,10 @@ class UserSettingsController extends BaseController
 			$userSettings,
 			$userId
 		);
+
+		// The block list lives in these settings; the viewer's buddy-activity
+		// feed cache is owned by StatusRepository and must be dropped here.
+		$this->statusRepository->invalidateBuddyActivityCache($userId);
 
 		$this->setPersistenceMessage($this->getText('info_updated_settings'));
 		$this->response->redirect($scriptUrl . self::URL . ';u=' .
