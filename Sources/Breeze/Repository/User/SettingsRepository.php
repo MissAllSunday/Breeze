@@ -169,19 +169,16 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 	}
 
 	/**
-	 * Invalidate all caches that become stale when a user's block list changes:
-	 *   1. The user's own settings cache (so the new block list is loaded fresh).
-	 *   2. The user's buddy-activity initial-page cache (so the next feed load
-	 *      re-runs the query with the updated mutual-block exclusion set).
+	 * Invalidate the caches owned by this repository that become stale when a
+	 * user's block list changes: the user's own settings cache, so the new
+	 * block list is loaded fresh.
 	 *
-	 * The buddy-activity key pattern mirrors StatusRepository::CACHE_BY_BUDDY_ACTIVITY.
-	 * Both repositories share the same underlying CacheTrait storage, so the key
-	 * constructed here resolves to the same cache slot.
+	 * The buddy-activity feed cache lives in StatusRepository's key space and is
+	 * invalidated by the caller via StatusRepository::invalidateBuddyActivityCache().
 	 */
 	public function invalidateBlockListCaches(int $userId): void
 	{
 		$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);
-		$this->setCache(sprintf('getByBuddyActivity_viewer_%d', $userId), null);
 	}
 
 	public function enableAllWalls(): void
