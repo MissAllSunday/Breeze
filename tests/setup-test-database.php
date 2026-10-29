@@ -39,7 +39,6 @@ function createTestTables(PDO $pdo, string $prefix): void
 			`user_id` INT(4) NOT NULL,
 			`created_at` INT(11) NOT NULL DEFAULT 0,
 			`body` TEXT,
-			`likes` INT(4) NOT NULL DEFAULT 0,
 			PRIMARY KEY (`id`),
 			KEY `idx_wall_created_id` (`wall_id`, `created_at`, `id`),
 			KEY `idx_user_created_id` (`user_id`, `created_at`, `id`)
@@ -51,7 +50,6 @@ function createTestTables(PDO $pdo, string $prefix): void
 			`id` BIGINT(8) NOT NULL AUTO_INCREMENT,
 			`status_id` BIGINT(8) NOT NULL,
 			`user_id` INT(4) NOT NULL,
-			`likes` INT(4) NOT NULL DEFAULT 0,
 			`body` TEXT,
 			`created_at` INT(11) NOT NULL DEFAULT 0,
 			PRIMARY KEY (`id`),

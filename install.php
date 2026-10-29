@@ -85,12 +85,6 @@ if (empty($context['uninstalling'])) {
 				'null' => false,
 			],
 			[
-				'name' => 'likes',
-				'type' => 'int',
-				'size' => 4,
-				'null' => false,
-			],
-			[
 				'name' => 'body',
 				'type' => 'text',
 				'size' => '',
@@ -147,13 +141,6 @@ if (empty($context['uninstalling'])) {
 				'type' => 'int',
 				'size' => 4,
 				'null' => false,
-			],
-			[
-				'name' => 'likes',
-				'type' => 'int',
-				'size' => 4,
-				'null' => false,
-				'default' => 0,
 			],
 			[
 				'name' => 'body',
