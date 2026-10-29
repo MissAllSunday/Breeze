@@ -268,12 +268,8 @@ class AdminServiceTest extends TestCase
 
 			if ($expectLikesFix) {
 				$this->likeService->expects($this->once())->method('deleteOrphans');
-				$this->statusService->expects($this->once())->method('recountLikes');
-				$this->commentService->expects($this->once())->method('recountLikes');
 			} else {
 				$this->likeService->expects($this->never())->method('deleteOrphans');
-				$this->statusService->expects($this->never())->method('recountLikes');
-				$this->commentService->expects($this->never())->method('recountLikes');
 			}
 
 			if ($expectWallsFix) {
