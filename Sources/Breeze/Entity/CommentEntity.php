@@ -15,7 +15,6 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 	public const string STATUS_ID = 'status_id';
 	public const string USER_ID = 'user_id';
 	public const string BODY = 'body';
-	public const string LIKES = 'likes';
 
 	protected int $status_id = 0;
 
@@ -44,7 +43,6 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 			self::USER_ID,
 			self::CREATED_AT,
 			self::BODY,
-			self::LIKES,
 		];
 	}
 
@@ -61,8 +59,7 @@ class CommentEntity extends SharedEntity implements SharedEntityInterface
 		return match ($columnName) {
 			self::ID,
 			self::STATUS_ID,
-			self::USER_ID,
-			self::LIKES => (int) $value,
+			self::USER_ID => (int) $value,
 			self::CREATED_AT => new DateTimeImmutable('@' . $value),
 			default => (string) $value,
 		};
