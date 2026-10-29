@@ -52,7 +52,6 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 				CommentEntity::USER_ID => 'int',
 				SharedEntity::CREATED_AT => 'int',
 				CommentEntity::BODY => 'string',
-				CommentEntity::LIKES => 'int',
 			],
 			$commentEntity->toInsert(),
 			CommentEntity::ID

@@ -60,7 +60,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			StatusEntity::USER_ID => 'int',
 			SharedEntity::CREATED_AT => 'int',
 			StatusEntity::BODY => 'string',
-			StatusEntity::LIKES => 'int',
 		], $statusEntity->toInsert(), StatusEntity::ID);
 
 		$newStatusId = $this->dbClient->getInsertedId(StatusEntity::TABLE, StatusEntity::ID);
