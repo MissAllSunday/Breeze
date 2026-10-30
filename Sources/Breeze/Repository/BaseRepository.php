@@ -88,6 +88,20 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		return loadMemberData($userIds);
 	}
 
+	/**
+	 * Per-request memo of built member contexts.
+	 *
+	 * loadMemberContext() is SMF's heaviest per-member builder (avatar
+	 * resolution, group membership, formatting, every integration hook) and the
+	 * same member is requested repeatedly across a single page: as status
+	 * author, as liker, as comment author. Only real members are memoised —
+	 * guest fallbacks are not, or a member loaded later in the same request
+	 * would be served guest data.
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	private static array $usersInfoMemo = [];
+
 	public function loadUsersInfo(array $userIds = []): array
 	{
 		$userIds = array_unique($userIds);
@@ -110,11 +124,32 @@ abstract class BaseRepository implements BaseRepositoryInterface
 				continue;
 			}
 
-			$loadedUsers[$userId] = $this->trimUserData(loadMemberContext($userId, true));
-			$loadedUsers[$userId]['legacy_url'] = sprintf(ProfileService::LEGACY_URL, $userId);
+			if (isset(self::$usersInfoMemo[$userId])) {
+				$loadedUsers[$userId] = self::$usersInfoMemo[$userId];
+
+				continue;
+			}
+
+			$userData = $this->trimUserData(loadMemberContext($userId, true));
+			$userData['legacy_url'] = sprintf(ProfileService::LEGACY_URL, $userId);
+
+			self::$usersInfoMemo[$userId] = $userData;
+			$loadedUsers[$userId] = $userData;
 		}
 
 		return $loadedUsers;
+	}
+
+	/**
+	 * Clear the per-request member memo.
+	 *
+	 * Required by the test suite: PHPUnit runs every test in one process, so an
+	 * unreset static leaks member data between tests and produces
+	 * order-dependent failures.
+	 */
+	public static function resetUsersInfoMemo(): void
+	{
+		self::$usersInfoMemo = [];
 	}
 
 	public function getCurrentUserInfo(): array
