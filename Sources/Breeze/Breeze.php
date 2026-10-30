@@ -37,14 +37,14 @@ class Breeze
 	use PermissionsTrait;
 
 	public const string NAME = 'Breeze';
-	public const string VERSION = '2.0.0-beta.2';
+	public const string VERSION = '2.0.0';
 	public const string PATTERN = self::NAME . '_';
 	public const string CACHE_VERSION_KEY = 'cacheVersion';
 	public const int CACHE_VERSION_TTL = 86400;
 	public const string FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
 	public const string SUPPORT_URL = 'https://missallsunday.com';
-	public const string REACT_DOM_VERSION = '19.1.2';
-	public const string REACT_VERSION = '19.1.2';
+	public const string REACT_DOM_VERSION = '19.3.1';
+	public const string REACT_VERSION = '19.3.1';
 	public const string REACT_HASH = 'index-CXGbhuid';
 
 	public const string ACTION_STATUS = 'breezeStatus';
@@ -349,9 +349,4 @@ class Breeze
 	}
 }
 
-/*
-* Whatcha gonna do, where are you gonna go
-* When the darkness closes on you
-* Is there anybody out there looking for you?
-* Do they know what you've been through?
-*/
+// Can you summon your talent at will?

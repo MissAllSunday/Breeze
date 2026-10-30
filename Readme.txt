@@ -1,5 +1,5 @@
 ======================================================================
-  BREEZE 2.0.0-beta.2  -  Social Wall Mod for SMF 2.1
+  BREEZE 2.0.0  -  Social Wall Mod for SMF 2.1
   https://missallsunday.com
   License: Mozilla Public License 2.0
 ======================================================================
@@ -39,13 +39,20 @@ mention each other. Works with any SMF theme, no file edits required.
   [ Likes ]
 
     Any status or comment can be liked. Each member can only like a
-    given post once. The like count updates in real time.
+    given post once. The like count updates in real time. Likes follow
+    the standard SMF "enable likes" setting.
 
   [ General Wall ]
 
     A dedicated "Wall" page in the main navigation aggregates the
     latest posts from all of a member's buddies in one feed.
-    Visibility is controlled by a Breeze permission (see below).
+    Visibility is controlled by a Breeze permission (see below), and
+    each member can opt their own posts out of other people's feeds.
+
+  [ Single Status ]
+
+    Every status has its own permalink page, used by alerts and by the
+    like list so a member can jump straight to the original post.
 
   [ About Me tab ]
 
@@ -62,11 +69,18 @@ mention each other. Works with any SMF theme, no file edits required.
     Each user can maintain a private block list. Blocked members
     cannot view the wall owner's profile wall, and the wall owner
     will not see blocked members' walls either (symmetric blocking).
+    A block also hides the blocked member's posts from feeds, even
+    when a mutual buddy would otherwise surface them.
 
   [ Post Confirmation ]
 
     Users can opt in to a confirmation dialog that appears before
     every status or comment submission, preventing accidental posts.
+
+  [ Pagination ]
+
+    Walls load a fixed number of status updates per page (5 by
+    default, configurable per member) with a "Load more" button.
 
   [ Mentions ]
 
@@ -90,6 +104,11 @@ mention each other. Works with any SMF theme, no file edits required.
   ADMIN FEATURES
 ----------------------------------------------------------------------
 
+  [ Master Setting ]
+
+    Breeze is disabled until the master setting is turned on from
+    Admin > Configuration > Breeze Admin Panel > General settings.
+
   [ Flood Control ]
 
     Limit how many status updates and comments a member can post
@@ -112,12 +131,21 @@ mention each other. Works with any SMF theme, no file edits required.
       - Delete comments posted on their own profile wall
       - Access the general wall feed
 
+    Likes and mentions additionally follow the matching native SMF
+    settings and permissions.
+
   [ Maintenance Tools ]
 
     Built-in tools to detect and repair data inconsistencies:
     orphan comments (whose parent status was deleted), orphan likes
     (pointing to content that no longer exists), and a bulk action
     to enable the personal wall for every member at once.
+
+  [ Admin Panel Extras ]
+
+    The admin panel also reports the installed Breeze and React
+    versions, shows the latest releases from the support site, and
+    lists credits for the bundled libraries.
 
 ----------------------------------------------------------------------
   SUPPORT

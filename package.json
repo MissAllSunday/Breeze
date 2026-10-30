@@ -1,6 +1,6 @@
 {
   "name": "breeze",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "core-js": "^3.51.0",
