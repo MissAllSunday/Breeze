@@ -226,9 +226,19 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$queryParams
 		);
 
-		$comments = $this->commentRepository->getByProfile($buddyIds);
+		$rows = $this->collectRows($request);
 
-		$result = $this->prepareData($this->collectRows($request), $comments);
+		// Bound the comment fetch to the statuses on this page. Passing the
+		// buddy list to getByProfile() would return every comment on every
+		// buddy's wall — the worst fan-out in the mod.
+		$statusIds = array_values(array_map(
+			static fn (array $row): int => (int) $row[StatusEntity::ID],
+			$rows
+		));
+
+		$comments = $statusIds === [] ? [] : $this->commentRepository->getByStatus($statusIds);
+
+		$result = $this->prepareData($rows, $comments);
 
 		if ($cacheKey !== null) {
 			$this->setCache($cacheKey, $result);
