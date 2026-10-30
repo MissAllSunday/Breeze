@@ -41,6 +41,7 @@ yarn-error.log*
 .continue
 agents
 AGENTS.md
+/internals
 
 # Compiled source #
 ###################
