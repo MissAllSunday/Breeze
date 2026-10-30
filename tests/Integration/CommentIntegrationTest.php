@@ -9,6 +9,7 @@ use Breeze\Entity\CommentEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Fixtures\CommentFixtures;
 use Breeze\Fixtures\StatusFixtures;
+use Breeze\Repository\BaseRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\InvalidCommentException;
 use Breeze\Repository\InvalidStatusException;
@@ -60,6 +61,8 @@ class CommentIntegrationTest extends TestCase
 		}
 
 		global $testDbConfig;
+
+		BaseRepository::resetUsersInfoMemo();
 
 		// Ensure a clean state before every test
 		truncateTestTables(self::$pdo, $testDbConfig['prefix']);

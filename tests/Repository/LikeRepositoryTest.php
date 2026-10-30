@@ -26,6 +26,7 @@ class LikeRepositoryTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
+		BaseRepository::resetUsersInfoMemo();
 		$this->dbClient = $this->createMock(ClientInterface::class);
 		$this->likeRepository = new LikeRepository($this->dbClient);
 	}

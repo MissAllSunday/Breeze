@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Service;
 
+use Breeze\Repository\BaseRepository;
 use Breeze\Repository\BaseRepositoryInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\Exception;
@@ -22,6 +23,7 @@ class MentionServiceTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
+		BaseRepository::resetUsersInfoMemo();
 		$this->userRepository = $this->createMock(BaseRepositoryInterface::class);
 
 		// Stub requireOnce so the constructor does not attempt require_once on Mentions.php

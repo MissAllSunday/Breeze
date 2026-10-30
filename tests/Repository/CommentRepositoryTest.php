@@ -34,6 +34,7 @@ class CommentRepositoryTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
+		BaseRepository::resetUsersInfoMemo();
 		$this->dbClient = $this->createMock(ClientInterface::class);
 		$this->likeRepository = $this->createMock(LikeRepositoryInterface::class);
 		$this->commentRepository = $this->getMockBuilder(CommentRepository::class)

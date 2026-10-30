@@ -7,6 +7,7 @@ namespace Breeze\Integration;
 use Breeze\Database\DatabaseClient;
 use Breeze\Entity\StatusEntity;
 use Breeze\Fixtures\StatusFixtures;
+use Breeze\Repository\BaseRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\InvalidStatusException;
 use Breeze\Repository\LikeRepository;
@@ -63,6 +64,8 @@ class StatusIntegrationTest extends TestCase
 	protected function tearDown(): void
 	{
 		global $testDbConfig;
+
+		BaseRepository::resetUsersInfoMemo();
 
 		// Clean up test data after each test
 		truncateTestTables(self::$pdo, $testDbConfig['prefix']);

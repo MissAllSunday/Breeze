@@ -18,6 +18,7 @@ use Breeze\Event\Status\StatusEventListener;
 use Breeze\Fixtures\CommentFixtures;
 use Breeze\Fixtures\StatusFixtures;
 use Breeze\Repository\AlertRepository;
+use Breeze\Repository\BaseRepository;
 use Breeze\Repository\CommentRepository;
 use Breeze\Repository\LikeRepository;
 use Breeze\Repository\StatusRepository;
@@ -70,6 +71,8 @@ class FullStatusInteractionTest extends TestCase
 		}
 
 		global $testDbConfig;
+
+		BaseRepository::resetUsersInfoMemo();
 
 		// Ensure a clean state before every test
 		truncateTestTables(self::$pdo, $testDbConfig['prefix']);

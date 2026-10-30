@@ -29,6 +29,7 @@ class BaseRepositoryTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
+		BaseRepository::resetUsersInfoMemo();
 		$this->dbClient = $this->createMock(ClientInterface::class);
 		$this->repository = new AlertRepository($this->dbClient);
 		$this->queryObject = new stdClass();
