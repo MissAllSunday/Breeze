@@ -147,9 +147,20 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 			$queryParams
 		);
 
-		$comments = $this->commentRepository->getByProfile($data);
+		$rows = $this->collectRows($request);
 
-		return $this->prepareData($this->collectRows($request), $comments);
+		// Bound the comment fetch to the statuses actually on this page.
+		// getByProfile($data) would return every comment ever written on every
+		// wall in the list — unbounded, unordered, and almost entirely discarded
+		// by setComments().
+		$statusIds = array_values(array_map(
+			static fn (array $row): int => (int) $row[StatusEntity::ID],
+			$rows
+		));
+
+		$comments = $statusIds === [] ? [] : $this->commentRepository->getByStatus($statusIds);
+
+		return $this->prepareData($rows, $comments);
 	}
 
 	public function getByBuddyActivity(array $buddyIds = [], int $maxIndex = 0, ?string $cursor = null, array $excludeIds = [], int $viewerId = 0): array
