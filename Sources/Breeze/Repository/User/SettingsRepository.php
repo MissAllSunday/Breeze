@@ -162,10 +162,8 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 			OptionsEntity::MEMBER_ID
 		);
 
-		if ($result !== 0) {
-			Breeze::bumpCacheVersion();
-			$this->invalidateBlockListCaches($userId);
-		}
+		Breeze::bumpCacheVersion();
+		$this->invalidateBlockListCaches($userId);
 
 		return $result !== 0;
 	}
