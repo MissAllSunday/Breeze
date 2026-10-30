@@ -94,10 +94,13 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		$loadedUsers = [];
 
 		$modSettings = $this->global('modSettings');
-		$loadedIDs = $this->getUsersToLoad($userIds);
+
+		// loadMemberData() returns a list of member ids; flipping it turns the
+		// per-iteration membership test from a linear scan into a hash lookup.
+		$loadedIDs = array_flip($this->getUsersToLoad($userIds));
 
 		foreach ($userIds as $userId) {
-			if (!in_array($userId, $loadedIDs)) {
+			if (!isset($loadedIDs[$userId])) {
 				$loadedUsers[$userId] = [
 					'link' => $this->getSmfText('guest_title'),
 					'name' => $this->getSmfText('guest_title'),
