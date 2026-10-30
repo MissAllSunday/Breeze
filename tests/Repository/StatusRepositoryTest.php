@@ -200,7 +200,7 @@ class StatusRepositoryTest extends TestCase
 
 		$this->statusRepository->expects($this->once())
 			->method('prepareData')
-			->with($this->queryObject)
+			->with([])
 			->willReturn($mockData);
 
 		$result = $this->statusRepository->getById(5);
@@ -292,7 +292,7 @@ class StatusRepositoryTest extends TestCase
 
 		$this->statusRepository->expects($this->once())
 			->method('prepareData')
-			->with($mockQueryObject)
+			->with([])
 			->willReturn($mockData);
 
 		$result = $this->statusRepository->getByProfile([10]);
@@ -314,7 +314,7 @@ class StatusRepositoryTest extends TestCase
 
 		$this->statusRepository->expects($this->once())
 			->method('prepareData')
-			->with($this->queryObject, [])
+			->with([], [])
 			->willReturn($expected);
 
 		$result = $this->statusRepository->getBy($columnName, $data, $maxIndex);

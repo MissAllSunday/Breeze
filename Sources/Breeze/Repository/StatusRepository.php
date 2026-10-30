@@ -149,7 +149,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$comments = $this->commentRepository->getByProfile($data);
 
-		return $this->prepareData($request, $comments);
+		return $this->prepareData($this->collectRows($request), $comments);
 	}
 
 	public function getByBuddyActivity(array $buddyIds = [], int $maxIndex = 0, ?string $cursor = null, array $excludeIds = [], int $viewerId = 0): array
@@ -217,7 +217,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$comments = $this->commentRepository->getByProfile($buddyIds);
 
-		$result = $this->prepareData($request, $comments);
+		$result = $this->prepareData($this->collectRows($request), $comments);
 
 		if ($cacheKey !== null) {
 			$this->setCache($cacheKey, $result);
@@ -258,7 +258,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$comments = $this->commentRepository->getByStatus([$id]);
 
-		$preparedData = $this->prepareData($request, $comments);
+		$preparedData = $this->prepareData($this->collectRows($request), $comments);
 
 		if (!isset($preparedData[$id])) {
 			throw new DataNotFoundException('error_no_status');
@@ -366,22 +366,42 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
+	 * Drain a result handle into raw rows and release it.
+	 *
+	 * Split out of prepareData() so callers can inspect the page's rows — and
+	 * therefore its status ids — before deciding which comments to fetch.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function collectRows(object $request): array
+	{
+		$rows = [];
+
+		while ($row = $this->dbClient->fetchAssoc($request)) {
+			$rows[] = $row;
+		}
+
+		$this->dbClient->freeResult($request);
+
+		return $rows;
+	}
+
+	/**
+	 * @param array $rows Raw status rows, as returned by collectRows()
 	 * @param array $comments [CommentEntity]
 	 * @return array [StatusEntity]
 	 */
-	protected function prepareData(object $request, array $comments = []): array
+	protected function prepareData(array $rows, array $comments = []): array
 	{
 		$status = [];
 		$usersIds = [];
 
-		while ($row = $this->dbClient->fetchAssoc($request)) {
+		foreach ($rows as $row) {
 			$row[StatusEntity::BODY] = Parser::bbc($row[StatusEntity::BODY]);
 			$status[$row[StatusEntity::ID]] = StatusEntity::from($row);
 			$usersIds[] = $row[StatusEntity::WALL_ID];
 			$usersIds[] = $row[StatusEntity::USER_ID];
 		}
-
-		$this->dbClient->freeResult($request);
 
 		return $this->setComments(
 			$this->setLikes(
