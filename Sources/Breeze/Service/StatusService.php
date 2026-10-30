@@ -205,11 +205,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 	 */
 	private function filterCommentsOnStatuses(array $statuses, int $viewerId): void
 	{
-		foreach ($statuses as $status) {
-			$status->setComments(
-				$this->wallVisibilityService->filterVisibleComments($status->getComments(), $viewerId)
-			);
-		}
+		$this->wallVisibilityService->filterVisibleCommentsForStatuses($statuses, $viewerId);
 	}
 
 	/**

@@ -82,7 +82,7 @@ class StatusServiceTest extends TestCase
 		$this->wallVisibilityService->expects($this->never())
 			->method('filterStatusesForFeed');
 		$this->wallVisibilityService->expects($this->once())
-			->method('filterVisibleComments')
+			->method('filterVisibleCommentsForStatuses')
 			->willReturnArgument(0);
 
 		$result = $this->statusService->getByProfile($wallId);
@@ -407,7 +407,7 @@ class StatusServiceTest extends TestCase
 			->method('filterStatusesForWall')
 			->willReturnArgument(0);
 		$this->wallVisibilityService->expects($this->once())
-			->method('filterVisibleComments')
+			->method('filterVisibleCommentsForStatuses')
 			->willReturnArgument(0);
 
 		$this->statusService = $this->getMockBuilder(StatusService::class)
@@ -449,7 +449,7 @@ class StatusServiceTest extends TestCase
 			->method('filterStatusesForWall')
 			->willReturn([]);
 		$this->wallVisibilityService->expects($this->never())
-			->method('filterVisibleComments');
+			->method('filterVisibleCommentsForStatuses');
 
 		$this->statusService = $this->getMockBuilder(StatusService::class)
 			->setConstructorArgs([
@@ -546,7 +546,7 @@ class StatusServiceTest extends TestCase
 		$this->wallVisibilityService->expects($this->never())
 			->method('filterStatusesForWall');
 		$this->wallVisibilityService->expects($this->once())
-			->method('filterVisibleComments')
+			->method('filterVisibleCommentsForStatuses')
 			->willReturnArgument(0);
 
 		$this->statusService = $this->getMockBuilder(StatusService::class)

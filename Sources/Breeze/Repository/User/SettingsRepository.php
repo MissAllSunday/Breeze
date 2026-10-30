@@ -19,6 +19,16 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 	public const array ARRAY_VALUES = ['blockListIDs'];
 
 	/**
+	 * @var array<int, UserSettingsEntity>
+	 */
+	private static array $settingsMemo = [];
+
+	public static function resetSettingsMemo(): void
+	{
+		self::$settingsMemo = [];
+	}
+
+	/**
 	 * @throws DataNotFoundException
 	 */
 	public function getById(int $id): UserSettingsEntity
@@ -79,9 +89,16 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 		$cacheMisses = [];
 
 		foreach ($ids as $id) {
+			if (isset(self::$settingsMemo[$id])) {
+				$entities[$id] = self::$settingsMemo[$id];
+
+				continue;
+			}
+
 			$cached = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $id));
 			if ($cached !== null) {
 				$entities[$id] = UserSettingsEntity::from($cached);
+				self::$settingsMemo[$id] = $entities[$id];
 			} else {
 				$cacheMisses[] = $id;
 			}
@@ -128,6 +145,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 
 			$entity = UserSettingsEntity::from($userData);
 			$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $memberId), $entity);
+			self::$settingsMemo[$memberId] = $entity;
 			$entities[$memberId] = $entity;
 		}
 

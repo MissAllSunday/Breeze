@@ -26,6 +26,7 @@ class SettingsRepositoryTest extends TestCase
 	 */
 	protected function setUp(): void
 	{
+		SettingsRepository::resetSettingsMemo();
 		$this->dbClient = $this->createMock(ClientInterface::class);
 		$this->settingsRepository = new SettingsRepository($this->dbClient);
 	}

@@ -73,6 +73,7 @@ class FullStatusInteractionTest extends TestCase
 		global $testDbConfig;
 
 		BaseRepository::resetUsersInfoMemo();
+		UserSettingsRepository::resetSettingsMemo();
 
 		// Ensure a clean state before every test
 		truncateTestTables(self::$pdo, $testDbConfig['prefix']);
