@@ -394,4 +394,62 @@ class CommentIntegrationTest extends TestCase
 		$orphanCount = self::$commentRepository->countOrphans();
 		$this->assertEquals(0, $orphanCount);
 	}
+
+	/**
+	 * Paging a wall must only fetch — and only carry — the comments belonging
+	 * to the statuses on that page. Before the bounded fetch, getByProfile()
+	 * pulled every comment on the wall and setComments() discarded the rest.
+	 *
+	 * @throws InvalidCommentException
+	 * @throws InvalidStatusException
+	 */
+	public function testPagedWallOnlyCarriesCommentsForTheStatusesOnThePage(): void
+	{
+		$wallId = 100;
+
+		$statusIds = [];
+		foreach (['A', 'B', 'C'] as $label) {
+			$statusData = StatusFixtures::forInsertion();
+			$statusData[StatusEntity::USER_ID] = 100;
+			$statusData[StatusEntity::WALL_ID] = $wallId;
+			$statusData[StatusEntity::BODY] = "Status {$label}";
+
+			$inserted = self::$statusRepository->insert(StatusEntity::from($statusData));
+			$statusIds[$label] = $inserted[0]->getId();
+		}
+
+		// Two comments on the oldest status, two on the newest.
+		foreach (['A', 'C'] as $label) {
+			for ($i = 0; $i < 2; $i++) {
+				$commentData = CommentFixtures::forInsertion();
+				$commentData[CommentEntity::STATUS_ID] = $statusIds[$label];
+				$commentData[CommentEntity::USER_ID] = 100;
+				$commentData[CommentEntity::BODY] = "Comment {$i} on status {$label}";
+
+				self::$commentRepository->insert(CommentEntity::from($commentData));
+			}
+		}
+
+		$page = self::$statusRepository->getByProfile([$wallId], 1);
+
+		$this->assertCount(1, $page);
+
+		// Newest first, so the page holds status C and none of A's comments.
+		$status = reset($page);
+		$this->assertInstanceOf(StatusEntity::class, $status);
+		$this->assertEquals($statusIds['C'], $status->getId());
+
+		$comments = $status->getComments();
+		$this->assertCount(2, $comments);
+
+		foreach ($comments as $comment) {
+			$this->assertEquals($statusIds['C'], $comment->getStatusId());
+		}
+
+		// Nothing was deleted to achieve the bound.
+		global $testDbConfig;
+		$prefix = $testDbConfig['prefix'];
+		$count = self::$pdo->query("SELECT COUNT(*) FROM `{$prefix}breeze_comments`");
+		$this->assertEquals(4, (int) $count->fetchColumn());
+	}
 }
