@@ -168,14 +168,6 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 		return $result !== 0;
 	}
 
-	/**
-	 * Invalidate the caches owned by this repository that become stale when a
-	 * user's block list changes: the user's own settings cache, so the new
-	 * block list is loaded fresh.
-	 *
-	 * The buddy-activity feed cache lives in StatusRepository's key space and is
-	 * invalidated by the caller via StatusRepository::invalidateBuddyActivityCache().
-	 */
 	public function invalidateBlockListCaches(int $userId): void
 	{
 		$this->setCache(sprintf(OptionsEntity::CACHE_NAME, $userId), null);

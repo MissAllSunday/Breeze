@@ -129,10 +129,6 @@ class CommentRepositoryTest extends TestCase
 	}
 
 	/**
-	 * Regression test for the cache-key collision: StatusRepository and
-	 * CommentRepository both used the bare key `getById_<id>`, so whichever
-	 * wrote first could hand the other a type-confused entity.
-	 *
 	 * @throws DataNotFoundException
 	 */
 	public function testGetByIdDoesNotServeAStatusEntityFromItsCacheSlot(): void
@@ -147,7 +143,6 @@ class CommentRepositoryTest extends TestCase
 			),
 		];
 
-		// Simulate a poisoned slot: whatever the cache hands back is a status.
 		$repository = $this->getMockBuilder(CommentRepository::class)
 			->setConstructorArgs([$this->dbClient, $this->likeRepository])
 			->onlyMethods(['prepareData', 'loadUsersInfo', 'getCache'])
@@ -158,7 +153,6 @@ class CommentRepositoryTest extends TestCase
 			->with('getById_5')
 			->willReturn($poisonedStatus);
 
-		// The read must fall through to the database instead of returning it.
 		$this->dbClient->expects($this->once())
 			->method('query')
 			->willReturn($this->queryObject);
@@ -173,7 +167,6 @@ class CommentRepositoryTest extends TestCase
 		$this->assertInstanceOf(CommentEntity::class, $result);
 		$this->assertEquals($commentHandledEntities[5], $result);
 
-		// And the two repositories no longer share a key space at all.
 		$buildKey = new \ReflectionMethod(CommentRepository::class, 'buildKey');
 		$commentRepository = new CommentRepository($this->dbClient, $this->likeRepository);
 		$statusRepository = new StatusRepository(

@@ -122,10 +122,6 @@ class StatusRepositoryTest extends TestCase
 	}
 
 	/**
-	 * The wall profile cache is written under a key that embeds the wall's own
-	 * pagination number, so invalidation must build the same key. Asserting
-	 * `_5` (the default) and not `_0` is what catches the mismatch.
-	 *
 	 * @throws InvalidStatusException|DateMalformedStringException
 	 */
 	public function testInsertInvalidatesTheProfileCacheKeyThatIsActuallyWritten(): void
@@ -284,8 +280,6 @@ class StatusRepositoryTest extends TestCase
 			->method('query')
 			->willReturn($mockQueryObject);
 
-		// No rows come back from the mocked handle, so the bounded comment
-		// fetch must be skipped entirely rather than emitting `IN ()`.
 		$this->commentRepository->expects($this->never())
 			->method('getByStatus');
 
@@ -303,11 +297,6 @@ class StatusRepositoryTest extends TestCase
 	}
 
 	/**
-	 * The comment fetch must be bounded to the statuses on the page. Seeding a
-	 * comment on an off-page status proves getByStatus() is called with exactly
-	 * the returned status id, and that the off-page comment never reaches the
-	 * page — the pre-fix code fetched every comment on the wall.
-	 *
 	 * @throws DataNotFoundException
 	 */
 	public function testGetByProfileOnlyFetchesCommentsForTheStatusesOnThePage(): void
@@ -317,7 +306,6 @@ class StatusRepositoryTest extends TestCase
 		$offPageId = 2;
 		$now = time();
 
-		// Real prepareData(): only the member load is stubbed.
 		$statusRepository = $this->getMockBuilder(StatusRepository::class)
 			->setConstructorArgs([$this->dbClient, $this->commentRepository, $this->likeRepository])
 			->onlyMethods(['loadUsersInfo'])
@@ -330,7 +318,6 @@ class StatusRepositoryTest extends TestCase
 			->method('query')
 			->willReturn($this->queryObject);
 
-		// The page holds a single status; the second one is off-page.
 		$this->dbClient->method('fetchAssoc')
 			->willReturnOnConsecutiveCalls([
 				StatusEntity::ID => $onPageId,

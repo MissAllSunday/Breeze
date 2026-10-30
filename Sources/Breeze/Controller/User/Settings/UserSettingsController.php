@@ -107,8 +107,6 @@ class UserSettingsController extends BaseController
 			$userId
 		);
 
-		// The block list lives in these settings; the viewer's buddy-activity
-		// feed cache is owned by StatusRepository and must be dropped here.
 		$this->statusRepository->invalidateBuddyActivityCache($userId);
 
 		$this->setPersistenceMessage($this->getText('info_updated_settings'));

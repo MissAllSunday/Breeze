@@ -8,21 +8,8 @@ use PDO;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Schema drift guard for the Breeze content tables.
- *
- * The test database is created by tests/setup-test-database.php, which must
- * mirror install.php. These assertions fail whenever the two drift apart, so
- * a schema regression cannot slip through the integration suite.
- *
- * When the shipped schema changes, update EXPECTED_SCHEMA (and only
- * EXPECTED_SCHEMA) plus install.php and tests/setup-test-database.php.
- */
 class SchemaIntegrationTest extends TestCase
 {
-	/**
-	 * The expected shape of both content tables, as defined by install.php.
-	 */
 	private const array EXPECTED_SCHEMA = [
 		'breeze_status' => [
 			'columns' => [

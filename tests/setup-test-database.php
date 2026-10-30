@@ -19,14 +19,6 @@ require_once __DIR__ . '/database-config.php';
 /**
  * Create all test tables based on install.php schema.
  *
- * No CHARSET/COLLATE is pinned on purpose. SMF's smf_db_create_table() only
- * honours $parameters['engine'] and otherwise emits no charset clause (it
- * appends utf8/utf8_general_ci solely when $db_character_set === 'utf8'), so
- * installed Breeze tables inherit the forum database default. Pinning a
- * collation here would make the tests validate a table definition production
- * never gets, and a mismatch across joined tables forces a conversion that
- * defeats index use on that side of the join.
- *
  * @param PDO $pdo Active database connection
  * @param string $prefix Table prefix (e.g. 'smf_')
  */

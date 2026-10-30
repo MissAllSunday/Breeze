@@ -89,15 +89,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 	}
 
 	/**
-	 * Per-request memo of built member contexts.
-	 *
-	 * loadMemberContext() is SMF's heaviest per-member builder (avatar
-	 * resolution, group membership, formatting, every integration hook) and the
-	 * same member is requested repeatedly across a single page: as status
-	 * author, as liker, as comment author. Only real members are memoised —
-	 * guest fallbacks are not, or a member loaded later in the same request
-	 * would be served guest data.
-	 *
 	 * @var array<int, array<string, mixed>>
 	 */
 	private static array $usersInfoMemo = [];
@@ -109,8 +100,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
 		$modSettings = $this->global('modSettings');
 
-		// loadMemberData() returns a list of member ids; flipping it turns the
-		// per-iteration membership test from a linear scan into a hash lookup.
 		$loadedIDs = array_flip($this->getUsersToLoad($userIds));
 
 		foreach ($userIds as $userId) {
@@ -140,13 +129,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 		return $loadedUsers;
 	}
 
-	/**
-	 * Clear the per-request member memo.
-	 *
-	 * Required by the test suite: PHPUnit runs every test in one process, so an
-	 * unreset static leaks member data between tests and produces
-	 * order-dependent failures.
-	 */
 	public static function resetUsersInfoMemo(): void
 	{
 		self::$usersInfoMemo = [];

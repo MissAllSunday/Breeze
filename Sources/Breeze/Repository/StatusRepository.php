@@ -149,10 +149,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$rows = $this->collectRows($request);
 
-		// Bound the comment fetch to the statuses actually on this page.
-		// getByProfile($data) would return every comment ever written on every
-		// wall in the list — unbounded, unordered, and almost entirely discarded
-		// by setComments().
 		$statusIds = array_values(array_map(
 			static fn (array $row): int => (int) $row[StatusEntity::ID],
 			$rows
@@ -228,9 +224,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 
 		$rows = $this->collectRows($request);
 
-		// Bound the comment fetch to the statuses on this page. Passing the
-		// buddy list to getByProfile() would return every comment on every
-		// buddy's wall — the worst fan-out in the mod.
 		$statusIds = array_values(array_map(
 			static fn (array $row): int => (int) $row[StatusEntity::ID],
 			$rows
@@ -387,11 +380,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * Drain a result handle into raw rows and release it.
-	 *
-	 * Split out of prepareData() so callers can inspect the page's rows — and
-	 * therefore its status ids — before deciding which comments to fetch.
-	 *
 	 * @return array<int, array<string, mixed>>
 	 */
 	private function collectRows(object $request): array
@@ -408,7 +396,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 	}
 
 	/**
-	 * @param array $rows Raw status rows, as returned by collectRows()
 	 * @param array $comments [CommentEntity]
 	 * @return array [StatusEntity]
 	 */
@@ -510,16 +497,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$this->setCache(sprintf('%s_viewer_%d', self::CACHE_BY_BUDDY_ACTIVITY, $viewerId), null);
 	}
 
-	/**
-	 * Invalidate the initial-page cache entry for a specific wall profile.
-	 *
-	 * The key must be built with the same `maxIndex` getByProfile() writes with
-	 * — the wall's own pagination setting — otherwise the invalidation never
-	 * matches and the wall only refreshes on TTL expiry.
-	 *
-	 * Note: Cursor-based pagination cache entries will naturally expire.
-	 * We only invalidate the initial page as it's the most commonly accessed.
-	 */
 	protected function invalidateProfileCache(int $wallId): void
 	{
 		$this->setCache(
@@ -533,11 +510,6 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		);
 	}
 
-	/**
-	 * The wall's pagination setting, which is the `maxIndex` segment of its
-	 * profile cache key. Falls back to the entity default when the settings
-	 * repository is unavailable or the wall has no settings row.
-	 */
 	protected function getWallPaginationNumber(int $wallId): int
 	{
 		$default = (int) UserSettingsEntity::getDefaultValues()[UserSettingsEntity::PAGINATION_NUM];

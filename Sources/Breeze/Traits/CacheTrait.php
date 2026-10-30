@@ -24,10 +24,6 @@ trait CacheTrait
 		cache_put_data($this->buildKey($key), $data, $timeToLive);
 	}
 
-	/**
-	 * Build a cache key namespaced by the using class, so two classes that
-	 * happen to share a key shape (e.g. `getById`) cannot poison each other.
-	 */
 	private function buildKey(string $key): string
 	{
 		static $shortNames = [];
