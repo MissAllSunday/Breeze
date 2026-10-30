@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Breeze;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeInfoEntity;
@@ -167,6 +168,8 @@ class CommentRepositoryTest extends TestCase
 		$this->assertInstanceOf(CommentEntity::class, $result);
 		$this->assertEquals($commentHandledEntities[5], $result);
 
+		Breeze::resetCacheVersion();
+
 		$buildKey = new \ReflectionMethod(CommentRepository::class, 'buildKey');
 		$commentRepository = new CommentRepository($this->dbClient, $this->likeRepository);
 		$statusRepository = new StatusRepository(
@@ -175,12 +178,14 @@ class CommentRepositoryTest extends TestCase
 			$this->likeRepository
 		);
 
+		$version = Breeze::cacheVersion();
+
 		$this->assertEquals(
-			'Breeze_CommentRepository_getById_5',
+			sprintf('Breeze_v%d_CommentRepository_getById_5', $version),
 			$buildKey->invoke($commentRepository, 'getById_5')
 		);
 		$this->assertEquals(
-			'Breeze_StatusRepository_getById_5',
+			sprintf('Breeze_v%d_StatusRepository_getById_5', $version),
 			$buildKey->invoke($statusRepository, 'getById_5')
 		);
 	}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Breeze;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
@@ -69,6 +70,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$commentEntity->setId($newCommentId);
 
 		// Invalidate cache for the status
+		Breeze::bumpCacheVersion();
 		$this->invalidateStatusCache($commentEntity->getStatusId());
 
 		return $this->setLikes(
@@ -83,7 +85,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 
 		$cached = $this->getCache($cacheKey);
 
-		if ($cached !== []) {
+		if ($cached !== null) {
 			return $cached;
 		}
 
@@ -116,7 +118,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		$cacheKey = sprintf('%s_%s', self::CACHE_BY_STATUS, implode('_', $statusIds));
 
 		$cached = $this->getCache($cacheKey);
-		if ($cached !== []) {
+		if ($cached !== null) {
 			return $cached;
 		}
 
@@ -200,6 +202,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 		}
 
 		// Invalidate caches
+		Breeze::bumpCacheVersion();
 		$this->setCache(sprintf('%s_%d', self::CACHE_BY_ID, $commentId), null);
 		if ($statusId !== null) {
 			$this->invalidateStatusCache($statusId);
@@ -211,6 +214,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 	public function deleteByStatusId(int $statusId): bool
 	{
 		// Invalidate cache for this status
+		Breeze::bumpCacheVersion();
 		$this->invalidateStatusCache($statusId);
 
 		return $this->dbClient->delete(

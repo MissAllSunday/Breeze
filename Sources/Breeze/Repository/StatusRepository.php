@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository;
 
+use Breeze\Breeze;
 use Breeze\Database\ClientInterface;
 use Breeze\Entity\CommentEntity;
 use Breeze\Entity\SharedEntity;
@@ -75,6 +76,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		$statusEntity->setIsNew(true);
 
 		// Invalidate cache for the wall profile
+		Breeze::bumpCacheVersion();
 		$this->invalidateProfileCache($statusEntity->getWallId());
 
 		return $this->setLikes($this->setUsers([$statusEntity], [$statusEntity->getUserId()]), LikesEnum::Status);
@@ -95,7 +97,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		);
 
 		$cached = $this->getCache($cacheKey);
-		if ($cached !== []) {
+		if ($cached !== null) {
 			return $cached;
 		}
 
@@ -170,7 +172,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		if ($cursor === null && $viewerId > 0) {
 			$cacheKey = sprintf('%s_viewer_%d', self::CACHE_BY_BUDDY_ACTIVITY, $viewerId);
 			$cached = $this->getCache($cacheKey);
-			if ($cached !== []) {
+			if ($cached !== null) {
 				return $cached;
 			}
 		}
@@ -334,6 +336,7 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
 		}
 
 		// Invalidate caches
+		Breeze::bumpCacheVersion();
 		$this->setCache(sprintf('%s_%d', self::CACHE_BY_ID, $statusId), null);
 		if ($wallId !== null) {
 			$this->invalidateProfileCache($wallId);

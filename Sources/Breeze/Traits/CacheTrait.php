@@ -11,12 +11,10 @@ trait CacheTrait
 {
 	public function getCache(string $key, int $timeToLive = 360): mixed
 	{
-		$data = cache_get_data(
+		return cache_get_data(
 			$this->buildKey($key),
 			$timeToLive
 		);
-
-		return $data ?? [];
 	}
 
 	public function setCache(string $key, array | EntityInterface | int | null $data, int $timeToLive = 360): void
@@ -35,6 +33,7 @@ trait CacheTrait
 			$shortNames[$class] = end($namespaces);
 		}
 
-		return Breeze::PATTERN . $shortNames[$class] . '_' . str_replace('::', '_', $key);
+		return Breeze::PATTERN . 'v' . Breeze::cacheVersion() . '_' .
+			$shortNames[$class] . '_' . str_replace('::', '_', $key);
 	}
 }

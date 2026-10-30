@@ -101,7 +101,7 @@ class StatusService extends BaseService implements StatusServiceInterface
 		$cacheKey = sprintf('count_%s_%s', $columnName, implode('_', $ids));
 
 		$cached = $this->getCache($cacheKey, 300);
-		if ($cached !== null && $cached !== []) {
+		if ($cached !== null) {
 			return is_int($cached) ? $cached : 0;
 		}
 

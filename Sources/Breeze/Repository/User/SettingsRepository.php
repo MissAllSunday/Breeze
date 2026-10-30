@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Breeze\Repository\User;
 
+use Breeze\Breeze;
 use Breeze\Entity\MemberEntity;
 use Breeze\Entity\OptionsEntity;
 use Breeze\Entity\UserSettingsEntity;
@@ -24,7 +25,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 	{
 		$userSettings = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $id));
 
-		if ($userSettings === []) {
+		if ($userSettings === null) {
 			$result = $this->dbClient->query(
 				'SELECT op.' . (implode(', op.', OptionsEntity::getColumns())) . ',
 			mem.' . (implode(', mem.', MemberEntity::getColumns())) . '
@@ -79,7 +80,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 
 		foreach ($ids as $id) {
 			$cached = $this->getCache(sprintf(OptionsEntity::CACHE_NAME, $id));
-			if ($cached !== []) {
+			if ($cached !== null) {
 				$entities[$id] = UserSettingsEntity::from($cached);
 			} else {
 				$cacheMisses[] = $id;
@@ -162,6 +163,7 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 		);
 
 		if ($result !== 0) {
+			Breeze::bumpCacheVersion();
 			$this->invalidateBlockListCaches($userId);
 		}
 
@@ -203,6 +205,8 @@ class SettingsRepository extends BaseRepository implements SettingsRepositoryInt
 				'one' => '1',
 			]
 		);
+
+		Breeze::bumpCacheVersion();
 	}
 
 	public function getTableName(): string

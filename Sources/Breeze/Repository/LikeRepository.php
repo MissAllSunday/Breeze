@@ -58,7 +58,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		);
 
 		$cached = $this->getCache($cacheKey);
-		if ($cached !== []) {
+		if ($cached !== null) {
 			return array_map(function ($item) {
 				return is_array($item) ? LikeInfoEntity::from($item) : $item;
 			}, $cached);
@@ -141,6 +141,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}
 
 		// Invalidate cache for this content
+		Breeze::bumpCacheVersion();
 		$this->invalidateContentCache($likeEntity->getContentType(), $likeEntity->getContentId());
 	}
 
@@ -154,6 +155,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		], $likeEntity->toInsert(), [LikeEntity::ID, LikeEntity::TYPE, LikeEntity::ID_MEMBER]);
 
 		// Invalidate cache for this content
+		Breeze::bumpCacheVersion();
 		$this->invalidateContentCache($likeEntity->getContentType(), $likeEntity->getContentId());
 
 		$contentId = $likeEntity->getContentId();

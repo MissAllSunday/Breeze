@@ -39,6 +39,8 @@ class Breeze
 	public const string NAME = 'Breeze';
 	public const string VERSION = '2.0.0-beta.2';
 	public const string PATTERN = self::NAME . '_';
+	public const string CACHE_VERSION_KEY = 'cacheVersion';
+	public const int CACHE_VERSION_TTL = 86400;
 	public const string FEED = 'https://api.github.com/repos/MissAllSunday/Breeze/releases';
 	public const string SUPPORT_URL = 'https://missallsunday.com';
 	public const string REACT_DOM_VERSION = '19.1.2';
@@ -59,6 +61,38 @@ class Breeze
 	public const string SCRIPT_URL ='scripturl';
 
 	protected Container $container;
+
+	private static ?int $cacheVersion = null;
+
+	public static function cacheVersion(): int
+	{
+		if (self::$cacheVersion === null) {
+			$stored = cache_get_data(
+				self::PATTERN . self::CACHE_VERSION_KEY,
+				self::CACHE_VERSION_TTL
+			);
+
+			self::$cacheVersion = is_numeric($stored) ? (int) $stored : 1;
+		}
+
+		return self::$cacheVersion;
+	}
+
+	public static function bumpCacheVersion(): void
+	{
+		self::$cacheVersion = self::cacheVersion() + 1;
+
+		cache_put_data(
+			self::PATTERN . self::CACHE_VERSION_KEY,
+			self::$cacheVersion,
+			self::CACHE_VERSION_TTL
+		);
+	}
+
+	public static function resetCacheVersion(): void
+	{
+		self::$cacheVersion = null;
+	}
 
 	public function __construct()
 	{

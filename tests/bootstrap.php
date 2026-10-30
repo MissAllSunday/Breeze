@@ -156,7 +156,7 @@ function allowedTo($permissionName)
 	return $dummyPermissions[$permissionName] ?? false;
 }
 
-function cache_get_data($key, $timeToLive = 360): ?array
+function cache_get_data($key, $timeToLive = 360): mixed
 {
 	return match ($key) {
 		'Breeze_StatusRepository_getByProfile1' => [
