@@ -52,6 +52,12 @@ interface WallVisibilityServiceInterface
 	public function filterVisibleComments(array $comments, int $viewerId): array;
 
 	/**
+	 * @param array<int, StatusEntity> $statuses
+	 * @return array<int, StatusEntity>
+	 */
+	public function filterVisibleCommentsForStatuses(array $statuses, int $viewerId): array;
+
+	/**
 	 * Compute the mutual block set for a viewer relative to a list of known
 	 * participants (e.g. the viewer's buddy list).
 	 *

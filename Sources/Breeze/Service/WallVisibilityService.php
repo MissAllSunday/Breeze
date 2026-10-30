@@ -126,6 +126,54 @@ class WallVisibilityService implements WallVisibilityServiceInterface
 		);
 	}
 
+	/**
+	 * @param array<int, StatusEntity> $statuses
+	 * @return array<int, StatusEntity>
+	 */
+	public function filterVisibleCommentsForStatuses(array $statuses, int $viewerId): array
+	{
+		if ($statuses === []) {
+			return [];
+		}
+
+		if (!$this->permissionsService->canViewProfileWall($viewerId)) {
+			foreach ($statuses as $status) {
+				$status->setComments([]);
+			}
+
+			return $statuses;
+		}
+
+		$ids = [$viewerId];
+		$hasComments = false;
+
+		foreach ($statuses as $status) {
+			foreach ($status->getComments() as $comment) {
+				$hasComments = true;
+				$ids[] = $comment->getUserId();
+			}
+		}
+
+		if (!$hasComments) {
+			return $statuses;
+		}
+
+		$settings = $this->loadSettings($ids);
+
+		foreach ($statuses as $status) {
+			$status->setComments(array_filter(
+				$status->getComments(),
+				fn (CommentEntity $comment): bool => $this->passesSymmetricBlock(
+					$comment->getUserId(),
+					$viewerId,
+					$settings,
+				),
+			));
+		}
+
+		return $statuses;
+	}
+
 	public function getMutualBlockIds(int $viewerId, array $participantIds): array
 	{
 		if ($viewerId === 0 || $participantIds === []) {
