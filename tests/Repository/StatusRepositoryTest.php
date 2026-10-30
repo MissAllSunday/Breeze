@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Breeze\Repository;
 
 use Breeze\Database\ClientInterface;
+use Breeze\Entity\CommentEntity;
 use Breeze\Entity\LikeEntity;
 use Breeze\Entity\LikeInfoEntity;
 use Breeze\Entity\SharedEntity;
 use Breeze\Entity\StatusEntity;
 use Breeze\Entity\UserSettingsEntity;
 use Breeze\Enums\LikesEnum;
+use Breeze\Fixtures\CommentFixtures;
 use Breeze\Repository\User\SettingsRepositoryInterface;
 use Breeze\Util\Validate\DataNotFoundException;
 use DateMalformedStringException;
@@ -282,10 +284,10 @@ class StatusRepositoryTest extends TestCase
 			->method('query')
 			->willReturn($mockQueryObject);
 
-		$this->commentRepository->expects($this->once())
-			->method('getByProfile')
-			->with([10])
-			->willReturn([]);
+		// No rows come back from the mocked handle, so the bounded comment
+		// fetch must be skipped entirely rather than emitting `IN ()`.
+		$this->commentRepository->expects($this->never())
+			->method('getByStatus');
 
 		$this->statusRepository->method('loadUsersInfo')
 			->willReturn([2 => ['name' => 'Test User']]);
@@ -300,6 +302,64 @@ class StatusRepositoryTest extends TestCase
 		$this->assertEquals($mockData, $result);
 	}
 
+	/**
+	 * The comment fetch must be bounded to the statuses on the page. Seeding a
+	 * comment on an off-page status proves getByStatus() is called with exactly
+	 * the returned status id, and that the off-page comment never reaches the
+	 * page — the pre-fix code fetched every comment on the wall.
+	 *
+	 * @throws DataNotFoundException
+	 */
+	public function testGetByProfileOnlyFetchesCommentsForTheStatusesOnThePage(): void
+	{
+		$wallId = 10;
+		$onPageId = 1;
+		$offPageId = 2;
+		$now = time();
+
+		// Real prepareData(): only the member load is stubbed.
+		$statusRepository = $this->getMockBuilder(StatusRepository::class)
+			->setConstructorArgs([$this->dbClient, $this->commentRepository, $this->likeRepository])
+			->onlyMethods(['loadUsersInfo'])
+			->getMock();
+
+		$statusRepository->method('loadUsersInfo')
+			->willReturn([2 => ['name' => 'Test User']]);
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn($this->queryObject);
+
+		// The page holds a single status; the second one is off-page.
+		$this->dbClient->method('fetchAssoc')
+			->willReturnOnConsecutiveCalls([
+				StatusEntity::ID => $onPageId,
+				StatusEntity::WALL_ID => $wallId,
+				StatusEntity::USER_ID => 2,
+				StatusEntity::BODY => 'On page',
+				SharedEntity::CREATED_AT => $now,
+			], null);
+
+		$offPageComment = CommentEntity::from(CommentFixtures::withCustomData([
+			CommentEntity::ID => 7,
+			CommentEntity::STATUS_ID => $offPageId,
+		]));
+
+		$this->commentRepository->expects($this->once())
+			->method('getByStatus')
+			->with([$onPageId])
+			->willReturn([$offPageComment]);
+
+		$this->likeRepository->method('getByContent')
+			->willReturn([]);
+
+		$result = $statusRepository->getByProfile([$wallId], 1);
+
+		$this->assertCount(1, $result);
+		$this->assertArrayHasKey($onPageId, $result);
+		$this->assertSame([], $result[$onPageId]->getComments());
+	}
+
 	#[DataProvider('getByProvider')]
 	public function testGetBy(string $columnName, array $data, int $maxIndex, array $expected): void
 	{
@@ -307,10 +367,8 @@ class StatusRepositoryTest extends TestCase
 			->method('query')
 			->willReturn($this->queryObject);
 
-		$this->commentRepository->expects($this->once())
-			->method('getByProfile')
-			->with($data)
-			->willReturn([]);
+		$this->commentRepository->expects($this->never())
+			->method('getByStatus');
 
 		$this->statusRepository->expects($this->once())
 			->method('prepareData')
@@ -377,7 +435,7 @@ class StatusRepositoryTest extends TestCase
 			)
 			->willReturn($this->queryObject);
 
-		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->commentRepository->method('getByStatus')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
 		$this->statusRepository->getBy($columnName, $data, $maxIndex);
@@ -509,7 +567,7 @@ class StatusRepositoryTest extends TestCase
 			)
 			->willReturn($this->queryObject);
 
-		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->commentRepository->method('getByStatus')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
 		$this->statusRepository->getBy($columnName, $data, $maxIndex, $cursor);
@@ -529,7 +587,7 @@ class StatusRepositoryTest extends TestCase
 			)
 			->willReturn($this->queryObject);
 
-		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->commentRepository->method('getByStatus')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
 		$result = $this->statusRepository->getByProfile($userProfiles, $maxIndex, $cursor);
@@ -571,7 +629,7 @@ class StatusRepositoryTest extends TestCase
 			)
 			->willReturn($this->queryObject);
 
-		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->commentRepository->method('getByStatus')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
 		$this->statusRepository->getByBuddyActivity($buddyIds, $maxIndex);
@@ -600,7 +658,7 @@ class StatusRepositoryTest extends TestCase
 			)
 			->willReturn($this->queryObject);
 
-		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->commentRepository->method('getByStatus')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
 		$this->statusRepository->getByBuddyActivity($buddyIds, $maxIndex, null, $excludeIds);
@@ -627,7 +685,7 @@ class StatusRepositoryTest extends TestCase
 			)
 			->willReturn($this->queryObject);
 
-		$this->commentRepository->method('getByProfile')->willReturn([]);
+		$this->commentRepository->method('getByStatus')->willReturn([]);
 		$this->statusRepository->method('prepareData')->willReturn([]);
 
 		$this->statusRepository->getByBuddyActivity($buddyIds, $maxIndex, $cursor);
