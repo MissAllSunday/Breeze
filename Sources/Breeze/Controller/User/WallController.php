@@ -46,7 +46,8 @@ class WallController extends BaseController
 
 	public function profile(): void
 	{
-		$profileId = $this->getRequest('u', 0);
+		$currentUserInfo = $this->profileService->getCurrentUserInfo();
+		$profileId = (int) $this->getRequest('u', $currentUserInfo['id'] ?? 0);
 		$buddiesData = [];
 
 		if (empty($profileId)) {
@@ -54,7 +55,6 @@ class WallController extends BaseController
 		}
 
 		$profileSettings = $this->profileService->getUserSettings($profileId);
-		$currentUserInfo = $this->profileService->getCurrentUserInfo();
 		$profileBuddies = $profileSettings->getBuddies();
 
 		if (!$this->profileService->isAllowedToSeePage($profileSettings, $profileId, $currentUserInfo['id'])) {
