@@ -129,7 +129,8 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
 			'
 			SELECT {raw:columns}
 			FROM {db_prefix}{raw:from}
-			WHERE {raw:columnName} IN({array_int:statusIds})',
+			WHERE {raw:columnName} IN({array_int:statusIds})
+			ORDER BY ' . self::PARENT_LIKE_IDENTIFIER . '.' . CommentEntity::ID . ' ASC',
 			$queryParams
 		);
 
