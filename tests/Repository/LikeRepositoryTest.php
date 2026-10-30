@@ -115,6 +115,45 @@ class LikeRepositoryTest extends TestCase
 		];
 	}
 
+	/**
+	 * @throws Exception
+	 */
+	public function testGetByContentLoadsLikerMembersOnceForTheWholeBatch(): void
+	{
+		$type = LikesEnum::Status;
+		$contentIds = [1, 2, 3];
+
+		$rows = [
+			['content_id' => 1, 'content_type' => $type->value, 'like_time' => 5, 'id_member' => 1],
+			['content_id' => 2, 'content_type' => $type->value, 'like_time' => 6, 'id_member' => 3],
+			['content_id' => 3, 'content_type' => $type->value, 'like_time' => 7, 'id_member' => 4],
+		];
+
+		$likeRepository = $this->getMockBuilder(LikeRepository::class)
+			->setConstructorArgs([$this->dbClient])
+			->onlyMethods(['getUsersToLoad'])
+			->getMock();
+
+		$likeRepository->expects($this->once())
+			->method('getUsersToLoad')
+			->with([1, 3, 4])
+			->willReturn([1, 3, 4]);
+
+		$this->dbClient->expects($this->once())
+			->method('query')
+			->willReturn('result');
+
+		$this->dbClient->method('fetchAssoc')
+			->willReturnOnConsecutiveCalls($rows[0], $rows[1], $rows[2], null);
+
+		$this->dbClient->expects($this->once())
+			->method('freeResult');
+
+		$result = $likeRepository->getByContent($type, $contentIds);
+
+		$this->assertCount(3, $result);
+	}
+
 	public function testIsContentAlreadyLikedTrue(): void
 	{
 		$this->dbClient->expects($this->once())

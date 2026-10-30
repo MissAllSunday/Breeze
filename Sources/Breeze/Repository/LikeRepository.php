@@ -87,8 +87,17 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 		}
 		$this->dbClient->freeResult($request);
 
-		array_walk($likes, function (&$likeData, $contentId) use ($type): void {
-			$likeData = $this->buildLikeInfo($likeData, $type, (int) $contentId);
+		$likerIds = [];
+		foreach ($likes as $contentLikes) {
+			foreach ($contentLikes as $like) {
+				$likerIds[] = $like->getIdMember();
+			}
+		}
+
+		$usersData = $likerIds === [] ? [] : $this->loadUsersInfo($likerIds);
+
+		array_walk($likes, function (&$likeData, $contentId) use ($type, $usersData): void {
+			$likeData = $this->buildLikeInfo($likeData, $type, (int) $contentId, $usersData);
 		});
 
 		$this->setCache($cacheKey, $likes);
@@ -187,7 +196,7 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 	/**
 	 * @param array $likeEntities [LikeEntity]
 	 */
-	public function buildLikeInfo(array $likeEntities, LikesEnum $type, int $contentId): LikeInfoEntity
+	public function buildLikeInfo(array $likeEntities, LikesEnum $type, int $contentId, array $usersData): LikeInfoEntity
 	{
 		// Only count data with actual likes
 		$likeFilledEntities = array_filter($likeEntities, function ($like): bool {
@@ -199,7 +208,6 @@ class LikeRepository extends BaseRepository implements LikeRepositoryInterface
 
 		$usersIds = array_column($likeFilledEntities, LikeEntity::ID_MEMBER);
 		$alreadyLiked = in_array($this->global('user_info')['id'], $usersIds);
-		$usersData = $this->loadUsersInfo($usersIds);
 
 		$likeInfo = LikeInfoEntity::from();
 
